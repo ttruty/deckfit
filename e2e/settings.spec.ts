@@ -94,7 +94,10 @@ test('the install banner appears when the browser offers a prompt, and can be wa
   await page.reload();
   await expect(page.locator('[data-install-banner]')).toHaveCount(0);
   await page.goto('/settings');
-  await page.getByRole('button', { name: 'Show the install prompt again' }).click();
+  const again = page.getByRole('button', { name: 'Show the install prompt again' });
+  await again.click();
+  await expect(again).toHaveCount(0); // the offer is back on
+  await page.waitForTimeout(300); // let that reach Dexie before navigating away
   await page.goto('/');
   await page.evaluate(() => {
     const event = new Event('beforeinstallprompt');

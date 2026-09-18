@@ -1004,6 +1004,10 @@ Implementation:
   Roboto, Material Icons). Nothing is fetched from Google Fonts, or icons would
   render as their ligature text offline. `styles.scss` also carries the
   `.material-icons` rules that Google's stylesheet would otherwise provide.
+- Startup tasks that load lazily from the shell (update prompt, safety notice)
+  must check the injector is still alive before using it: the app can be torn
+  down before a dynamic `import()` resolves, and the rejection fails `npm test`
+  (Vitest treats unhandled errors as failures, so CI catches it).
 - **Install prompt**: `core/pwa/install-prompt.ts` captures `beforeinstallprompt`
   in `main.ts` (it fires before Angular boots and is unusable later);
   `InstallService` turns it into a state — `installed` / `prompt` / `ios` /

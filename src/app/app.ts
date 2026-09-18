@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EnvironmentInjector, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, EnvironmentInjector, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -52,17 +52,26 @@ export class App {
   ];
 
   constructor() {
-    // Loaded lazily: the update prompt needs the snackbar, which would otherwise pull the CDK
-    // overlay into the initial bundle (§4).
+    // The update prompt and the safety notice load lazily: both pull in the CDK overlay (and
+    // Dexie), which must stay out of the initial bundle (§4). The app can be torn down before a
+    // dynamic import resolves (tests, a fast navigation), so check before touching the injector.
     const injector = inject(EnvironmentInjector);
-    void import('./core/pwa/app-update.service').then(({ AppUpdateService }) => injector.get(AppUpdateService).start());
-    // §12: the safety notice, once per device (also lazy: dialog + Dexie).
-    void import('./core/safety/disclaimer.service').then(({ DisclaimerService }) => injector.get(DisclaimerService).ensureAccepted());
+    const destroyRef = inject(DestroyRef);
+    let alive = true;
+    destroyRef.onDestroy(() => (alive = false));
+    const whenAlive = <T>(load: Promise<T>, use: (module: T) => void) => {
+      load.then((module) => (alive ? use(module) : undefined)).catch((err: unknown) => console.warn('Startup task failed', err));
+    };
+    whenAlive(import('./core/pwa/app-update.service'), ({ AppUpdateService }) => injector.get(AppUpdateService).start());
+    // §12: the safety notice, once per device.
+    whenAlive(import('./core/safety/disclaimer.service'), ({ DisclaimerService }) => void injector.get(DisclaimerService).ensureAccepted());
+
     // iOS only allows audio to start inside a user gesture: unlock on the first tap anywhere.
     const audio = inject(AudioCueService);
     const unlock = () => audio.unlock();
     for (const event of ['pointerdown', 'keydown'] as const) {
       document.addEventListener(event, unlock, { once: true, passive: true });
+      destroyRef.onDestroy(() => document.removeEventListener(event, unlock));
     }
   }
 
