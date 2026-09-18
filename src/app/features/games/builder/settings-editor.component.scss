@@ -1,0 +1,17 @@
+@use './fields/controls' as *;
+
+:host { display: grid; gap: 8px; }
+.setting {
+  display: grid; gap: 8px; padding: 8px 10px; border-radius: 12px; background: var(--mat-sys-surface-container-low);
+  border: 1px solid var(--mat-sys-outline-variant);
+  &.invalid { border-color: var(--mat-sys-error); }
+}
+header { display: flex; align-items: center; gap: 8px; }
+code { font: var(--mat-sys-title-small); font-family: monospace; }
+.type, .uses { font: var(--mat-sys-label-small); color: var(--mat-sys-on-surface-variant); }
+.spacer { flex: 1; }
+.check { display: inline-flex; gap: 6px; align-items: center; font: var(--mat-sys-body-medium); min-height: 36px; }
+.suits { display: flex; flex-wrap: wrap; gap: 8px; border: 0; padding: 0; margin: 0; legend { font: var(--mat-sys-label-small); } }
+.problems { margin: 0; padding-left: 20px; color: var(--mat-sys-error); font: var(--mat-sys-body-small); }
+.hint { margin: 0; font: var(--mat-sys-body-small); color: var(--mat-sys-on-surface-variant); }
+.add { padding-top: 4px; }

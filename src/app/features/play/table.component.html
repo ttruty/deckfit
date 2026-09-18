@@ -1,0 +1,108 @@
+<div class="play">
+  <p class="sr-only" aria-live="polite" aria-atomic="true">{{ store.announcement() }}</p>
+
+  @switch (store.status()) {
+    @case ('loading') {
+      <p class="center" role="status">Shuffling…</p>
+    }
+    @case ('error') {
+      <div class="center">
+        <p role="alert">{{ store.error() }}</p>
+        <a mat-flat-button routerLink="/">Home</a>
+      </div>
+    }
+    @case ('ready') {
+      @let session = store.session()!;
+      <header class="bar">
+        <a mat-icon-button routerLink="/" aria-label="Leave (progress is saved)" matTooltip="Leave — progress is saved">
+          <mat-icon>arrow_back</mat-icon>
+        </a>
+        <div class="title">
+          <span class="game">{{ session.game.name }}</span>
+          <span class="deck">{{ session.deck.name }}</span>
+        </div>
+        @for (t of store.engineTimers(); track t.timer.id) {
+          @let timerLabel = t.timer.phase === 'rest' ? 'Rest' : (t.timer.label ?? 'Timer');
+          <span class="cap" [class.rest]="t.timer.phase === 'rest'" role="timer" [attr.aria-label]="timerLabel + ': ' + t.remaining + ' seconds left'">
+            <mat-icon aria-hidden="true">{{ t.timer.phase === 'rest' ? 'self_improvement' : 'timer' }}</mat-icon>
+            <span class="cap-label">{{ timerLabel }}</span>{{ t.remaining }}
+          </span>
+        }
+        <button mat-icon-button (click)="toggleBeeps()" [attr.aria-pressed]="audio.beeps()" [attr.aria-label]="audio.beeps() ? 'Mute beeps' : 'Unmute beeps'">
+          <mat-icon>{{ audio.beeps() ? 'volume_up' : 'volume_off' }}</mat-icon>
+        </button>
+        @if (audio.speechSupported) {
+          <button mat-icon-button (click)="toggleSpeech()" [attr.aria-pressed]="audio.speech()" [attr.aria-label]="audio.speech() ? 'Turn off voice cues' : 'Turn on voice cues'">
+            <mat-icon>{{ audio.speech() ? 'record_voice_over' : 'voice_over_off' }}</mat-icon>
+          </button>
+        }
+        @if (!store.finished()) {
+          <button mat-button (click)="end()">End</button>
+        }
+      </header>
+
+      <section class="table" aria-label="Table">
+        <df-draw-pile [count]="store.drawCount()" />
+        <ul class="cards" [attr.data-count]="store.tableCards().length">
+          @for (c of store.tableCards(); track c.id) {
+            <li class="dealt" [class.active]="!store.finished() && store.currentTask()?.task?.cardIds?.includes(c.id)">
+              <df-card-face [card]="c.face" />
+            </li>
+          }
+        </ul>
+      </section>
+
+      @if (store.summary(); as s) {
+        <df-workout-summary [summary]="s" />
+      } @else if (store.currentTask(); as t) {
+        <section class="panel task" aria-labelledby="task-title">
+          <div class="task-head">
+            @if (t.figure) {
+              <df-exercise-figure class="mini" [figure]="t.figure" aria-hidden="true" />
+            }
+            <div>
+              <h1 id="task-title">{{ t.name }}</h1>
+              @if (t.cues.length) { <p class="cues">{{ t.cues.join(' · ') }}</p> }
+            </div>
+          </div>
+
+          @if (t.wild) {
+            <df-wild-picker [options]="store.wildOptions()" [(exerciseId)]="store.wildChoice" />
+          }
+
+          <div class="work">
+            @if (t.task.measure === 'seconds') {
+              @if (store.taskTimerView(); as timer) {
+                <df-timer-ring [progress]="timer.progress" [label]="timer.remaining" unit="sec"
+                               [ariaLabel]="timer.remaining + ' seconds left'" />
+              } @else {
+                <df-timer-ring [progress]="0" [label]="t.task.amount" unit="sec" [ariaLabel]="t.task.amount + ' seconds'" />
+              }
+            } @else {
+              <df-stepper [(value)]="reps" [min]="0" [max]="999" unit="reps" />
+            }
+          </div>
+
+          <div class="actions">
+            <button mat-stroked-button class="big" (click)="store.skip()">Skip</button>
+            @if (t.task.measure === 'seconds' && !store.taskTimerView()) {
+              <button mat-stroked-button class="big" (click)="store.startTaskTimer()"><mat-icon>timer</mat-icon>Start</button>
+            }
+            <button mat-flat-button class="big primary" (click)="done()"><mat-icon>check</mat-icon>Done</button>
+          </div>
+        </section>
+      } @else if (store.canFlip()) {
+        <section class="panel next">
+          <button mat-flat-button class="big primary flip" (click)="store.flip()">
+            <mat-icon>style</mat-icon>{{ store.tableCards().length ? 'Next' : 'Deal' }}
+          </button>
+          <p class="progress">{{ store.doneCount() }} done · {{ store.drawCount() }} left in the deck</p>
+        </section>
+      }
+
+      @if (store.rejection(); as r) {
+        <p class="toast" role="alert">{{ r }}</p>
+      }
+    }
+  }
+</div>

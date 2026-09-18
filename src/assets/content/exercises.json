@@ -1,0 +1,3145 @@
+{
+ "version": 1,
+ "exercises": [
+  {
+   "id": "bw-air-squat",
+   "name": "Air Squat",
+   "description": "Sit your hips back and down until thighs are level, then stand tall.",
+   "cues": [
+    "Heels stay down",
+    "Knees track over toes"
+   ],
+   "category": "bodyweight",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "stand",
+    "end": "squat",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "bw-reverse-lunge",
+   "name": "Reverse Lunge",
+   "description": "Step one foot back and lower until both knees bend near 90\u00b0, then return.",
+   "cues": [
+    "Torso upright",
+    "Alternate legs"
+   ],
+   "category": "bodyweight",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "stand",
+    "end": "lunge",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "bw-jump-squat",
+   "name": "Jump Squat",
+   "description": "Drop into a squat and drive up into a jump, landing softly back into the squat.",
+   "cues": [
+    "Land quietly",
+    "Arms drive up"
+   ],
+   "category": "bodyweight",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 3,
+   "measure": "reps",
+   "figure": {
+    "start": "squat",
+    "end": "jump",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "bw-push-up",
+   "name": "Push-Up",
+   "description": "From a high plank, lower your chest toward the floor and press back up.",
+   "cues": [
+    "Body in one line",
+    "Elbows about 45\u00b0"
+   ],
+   "category": "bodyweight",
+   "muscleGroups": [
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "plank-high",
+    "end": "plank-low",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "bw-wide-push-up",
+   "name": "Wide Push-Up",
+   "description": "A push-up with hands set wider than shoulders to load the chest more.",
+   "cues": [
+    "Brace your core",
+    "Full range"
+   ],
+   "category": "bodyweight",
+   "muscleGroups": [
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "plank-high",
+    "end": "plank-low",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "bw-pike-push-up",
+   "name": "Pike Push-Up",
+   "description": "With hips high, bend the elbows to bring your head toward the floor, then press up.",
+   "cues": [
+    "Hips stay stacked",
+    "Head between hands"
+   ],
+   "category": "bodyweight",
+   "muscleGroups": [
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 3,
+   "measure": "reps",
+   "figure": {
+    "start": "pike-high",
+    "end": "pike-low",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "bw-superman",
+   "name": "Superman",
+   "description": "Lying face down, lift arms, chest, and legs off the floor together.",
+   "cues": [
+    "Squeeze glutes",
+    "Neck neutral"
+   ],
+   "category": "bodyweight",
+   "muscleGroups": [
+    "back",
+    "arms"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "prone",
+    "end": "superman",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "bw-prone-y",
+   "name": "Prone Y-Raise",
+   "description": "Face down with arms in a Y, lift the arms by squeezing the shoulder blades.",
+   "cues": [
+    "Thumbs up",
+    "Slow lower"
+   ],
+   "category": "bodyweight",
+   "muscleGroups": [
+    "back",
+    "arms"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "prone",
+    "end": "prone-y",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "bw-snow-angel",
+   "name": "Reverse Snow Angel",
+   "description": "Face down, sweep straight arms from overhead to your hips without touching the floor.",
+   "cues": [
+    "Arms hover",
+    "Shoulders down"
+   ],
+   "category": "bodyweight",
+   "muscleGroups": [
+    "back",
+    "arms"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "prone-y",
+    "end": "prone-angel",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "bw-crunch",
+   "name": "Crunch",
+   "description": "On your back with knees bent, curl your shoulders off the floor and lower slowly.",
+   "cues": [
+    "Chin off chest",
+    "Exhale up"
+   ],
+   "category": "bodyweight",
+   "muscleGroups": [
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "supine",
+    "end": "crunch",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "bw-plank",
+   "name": "Forearm Plank",
+   "description": "Hold a straight line from head to heels on your forearms.",
+   "cues": [
+    "Ribs down",
+    "Don't let hips sag"
+   ],
+   "category": "bodyweight",
+   "muscleGroups": [
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 2,
+   "measure": "seconds",
+   "figure": {
+    "start": "plank-forearm",
+    "end": "plank-forearm",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "bw-mountain-climber",
+   "name": "Mountain Climber",
+   "description": "From a high plank, drive knees toward the chest one at a time at pace.",
+   "cues": [
+    "Hips low",
+    "Shoulders over hands"
+   ],
+   "category": "bodyweight",
+   "muscleGroups": [
+    "core"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 3,
+   "measure": "reps",
+   "figure": {
+    "start": "plank-high",
+    "end": "mountain",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "db-goblet-squat",
+   "name": "Goblet Squat",
+   "description": "Hold one dumbbell at your chest and squat between your knees.",
+   "cues": [
+    "Elbows inside knees",
+    "Chest proud"
+   ],
+   "category": "dumbbell",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "dumbbell"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "stand-rack",
+    "end": "squat-rack",
+    "prop": {
+     "type": "dumbbell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "db-rdl",
+   "name": "Dumbbell Romanian Deadlift",
+   "description": "With soft knees, push the hips back and lower the weights along your legs, then stand.",
+   "cues": [
+    "Flat back",
+    "Weights close"
+   ],
+   "category": "dumbbell",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "dumbbell"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "stand",
+    "end": "hinge",
+    "prop": {
+     "type": "dumbbell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "db-reverse-lunge",
+   "name": "Dumbbell Reverse Lunge",
+   "description": "Hold weights at your sides and step back into a lunge.",
+   "cues": [
+    "Front heel planted",
+    "Control the drop"
+   ],
+   "category": "dumbbell",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "dumbbell"
+   ],
+   "difficulty": 3,
+   "measure": "reps",
+   "figure": {
+    "start": "stand",
+    "end": "lunge-hang",
+    "prop": {
+     "type": "dumbbell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "db-floor-press",
+   "name": "Floor Press",
+   "description": "Lying on your back, press the dumbbells from chest height to straight arms.",
+   "cues": [
+    "Elbows touch lightly",
+    "Wrists stacked"
+   ],
+   "category": "dumbbell",
+   "muscleGroups": [
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "dumbbell"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "supine-press-bottom",
+    "end": "supine-press-top",
+    "prop": {
+     "type": "dumbbell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "db-overhead-press",
+   "name": "Overhead Press",
+   "description": "From shoulder height, press the dumbbells straight overhead.",
+   "cues": [
+    "Ribs down",
+    "Biceps by ears at top"
+   ],
+   "category": "dumbbell",
+   "muscleGroups": [
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "dumbbell"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "stand-rack",
+    "end": "stand-overhead",
+    "prop": {
+     "type": "dumbbell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "db-front-raise",
+   "name": "Front Raise",
+   "description": "Lift straight arms forward to shoulder height and lower slowly.",
+   "cues": [
+    "No swinging",
+    "Slight elbow bend"
+   ],
+   "category": "dumbbell",
+   "muscleGroups": [
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "dumbbell"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "stand",
+    "end": "stand-front",
+    "prop": {
+     "type": "dumbbell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "db-bent-row",
+   "name": "Bent-Over Row",
+   "description": "Hinge forward and pull the dumbbells toward your hips.",
+   "cues": [
+    "Lead with elbows",
+    "Pause at top"
+   ],
+   "category": "dumbbell",
+   "muscleGroups": [
+    "back",
+    "arms"
+   ],
+   "equipment": [
+    "dumbbell"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "hinge",
+    "end": "hinge-row",
+    "prop": {
+     "type": "dumbbell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "db-curl",
+   "name": "Biceps Curl",
+   "description": "Keeping elbows at your sides, curl the weights to your shoulders.",
+   "cues": [
+    "Elbows still",
+    "Slow lower"
+   ],
+   "category": "dumbbell",
+   "muscleGroups": [
+    "back",
+    "arms"
+   ],
+   "equipment": [
+    "dumbbell"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "stand",
+    "end": "stand-curl",
+    "prop": {
+     "type": "dumbbell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "db-upright-row",
+   "name": "Upright Row",
+   "description": "Pull the dumbbells up along your body to chest height, elbows leading.",
+   "cues": [
+    "Elbows higher than hands",
+    "Stop at chest"
+   ],
+   "category": "dumbbell",
+   "muscleGroups": [
+    "back",
+    "arms"
+   ],
+   "equipment": [
+    "dumbbell"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "stand",
+    "end": "stand-upright",
+    "prop": {
+     "type": "dumbbell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "db-russian-twist",
+   "name": "Russian Twist",
+   "description": "Seated and leaning back, rotate a dumbbell from hip to hip.",
+   "cues": [
+    "Chest tall",
+    "Move from the ribs"
+   ],
+   "category": "dumbbell",
+   "muscleGroups": [
+    "core"
+   ],
+   "equipment": [
+    "dumbbell"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "seated-v",
+    "end": "seated-v",
+    "prop": {
+     "type": "dumbbell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "db-weighted-crunch",
+   "name": "Weighted Crunch",
+   "description": "Hold a dumbbell at your chest and crunch up.",
+   "cues": [
+    "Weight stays close",
+    "Exhale up"
+   ],
+   "category": "dumbbell",
+   "muscleGroups": [
+    "core"
+   ],
+   "equipment": [
+    "dumbbell"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "supine",
+    "end": "crunch",
+    "prop": {
+     "type": "dumbbell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "db-suitcase-hold",
+   "name": "Suitcase Hold",
+   "description": "Stand tall holding a heavy dumbbell in one hand without leaning.",
+   "cues": [
+    "Level shoulders",
+    "Switch sides halfway"
+   ],
+   "category": "dumbbell",
+   "muscleGroups": [
+    "core"
+   ],
+   "equipment": [
+    "dumbbell"
+   ],
+   "difficulty": 1,
+   "measure": "seconds",
+   "figure": {
+    "start": "stand",
+    "end": "stand",
+    "prop": {
+     "type": "dumbbell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "kb-swing",
+   "name": "Kettlebell Swing",
+   "description": "Hinge and hike the bell back, then snap the hips forward to float it to chest height.",
+   "cues": [
+    "Hips drive it",
+    "Arms just guide"
+   ],
+   "category": "kettlebell",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "kettlebell"
+   ],
+   "difficulty": 3,
+   "measure": "reps",
+   "figure": {
+    "start": "hinge",
+    "end": "stand-front",
+    "prop": {
+     "type": "kettlebell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "kb-goblet-squat",
+   "name": "Kettlebell Goblet Squat",
+   "description": "Hold the bell by the horns at your chest and squat deep.",
+   "cues": [
+    "Heels down",
+    "Sit between hips"
+   ],
+   "category": "kettlebell",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "kettlebell"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "stand-rack",
+    "end": "squat-rack",
+    "prop": {
+     "type": "kettlebell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "kb-reverse-lunge",
+   "name": "Kettlebell Reverse Lunge",
+   "description": "Carry the bell at your side or chest and step back into a lunge.",
+   "cues": [
+    "Upright torso",
+    "Soft knee touch"
+   ],
+   "category": "kettlebell",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "kettlebell"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "stand",
+    "end": "lunge-hang",
+    "prop": {
+     "type": "kettlebell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "kb-press",
+   "name": "Kettlebell Press",
+   "description": "From the rack position, press the bell overhead and lock out.",
+   "cues": [
+    "Wrist straight",
+    "Glutes tight"
+   ],
+   "category": "kettlebell",
+   "muscleGroups": [
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "kettlebell"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "stand-rack",
+    "end": "stand-overhead",
+    "prop": {
+     "type": "kettlebell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "kb-floor-press",
+   "name": "Kettlebell Floor Press",
+   "description": "Lying down, press the bell from chest to straight arm.",
+   "cues": [
+    "Bell rests on forearm",
+    "Controlled lower"
+   ],
+   "category": "kettlebell",
+   "muscleGroups": [
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "kettlebell"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "supine-press-bottom",
+    "end": "supine-press-top",
+    "prop": {
+     "type": "kettlebell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "kb-thruster",
+   "name": "Kettlebell Thruster",
+   "description": "Squat with the bell racked, then stand and press it overhead in one motion.",
+   "cues": [
+    "Use leg drive",
+    "Finish locked out"
+   ],
+   "category": "kettlebell",
+   "muscleGroups": [
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "kettlebell"
+   ],
+   "difficulty": 3,
+   "measure": "reps",
+   "figure": {
+    "start": "squat-rack",
+    "end": "stand-overhead",
+    "prop": {
+     "type": "kettlebell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "kb-row",
+   "name": "Single-Arm Row",
+   "description": "Hinged forward, pull the bell to your hip and lower it.",
+   "cues": [
+    "Square shoulders",
+    "Pull to pocket"
+   ],
+   "category": "kettlebell",
+   "muscleGroups": [
+    "back",
+    "arms"
+   ],
+   "equipment": [
+    "kettlebell"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "hinge",
+    "end": "hinge-row",
+    "prop": {
+     "type": "kettlebell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "kb-high-pull",
+   "name": "High Pull",
+   "description": "Hinge, then extend hard and pull the bell up to chest height, elbows high.",
+   "cues": [
+    "Hips first",
+    "Elbows lead"
+   ],
+   "category": "kettlebell",
+   "muscleGroups": [
+    "back",
+    "arms"
+   ],
+   "equipment": [
+    "kettlebell"
+   ],
+   "difficulty": 3,
+   "measure": "reps",
+   "figure": {
+    "start": "hinge",
+    "end": "hinge-upright",
+    "prop": {
+     "type": "kettlebell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "kb-deadlift",
+   "name": "Kettlebell Deadlift",
+   "description": "With the bell between your feet, hinge down, grip, and stand tall.",
+   "cues": [
+    "Flat back",
+    "Push the floor away"
+   ],
+   "category": "kettlebell",
+   "muscleGroups": [
+    "back",
+    "arms"
+   ],
+   "equipment": [
+    "kettlebell"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "hinge-low",
+    "end": "stand",
+    "prop": {
+     "type": "kettlebell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "kb-russian-twist",
+   "name": "Kettlebell Russian Twist",
+   "description": "Seated with feet down or up, rotate the bell side to side.",
+   "cues": [
+    "Slow and even",
+    "Tall spine"
+   ],
+   "category": "kettlebell",
+   "muscleGroups": [
+    "core"
+   ],
+   "equipment": [
+    "kettlebell"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "seated-v",
+    "end": "seated-v",
+    "prop": {
+     "type": "kettlebell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "kb-halo",
+   "name": "Halo",
+   "description": "Circle the bell around your head, keeping it close.",
+   "cues": [
+    "Ribs still",
+    "Change direction"
+   ],
+   "category": "kettlebell",
+   "muscleGroups": [
+    "core"
+   ],
+   "equipment": [
+    "kettlebell"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "stand-rack",
+    "end": "stand-halo",
+    "prop": {
+     "type": "kettlebell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "kb-farmer-hold",
+   "name": "Farmer Hold",
+   "description": "Stand or walk tall holding bells at your sides.",
+   "cues": [
+    "Shoulders packed",
+    "Breathe steadily"
+   ],
+   "category": "kettlebell",
+   "muscleGroups": [
+    "core"
+   ],
+   "equipment": [
+    "kettlebell"
+   ],
+   "difficulty": 1,
+   "measure": "seconds",
+   "figure": {
+    "start": "stand",
+    "end": "stand",
+    "prop": {
+     "type": "kettlebell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "bb-back-squat",
+   "name": "Back Squat",
+   "description": "With the bar across your upper back, squat to depth and stand.",
+   "cues": [
+    "Brace before descent",
+    "Knees out"
+   ],
+   "category": "barbell",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "barbell"
+   ],
+   "difficulty": 3,
+   "measure": "reps",
+   "figure": {
+    "start": "stand-bar",
+    "end": "squat-bar",
+    "prop": {
+     "type": "barbell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "bb-front-squat",
+   "name": "Front Squat",
+   "description": "Rack the bar on your front shoulders and squat upright.",
+   "cues": [
+    "Elbows high",
+    "Stay tall"
+   ],
+   "category": "barbell",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "barbell"
+   ],
+   "difficulty": 3,
+   "measure": "reps",
+   "figure": {
+    "start": "stand-rack",
+    "end": "squat-rack",
+    "prop": {
+     "type": "barbell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "bb-lunge",
+   "name": "Barbell Lunge",
+   "description": "With the bar on your back, step back into a lunge and return.",
+   "cues": [
+    "Short controlled step",
+    "Steady bar"
+   ],
+   "category": "barbell",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "barbell"
+   ],
+   "difficulty": 3,
+   "measure": "reps",
+   "figure": {
+    "start": "stand-bar",
+    "end": "lunge-bar",
+    "prop": {
+     "type": "barbell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "bb-floor-press",
+   "name": "Barbell Floor Press",
+   "description": "Lying down, lower the bar until elbows touch the floor, then press.",
+   "cues": [
+    "Tight upper back",
+    "Bar over shoulders"
+   ],
+   "category": "barbell",
+   "muscleGroups": [
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "barbell"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "supine-press-bottom",
+    "end": "supine-press-top",
+    "prop": {
+     "type": "barbell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "bb-overhead-press",
+   "name": "Barbell Overhead Press",
+   "description": "From the front rack, press the bar overhead, moving your head back then through.",
+   "cues": [
+    "Squeeze glutes",
+    "Bar path straight"
+   ],
+   "category": "barbell",
+   "muscleGroups": [
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "barbell"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "stand-rack",
+    "end": "stand-overhead",
+    "prop": {
+     "type": "barbell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "bb-push-press",
+   "name": "Push Press",
+   "description": "Dip slightly at the knees, then drive the bar overhead with your legs.",
+   "cues": [
+    "Short dip",
+    "Lock out"
+   ],
+   "category": "barbell",
+   "muscleGroups": [
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "barbell"
+   ],
+   "difficulty": 3,
+   "measure": "reps",
+   "figure": {
+    "start": "squat-rack",
+    "end": "stand-overhead",
+    "prop": {
+     "type": "barbell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "bb-deadlift",
+   "name": "Deadlift",
+   "description": "Grip the bar over mid-foot and stand up by pushing through the floor.",
+   "cues": [
+    "Bar touches legs",
+    "Neutral spine"
+   ],
+   "category": "barbell",
+   "muscleGroups": [
+    "back",
+    "arms"
+   ],
+   "equipment": [
+    "barbell"
+   ],
+   "difficulty": 3,
+   "measure": "reps",
+   "figure": {
+    "start": "hinge-low",
+    "end": "stand",
+    "prop": {
+     "type": "barbell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "bb-bent-row",
+   "name": "Barbell Row",
+   "description": "Hinged forward, row the bar to your lower ribs.",
+   "cues": [
+    "Torso still",
+    "Pause at top"
+   ],
+   "category": "barbell",
+   "muscleGroups": [
+    "back",
+    "arms"
+   ],
+   "equipment": [
+    "barbell"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "hinge",
+    "end": "hinge-row",
+    "prop": {
+     "type": "barbell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "bb-curl",
+   "name": "Barbell Curl",
+   "description": "Curl the bar from thighs to shoulders with elbows pinned.",
+   "cues": [
+    "No hip swing",
+    "Full lower"
+   ],
+   "category": "barbell",
+   "muscleGroups": [
+    "back",
+    "arms"
+   ],
+   "equipment": [
+    "barbell"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "stand",
+    "end": "stand-curl",
+    "prop": {
+     "type": "barbell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "bb-rollout",
+   "name": "Barbell Rollout",
+   "description": "From your knees, roll the bar forward as far as you can control, then pull back.",
+   "cues": [
+    "Ribs tucked",
+    "Short range first"
+   ],
+   "category": "barbell",
+   "muscleGroups": [
+    "core"
+   ],
+   "equipment": [
+    "barbell"
+   ],
+   "difficulty": 3,
+   "measure": "reps",
+   "figure": {
+    "start": "kneel-tall",
+    "end": "rollout",
+    "prop": {
+     "type": "barbell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "bb-good-morning",
+   "name": "Good Morning",
+   "description": "With the bar on your back, hinge forward to near parallel and stand.",
+   "cues": [
+    "Light weight",
+    "Soft knees"
+   ],
+   "category": "barbell",
+   "muscleGroups": [
+    "core"
+   ],
+   "equipment": [
+    "barbell"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "stand-bar",
+    "end": "hinge-bar",
+    "prop": {
+     "type": "barbell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "bb-hip-thrust",
+   "name": "Hip Thrust",
+   "description": "With the bar across your hips, drive them up until level with your knees.",
+   "cues": [
+    "Chin tucked",
+    "Squeeze at top"
+   ],
+   "category": "barbell",
+   "muscleGroups": [
+    "core"
+   ],
+   "equipment": [
+    "barbell"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "supine",
+    "end": "bridge",
+    "prop": {
+     "type": "barbell"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "rb-squat",
+   "name": "Banded Squat",
+   "description": "Stand on the band with handles at shoulders and squat.",
+   "cues": [
+    "Keep tension",
+    "Even feet"
+   ],
+   "category": "band",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "band"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "stand-rack",
+    "end": "squat-rack",
+    "prop": {
+     "type": "band",
+     "anchor": "feet"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "rb-glute-bridge",
+   "name": "Banded Glute Bridge",
+   "description": "With a loop above the knees, bridge up while pressing the knees out.",
+   "cues": [
+    "Knees wide",
+    "Hold at top"
+   ],
+   "category": "band",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "band"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "supine",
+    "end": "bridge",
+    "prop": {
+     "type": "band",
+     "anchor": "knees"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "rb-lateral-walk",
+   "name": "Lateral Band Walk",
+   "description": "In a half squat with a loop around the legs, step sideways without letting the feet meet.",
+   "cues": [
+    "Stay low",
+    "Toes forward"
+   ],
+   "category": "band",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "band"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "squat-hands",
+    "end": "squat-hands",
+    "prop": {
+     "type": "band",
+     "anchor": "knees"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "rb-chest-press",
+   "name": "Band Chest Press",
+   "description": "With the band anchored behind, press both hands forward to straight arms.",
+   "cues": [
+    "Split stance",
+    "Slow return"
+   ],
+   "category": "band",
+   "muscleGroups": [
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "band"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "stand-chest",
+    "end": "stand-front",
+    "prop": {
+     "type": "band",
+     "anchor": "behind"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "rb-overhead-press",
+   "name": "Band Overhead Press",
+   "description": "Stand on the band and press the handles overhead.",
+   "cues": [
+    "Ribs down",
+    "Full lockout"
+   ],
+   "category": "band",
+   "muscleGroups": [
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "band"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "stand-rack",
+    "end": "stand-overhead",
+    "prop": {
+     "type": "band",
+     "anchor": "feet"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "rb-pushdown",
+   "name": "Triceps Pushdown",
+   "description": "With the band anchored high, push the hands down until elbows straighten.",
+   "cues": [
+    "Elbows pinned",
+    "Pause at bottom"
+   ],
+   "category": "band",
+   "muscleGroups": [
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "band"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "stand-chest",
+    "end": "stand-pushdown",
+    "prop": {
+     "type": "band",
+     "anchor": "above"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "rb-row",
+   "name": "Band Row",
+   "description": "With the band anchored in front, pull the handles to your ribs.",
+   "cues": [
+    "Squeeze shoulder blades",
+    "Tall chest"
+   ],
+   "category": "band",
+   "muscleGroups": [
+    "back",
+    "arms"
+   ],
+   "equipment": [
+    "band"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "stand-front",
+    "end": "stand-rowback",
+    "prop": {
+     "type": "band",
+     "anchor": "front"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "rb-pull-apart",
+   "name": "Band Pull-Apart",
+   "description": "Hold the band at shoulder height and pull it apart until it touches your chest.",
+   "cues": [
+    "Straight arms",
+    "Shoulders down"
+   ],
+   "category": "band",
+   "muscleGroups": [
+    "back",
+    "arms"
+   ],
+   "equipment": [
+    "band"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "stand-front",
+    "end": "stand-crossbody",
+    "prop": {
+     "type": "band",
+     "anchor": "hands"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "rb-curl",
+   "name": "Band Curl",
+   "description": "Stand on the band and curl the handles up.",
+   "cues": [
+    "Elbows still",
+    "Resist on the way down"
+   ],
+   "category": "band",
+   "muscleGroups": [
+    "back",
+    "arms"
+   ],
+   "equipment": [
+    "band"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "stand",
+    "end": "stand-curl",
+    "prop": {
+     "type": "band",
+     "anchor": "feet"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "rb-pallof",
+   "name": "Pallof Press",
+   "description": "With the band anchored to your side, press the hands straight out and resist the twist.",
+   "cues": [
+    "Hips square",
+    "Hold two counts"
+   ],
+   "category": "band",
+   "muscleGroups": [
+    "core"
+   ],
+   "equipment": [
+    "band"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "stand-chest",
+    "end": "stand-front",
+    "prop": {
+     "type": "band",
+     "anchor": "front"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "rb-woodchop",
+   "name": "Band Woodchop",
+   "description": "Pull the band diagonally from high to low across your body.",
+   "cues": [
+    "Pivot back foot",
+    "Rotate from trunk"
+   ],
+   "category": "band",
+   "muscleGroups": [
+    "core"
+   ],
+   "equipment": [
+    "band"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "stand-overhead",
+    "end": "squat-hands",
+    "prop": {
+     "type": "band",
+     "anchor": "above"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "rb-dead-bug",
+   "name": "Banded Dead Bug",
+   "description": "On your back holding a band anchored overhead, lower opposite arm and leg.",
+   "cues": [
+    "Low back down",
+    "Slow reach"
+   ],
+   "category": "band",
+   "muscleGroups": [
+    "core"
+   ],
+   "equipment": [
+    "band"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "supine",
+    "end": "deadbug",
+    "prop": {
+     "type": "band",
+     "anchor": "behind"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "sb-wall-squat",
+   "name": "Ball Wall Squat",
+   "description": "With a ball between your back and a wall, roll down into a squat and up.",
+   "cues": [
+    "Feet forward",
+    "Knees over ankles"
+   ],
+   "category": "ball",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "ball"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "ball-wall-start",
+    "end": "ball-wall-end",
+    "prop": {
+     "type": "ball",
+     "x": 28,
+     "y": 54,
+     "r": 10
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "sb-hamstring-curl",
+   "name": "Ball Hamstring Curl",
+   "description": "Heels on the ball and hips lifted, roll the ball toward you and back out.",
+   "cues": [
+    "Hips stay up",
+    "Slow out"
+   ],
+   "category": "ball",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "ball"
+   ],
+   "difficulty": 3,
+   "measure": "reps",
+   "figure": {
+    "start": "ball-hamcurl-start",
+    "end": "ball-hamcurl-end",
+    "prop": {
+     "type": "ball",
+     "x": 80,
+     "y": 78,
+     "r": 11
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "sb-bridge",
+   "name": "Ball Bridge",
+   "description": "Feet on the ball, lift your hips into a straight line.",
+   "cues": [
+    "Squeeze glutes",
+    "Steady ball"
+   ],
+   "category": "ball",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "ball"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "ball-bridge-start",
+    "end": "ball-bridge-end",
+    "prop": {
+     "type": "ball",
+     "x": 78,
+     "y": 78,
+     "r": 11
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "sb-incline-push-up",
+   "name": "Incline Ball Push-Up",
+   "description": "Hands on the ball, lower your chest to it and press away.",
+   "cues": [
+    "Grip the ball",
+    "Tight core"
+   ],
+   "category": "ball",
+   "muscleGroups": [
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "ball"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "ball-incline",
+    "end": "ball-incline-low",
+    "prop": {
+     "type": "ball",
+     "x": 72,
+     "y": 80,
+     "r": 10
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "sb-decline-push-up",
+   "name": "Decline Ball Push-Up",
+   "description": "Shins on the ball and hands on the floor, perform push-ups.",
+   "cues": [
+    "Hips level",
+    "Full range"
+   ],
+   "category": "ball",
+   "muscleGroups": [
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "ball"
+   ],
+   "difficulty": 3,
+   "measure": "reps",
+   "figure": {
+    "start": "ball-decline",
+    "end": "ball-decline-low",
+    "prop": {
+     "type": "ball",
+     "x": 22,
+     "y": 72,
+     "r": 11
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "sb-pike",
+   "name": "Ball Pike",
+   "description": "Feet on the ball in a plank, lift your hips high and roll back out.",
+   "cues": [
+    "Straight legs",
+    "Shoulders over hands"
+   ],
+   "category": "ball",
+   "muscleGroups": [
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "ball"
+   ],
+   "difficulty": 4,
+   "measure": "reps",
+   "figure": {
+    "start": "ball-decline",
+    "end": "ball-pike",
+    "prop": {
+     "type": "ball",
+     "x": 26,
+     "y": 72,
+     "r": 11
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "sb-back-extension",
+   "name": "Ball Back Extension",
+   "description": "Draped face down over the ball, lift your chest until your body is straight.",
+   "cues": [
+    "Feet wide",
+    "No overarching"
+   ],
+   "category": "ball",
+   "muscleGroups": [
+    "back",
+    "arms"
+   ],
+   "equipment": [
+    "ball"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "ball-ext-start",
+    "end": "ball-ext-end",
+    "prop": {
+     "type": "ball",
+     "x": 46,
+     "y": 76,
+     "r": 13
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "sb-y-raise",
+   "name": "Ball Y-Raise",
+   "description": "Face down over the ball, raise your arms into a Y.",
+   "cues": [
+    "Thumbs up",
+    "Chest stays down"
+   ],
+   "category": "ball",
+   "muscleGroups": [
+    "back",
+    "arms"
+   ],
+   "equipment": [
+    "ball"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "ball-ext-end",
+    "end": "ball-y",
+    "prop": {
+     "type": "ball",
+     "x": 46,
+     "y": 76,
+     "r": 13
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "sb-superman-hold",
+   "name": "Ball Superman Hold",
+   "description": "Over the ball, hold your chest and arms lifted.",
+   "cues": [
+    "Glutes on",
+    "Look at the floor"
+   ],
+   "category": "ball",
+   "muscleGroups": [
+    "back",
+    "arms"
+   ],
+   "equipment": [
+    "ball"
+   ],
+   "difficulty": 2,
+   "measure": "seconds",
+   "figure": {
+    "start": "ball-y",
+    "end": "ball-y",
+    "prop": {
+     "type": "ball",
+     "x": 46,
+     "y": 76,
+     "r": 13
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "sb-crunch",
+   "name": "Ball Crunch",
+   "description": "With your low back on the ball, curl your ribs toward your hips.",
+   "cues": [
+    "Feet wide",
+    "Stretch back over"
+   ],
+   "category": "ball",
+   "muscleGroups": [
+    "core"
+   ],
+   "equipment": [
+    "ball"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "ball-crunch-start",
+    "end": "ball-crunch-end",
+    "prop": {
+     "type": "ball",
+     "x": 46,
+     "y": 76,
+     "r": 13
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "sb-plank",
+   "name": "Ball Plank",
+   "description": "Forearms on the ball, hold a straight plank.",
+   "cues": [
+    "Elbows under shoulders",
+    "Stay still"
+   ],
+   "category": "ball",
+   "muscleGroups": [
+    "core"
+   ],
+   "equipment": [
+    "ball"
+   ],
+   "difficulty": 2,
+   "measure": "seconds",
+   "figure": {
+    "start": "ball-plank",
+    "end": "ball-plank",
+    "prop": {
+     "type": "ball",
+     "x": 70,
+     "y": 78,
+     "r": 11
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "sb-pass",
+   "name": "Ball Pass",
+   "description": "Lying on your back, pass the ball from hands to feet and back.",
+   "cues": [
+    "Low back down",
+    "Reach long"
+   ],
+   "category": "ball",
+   "muscleGroups": [
+    "core"
+   ],
+   "equipment": [
+    "ball"
+   ],
+   "difficulty": 3,
+   "measure": "reps",
+   "figure": {
+    "start": "ball-pass-start",
+    "end": "ball-pass-end",
+    "prop": {
+     "type": "ball",
+     "x": 56,
+     "y": 44,
+     "r": 9
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "st-squat",
+   "name": "Suspension Squat",
+   "description": "Hold the handles for balance and squat deep.",
+   "cues": [
+    "Light grip",
+    "Sit back"
+   ],
+   "category": "suspension",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "suspension"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "stand-front",
+    "end": "hang-squat",
+    "prop": {
+     "type": "strap",
+     "attach": "hands"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "st-lunge",
+   "name": "Suspension Lunge",
+   "description": "Holding the handles, step back into a lunge.",
+   "cues": [
+    "Upright",
+    "Use straps lightly"
+   ],
+   "category": "suspension",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "suspension"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "stand-front",
+    "end": "hang-lunge",
+    "prop": {
+     "type": "strap",
+     "attach": "hands"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "st-hamstring-curl",
+   "name": "Suspension Hamstring Curl",
+   "description": "Heels in the cradles, lift your hips and pull heels toward you.",
+   "cues": [
+    "Hips high",
+    "Slow extend"
+   ],
+   "category": "suspension",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "suspension"
+   ],
+   "difficulty": 3,
+   "measure": "reps",
+   "figure": {
+    "start": "strap-curl-start",
+    "end": "strap-curl-end",
+    "prop": {
+     "type": "strap",
+     "attach": "feet"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "st-chest-press",
+   "name": "Suspension Chest Press",
+   "description": "Facing away and leaning forward, lower your chest between the handles and press back.",
+   "cues": [
+    "Straight body",
+    "Walk feet back to progress"
+   ],
+   "category": "suspension",
+   "muscleGroups": [
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "suspension"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "lean-fwd",
+    "end": "lean-fwd-low",
+    "prop": {
+     "type": "strap",
+     "attach": "hands",
+     "anchorX": 36
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "st-triceps",
+   "name": "Suspension Triceps Extension",
+   "description": "Leaning forward, bend only at the elbows to bring hands by your head, then extend.",
+   "cues": [
+    "Elbows fixed",
+    "Tight core"
+   ],
+   "category": "suspension",
+   "muscleGroups": [
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "suspension"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "lean-fwd",
+    "end": "lean-tricep",
+    "prop": {
+     "type": "strap",
+     "attach": "hands",
+     "anchorX": 36
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "st-push-up",
+   "name": "Suspension Push-Up",
+   "description": "Feet in the cradles, perform push-ups from the floor.",
+   "cues": [
+    "Hips level",
+    "Straps steady"
+   ],
+   "category": "suspension",
+   "muscleGroups": [
+    "chest",
+    "shoulders"
+   ],
+   "equipment": [
+    "suspension"
+   ],
+   "difficulty": 3,
+   "measure": "reps",
+   "figure": {
+    "start": "strap-plank",
+    "end": "strap-pushup",
+    "prop": {
+     "type": "strap",
+     "attach": "feet"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "st-row",
+   "name": "Suspension Row",
+   "description": "Lean back with straight arms and pull your chest to the handles.",
+   "cues": [
+    "Body stays rigid",
+    "Elbows close"
+   ],
+   "category": "suspension",
+   "muscleGroups": [
+    "back",
+    "arms"
+   ],
+   "equipment": [
+    "suspension"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "lean-back",
+    "end": "lean-row",
+    "prop": {
+     "type": "strap",
+     "attach": "hands"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "st-y-fly",
+   "name": "Suspension Y-Fly",
+   "description": "Leaning back, raise straight arms up into a Y and pull yourself upright.",
+   "cues": [
+    "Thumbs up",
+    "Slow return"
+   ],
+   "category": "suspension",
+   "muscleGroups": [
+    "back",
+    "arms"
+   ],
+   "equipment": [
+    "suspension"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "lean-back",
+    "end": "lean-y",
+    "prop": {
+     "type": "strap",
+     "attach": "hands"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "st-curl",
+   "name": "Suspension Biceps Curl",
+   "description": "Leaning back with palms up, curl your hands toward your forehead.",
+   "cues": [
+    "Elbows high",
+    "Straight body"
+   ],
+   "category": "suspension",
+   "muscleGroups": [
+    "back",
+    "arms"
+   ],
+   "equipment": [
+    "suspension"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "lean-back",
+    "end": "lean-curl",
+    "prop": {
+     "type": "strap",
+     "attach": "hands"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "st-plank",
+   "name": "Suspension Plank",
+   "description": "Feet in the cradles, hold a straight high plank.",
+   "cues": [
+    "Don't sway",
+    "Push the floor"
+   ],
+   "category": "suspension",
+   "muscleGroups": [
+    "core"
+   ],
+   "equipment": [
+    "suspension"
+   ],
+   "difficulty": 2,
+   "measure": "seconds",
+   "figure": {
+    "start": "strap-plank",
+    "end": "strap-plank",
+    "prop": {
+     "type": "strap",
+     "attach": "feet"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "st-knee-tuck",
+   "name": "Suspension Knee Tuck",
+   "description": "From a strap plank, pull both knees toward your chest.",
+   "cues": [
+    "Round the back slightly",
+    "Control out"
+   ],
+   "category": "suspension",
+   "muscleGroups": [
+    "core"
+   ],
+   "equipment": [
+    "suspension"
+   ],
+   "difficulty": 3,
+   "measure": "reps",
+   "figure": {
+    "start": "strap-plank",
+    "end": "strap-tuck",
+    "prop": {
+     "type": "strap",
+     "attach": "feet"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "st-pike",
+   "name": "Suspension Pike",
+   "description": "From a strap plank, lift your hips high with straight legs.",
+   "cues": [
+    "Shoulders stay over hands",
+    "Slow lower"
+   ],
+   "category": "suspension",
+   "muscleGroups": [
+    "core"
+   ],
+   "equipment": [
+    "suspension"
+   ],
+   "difficulty": 4,
+   "measure": "reps",
+   "figure": {
+    "start": "strap-plank",
+    "end": "strap-pike",
+    "prop": {
+     "type": "strap",
+     "attach": "feet"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "fx-quad",
+   "name": "Standing Quad Stretch",
+   "description": "Hold one ankle behind you and bring the knee under your hip.",
+   "cues": [
+    "Tuck the pelvis",
+    "Switch halfway"
+   ],
+   "category": "flexibility",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 1,
+   "measure": "seconds",
+   "figure": {
+    "start": "stand-quad",
+    "end": "stand-quad",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "fx-hamstring",
+   "name": "Seated Hamstring Stretch",
+   "description": "Sit with legs long and fold forward from the hips.",
+   "cues": [
+    "Lead with the chest",
+    "Breathe out to deepen"
+   ],
+   "category": "flexibility",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 1,
+   "measure": "seconds",
+   "figure": {
+    "start": "seated-fold",
+    "end": "seated-fold",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "fx-hip-flexor",
+   "name": "Kneeling Hip Flexor Stretch",
+   "description": "In a half kneel, shift your hips forward until the front of the back hip opens.",
+   "cues": [
+    "Squeeze back glute",
+    "Stay tall"
+   ],
+   "category": "flexibility",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 1,
+   "measure": "seconds",
+   "figure": {
+    "start": "kneel-lunge",
+    "end": "kneel-lunge",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "fx-cat-cow",
+   "name": "Cat-Cow",
+   "description": "On hands and knees, alternate rounding and arching your spine.",
+   "cues": [
+    "Move with breath",
+    "Slow tempo"
+   ],
+   "category": "flexibility",
+   "muscleGroups": [
+    "back"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "cat",
+    "end": "cow",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "fx-knee-hug",
+   "name": "Knee-to-Chest",
+   "description": "On your back, hug one knee toward your chest.",
+   "cues": [
+    "Other leg long",
+    "Relax shoulders"
+   ],
+   "category": "flexibility",
+   "muscleGroups": [
+    "back"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 1,
+   "measure": "seconds",
+   "figure": {
+    "start": "supine-kneehug",
+    "end": "supine-kneehug",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "fx-supine-twist",
+   "name": "Supine Twist",
+   "description": "On your back, let both knees fall to one side and look the other way.",
+   "cues": [
+    "Shoulders heavy",
+    "Switch halfway"
+   ],
+   "category": "flexibility",
+   "muscleGroups": [
+    "back"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 1,
+   "measure": "seconds",
+   "figure": {
+    "start": "supine-twist",
+    "end": "supine-twist",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "fx-cross-body",
+   "name": "Cross-Body Shoulder Stretch",
+   "description": "Pull one straight arm across your chest.",
+   "cues": [
+    "Shoulder down",
+    "Switch halfway"
+   ],
+   "category": "flexibility",
+   "muscleGroups": [
+    "shoulders",
+    "chest"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 1,
+   "measure": "seconds",
+   "figure": {
+    "start": "stand-crossbody",
+    "end": "stand-crossbody",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "fx-triceps",
+   "name": "Overhead Triceps Stretch",
+   "description": "Reach one hand down your back and ease the elbow back with the other hand.",
+   "cues": [
+    "Ribs down",
+    "Gentle pressure"
+   ],
+   "category": "flexibility",
+   "muscleGroups": [
+    "shoulders",
+    "chest"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 1,
+   "measure": "seconds",
+   "figure": {
+    "start": "stand-tricep",
+    "end": "stand-tricep",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "fx-doorway",
+   "name": "Doorway Chest Stretch",
+   "description": "With forearm on a doorframe, step through until the chest opens.",
+   "cues": [
+    "Elbow at shoulder height",
+    "Small step"
+   ],
+   "category": "flexibility",
+   "muscleGroups": [
+    "shoulders",
+    "chest"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 1,
+   "measure": "seconds",
+   "figure": {
+    "start": "stand-doorway",
+    "end": "stand-doorway",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "fx-wall-calf",
+   "name": "Wall Calf Stretch",
+   "description": "Hands on a wall, step one foot back and press the heel down.",
+   "cues": [
+    "Back knee straight",
+    "Toes forward"
+   ],
+   "category": "flexibility",
+   "muscleGroups": [
+    "core",
+    "mobility"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 1,
+   "measure": "seconds",
+   "figure": {
+    "start": "stand-wallcalf",
+    "end": "stand-wallcalf",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "fx-toe-reach",
+   "name": "Standing Toe Reach",
+   "description": "Fold forward from the hips and let your hands hang toward your feet.",
+   "cues": [
+    "Soft knees",
+    "Heavy head"
+   ],
+   "category": "flexibility",
+   "muscleGroups": [
+    "core",
+    "mobility"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 1,
+   "measure": "seconds",
+   "figure": {
+    "start": "hinge-fold",
+    "end": "hinge-fold",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "fx-leg-swing",
+   "name": "Front Leg Swing",
+   "description": "Holding support, swing one leg forward and back in a relaxed arc.",
+   "cues": [
+    "Tall torso",
+    "Grow the range"
+   ],
+   "category": "flexibility",
+   "muscleGroups": [
+    "core",
+    "mobility"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "stand",
+    "end": "stand-swingfwd",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "yg-warrior-2",
+   "name": "Warrior II",
+   "description": "Wide lunge with the front knee bent and arms reaching long both ways.",
+   "cues": [
+    "Front knee over ankle",
+    "Gaze over front hand"
+   ],
+   "category": "yoga",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "mat"
+   ],
+   "difficulty": 2,
+   "measure": "seconds",
+   "figure": {
+    "start": "warrior2",
+    "end": "warrior2",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "yg-low-lunge",
+   "name": "Low Lunge",
+   "description": "Back knee down, sink the hips forward and lift the arms.",
+   "cues": [
+    "Front knee stacked",
+    "Lift the chest"
+   ],
+   "category": "yoga",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "mat"
+   ],
+   "difficulty": 1,
+   "measure": "seconds",
+   "figure": {
+    "start": "kneel-lunge",
+    "end": "kneel-lunge",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "yg-chair",
+   "name": "Chair Pose",
+   "description": "Sit the hips back with arms raised as if lowering onto a chair.",
+   "cues": [
+    "Weight in heels",
+    "Long spine"
+   ],
+   "category": "yoga",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "mat"
+   ],
+   "difficulty": 2,
+   "measure": "seconds",
+   "figure": {
+    "start": "chair",
+    "end": "chair",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "yg-cobra",
+   "name": "Cobra",
+   "description": "Face down, press lightly through the hands to lift the chest.",
+   "cues": [
+    "Elbows bent",
+    "Legs active"
+   ],
+   "category": "yoga",
+   "muscleGroups": [
+    "back"
+   ],
+   "equipment": [
+    "mat"
+   ],
+   "difficulty": 1,
+   "measure": "seconds",
+   "figure": {
+    "start": "prone",
+    "end": "cobra",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "yg-child",
+   "name": "Child's Pose",
+   "description": "Kneel, sit back toward your heels, and rest the forehead down with arms long.",
+   "cues": [
+    "Breathe into the back",
+    "Knees wide if needed"
+   ],
+   "category": "yoga",
+   "muscleGroups": [
+    "back"
+   ],
+   "equipment": [
+    "mat"
+   ],
+   "difficulty": 1,
+   "measure": "seconds",
+   "figure": {
+    "start": "child",
+    "end": "child",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "yg-bridge",
+   "name": "Bridge Pose",
+   "description": "On your back, press through the feet to lift the hips.",
+   "cues": [
+    "Knees over ankles",
+    "Chin away from chest"
+   ],
+   "category": "yoga",
+   "muscleGroups": [
+    "back"
+   ],
+   "equipment": [
+    "mat"
+   ],
+   "difficulty": 2,
+   "measure": "seconds",
+   "figure": {
+    "start": "supine",
+    "end": "bridge",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "yg-down-dog",
+   "name": "Downward Dog",
+   "description": "Hands and feet down, lift the hips high to form an inverted V.",
+   "cues": [
+    "Press floor away",
+    "Bend knees if needed"
+   ],
+   "category": "yoga",
+   "muscleGroups": [
+    "shoulders",
+    "chest"
+   ],
+   "equipment": [
+    "mat"
+   ],
+   "difficulty": 2,
+   "measure": "seconds",
+   "figure": {
+    "start": "downdog",
+    "end": "downdog",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "yg-upward-salute",
+   "name": "Upward Salute",
+   "description": "Standing tall, sweep the arms overhead.",
+   "cues": [
+    "Shoulders soft",
+    "Ribs down"
+   ],
+   "category": "yoga",
+   "muscleGroups": [
+    "shoulders",
+    "chest"
+   ],
+   "equipment": [
+    "mat"
+   ],
+   "difficulty": 1,
+   "measure": "seconds",
+   "figure": {
+    "start": "stand",
+    "end": "stand-overhead",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "yg-puppy",
+   "name": "Puppy Pose",
+   "description": "From all fours, walk the hands forward and melt the chest down with hips high.",
+   "cues": [
+    "Hips over knees",
+    "Relax the neck"
+   ],
+   "category": "yoga",
+   "muscleGroups": [
+    "shoulders",
+    "chest"
+   ],
+   "equipment": [
+    "mat"
+   ],
+   "difficulty": 2,
+   "measure": "seconds",
+   "figure": {
+    "start": "puppy",
+    "end": "puppy",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "yg-tree",
+   "name": "Tree Pose",
+   "description": "Balance on one leg with the other foot on the inner leg and arms up.",
+   "cues": [
+    "Avoid the knee joint",
+    "Fixed gaze"
+   ],
+   "category": "yoga",
+   "muscleGroups": [
+    "core",
+    "mobility"
+   ],
+   "equipment": [
+    "mat"
+   ],
+   "difficulty": 2,
+   "measure": "seconds",
+   "figure": {
+    "start": "stand-tree",
+    "end": "stand-tree",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "yg-mountain",
+   "name": "Mountain Pose",
+   "description": "Stand evenly with arms at your sides and a long spine.",
+   "cues": [
+    "Weight even",
+    "Soft breath"
+   ],
+   "category": "yoga",
+   "muscleGroups": [
+    "core",
+    "mobility"
+   ],
+   "equipment": [
+    "mat"
+   ],
+   "difficulty": 1,
+   "measure": "seconds",
+   "figure": {
+    "start": "stand",
+    "end": "stand",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "yg-boat",
+   "name": "Boat Pose",
+   "description": "Balance on your sit bones with legs lifted and arms forward.",
+   "cues": [
+    "Long spine",
+    "Bend knees to start"
+   ],
+   "category": "yoga",
+   "muscleGroups": [
+    "core",
+    "mobility"
+   ],
+   "equipment": [
+    "mat"
+   ],
+   "difficulty": 3,
+   "measure": "seconds",
+   "figure": {
+    "start": "boat",
+    "end": "boat",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "rn-high-knees",
+   "name": "High Knees",
+   "description": "Run in place, driving each knee to hip height.",
+   "cues": [
+    "Quick feet",
+    "Tall posture"
+   ],
+   "category": "running",
+   "muscleGroups": [
+    "cardio"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 2,
+   "measure": "seconds",
+   "figure": {
+    "start": "stand",
+    "end": "stand-knee",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "rn-butt-kicks",
+   "name": "Butt Kicks",
+   "description": "Jog lightly, bringing heels toward your glutes.",
+   "cues": [
+    "Knees point down",
+    "Relaxed arms"
+   ],
+   "category": "running",
+   "muscleGroups": [
+    "cardio"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 1,
+   "measure": "seconds",
+   "figure": {
+    "start": "stand",
+    "end": "stand-kick",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "rn-a-skip",
+   "name": "A-Skip",
+   "description": "Skip forward with a rhythmic knee drive and a quick step down.",
+   "cues": [
+    "Land under hips",
+    "Opposite arm drive"
+   ],
+   "category": "running",
+   "muscleGroups": [
+    "cardio"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "stand",
+    "end": "a-skip",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "rn-calf-raise",
+   "name": "Calf Raise",
+   "description": "Rise onto your toes and lower slowly.",
+   "cues": [
+    "Full height",
+    "Three-count lower"
+   ],
+   "category": "running",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "stand",
+    "end": "stand-calfraise",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "rn-single-leg-bridge",
+   "name": "Single-Leg Bridge",
+   "description": "On your back with one leg lifted, bridge up through the planted foot.",
+   "cues": [
+    "Hips level",
+    "Switch legs"
+   ],
+   "category": "running",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "supine",
+    "end": "bridge-1leg",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "rn-walking-lunge",
+   "name": "Walking Lunge",
+   "description": "Lunge forward, stepping through into the next rep.",
+   "cues": [
+    "Upright",
+    "Soft back knee"
+   ],
+   "category": "running",
+   "muscleGroups": [
+    "legs"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 2,
+   "measure": "reps",
+   "figure": {
+    "start": "stand",
+    "end": "lunge",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "rn-strides",
+   "name": "Strides",
+   "description": "Accelerate smoothly to fast, relaxed running, then ease off.",
+   "cues": [
+    "Stay relaxed",
+    "Walk back to recover"
+   ],
+   "category": "running",
+   "muscleGroups": [
+    "cardio"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 2,
+   "measure": "seconds",
+   "figure": {
+    "start": "run",
+    "end": "run",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "rn-hill-sprint",
+   "name": "Hill Sprint",
+   "description": "Sprint hard up a short hill and walk back down.",
+   "cues": [
+    "Drive the arms",
+    "Full recovery"
+   ],
+   "category": "running",
+   "muscleGroups": [
+    "cardio"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 4,
+   "measure": "seconds",
+   "figure": {
+    "start": "sprint",
+    "end": "sprint",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "rn-easy-jog",
+   "name": "Easy Jog",
+   "description": "Jog at a pace where you could hold a conversation.",
+   "cues": [
+    "Short stride",
+    "Breathe easy"
+   ],
+   "category": "running",
+   "muscleGroups": [
+    "cardio"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 1,
+   "measure": "seconds",
+   "figure": {
+    "start": "run",
+    "end": "run",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "rn-leg-swing",
+   "name": "Leg Swings",
+   "description": "Holding support, swing one leg forward and back.",
+   "cues": [
+    "Loose hips",
+    "Build range"
+   ],
+   "category": "running",
+   "muscleGroups": [
+    "mobility"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "stand",
+    "end": "stand-swingfwd",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "rn-knee-hug",
+   "name": "Walking Knee Hug",
+   "description": "Step and pull the opposite knee to your chest, rising onto your toes.",
+   "cues": [
+    "Stand tall",
+    "Alternate"
+   ],
+   "category": "running",
+   "muscleGroups": [
+    "mobility"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 1,
+   "measure": "reps",
+   "figure": {
+    "start": "stand",
+    "end": "stand-hug",
+    "prop": null
+   },
+   "builtIn": true
+  },
+  {
+   "id": "rn-calf-stretch",
+   "name": "Standing Calf Stretch",
+   "description": "Lean into a wall with one heel pressed back.",
+   "cues": [
+    "Straight back leg",
+    "Switch halfway"
+   ],
+   "category": "running",
+   "muscleGroups": [
+    "mobility"
+   ],
+   "equipment": [
+    "none"
+   ],
+   "difficulty": 1,
+   "measure": "seconds",
+   "figure": {
+    "start": "stand-wallcalf",
+    "end": "stand-wallcalf",
+    "prop": null
+   },
+   "builtIn": true
+  }
+ ]
+}

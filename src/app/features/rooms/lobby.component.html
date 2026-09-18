@@ -1,0 +1,109 @@
+<div class="page">
+  <a mat-button routerLink="/" class="back"><mat-icon>arrow_back</mat-icon>Leave room</a>
+
+  @if (status() === 'joining') {
+    <p role="status">Joining room {{ code() }}…</p>
+  } @else if (status() === 'error') {
+    <div class="error-box" role="alert">
+      <h1>Room {{ code() }} not found</h1>
+      <p>{{ error() }}</p>
+      <p class="hint">Check the code with the host. Rooms close when everyone leaves.</p>
+      <a mat-flat-button routerLink="/">Home</a>
+    </div>
+  } @else if (rooms.playing()) {
+    <df-room-table />
+  } @else if (rooms.view(); as v) {
+    <div class="layout">
+      <section class="invite" aria-labelledby="code-title">
+        <h1 id="code-title" class="sr-only">Room {{ v.code }}</h1>
+        <p class="label">Room code</p>
+        <p class="code" [attr.aria-label]="spelledCode()">{{ v.code }}</p>
+        <df-qr-code [text]="joinUrl()" [label]="'QR code to join room ' + v.code" />
+        <div class="invite-actions">
+          <button mat-stroked-button (click)="copyLink()"><mat-icon>link</mat-icon>{{ copied() ? 'Copied' : 'Copy link' }}</button>
+          @if (canShare) {
+            <button mat-stroked-button (click)="share()"><mat-icon>share</mat-icon>Share</button>
+          }
+        </div>
+      </section>
+
+      <section class="players" aria-labelledby="players-title">
+        <h2 id="players-title">Players <span class="count">{{ v.players.length }}</span></h2>
+        @if (v.hostAway) {
+          <p class="host-away" role="status"><mat-icon aria-hidden="true">wifi_off</mat-icon>The host disconnected. If they don't return in a few seconds, the next player takes over.</p>
+        }
+        <ul>
+          @for (p of v.players; track p.id) {
+            <li [class.me]="p.isMe">
+              <span class="avatar" aria-hidden="true">{{ p.name.charAt(0).toUpperCase() }}</span>
+              <span class="who">
+                <span class="name">{{ p.name }} @if (p.isMe) {<span class="you">(you)</span>}</span>
+                @if (p.isHost) { <span class="host">Host</span> }
+              </span>
+              <span class="status" [class.ready]="p.ready">
+                <mat-icon aria-hidden="true">{{ p.ready ? 'check_circle' : 'hourglass_empty' }}</mat-icon>
+                {{ p.ready ? 'Ready' : 'Not ready' }}
+              </span>
+            </li>
+          }
+        </ul>
+
+        @let me = myPlayer();
+        <form class="me-form" [formGroup]="nameForm" (ngSubmit)="rename()">
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Your name</mat-label>
+            <input matInput formControlName="name" maxlength="30" autocomplete="nickname" />
+          </mat-form-field>
+          <button mat-button type="submit" [disabled]="nameForm.pristine">Update</button>
+        </form>
+
+        <button mat-flat-button class="ready-toggle" [class.is-ready]="me?.ready" (click)="toggleReady()"
+                [attr.aria-pressed]="me?.ready ?? false">
+          <mat-icon>{{ me?.ready ? 'check' : 'front_hand' }}</mat-icon>{{ me?.ready ? 'Ready!' : "I'm ready" }}
+        </button>
+
+        <p class="blocker" role="status" aria-live="polite">
+          @if (v.blocker) {
+            {{ v.blocker }}
+          } @else {
+            Everyone's ready.{{ v.isHost ? '' : ' Waiting for the host to start.' }}
+          }
+        </p>
+        @if (v.isHost) {
+          <button mat-flat-button class="start" [disabled]="!!v.blocker || starting()" (click)="startGame()">
+            <mat-icon>play_arrow</mat-icon>{{ starting() ? 'Starting…' : 'Start game' }}
+          </button>
+        }
+      </section>
+
+      <section class="routine" aria-labelledby="routine-title">
+        <h2 id="routine-title">Routine</h2>
+        @if (v.routine; as r) {
+          <div class="routine-card">
+            <p class="routine-name">{{ r.routine.name }}</p>
+            <p class="game">{{ r.preview.gameName }} · {{ r.preview.deckName }}</p>
+            <p class="summary">{{ r.preview.gameSummary }}</p>
+            <ul class="facts">
+              <li>{{ r.preview.cardCount }} cards</li>
+              <li>{{ r.preview.players.min === r.preview.players.max ? r.preview.players.min : r.preview.players.min + '–' + r.preview.players.max }} players</li>
+              <li>×{{ r.routine.settings.repMultiplier }} reps</li>
+            </ul>
+            <ul class="suits">
+              @for (s of r.preview.suits; track s.suit) {
+                <li><span class="pip" [attr.data-suit]="s.suit" aria-hidden="true">{{ suitSymbol[s.suit] }}</span> {{ s.label }}</li>
+              }
+            </ul>
+          </div>
+          @if (!v.isHost) {
+            <button mat-stroked-button (click)="saveRoutine()" [disabled]="saved()">
+              <mat-icon>{{ saved() ? 'done' : 'download' }}</mat-icon>{{ saved() ? 'Saved to this device' : 'Save routine to my device' }}
+            </button>
+            @if (saveError()) { <p class="error" role="alert">{{ saveError() }}</p> }
+          }
+        } @else {
+          <p>Waiting for the host's routine…</p>
+        }
+      </section>
+    </div>
+  }
+</div>

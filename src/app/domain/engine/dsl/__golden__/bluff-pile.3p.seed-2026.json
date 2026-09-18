@@ -1,0 +1,512 @@
+[
+ {
+  "type": "GameStarted",
+  "players": [
+   "p1",
+   "p2",
+   "p3"
+  ]
+ },
+ {
+  "type": "CardsShuffled",
+  "zone": "draw",
+  "count": 54
+ },
+ {
+  "type": "CardsDealt",
+  "zone": "hand:p1",
+  "cardIds": [
+   "bodyweight-spades-5",
+   "bodyweight-diamonds-2",
+   "bodyweight-diamonds-5",
+   "bodyweight-diamonds-6",
+   "bodyweight-hearts-9",
+   "bodyweight-hearts-Q",
+   "bodyweight-clubs-J"
+  ],
+  "faceUp": false
+ },
+ {
+  "type": "CardsDealt",
+  "zone": "hand:p2",
+  "cardIds": [
+   "bodyweight-hearts-4",
+   "bodyweight-diamonds-J",
+   "bodyweight-clubs-10",
+   "bodyweight-spades-2",
+   "bodyweight-spades-3",
+   "bodyweight-spades-7",
+   "bodyweight-spades-6"
+  ],
+  "faceUp": false
+ },
+ {
+  "type": "CardsDealt",
+  "zone": "hand:p3",
+  "cardIds": [
+   "bodyweight-spades-9",
+   "bodyweight-diamonds-K",
+   "bodyweight-clubs-K",
+   "bodyweight-spades-Q",
+   "bodyweight-hearts-6",
+   "bodyweight-diamonds-9",
+   "bodyweight-clubs-5"
+  ],
+  "faceUp": false
+ },
+ {
+  "type": "CardsMoved",
+  "from": "hand:p1",
+  "to": "table",
+  "cardIds": [
+   "bodyweight-diamonds-2"
+  ]
+ },
+ {
+  "type": "ClaimMade",
+  "playerId": "p1",
+  "rank": "A",
+  "count": 1
+ },
+ {
+  "type": "CardsMoved",
+  "from": "hand:p2",
+  "to": "table",
+  "cardIds": [
+   "bodyweight-spades-2"
+  ]
+ },
+ {
+  "type": "ClaimMade",
+  "playerId": "p2",
+  "rank": "2",
+  "count": 1
+ },
+ {
+  "type": "CardsMoved",
+  "from": "hand:p3",
+  "to": "table",
+  "cardIds": [
+   "bodyweight-clubs-5"
+  ]
+ },
+ {
+  "type": "ClaimMade",
+  "playerId": "p3",
+  "rank": "3",
+  "count": 1
+ },
+ {
+  "type": "CardsMoved",
+  "from": "hand:p1",
+  "to": "table",
+  "cardIds": [
+   "bodyweight-spades-5"
+  ]
+ },
+ {
+  "type": "ClaimMade",
+  "playerId": "p1",
+  "rank": "4",
+  "count": 1
+ },
+ {
+  "type": "CardsMoved",
+  "from": "hand:p2",
+  "to": "table",
+  "cardIds": [
+   "bodyweight-spades-3"
+  ]
+ },
+ {
+  "type": "ClaimMade",
+  "playerId": "p2",
+  "rank": "5",
+  "count": 1
+ },
+ {
+  "type": "CardsMoved",
+  "from": "hand:p3",
+  "to": "table",
+  "cardIds": [
+   "bodyweight-hearts-6"
+  ]
+ },
+ {
+  "type": "ClaimMade",
+  "playerId": "p3",
+  "rank": "6",
+  "count": 1
+ },
+ {
+  "type": "CardsMoved",
+  "from": "hand:p1",
+  "to": "table",
+  "cardIds": [
+   "bodyweight-diamonds-5"
+  ]
+ },
+ {
+  "type": "ClaimMade",
+  "playerId": "p1",
+  "rank": "7",
+  "count": 1
+ },
+ {
+  "type": "CardsMoved",
+  "from": "hand:p2",
+  "to": "table",
+  "cardIds": [
+   "bodyweight-hearts-4"
+  ]
+ },
+ {
+  "type": "ClaimMade",
+  "playerId": "p2",
+  "rank": "8",
+  "count": 1
+ },
+ {
+  "type": "CardsMoved",
+  "from": "hand:p3",
+  "to": "table",
+  "cardIds": [
+   "bodyweight-spades-9",
+   "bodyweight-diamonds-9"
+  ]
+ },
+ {
+  "type": "ClaimMade",
+  "playerId": "p3",
+  "rank": "9",
+  "count": 2
+ },
+ {
+  "type": "CardsRevealed",
+  "cardIds": [
+   "bodyweight-spades-9",
+   "bodyweight-diamonds-9"
+  ]
+ },
+ {
+  "type": "ClaimChallenged",
+  "playerId": "p1",
+  "claimant": "p3",
+  "lied": false,
+  "loser": "p1"
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-diamonds-2",
+    "bodyweight-diamonds-5"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-push-up",
+   "amount": 7,
+   "measure": "reps",
+   "id": "t1",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-spades-2",
+    "bodyweight-spades-5",
+    "bodyweight-spades-3"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-crunch",
+   "amount": 10,
+   "measure": "reps",
+   "id": "t2",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-clubs-5"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-superman",
+   "amount": 5,
+   "measure": "reps",
+   "id": "t3",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-hearts-6"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-reverse-lunge",
+   "amount": 6,
+   "measure": "reps",
+   "id": "t4",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-hearts-4"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-air-squat",
+   "amount": 4,
+   "measure": "reps",
+   "id": "t5",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-spades-9"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-plank",
+   "amount": 45,
+   "measure": "seconds",
+   "id": "t6",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-diamonds-9"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-wide-push-up",
+   "amount": 9,
+   "measure": "reps",
+   "id": "t7",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "hand:p1",
+  "cardIds": [
+   "bodyweight-diamonds-2",
+   "bodyweight-spades-2",
+   "bodyweight-clubs-5",
+   "bodyweight-spades-5",
+   "bodyweight-spades-3",
+   "bodyweight-hearts-6",
+   "bodyweight-diamonds-5",
+   "bodyweight-hearts-4",
+   "bodyweight-spades-9",
+   "bodyweight-diamonds-9"
+  ]
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t1",
+  "playerId": "p1",
+  "exerciseKey": "bw-push-up",
+  "amount": 7
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t2",
+  "playerId": "p1",
+  "exerciseKey": "bw-crunch",
+  "amount": 10
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t3",
+  "playerId": "p1",
+  "exerciseKey": "bw-superman",
+  "amount": 5
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t4",
+  "playerId": "p1",
+  "exerciseKey": "bw-reverse-lunge",
+  "amount": 6
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t5",
+  "playerId": "p1",
+  "exerciseKey": "bw-air-squat",
+  "amount": 4
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t6",
+  "playerId": "p1",
+  "exerciseKey": "bw-plank",
+  "amount": 45
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t7",
+  "playerId": "p1",
+  "exerciseKey": "bw-wide-push-up",
+  "amount": 9
+ },
+ {
+  "type": "CardsMoved",
+  "from": "hand:p1",
+  "to": "table",
+  "cardIds": [
+   "bodyweight-diamonds-2"
+  ]
+ },
+ {
+  "type": "ClaimMade",
+  "playerId": "p1",
+  "rank": "10",
+  "count": 1
+ },
+ {
+  "type": "CardsMoved",
+  "from": "hand:p2",
+  "to": "table",
+  "cardIds": [
+   "bodyweight-diamonds-J"
+  ]
+ },
+ {
+  "type": "ClaimMade",
+  "playerId": "p2",
+  "rank": "J",
+  "count": 1
+ },
+ {
+  "type": "CardsMoved",
+  "from": "hand:p3",
+  "to": "table",
+  "cardIds": [
+   "bodyweight-spades-Q"
+  ]
+ },
+ {
+  "type": "ClaimMade",
+  "playerId": "p3",
+  "rank": "Q",
+  "count": 1
+ },
+ {
+  "type": "CardsMoved",
+  "from": "hand:p1",
+  "to": "table",
+  "cardIds": [
+   "bodyweight-spades-2"
+  ]
+ },
+ {
+  "type": "ClaimMade",
+  "playerId": "p1",
+  "rank": "K",
+  "count": 1
+ },
+ {
+  "type": "CardsMoved",
+  "from": "hand:p2",
+  "to": "table",
+  "cardIds": [
+   "bodyweight-spades-6"
+  ]
+ },
+ {
+  "type": "ClaimMade",
+  "playerId": "p2",
+  "rank": "A",
+  "count": 1
+ },
+ {
+  "type": "CardsMoved",
+  "from": "hand:p3",
+  "to": "table",
+  "cardIds": [
+   "bodyweight-diamonds-K"
+  ]
+ },
+ {
+  "type": "ClaimMade",
+  "playerId": "p3",
+  "rank": "2",
+  "count": 1
+ },
+ {
+  "type": "CardsMoved",
+  "from": "hand:p1",
+  "to": "table",
+  "cardIds": [
+   "bodyweight-spades-3"
+  ]
+ },
+ {
+  "type": "ClaimMade",
+  "playerId": "p1",
+  "rank": "3",
+  "count": 1
+ },
+ {
+  "type": "CardsMoved",
+  "from": "hand:p2",
+  "to": "table",
+  "cardIds": [
+   "bodyweight-spades-7"
+  ]
+ },
+ {
+  "type": "ClaimMade",
+  "playerId": "p2",
+  "rank": "4",
+  "count": 1
+ },
+ {
+  "type": "CardsMoved",
+  "from": "hand:p3",
+  "to": "table",
+  "cardIds": [
+   "bodyweight-clubs-K"
+  ]
+ },
+ {
+  "type": "ClaimMade",
+  "playerId": "p3",
+  "rank": "5",
+  "count": 1
+ },
+ {
+  "type": "RoundWon",
+  "playerId": "p3",
+  "round": 0
+ },
+ {
+  "type": "GameOver",
+  "reason": "end",
+  "scores": {
+   "p1": 0,
+   "p2": 0,
+   "p3": 1
+  }
+ }
+]

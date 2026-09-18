@@ -1,0 +1,24 @@
+<section class="panel summary" aria-labelledby="summary-title">
+  @let s = summary();
+  <h1 id="summary-title">{{ s.outcome === 'finished' ? 'Workout complete' : 'Workout ended' }}</h1>
+  <dl class="stats">
+    <div><dt>Time</dt><dd>{{ s.minutes }} min</dd></div>
+    <div><dt>Reps</dt><dd>{{ s.reps }}</dd></div>
+    <div><dt>Timed</dt><dd>{{ s.seconds }} s</dd></div>
+    <div><dt>Tasks</dt><dd>{{ s.tasks }}@if (s.skipped) { <small> ({{ s.skipped }} skipped)</small> }</dd></div>
+  </dl>
+  @if (s.rows.length) {
+    <table class="totals">
+      <caption class="sr-only">Totals by exercise</caption>
+      <tbody>
+        @for (r of s.rows; track r.key) {
+          <tr><th scope="row">{{ r.name }}</th><td>{{ r.amount }} {{ r.unit }}</td></tr>
+        }
+      </tbody>
+    </table>
+  }
+  <div class="actions">
+    <a mat-stroked-button routerLink="/history">History</a>
+    <a mat-flat-button routerLink="/">Done</a>
+  </div>
+</section>

@@ -1,0 +1,59 @@
+.page { max-width: 1200px; margin: 0 auto; padding: 8px 16px 32px; }
+.back { margin-left: -8px; }
+
+.head {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin: 8px 0;
+  h1 { font: var(--mat-sys-headline-medium); margin: 0; }
+  .actions { display: flex; gap: 8px; }
+}
+.badge {
+  font: var(--mat-sys-label-medium); padding: 2px 8px; border-radius: 8px;
+  background: var(--mat-sys-surface-container-highest);
+  &.mine { background: var(--mat-sys-secondary-container); color: var(--mat-sys-on-secondary-container); }
+}
+
+.notice {
+  display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-radius: 12px;
+  background: var(--mat-sys-surface-container); font: var(--mat-sys-body-medium);
+}
+
+h2 { font: var(--mat-sys-title-large); margin: 24px 0 8px; }
+.hint { font: var(--mat-sys-body-medium); color: var(--mat-sys-on-surface-variant); margin: 0 0 8px; }
+.name { width: min(100%, 420px); }
+
+.suits { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.suit {
+  display: grid; gap: 8px; margin: 0; padding: 8px 12px 12px; border-radius: 12px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  legend { font: var(--mat-sys-title-small); padding: 0 4px; }
+}
+
+.pip { font-size: 1.2em; }
+.pip[data-suit='hearts'], [data-suit='hearts'] > legend .pip { color: var(--suit-text-hearts); }
+.pip[data-suit='diamonds'], [data-suit='diamonds'] > legend .pip { color: var(--suit-text-diamonds); }
+.pip[data-suit='clubs'], [data-suit='clubs'] > legend .pip { color: var(--suit-text-clubs); }
+.pip[data-suit='spades'], [data-suit='spades'] > legend .pip { color: var(--suit-text-spades); }
+.pip[data-suit='joker'], [data-suit='joker'] > legend .pip { color: var(--suit-text-joker); }
+
+.row { margin-top: 16px; }
+.row-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  h3 { font: var(--mat-sys-title-medium); margin: 0; }
+}
+
+// A full suit is 13 cards: scroll sideways rather than shrink below legibility.
+.cards {
+  list-style: none; margin: 8px 0 0; padding: 4px 2px 12px;
+  display: grid; grid-auto-flow: column; grid-auto-columns: 132px; gap: 10px;
+  overflow-x: auto; scroll-snap-type: x proximity;
+  font-size: 11px;
+  li { scroll-snap-align: start; }
+}
+
+.card-button {
+  display: block; width: 100%; padding: 0; border: 0; background: none; border-radius: var(--card-radius);
+  cursor: pointer; font: inherit; color: inherit;
+  &:hover { transform: translateY(-2px); }
+  &:focus-visible { outline: 3px solid var(--mat-sys-primary); outline-offset: 3px; }
+  @media (prefers-reduced-motion: no-preference) { transition: transform 120ms ease-out; }
+}

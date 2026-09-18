@@ -1,0 +1,21 @@
+// Compact native controls for rule blocks (Material form fields are too tall to nest).
+.row { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: end; }
+.ctl { display: grid; gap: 2px; font: var(--mat-sys-label-small); color: var(--mat-sys-on-surface-variant); min-width: 0; }
+select, input:not([type='checkbox']) {
+  font: var(--mat-sys-body-medium); color: var(--mat-sys-on-surface); background: var(--mat-sys-surface);
+  border: 1px solid var(--mat-sys-outline-variant); border-radius: 8px; padding: 6px 8px; min-height: 36px; max-width: 100%;
+  &:focus-visible { outline: 2px solid var(--mat-sys-primary); outline-offset: 1px; }
+  &[aria-invalid='true'] { border-color: var(--mat-sys-error); }
+}
+input[type='number'] { width: 5.5rem; }
+.icon-btn {
+  display: inline-grid; place-items: center; width: 36px; height: 36px; border: 0; border-radius: 50%; cursor: pointer;
+  background: transparent; color: var(--mat-sys-on-surface-variant);
+  &:hover { background: var(--mat-sys-surface-container-high); }
+  &:focus-visible { outline: 2px solid var(--mat-sys-primary); }
+  mat-icon { font-size: 20px; width: 20px; height: 20px; }
+}
+.text-btn {
+  border: 0; background: none; color: var(--mat-sys-primary); font: var(--mat-sys-label-large); cursor: pointer; padding: 6px 4px;
+  &:focus-visible { outline: 2px solid var(--mat-sys-primary); }
+}

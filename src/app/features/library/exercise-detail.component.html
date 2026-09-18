@@ -1,0 +1,89 @@
+<div class="page">
+  <a mat-button routerLink="/library" class="back"><mat-icon>arrow_back</mat-icon>Library</a>
+
+  @if (data.isLoading() && !exercise()) {
+    <p role="status">Loading…</p>
+  } @else if (exercise(); as ex) {
+    <article class="detail">
+      <div class="figure">
+        <df-exercise-figure [figure]="ex.figure" [label]="ex.name + ': faint figure is the start position, solid figure is the end'" />
+      </div>
+
+      <div class="body">
+        <h1>{{ ex.name }}</h1>
+        <p class="lede">{{ ex.description }}</p>
+
+        <dl class="facts">
+          <div><dt>Category</dt><dd>{{ labels.CATEGORY_LABEL[ex.category] }}</dd></div>
+          <div><dt>Difficulty</dt><dd>{{ ex.difficulty }} of 5 · {{ labels.DIFFICULTY_LABEL[ex.difficulty] }}</dd></div>
+          <div><dt>Measure</dt><dd>{{ ex.measure === 'seconds' ? 'Timed hold (seconds)' : 'Repetitions' }}</dd></div>
+          <div>
+            <dt>Works</dt>
+            <dd>
+              @for (m of ex.muscleGroups; track m) {
+                {{ labels.MUSCLE_LABEL[m] }}@if (!$last) {, }
+              }
+            </dd>
+          </div>
+          <div>
+            <dt>Equipment</dt>
+            <dd>
+              @for (e of ex.equipment; track e) {
+                {{ labels.EQUIPMENT_LABEL[e] }}@if (!$last) {, }
+              }
+            </dd>
+          </div>
+        </dl>
+
+        @if (ex.cues?.length) {
+          <h2>Form cues</h2>
+          <ul class="cues">
+            @for (cue of ex.cues; track cue) {
+              <li>{{ cue }}</li>
+            }
+          </ul>
+        }
+
+        @if (ex.adaptive; as a) {
+          <h2>Adaptations</h2>
+          <ul class="cues">
+            @if (a.seated) { <li>Can be done seated</li> }
+            @if (a.lowImpact) { <li>Low impact</li> }
+            @if (a.notes) { <li>{{ a.notes }}</li> }
+          </ul>
+        }
+
+        <div class="actions">
+          @if (ex.builtIn) {
+            <a mat-stroked-button routerLink="/library/new" [queryParams]="{ from: ex.id }"><mat-icon>content_copy</mat-icon>Duplicate to edit</a>
+          } @else {
+            <a mat-stroked-button [routerLink]="['/library', ex.id, 'edit']"><mat-icon>edit</mat-icon>Edit</a>
+            <a mat-button routerLink="/library/new" [queryParams]="{ from: ex.id }"><mat-icon>content_copy</mat-icon>Duplicate</a>
+          }
+        </div>
+
+        <h2>Used in decks</h2>
+        @if (usage().length) {
+          <ul class="decks">
+            @for (u of usage(); track u.deck.id) {
+              <li>
+                <a [routerLink]="['/decks', u.deck.id, 'edit']">{{ u.deck.name }}</a>
+                @if (!u.deck.builtIn) { <span class="mine">yours</span> }
+                @for (w of u.where; track w.name) {
+                  <div class="where">
+                    <span class="suit" [attr.aria-label]="w.name">{{ w.symbol }}</span>
+                    {{ w.label }} — {{ w.ranks }}
+                  </div>
+                }
+              </li>
+            }
+          </ul>
+        } @else {
+          <p>Not used in any deck yet.</p>
+        }
+      </div>
+    </article>
+  } @else {
+    <p role="alert">That exercise doesn't exist.</p>
+  }
+</div>

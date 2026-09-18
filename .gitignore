@@ -42,3 +42,11 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# Local Supabase credentials (CLAUDE.md §3)
+src/environments/environment.local.ts
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/

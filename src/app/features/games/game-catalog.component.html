@@ -1,0 +1,41 @@
+<div class="page">
+  <header class="head">
+    <h1>Games</h1>
+    <a mat-flat-button routerLink="/games/new"><mat-icon>add</mat-icon>New game</a>
+  </header>
+
+  @if (data.isLoading() && !data.hasValue()) {
+    <p role="status">Loading games…</p>
+  } @else if (data.error()) {
+    <p role="alert">Couldn't load games.</p>
+  }
+
+  @for (section of sections(); track section.id) {
+    <section [attr.aria-labelledby]="'games-' + section.id">
+      <h2 [id]="'games-' + section.id">{{ section.title }}</h2>
+      <ul class="games">
+        @for (item of section.games; track item.game.id) {
+          <li class="game" [attr.data-game-id]="item.game.id">
+            <h3>{{ item.game.name }}</h3>
+            <p class="meta">{{ item.players }} · {{ item.tags.join(' · ') }}</p>
+            <p class="summary">{{ item.game.summary }}</p>
+            <div class="actions">
+              @if (item.multiplayer) {
+                <a mat-flat-button routerLink="/room/new" [queryParams]="{ game: item.game.id }"><mat-icon>group_add</mat-icon>Start a room</a>
+              }
+              @if (item.game.builtIn) {
+                <a mat-stroked-button routerLink="/games/new" [queryParams]="{ from: item.game.id }"><mat-icon>content_copy</mat-icon>Duplicate to edit</a>
+              } @else {
+                <a mat-stroked-button [routerLink]="['/games', item.game.id, 'edit']"><mat-icon>edit</mat-icon>Edit</a>
+                <a mat-button routerLink="/games/new" [queryParams]="{ from: item.game.id }"><mat-icon>content_copy</mat-icon>Duplicate</a>
+                <button mat-button (click)="remove(item.game)" [attr.aria-label]="'Delete ' + item.game.name"><mat-icon>delete</mat-icon>Delete</button>
+              }
+            </div>
+          </li>
+        } @empty {
+          <li class="empty">{{ section.empty }}</li>
+        }
+      </ul>
+    </section>
+  }
+</div>

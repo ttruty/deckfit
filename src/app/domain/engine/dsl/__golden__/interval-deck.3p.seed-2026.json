@@ -1,0 +1,883 @@
+[
+ {
+  "type": "GameStarted",
+  "players": [
+   "p1",
+   "p2",
+   "p3"
+  ]
+ },
+ {
+  "type": "CardsShuffled",
+  "zone": "draw",
+  "count": 54
+ },
+ {
+  "type": "CardFlipped",
+  "zone": "table",
+  "cardId": "bodyweight-spades-5"
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-spades-5"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-crunch",
+   "amount": 5,
+   "measure": "reps",
+   "id": "t1",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-spades-5"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-crunch",
+   "amount": 5,
+   "measure": "reps",
+   "id": "t2",
+   "playerId": "p2",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-spades-5"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-crunch",
+   "amount": 5,
+   "measure": "reps",
+   "id": "t3",
+   "playerId": "p3",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TimerStarted",
+  "timer": {
+   "id": "round",
+   "kind": "interval",
+   "durationSec": 20,
+   "phase": "work",
+   "restSec": 10,
+   "label": "Work"
+  }
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t1",
+  "playerId": "p1",
+  "exerciseKey": "bw-crunch",
+  "amount": 5
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t2",
+  "playerId": "p2",
+  "exerciseKey": "bw-crunch",
+  "amount": 5
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t3",
+  "playerId": "p3",
+  "exerciseKey": "bw-crunch",
+  "amount": 5
+ },
+ {
+  "type": "TimerElapsed",
+  "timerId": "round",
+  "phase": "work"
+ },
+ {
+  "type": "TimerStarted",
+  "timer": {
+   "id": "round",
+   "kind": "interval",
+   "durationSec": 10,
+   "phase": "rest",
+   "restSec": 10,
+   "label": "Work"
+  }
+ },
+ {
+  "type": "TimerElapsed",
+  "timerId": "round",
+  "phase": "rest"
+ },
+ {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "discard",
+  "cardIds": [
+   "bodyweight-spades-5"
+  ]
+ },
+ {
+  "type": "CardFlipped",
+  "zone": "table",
+  "cardId": "bodyweight-hearts-4"
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-hearts-4"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-air-squat",
+   "amount": 4,
+   "measure": "reps",
+   "id": "t4",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-hearts-4"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-air-squat",
+   "amount": 4,
+   "measure": "reps",
+   "id": "t5",
+   "playerId": "p2",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-hearts-4"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-air-squat",
+   "amount": 4,
+   "measure": "reps",
+   "id": "t6",
+   "playerId": "p3",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TimerStarted",
+  "timer": {
+   "id": "round",
+   "kind": "interval",
+   "durationSec": 20,
+   "phase": "work",
+   "restSec": 10,
+   "label": "Work"
+  }
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t4",
+  "playerId": "p1",
+  "exerciseKey": "bw-air-squat",
+  "amount": 4
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t5",
+  "playerId": "p2",
+  "exerciseKey": "bw-air-squat",
+  "amount": 4
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t6",
+  "playerId": "p3",
+  "exerciseKey": "bw-air-squat",
+  "amount": 4
+ },
+ {
+  "type": "TimerElapsed",
+  "timerId": "round",
+  "phase": "work"
+ },
+ {
+  "type": "TimerStarted",
+  "timer": {
+   "id": "round",
+   "kind": "interval",
+   "durationSec": 10,
+   "phase": "rest",
+   "restSec": 10,
+   "label": "Work"
+  }
+ },
+ {
+  "type": "TimerElapsed",
+  "timerId": "round",
+  "phase": "rest"
+ },
+ {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "discard",
+  "cardIds": [
+   "bodyweight-hearts-4"
+  ]
+ },
+ {
+  "type": "CardFlipped",
+  "zone": "table",
+  "cardId": "bodyweight-spades-9"
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-spades-9"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-plank",
+   "amount": 20,
+   "measure": "seconds",
+   "id": "t7",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-spades-9"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-plank",
+   "amount": 20,
+   "measure": "seconds",
+   "id": "t8",
+   "playerId": "p2",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-spades-9"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-plank",
+   "amount": 20,
+   "measure": "seconds",
+   "id": "t9",
+   "playerId": "p3",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TimerStarted",
+  "timer": {
+   "id": "round",
+   "kind": "interval",
+   "durationSec": 20,
+   "phase": "work",
+   "restSec": 10,
+   "label": "Work"
+  }
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t7",
+  "playerId": "p1",
+  "exerciseKey": "bw-plank",
+  "amount": 20
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t8",
+  "playerId": "p2",
+  "exerciseKey": "bw-plank",
+  "amount": 20
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t9",
+  "playerId": "p3",
+  "exerciseKey": "bw-plank",
+  "amount": 20
+ },
+ {
+  "type": "TimerElapsed",
+  "timerId": "round",
+  "phase": "work"
+ },
+ {
+  "type": "TimerStarted",
+  "timer": {
+   "id": "round",
+   "kind": "interval",
+   "durationSec": 10,
+   "phase": "rest",
+   "restSec": 10,
+   "label": "Work"
+  }
+ },
+ {
+  "type": "TimerElapsed",
+  "timerId": "round",
+  "phase": "rest"
+ },
+ {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "discard",
+  "cardIds": [
+   "bodyweight-spades-9"
+  ]
+ },
+ {
+  "type": "CardFlipped",
+  "zone": "table",
+  "cardId": "bodyweight-diamonds-2"
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-diamonds-2"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-push-up",
+   "amount": 2,
+   "measure": "reps",
+   "id": "t10",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-diamonds-2"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-push-up",
+   "amount": 2,
+   "measure": "reps",
+   "id": "t11",
+   "playerId": "p2",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-diamonds-2"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-push-up",
+   "amount": 2,
+   "measure": "reps",
+   "id": "t12",
+   "playerId": "p3",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TimerStarted",
+  "timer": {
+   "id": "round",
+   "kind": "interval",
+   "durationSec": 20,
+   "phase": "work",
+   "restSec": 10,
+   "label": "Work"
+  }
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t10",
+  "playerId": "p1",
+  "exerciseKey": "bw-push-up",
+  "amount": 2
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t11",
+  "playerId": "p2",
+  "exerciseKey": "bw-push-up",
+  "amount": 2
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t12",
+  "playerId": "p3",
+  "exerciseKey": "bw-push-up",
+  "amount": 2
+ },
+ {
+  "type": "TimerElapsed",
+  "timerId": "round",
+  "phase": "work"
+ },
+ {
+  "type": "TimerStarted",
+  "timer": {
+   "id": "round",
+   "kind": "interval",
+   "durationSec": 10,
+   "phase": "rest",
+   "restSec": 10,
+   "label": "Work"
+  }
+ },
+ {
+  "type": "TimerElapsed",
+  "timerId": "round",
+  "phase": "rest"
+ },
+ {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "discard",
+  "cardIds": [
+   "bodyweight-diamonds-2"
+  ]
+ },
+ {
+  "type": "CardFlipped",
+  "zone": "table",
+  "cardId": "bodyweight-diamonds-J"
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-diamonds-J"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-pike-push-up",
+   "amount": 10,
+   "measure": "reps",
+   "id": "t13",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-diamonds-J"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-pike-push-up",
+   "amount": 10,
+   "measure": "reps",
+   "id": "t14",
+   "playerId": "p2",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-diamonds-J"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-pike-push-up",
+   "amount": 10,
+   "measure": "reps",
+   "id": "t15",
+   "playerId": "p3",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TimerStarted",
+  "timer": {
+   "id": "round",
+   "kind": "interval",
+   "durationSec": 20,
+   "phase": "work",
+   "restSec": 10,
+   "label": "Work"
+  }
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t13",
+  "playerId": "p1",
+  "exerciseKey": "bw-pike-push-up",
+  "amount": 10
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t14",
+  "playerId": "p2",
+  "exerciseKey": "bw-pike-push-up",
+  "amount": 10
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t15",
+  "playerId": "p3",
+  "exerciseKey": "bw-pike-push-up",
+  "amount": 10
+ },
+ {
+  "type": "TimerElapsed",
+  "timerId": "round",
+  "phase": "work"
+ },
+ {
+  "type": "TimerStarted",
+  "timer": {
+   "id": "round",
+   "kind": "interval",
+   "durationSec": 10,
+   "phase": "rest",
+   "restSec": 10,
+   "label": "Work"
+  }
+ },
+ {
+  "type": "TimerElapsed",
+  "timerId": "round",
+  "phase": "rest"
+ },
+ {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "discard",
+  "cardIds": [
+   "bodyweight-diamonds-J"
+  ]
+ },
+ {
+  "type": "CardFlipped",
+  "zone": "table",
+  "cardId": "bodyweight-diamonds-K"
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-diamonds-K"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-pike-push-up",
+   "amount": 10,
+   "measure": "reps",
+   "id": "t16",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-diamonds-K"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-pike-push-up",
+   "amount": 10,
+   "measure": "reps",
+   "id": "t17",
+   "playerId": "p2",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-diamonds-K"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-pike-push-up",
+   "amount": 10,
+   "measure": "reps",
+   "id": "t18",
+   "playerId": "p3",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TimerStarted",
+  "timer": {
+   "id": "round",
+   "kind": "interval",
+   "durationSec": 20,
+   "phase": "work",
+   "restSec": 10,
+   "label": "Work"
+  }
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t16",
+  "playerId": "p1",
+  "exerciseKey": "bw-pike-push-up",
+  "amount": 10
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t17",
+  "playerId": "p2",
+  "exerciseKey": "bw-pike-push-up",
+  "amount": 10
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t18",
+  "playerId": "p3",
+  "exerciseKey": "bw-pike-push-up",
+  "amount": 10
+ },
+ {
+  "type": "TimerElapsed",
+  "timerId": "round",
+  "phase": "work"
+ },
+ {
+  "type": "TimerStarted",
+  "timer": {
+   "id": "round",
+   "kind": "interval",
+   "durationSec": 10,
+   "phase": "rest",
+   "restSec": 10,
+   "label": "Work"
+  }
+ },
+ {
+  "type": "TimerElapsed",
+  "timerId": "round",
+  "phase": "rest"
+ },
+ {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "discard",
+  "cardIds": [
+   "bodyweight-diamonds-K"
+  ]
+ },
+ {
+  "type": "CardFlipped",
+  "zone": "table",
+  "cardId": "bodyweight-diamonds-5"
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-diamonds-5"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-push-up",
+   "amount": 5,
+   "measure": "reps",
+   "id": "t19",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-diamonds-5"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-push-up",
+   "amount": 5,
+   "measure": "reps",
+   "id": "t20",
+   "playerId": "p2",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-diamonds-5"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-push-up",
+   "amount": 5,
+   "measure": "reps",
+   "id": "t21",
+   "playerId": "p3",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TimerStarted",
+  "timer": {
+   "id": "round",
+   "kind": "interval",
+   "durationSec": 20,
+   "phase": "work",
+   "restSec": 10,
+   "label": "Work"
+  }
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t19",
+  "playerId": "p1",
+  "exerciseKey": "bw-push-up",
+  "amount": 5
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t20",
+  "playerId": "p2",
+  "exerciseKey": "bw-push-up",
+  "amount": 5
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t21",
+  "playerId": "p3",
+  "exerciseKey": "bw-push-up",
+  "amount": 5
+ },
+ {
+  "type": "TimerElapsed",
+  "timerId": "round",
+  "phase": "work"
+ },
+ {
+  "type": "TimerStarted",
+  "timer": {
+   "id": "round",
+   "kind": "interval",
+   "durationSec": 10,
+   "phase": "rest",
+   "restSec": 10,
+   "label": "Work"
+  }
+ },
+ {
+  "type": "TimerElapsed",
+  "timerId": "round",
+  "phase": "rest"
+ },
+ {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "discard",
+  "cardIds": [
+   "bodyweight-diamonds-5"
+  ]
+ },
+ {
+  "type": "CardFlipped",
+  "zone": "table",
+  "cardId": "bodyweight-clubs-10"
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-clubs-10"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-snow-angel",
+   "amount": 10,
+   "measure": "reps",
+   "id": "t22",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-clubs-10"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-snow-angel",
+   "amount": 10,
+   "measure": "reps",
+   "id": "t23",
+   "playerId": "p2",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-clubs-10"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-snow-angel",
+   "amount": 10,
+   "measure": "reps",
+   "id": "t24",
+   "playerId": "p3",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TimerStarted",
+  "timer": {
+   "id": "round",
+   "kind": "interval",
+   "durationSec": 20,
+   "phase": "work",
+   "restSec": 10,
+   "label": "Work"
+  }
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t22",
+  "playerId": "p1",
+  "exerciseKey": "bw-snow-angel",
+  "amount": 10
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t23",
+  "playerId": "p2",
+  "exerciseKey": "bw-snow-angel",
+  "amount": 10
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t24",
+  "playerId": "p3",
+  "exerciseKey": "bw-snow-angel",
+  "amount": 10
+ },
+ {
+  "type": "GameOver",
+  "reason": "end",
+  "scores": {
+   "p1": 50,
+   "p2": 50,
+   "p3": 50
+  }
+ }
+]

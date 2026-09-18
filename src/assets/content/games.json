@@ -1,0 +1,845 @@
+{
+ "version": 5,
+ "games": [
+  {
+   "id": "solo-deal",
+   "name": "Solo Deal",
+   "summary": "Turn over one card at a time and do what it says until the deck runs out.",
+   "players": {
+    "min": 1,
+    "max": 1
+   },
+   "setup": {
+    "filter": {
+     "suits": {
+      "setting": "suits"
+     }
+    },
+    "shuffle": true,
+    "deal": [
+     {
+      "timer": {
+       "id": "cap",
+       "kind": "countdown",
+       "seconds": {
+        "setting": "timeLimitSec"
+       },
+       "label": "Time cap"
+      }
+     }
+    ]
+   },
+   "turn": {
+    "steps": [
+     {
+      "move": "table.all",
+      "to": "discard"
+     },
+     {
+      "flip": {
+       "to": "table"
+      }
+     },
+     {
+      "assign": "table.last"
+     }
+    ]
+   },
+   "end": {
+    "when": {
+     "any": [
+      "draw.empty",
+      {
+       "elapsed": "cap"
+      }
+     ]
+    }
+   },
+   "scoring": "total-work",
+   "settingsSchema": {
+    "suits": {
+     "type": "suits",
+     "default": [
+      "hearts",
+      "diamonds",
+      "clubs",
+      "spades",
+      "joker"
+     ],
+     "label": "Suits in play",
+     "help": "Leave out a suit to skip that muscle group."
+    },
+    "timeLimitSec": {
+     "type": "number",
+     "min": 60,
+     "max": 3600,
+     "step": 60,
+     "default": null,
+     "label": "Time cap (seconds)",
+     "help": "Stop after the card in progress once time is up. Empty for no cap."
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "end-match",
+   "name": "End Match",
+   "summary": "Lay out a row of four. When the two ends match, work both ends and clear the row; otherwise work the middle pair.",
+   "players": {
+    "min": 1,
+    "max": 1
+   },
+   "setup": {
+    "shuffle": true,
+    "deal": [
+     {
+      "deal": {
+       "to": "table",
+       "count": 4,
+       "faceUp": true
+      }
+     }
+    ]
+   },
+   "turn": {
+    "steps": [
+     {
+      "if": {
+       "count": "table",
+       "lt": 4
+      },
+      "then": [
+       {
+        "assign": "table.all"
+       },
+       {
+        "move": "table.all",
+        "to": "discard"
+       }
+      ],
+      "else": [
+       {
+        "if": {
+         "match": [
+          "table.first",
+          "table.last"
+         ],
+         "on": {
+          "setting": "matchOn"
+         }
+        },
+        "then": [
+         {
+          "assign": [
+           "table.first",
+           "table.last"
+          ]
+         },
+         {
+          "move": "table.all",
+          "to": "discard"
+         }
+        ],
+        "else": [
+         {
+          "assign": "table.middle"
+         },
+         {
+          "move": "table.middle",
+          "to": "discard"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "refill": {
+       "zone": "table",
+       "to": 4
+      }
+     }
+    ]
+   },
+   "end": {
+    "when": {
+     "all": [
+      "draw.empty",
+      "table.empty"
+     ]
+    }
+   },
+   "scoring": "total-work",
+   "settingsSchema": {
+    "matchOn": {
+     "type": "enum",
+     "options": [
+      "suit",
+      "rank",
+      "color"
+     ],
+     "default": "suit",
+     "label": "Ends match on",
+     "help": "Color: hearts and diamonds are red, clubs and spades are black."
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "pyramid-climb",
+   "name": "Pyramid Climb",
+   "summary": "Climb row by row: one card, then two, then three, each row a little longer than the last.",
+   "players": {
+    "min": 1,
+    "max": 1
+   },
+   "setup": {
+    "shuffle": true,
+    "deal": []
+   },
+   "turn": {
+    "steps": [
+     {
+      "move": "table.all",
+      "to": "discard"
+     },
+     {
+      "incr": "row"
+     },
+     {
+      "deal": {
+       "to": "table",
+       "count": {
+        "var": "row"
+       },
+       "faceUp": true
+      }
+     },
+     {
+      "assign": "table.all"
+     }
+    ]
+   },
+   "end": {
+    "when": {
+     "any": [
+      {
+       "var": "row",
+       "gte": {
+        "setting": "rows"
+       }
+      },
+      "draw.empty"
+     ]
+    }
+   },
+   "scoring": "total-work",
+   "settingsSchema": {
+    "rows": {
+     "type": "number",
+     "min": 2,
+     "max": 9,
+     "step": 1,
+     "default": 5,
+     "label": "Rows",
+     "help": "Row n has n cards: 5 rows is 15 cards."
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "interval-deck",
+   "name": "Interval Deck",
+   "summary": "Short rounds of all-out work and brief rest. Each round a card picks the exercise; log what you managed.",
+   "players": {
+    "min": 1,
+    "max": 6
+   },
+   "setup": {
+    "shuffle": true,
+    "deal": []
+   },
+   "defaults": {
+    "jokerRule": "skip"
+   },
+   "turn": {
+    "steps": [
+     {
+      "move": "table.all",
+      "to": "discard"
+     },
+     {
+      "incr": "round"
+     },
+     {
+      "flip": {
+       "to": "table"
+      }
+     },
+     {
+      "assign": {
+       "cards": "table.last",
+       "to": "each",
+       "timedSec": {
+        "setting": "workSec"
+       }
+      }
+     },
+     {
+      "timer": {
+       "id": "round",
+       "kind": "interval",
+       "seconds": {
+        "setting": "workSec"
+       },
+       "restSeconds": {
+        "setting": "restSec"
+       },
+       "label": "Work"
+      }
+     }
+    ]
+   },
+   "end": {
+    "when": {
+     "any": [
+      {
+       "var": "round",
+       "gte": {
+        "setting": "rounds"
+       }
+      },
+      "draw.empty"
+     ]
+    }
+   },
+   "scoring": "total-work",
+   "settingsSchema": {
+    "rounds": {
+     "type": "number",
+     "min": 1,
+     "max": 30,
+     "step": 1,
+     "default": 8,
+     "label": "Rounds"
+    },
+    "workSec": {
+     "type": "number",
+     "min": 10,
+     "max": 120,
+     "step": 5,
+     "default": 20,
+     "label": "Work (seconds)",
+     "help": "As many reps as you can; timed exercises hold for the whole window."
+    },
+    "restSec": {
+     "type": "number",
+     "min": 5,
+     "max": 120,
+     "step": 5,
+     "default": 10,
+     "label": "Rest (seconds)"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "high-card-duel",
+   "name": "High Card Duel",
+   "summary": "Everyone turns over a card at once. The highest card rests; everybody else works every card on the table.",
+   "players": {
+    "min": 2,
+    "max": 6
+   },
+   "setup": {
+    "shuffle": true,
+    "deal": []
+   },
+   "turn": {
+    "mode": "simultaneous",
+    "each": [
+     {
+      "move": "pile.all",
+      "to": "discard"
+     },
+     {
+      "deal": {
+       "to": "pile",
+       "count": 1,
+       "faceUp": true
+      }
+     }
+    ],
+    "then": [
+     {
+      "incr": "round"
+     },
+     {
+      "winners": {
+       "cards": "piles.last",
+       "wins": "high"
+      }
+     },
+     {
+      "assign": {
+       "cards": "piles.last",
+       "to": "losers"
+      }
+     }
+    ]
+   },
+   "end": {
+    "when": {
+     "any": [
+      {
+       "var": "round",
+       "gte": {
+        "setting": "rounds"
+       }
+      },
+      "draw.empty"
+     ]
+    }
+   },
+   "scoring": "rounds-won",
+   "defaults": {
+    "jokerRule": "skip"
+   },
+   "settingsSchema": {
+    "rounds": {
+     "type": "number",
+     "min": 1,
+     "max": 20,
+     "step": 1,
+     "default": 6,
+     "label": "Rounds"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "rep-race",
+   "name": "Rep Race",
+   "summary": "Everyone gets the same short set of rep cards. First to finish the set takes the round.",
+   "players": {
+    "min": 2,
+    "max": 6
+   },
+   "setup": {
+    "shuffle": true,
+    "deal": []
+   },
+   "race": true,
+   "turn": {
+    "steps": [
+     {
+      "move": "table.all",
+      "to": "discard"
+     },
+     {
+      "incr": "round"
+     },
+     {
+      "deal": {
+       "to": "table",
+       "count": {
+        "setting": "cards"
+       },
+       "faceUp": true,
+       "only": {
+        "measure": "reps"
+       }
+      }
+     },
+     {
+      "assign": {
+       "cards": "table.all",
+       "to": "each"
+      }
+     }
+    ]
+   },
+   "end": {
+    "when": {
+     "any": [
+      {
+       "var": "round",
+       "gte": {
+        "setting": "rounds"
+       }
+      },
+      "draw.empty"
+     ]
+    }
+   },
+   "scoring": "rounds-won",
+   "timing": {
+    "windowMs": 250,
+    "intents": [
+     "completeTask"
+    ]
+   },
+   "defaults": {
+    "jokerRule": "skip"
+   },
+   "settingsSchema": {
+    "cards": {
+     "type": "number",
+     "min": 1,
+     "max": 6,
+     "step": 1,
+     "default": 3,
+     "label": "Cards per round",
+     "help": "Timed cards are skipped and replaced."
+    },
+    "rounds": {
+     "type": "number",
+     "min": 1,
+     "max": 20,
+     "step": 1,
+     "default": 5,
+     "label": "Rounds"
+    },
+    "judge": {
+     "type": "boolean",
+     "default": false,
+     "label": "Judge counts the reps",
+     "help": "One player sits out each round and marks the others done. The judge rotates."
+    }
+   },
+   "builtIn": true,
+   "judge": {
+    "setting": "judge"
+   }
+  },
+  {
+   "id": "neighbor-rush",
+   "name": "Neighbor Rush",
+   "summary": "No turns: race to play cards onto the center pile by neighboring rank or matching suit. Whatever is left in your hand at the end is your workout.",
+   "players": {
+    "min": 2,
+    "max": 6
+   },
+   "setup": {
+    "shuffle": true,
+    "deal": [
+     {
+      "deal": {
+       "to": "hands",
+       "count": {
+        "setting": "handSize"
+       },
+       "faceUp": false
+      }
+     },
+     {
+      "flip": {
+       "to": "table"
+      }
+     }
+    ]
+   },
+   "actions": {
+    "play": {
+     "require": [
+      {
+       "when": {
+        "any": [
+         {
+          "match": [
+           "intent.card",
+           "table.last"
+          ],
+          "on": "suit"
+         },
+         {
+          "match": [
+           "intent.card",
+           "table.last"
+          ],
+          "on": "adjacent-rank"
+         }
+        ]
+       },
+       "reason": "no-match"
+      }
+     ],
+     "steps": [
+      {
+       "move": "intent.card",
+       "to": "table"
+      },
+      {
+       "reset": "passes"
+      }
+     ]
+    },
+    "pass": {
+     "steps": [
+      {
+       "deal": {
+        "to": "hand",
+        "count": 1,
+        "faceUp": false
+       }
+      },
+      {
+       "incr": "passes"
+      }
+     ]
+    }
+   },
+   "end": {
+    "when": {
+     "any": [
+      {
+       "anyEmpty": "hands"
+      },
+      {
+       "all": [
+        "draw.empty",
+        {
+         "var": "passes",
+         "gte": {
+          "var": "$players"
+         }
+        }
+       ]
+      }
+     ]
+    },
+    "then": [
+     {
+      "assign": {
+       "cards": "hands.all",
+       "to": "owner"
+      }
+     }
+    ]
+   },
+   "scoring": "total-work",
+   "timing": {
+    "windowMs": 300,
+    "intents": [
+     "play"
+    ]
+   },
+   "defaults": {
+    "jokerRule": "skip"
+   },
+   "settingsSchema": {
+    "handSize": {
+     "type": "number",
+     "min": 3,
+     "max": 10,
+     "step": 1,
+     "default": 5,
+     "label": "Hand size"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "fit-poker",
+   "name": "Fit Poker",
+   "summary": "Five-card showdown where the chips are reps. Bet, call, or fold \u2014 everyone who loses the hand works off the pot.",
+   "players": {
+    "min": 2,
+    "max": 6
+   },
+   "hidden": true,
+   "setup": {
+    "shuffle": true,
+    "deal": []
+   },
+   "turn": {
+    "steps": [
+     {
+      "move": "hands.all",
+      "to": "discard"
+     },
+     {
+      "reshuffle": true
+     },
+     {
+      "incr": "round"
+     },
+     {
+      "deal": {
+       "to": "hands",
+       "count": 5
+      }
+     },
+     {
+      "startBetting": true
+     }
+    ]
+   },
+   "betting": {
+    "maxBet": {
+     "setting": "maxBet"
+    },
+    "then": [
+     {
+      "reveal": "hands.all"
+     },
+     {
+      "winners": {
+       "cards": "hands.all",
+       "by": "poker"
+      }
+     },
+     {
+      "assignPot": {
+       "to": "losers"
+      }
+     }
+    ]
+   },
+   "end": {
+    "when": {
+     "var": "round",
+     "gte": {
+      "setting": "rounds"
+     }
+    }
+   },
+   "scoring": "rounds-won",
+   "defaults": {
+    "jokerRule": "skip"
+   },
+   "settingsSchema": {
+    "rounds": {
+     "type": "number",
+     "min": 1,
+     "max": 10,
+     "step": 1,
+     "default": 3,
+     "label": "Hands"
+    },
+    "maxBet": {
+     "type": "number",
+     "min": 2,
+     "max": 50,
+     "step": 1,
+     "default": 20,
+     "label": "Maximum stake (reps)"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "bluff-pile",
+   "name": "Bluff Pile",
+   "summary": "Lay cards face down and name the rank \u2014 truthfully or not. Get caught bluffing, or call wrong, and you work the whole pile.",
+   "players": {
+    "min": 3,
+    "max": 6
+   },
+   "hidden": true,
+   "setup": {
+    "shuffle": true,
+    "deal": [
+     {
+      "deal": {
+       "to": "hands",
+       "count": {
+        "setting": "handSize"
+       }
+      }
+     }
+    ]
+   },
+   "bluff": {
+    "maxCards": 4
+   },
+   "end": {
+    "when": {
+     "flag": "bluff:winner"
+    }
+   },
+   "scoring": "rounds-won",
+   "defaults": {
+    "jokerRule": "skip"
+   },
+   "settingsSchema": {
+    "handSize": {
+     "type": "number",
+     "min": 3,
+     "max": 12,
+     "step": 1,
+     "default": 7,
+     "label": "Hand size"
+    }
+   },
+   "builtIn": true
+  },
+  {
+   "id": "team-relay",
+   "name": "Team Relay",
+   "summary": "Teams share one hand and take turns: flip your team\u2019s next card and do it, then a teammate takes the next. First team through its hand wins.",
+   "players": {
+    "min": 4,
+    "max": 8
+   },
+   "hidden": true,
+   "teams": {
+    "size": 2
+   },
+   "setup": {
+    "shuffle": true,
+    "deal": [
+     {
+      "deal": {
+       "to": "teams",
+       "count": {
+        "setting": "handSize"
+       }
+      }
+     }
+    ]
+   },
+   "turn": {
+    "steps": [
+     {
+      "move": "team.first",
+      "to": "table",
+      "faceUp": true
+     },
+     {
+      "assign": "table.last"
+     },
+     {
+      "turn": "next"
+     }
+    ]
+   },
+   "end": {
+    "when": {
+     "anyEmpty": "teams"
+    },
+    "then": [
+     {
+      "winners": {
+       "by": "empty-team"
+      }
+     }
+    ]
+   },
+   "scoring": "rounds-won",
+   "defaults": {
+    "jokerRule": "skip"
+   },
+   "settingsSchema": {
+    "handSize": {
+     "type": "number",
+     "min": 3,
+     "max": 12,
+     "step": 1,
+     "default": 6,
+     "label": "Cards per team"
+    }
+   },
+   "builtIn": true
+  }
+ ]
+}

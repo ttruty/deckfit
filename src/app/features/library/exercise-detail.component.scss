@@ -1,0 +1,37 @@
+.page { max-width: 960px; margin: 0 auto; padding: 8px 16px 24px; }
+.back { margin-left: -8px; }
+
+.detail {
+  display: grid; gap: 24px;
+  @media (min-width: 720px) { grid-template-columns: minmax(260px, 2fr) 3fr; align-items: start; }
+}
+
+.figure {
+  --suit: var(--mat-sys-primary);
+  aspect-ratio: 1; max-width: 420px; width: 100%; justify-self: center;
+  padding: 12px; box-sizing: border-box; border-radius: 16px;
+  background: var(--mat-sys-surface-container-low);
+  @media (min-width: 720px) { position: sticky; top: 80px; }
+}
+
+h1 { font: var(--mat-sys-headline-medium); margin: 0 0 8px; }
+h2 { font: var(--mat-sys-title-medium); margin: 24px 0 8px; }
+.lede { font: var(--mat-sys-body-large); margin: 0; }
+
+.facts {
+  display: grid; gap: 8px 16px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin: 16px 0 0;
+  dt { font: var(--mat-sys-label-medium); color: var(--mat-sys-on-surface-variant); }
+  dd { margin: 0; font: var(--mat-sys-body-medium); }
+}
+
+.cues { margin: 0; padding-left: 20px; li { margin: 4px 0; font: var(--mat-sys-body-large); } }
+
+.decks {
+  list-style: none; padding: 0; margin: 0; display: grid; gap: 12px;
+  a { font: var(--mat-sys-title-small); color: var(--mat-sys-primary); }
+  .mine { font: var(--mat-sys-label-small); margin-left: 6px; padding: 1px 6px; border-radius: 8px; background: var(--mat-sys-secondary-container); }
+  .where { font: var(--mat-sys-body-medium); color: var(--mat-sys-on-surface-variant); }
+  .suit { font-size: 1.1em; }
+}
+
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }

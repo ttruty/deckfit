@@ -1,0 +1,167 @@
+<div class="page">
+  <a mat-button routerLink="/library" class="back"><mat-icon>arrow_back</mat-icon>Library</a>
+
+  @if (loaded.isLoading()) {
+    <p role="status">Loading…</p>
+  } @else {
+    <h1>{{ editing() ? 'Edit exercise' : 'New exercise' }}</h1>
+    @if (isCopy() && source(); as original) {
+      <p class="notice"><mat-icon>content_copy</mat-icon> Starting from “{{ original.name }}”. Saving creates your own copy.</p>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="save()" class="layout">
+      <div class="fields">
+        <section class="card" aria-labelledby="about">
+          <h2 id="about">About</h2>
+          <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" maxlength="60" required />
+            @if (form.controls.name.touched && form.controls.name.invalid) { <mat-error>A name is required</mat-error> }
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description" rows="2" maxlength="280"></textarea>
+            <mat-hint>Short and in your own words</mat-hint>
+          </mat-form-field>
+
+          <fieldset class="cues">
+            <legend>Form cues</legend>
+            @for (cue of cues.controls; track $index; let i = $index) {
+              <div class="cue">
+                <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                  <mat-label>Cue {{ i + 1 }}</mat-label>
+                  <input matInput [formControl]="cue" maxlength="80" />
+                </mat-form-field>
+                <button mat-icon-button type="button" (click)="removeCue(i)" [attr.aria-label]="'Remove cue ' + (i + 1)"><mat-icon>close</mat-icon></button>
+              </div>
+            }
+            <button mat-stroked-button type="button" (click)="addCue()"><mat-icon>add</mat-icon>Add cue</button>
+          </fieldset>
+        </section>
+
+        <section class="card" aria-labelledby="classify">
+          <h2 id="classify">Classification</h2>
+          <div class="row">
+            <mat-form-field appearance="outline">
+              <mat-label>Category</mat-label>
+              <mat-select formControlName="category">
+                @for (c of categories; track c) { <mat-option [value]="c">{{ categoryLabel[c] }}</mat-option> }
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Difficulty</mat-label>
+              <mat-select formControlName="difficulty">
+                @for (d of difficulties; track d) { <mat-option [value]="d">{{ d }} · {{ difficultyLabel[d] }}</mat-option> }
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <fieldset>
+            <legend id="measure-label">Measured in</legend>
+            <mat-radio-group formControlName="measure" aria-labelledby="measure-label">
+              @for (m of measures; track m) {
+                <mat-radio-button [value]="m">{{ m === 'seconds' ? 'Seconds (a hold)' : 'Reps' }}</mat-radio-button>
+              }
+            </mat-radio-group>
+          </fieldset>
+
+          <fieldset>
+            <legend id="muscles-label">Muscle groups</legend>
+            <mat-chip-listbox multiple formControlName="muscleGroups" aria-labelledby="muscles-label">
+              @for (m of muscles; track m) { <mat-chip-option [value]="m">{{ muscleLabel[m] }}</mat-chip-option> }
+            </mat-chip-listbox>
+            @if (form.controls.muscleGroups.touched && form.controls.muscleGroups.invalid) { <mat-error>Pick at least one</mat-error> }
+          </fieldset>
+
+          <fieldset>
+            <legend id="equipment-label">Equipment</legend>
+            <mat-chip-listbox multiple formControlName="equipment" aria-labelledby="equipment-label">
+              @for (e of equipmentKeys; track e) { <mat-chip-option [value]="e">{{ equipmentLabel[e] }}</mat-chip-option> }
+            </mat-chip-listbox>
+            @if (form.controls.equipment.touched && form.controls.equipment.invalid) { <mat-error>Pick at least one</mat-error> }
+          </fieldset>
+
+          <fieldset class="adaptive">
+            <legend>Adaptations</legend>
+            <mat-slide-toggle formControlName="seated">Can be done seated</mat-slide-toggle>
+            <mat-slide-toggle formControlName="lowImpact">Low impact</mat-slide-toggle>
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+              <mat-label>Notes</mat-label>
+              <input matInput formControlName="notes" maxlength="140" />
+            </mat-form-field>
+          </fieldset>
+        </section>
+
+        <section class="card" aria-labelledby="figure-heading" formGroupName="prop">
+          <h2 id="figure-heading">Figure</h2>
+          <p class="hint">Pick the two ends of the movement: the start pose is drawn as a faint ghost, the end pose solid.</p>
+          <div class="poses">
+            @for (which of ['start', 'end']; track which) {
+              @let pose = which === 'start' ? form.controls.start.value : form.controls.end.value;
+              <div class="pose-slot">
+                <h3>{{ which === 'start' ? 'Start pose' : 'End pose' }}</h3>
+                <df-exercise-figure class="thumb" [figure]="{ start: pose, end: pose, prop: figure().prop }" aria-hidden="true" />
+                <p class="pose-name" [attr.data-pose-slot]="which">{{ poseName(pose) }}</p>
+                <button mat-stroked-button type="button" (click)="pickPose($any(which))">
+                  <mat-icon>grid_view</mat-icon>Choose {{ which }} pose
+                </button>
+              </div>
+            }
+            <button mat-icon-button type="button" class="swap" (click)="swapPoses()" aria-label="Swap start and end poses"><mat-icon>swap_horiz</mat-icon></button>
+          </div>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Equipment in the picture</mat-label>
+            <mat-select formControlName="type" (valueChange)="onPropType($event)">
+              @for (p of propTypes; track p) { <mat-option [value]="p">{{ propLabel[p] }}</mat-option> }
+            </mat-select>
+          </mat-form-field>
+
+          @switch (propType()) {
+            @case ('band') {
+              <mat-form-field appearance="outline">
+                <mat-label>Band anchored</mat-label>
+                <mat-select formControlName="anchor">
+                  @for (a of bandAnchors; track a) { <mat-option [value]="a">{{ bandAnchorLabel[a] }}</mat-option> }
+                </mat-select>
+              </mat-form-field>
+            }
+            @case ('ball') {
+              <div class="row">
+                <mat-form-field appearance="outline" subscriptSizing="dynamic"><mat-label>Ball across</mat-label><input matInput type="number" formControlName="x" min="0" max="100" /></mat-form-field>
+                <mat-form-field appearance="outline" subscriptSizing="dynamic"><mat-label>Ball height</mat-label><input matInput type="number" formControlName="y" min="0" max="100" /></mat-form-field>
+                <mat-form-field appearance="outline" subscriptSizing="dynamic"><mat-label>Ball size</mat-label><input matInput type="number" formControlName="r" min="2" max="40" /></mat-form-field>
+              </div>
+              <p class="hint">The figure stands in a 100 × 100 box with the ground at the bottom.</p>
+            }
+            @case ('strap') {
+              <div class="row">
+                <mat-form-field appearance="outline">
+                  <mat-label>Straps held by</mat-label>
+                  <mat-select formControlName="attach"><mat-option value="hands">Hands</mat-option><mat-option value="feet">Feet</mat-option></mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                  <mat-label>Anchor across</mat-label><input matInput type="number" formControlName="anchorX" min="0" max="100" />
+                </mat-form-field>
+              </div>
+            }
+          }
+        </section>
+      </div>
+
+      <aside class="preview">
+        <h2>Preview</h2>
+        <df-exercise-figure class="big" [figure]="figure()"
+                            [label]="(form.controls.name.value || 'Your exercise') + ': faint figure is the start position, solid figure is the end'" />
+        <p class="hint">Check that props sit in the hands or feet and the head is clear of the ground.</p>
+        <div class="actions">
+          @if (editing()) {
+            <button mat-button type="button" (click)="remove()"><mat-icon>delete</mat-icon>Delete</button>
+          }
+          <a mat-button routerLink="/library">Cancel</a>
+          <button mat-flat-button type="submit" [disabled]="busy()">Save exercise</button>
+        </div>
+      </aside>
+    </form>
+  }
+</div>

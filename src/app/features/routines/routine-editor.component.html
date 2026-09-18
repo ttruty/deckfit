@@ -1,0 +1,190 @@
+<div class="page">
+  <a mat-button routerLink="/" class="back"><mat-icon>arrow_back</mat-icon>Home</a>
+  <h1>{{ isEditing() ? 'Edit routine' : 'New routine' }}</h1>
+
+  @if (data.error()) {
+    <p role="alert">Couldn't load decks and games.</p>
+  } @else if (!ready()) {
+    <p role="status">Loading…</p>
+  } @else {
+    @let d = data.value()!;
+    <form [formGroup]="form" (ngSubmit)="save(false)" class="form">
+      <!-- 1. Deck -->
+      <section class="step">
+        <h2><span class="num">1</span> Deck</h2>
+        <mat-form-field appearance="outline">
+          <mat-label>Deck</mat-label>
+          <mat-select formControlName="deckId">
+            @if (d.decks.some(x => !x.builtIn)) {
+              <mat-optgroup label="Your decks">
+                @for (deck of d.decks; track deck.id) {
+                  @if (!deck.builtIn) { <mat-option [value]="deck.id">{{ deck.name }}</mat-option> }
+                }
+              </mat-optgroup>
+            }
+            <mat-optgroup label="Built-in">
+              @for (deck of d.decks; track deck.id) {
+                @if (deck.builtIn) { <mat-option [value]="deck.id">{{ deck.name }}</mat-option> }
+              }
+            </mat-optgroup>
+          </mat-select>
+        </mat-form-field>
+        @if (selectedDeck(); as deck) {
+          <ul class="suit-summary">
+            @for (s of deck.suits; track s.suit) {
+              @if (s.suit !== 'joker') {
+                <li><span class="pip" [attr.data-suit]="s.suit" [attr.aria-label]="suitName[s.suit]">{{ suitSymbol[s.suit] }}</span> {{ s.label }}</li>
+              }
+            }
+          </ul>
+        }
+
+        <fieldset formGroupName="filters" class="filters">
+          <legend>Deck filters</legend>
+          <label class="sub" id="suits-label">Suits in play</label>
+          <mat-chip-listbox multiple formControlName="suits" aria-labelledby="suits-label">
+            @for (s of suits; track s) {
+              <mat-chip-option [value]="s">{{ suitSymbol[s] }} {{ selectedDeck()?.suits?.find(x => x.suit === s)?.label ?? suitName[s] }}</mat-chip-option>
+            }
+          </mat-chip-listbox>
+          @if (form.controls.filters.controls.suits.invalid) { <mat-error>Choose at least one suit</mat-error> }
+
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="narrow">
+            <mat-label>Maximum difficulty</mat-label>
+            <mat-select formControlName="maxDifficulty">
+              <mat-option [value]="null">Any</mat-option>
+              @for (n of difficulties; track n) {
+                <mat-option [value]="n">{{ n }} · {{ difficultyLabel[n] }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <mat-slide-toggle formControlName="limitEquipment">Only equipment I have</mat-slide-toggle>
+          @if (form.controls.filters.controls.limitEquipment.value) {
+            <mat-chip-listbox multiple formControlName="equipment" aria-label="Equipment I have">
+              @for (e of equipmentKeys; track e) {
+                @if (e !== 'none') { <mat-chip-option [value]="e">{{ equipmentLabel[e] }}</mat-chip-option> }
+              }
+            </mat-chip-listbox>
+          }
+        </fieldset>
+
+        @if (cardsInPlay(); as c) {
+          <p class="preview" role="status" [class.warn]="c.exercises === 0">
+            {{ c.total }} cards in play ({{ c.exercises }} with exercises)
+          </p>
+        }
+      </section>
+
+      <!-- 2. Game -->
+      <section class="step">
+        <h2><span class="num">2</span> Game</h2>
+        <mat-radio-group formControlName="gameId" class="games" aria-label="Game">
+          @for (game of d.games; track game.id) {
+            <mat-radio-button [value]="game.id" class="game">
+              <span class="game-name">{{ game.name }}</span>
+              <span class="game-summary">{{ game.summary }}</span>
+            </mat-radio-button>
+          }
+        </mat-radio-group>
+      </section>
+
+      <!-- 3. Settings -->
+      <section class="step">
+        <h2><span class="num">3</span> Settings</h2>
+        <div class="grid" formGroupName="core">
+          <mat-form-field appearance="outline">
+            <mat-label>Rep multiplier</mat-label>
+            <mat-select formControlName="repMultiplier">
+              @for (m of multipliers; track m) { <mat-option [value]="m">×{{ m }}</mat-option> }
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Jokers</mat-label>
+            <mat-select formControlName="jokerRule">
+              @for (j of jokerRules; track j.value) { <mat-option [value]="j.value">{{ j.label }} — {{ j.help }}</mat-option> }
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>J / Q / K value</mat-label>
+            <input matInput type="number" inputmode="numeric" formControlName="faceCardValue" min="0" max="50" />
+            <mat-error>0–50</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Ace value</mat-label>
+            <input matInput type="number" inputmode="numeric" formControlName="aceValue" min="0" max="50" />
+            <mat-error>0–50</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Max reps per task</mat-label>
+            <input matInput type="number" inputmode="numeric" formControlName="maxRepCap" min="1" max="999" placeholder="No cap" />
+            <mat-hint>Timed tasks cap at 5× this in seconds</mat-hint>
+            <mat-error>1–999, or empty for no cap</mat-error>
+          </mat-form-field>
+        </div>
+
+        @if (gameSettings().length) {
+          <h3>{{ selectedGame()?.name }} settings</h3>
+          <div class="grid" formGroupName="game">
+            @for (s of gameSettings(); track s.key) {
+              @switch (s.def.type) {
+                @case ('enum') {
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ s.label }}</mat-label>
+                    <mat-select [formControlName]="s.key">
+                      @for (o of enumDef(s.def).options; track o) { <mat-option [value]="o">{{ optionLabel(o) }}</mat-option> }
+                    </mat-select>
+                    @if (s.def.help) { <mat-hint>{{ s.def.help }}</mat-hint> }
+                  </mat-form-field>
+                }
+                @case ('number') {
+                  @let n = numberDef(s.def);
+                  <mat-form-field appearance="outline">
+                    <mat-label>{{ s.label }}</mat-label>
+                    <input matInput type="number" inputmode="numeric" [formControlName]="s.key"
+                           [min]="n.min" [max]="n.max" [step]="n.step ?? 1" [placeholder]="n.default === null ? 'Off' : ''" />
+                    @if (s.def.help) { <mat-hint>{{ s.def.help }}</mat-hint> }
+                    <mat-error>{{ n.min }}–{{ n.max }}{{ n.default === null ? ', or empty' : '' }}</mat-error>
+                  </mat-form-field>
+                }
+                @case ('boolean') {
+                  <mat-slide-toggle [formControlName]="s.key">{{ s.label }}</mat-slide-toggle>
+                }
+                @case ('suits') {
+                  <div class="wide">
+                    <label class="sub" [id]="'setting-' + s.key">{{ s.label }}</label>
+                    <mat-chip-listbox multiple [formControlName]="s.key" [attr.aria-labelledby]="'setting-' + s.key">
+                      @for (suit of suits; track suit) {
+                        <mat-chip-option [value]="suit">{{ suitSymbol[suit] }} {{ selectedDeck()?.suits?.find(x => x.suit === suit)?.label ?? suitName[suit] }}</mat-chip-option>
+                      }
+                    </mat-chip-listbox>
+                    @if (s.def.help) { <p class="help">{{ s.def.help }}</p> }
+                  </div>
+                }
+              }
+            }
+          </div>
+        }
+      </section>
+
+      <!-- Save -->
+      <section class="step">
+        <mat-form-field appearance="outline" class="name">
+          <mat-label>Routine name</mat-label>
+          <input matInput formControlName="name" [placeholder]="suggestedName()" />
+          <mat-hint>Leave empty to use “{{ suggestedName() }}”</mat-hint>
+        </mat-form-field>
+        <mat-slide-toggle formControlName="favorite">Favorite — show on Home for one-tap start</mat-slide-toggle>
+
+        <div class="actions">
+          @if (isEditing()) {
+            <button mat-button type="button" (click)="remove()"><mat-icon>delete</mat-icon>Delete</button>
+          }
+          <span class="spacer"></span>
+          <button mat-stroked-button type="submit" [disabled]="busy()">Save</button>
+          <button mat-flat-button type="button" [disabled]="busy()" (click)="save(true)"><mat-icon>play_arrow</mat-icon>Save &amp; start</button>
+        </div>
+      </section>
+    </form>
+  }
+</div>

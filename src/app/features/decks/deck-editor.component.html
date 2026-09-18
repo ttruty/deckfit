@@ -1,0 +1,103 @@
+<div class="page">
+  <a mat-button routerLink="/decks" class="back"><mat-icon>arrow_back</mat-icon>Decks</a>
+
+  @switch (store.status()) {
+    @case ('loading') {
+      <p role="status">Loading deck…</p>
+    }
+    @case ('not-found') {
+      <p role="alert">That deck doesn't exist.</p>
+    }
+    @case ('ready') {
+      @let deck = store.deck()!;
+      <header class="head">
+        <div>
+          <h1>{{ deck.name }}</h1>
+          <span class="badge" [class.mine]="!deck.builtIn">{{ deck.builtIn ? 'Built-in' : 'Your deck' }}</span>
+        </div>
+        <div class="actions">
+          @if (deck.builtIn) {
+            <button mat-flat-button (click)="duplicate()"><mat-icon>content_copy</mat-icon>Duplicate to edit</button>
+          } @else {
+            <button mat-button [disabled]="!store.dirty() || store.saving()" (click)="discard()">Discard</button>
+            <button mat-flat-button [disabled]="!store.dirty() || store.saving() || form.invalid" (click)="save()">
+              <mat-icon>save</mat-icon>Save
+            </button>
+          }
+        </div>
+      </header>
+
+      @if (deck.builtIn) {
+        <p class="notice" role="note">
+          <mat-icon aria-hidden="true">lock</mat-icon>
+          Built-in decks are read-only. Duplicate this deck to change suits, exercises, or amounts.
+        </p>
+      }
+
+      <form [formGroup]="form" class="details" (ngSubmit)="save()">
+        @if (!deck.builtIn) {
+          <mat-form-field appearance="outline" class="name">
+            <mat-label>Deck name</mat-label>
+            <input matInput formControlName="name" />
+            @if (form.controls.name.invalid) { <mat-error>Name is required (max 60 characters)</mat-error> }
+          </mat-form-field>
+        }
+
+        <h2>Suits</h2>
+        <div class="suits" formArrayName="suits">
+          @for (group of suitControls(); track $index; let i = $index) {
+            @let mapping = deck.suits[i];
+            <fieldset class="suit" [formGroupName]="i" [attr.data-suit]="mapping.suit">
+              <legend><span class="pip" aria-hidden="true">{{ suitSymbol[mapping.suit] }}</span> {{ suitName[mapping.suit] }}</legend>
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Label</mat-label>
+                <input matInput formControlName="label" />
+              </mat-form-field>
+              @if (mapping.suit !== 'joker') {
+                <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                  <mat-label>Muscle groups</mat-label>
+                  <mat-select formControlName="muscleGroups" multiple>
+                    @for (m of muscles; track m) {
+                      <mat-option [value]="m">{{ muscleLabel[m] }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+              }
+            </fieldset>
+          }
+        </div>
+      </form>
+
+      <h2>Cards</h2>
+      @if (!deck.builtIn) {
+        <p class="hint">Tap a card to swap its exercise or change its amount.</p>
+      }
+      @for (row of store.rows(); track row.suit) {
+        <section class="row" [attr.aria-label]="row.name + ': ' + row.label">
+          <div class="row-head">
+            <h3><span class="pip" [attr.data-suit]="row.suit" aria-hidden="true">{{ row.symbol }}</span> {{ row.label }}</h3>
+            @if (!deck.builtIn && row.suit !== 'joker') {
+              <button mat-stroked-button (click)="autoFill(row.suit, row.label)">
+                <mat-icon>auto_fix_high</mat-icon>Auto-fill suit
+              </button>
+            }
+          </div>
+          <ul class="cards">
+            @for (item of row.cards; track item.card.id) {
+              <li>
+                @if (deck.builtIn || item.card.exerciseId === null) {
+                  <df-card-face [card]="item.face" />
+                } @else {
+                  <button type="button" class="card-button" (click)="openPicker(item.card)"
+                          [attr.aria-label]="cardLabel(item.card, row.label, item.face.exercise?.name)">
+                    <df-card-face [card]="item.face" />
+                  </button>
+                }
+              </li>
+            }
+          </ul>
+        </section>
+      }
+    }
+  }
+</div>

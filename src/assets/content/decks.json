@@ -1,0 +1,4313 @@
+{
+ "version": 1,
+ "decks": [
+  {
+   "id": "deck-bodyweight",
+   "name": "Bodyweight deck",
+   "category": "bodyweight",
+   "suits": [
+    {
+     "suit": "hearts",
+     "label": "Legs",
+     "color": "suit-hearts",
+     "muscleGroups": [
+      "legs"
+     ]
+    },
+    {
+     "suit": "diamonds",
+     "label": "Push",
+     "color": "suit-diamonds",
+     "muscleGroups": [
+      "chest",
+      "shoulders"
+     ]
+    },
+    {
+     "suit": "clubs",
+     "label": "Pull",
+     "color": "suit-clubs",
+     "muscleGroups": [
+      "back",
+      "arms"
+     ]
+    },
+    {
+     "suit": "spades",
+     "label": "Core",
+     "color": "suit-spades",
+     "muscleGroups": [
+      "core"
+     ]
+    },
+    {
+     "suit": "joker",
+     "label": "Wild",
+     "color": "suit-joker",
+     "muscleGroups": [
+      "full-body"
+     ]
+    }
+   ],
+   "cards": [
+    {
+     "id": "bodyweight-hearts-A",
+     "suit": "hearts",
+     "rank": "A",
+     "exerciseId": "bw-jump-squat",
+     "baseAmount": 11
+    },
+    {
+     "id": "bodyweight-hearts-2",
+     "suit": "hearts",
+     "rank": "2",
+     "exerciseId": "bw-air-squat",
+     "baseAmount": 2
+    },
+    {
+     "id": "bodyweight-hearts-3",
+     "suit": "hearts",
+     "rank": "3",
+     "exerciseId": "bw-air-squat",
+     "baseAmount": 3
+    },
+    {
+     "id": "bodyweight-hearts-4",
+     "suit": "hearts",
+     "rank": "4",
+     "exerciseId": "bw-air-squat",
+     "baseAmount": 4
+    },
+    {
+     "id": "bodyweight-hearts-5",
+     "suit": "hearts",
+     "rank": "5",
+     "exerciseId": "bw-air-squat",
+     "baseAmount": 5
+    },
+    {
+     "id": "bodyweight-hearts-6",
+     "suit": "hearts",
+     "rank": "6",
+     "exerciseId": "bw-reverse-lunge",
+     "baseAmount": 6
+    },
+    {
+     "id": "bodyweight-hearts-7",
+     "suit": "hearts",
+     "rank": "7",
+     "exerciseId": "bw-reverse-lunge",
+     "baseAmount": 7
+    },
+    {
+     "id": "bodyweight-hearts-8",
+     "suit": "hearts",
+     "rank": "8",
+     "exerciseId": "bw-reverse-lunge",
+     "baseAmount": 8
+    },
+    {
+     "id": "bodyweight-hearts-9",
+     "suit": "hearts",
+     "rank": "9",
+     "exerciseId": "bw-reverse-lunge",
+     "baseAmount": 9
+    },
+    {
+     "id": "bodyweight-hearts-10",
+     "suit": "hearts",
+     "rank": "10",
+     "exerciseId": "bw-jump-squat",
+     "baseAmount": 10
+    },
+    {
+     "id": "bodyweight-hearts-J",
+     "suit": "hearts",
+     "rank": "J",
+     "exerciseId": "bw-jump-squat",
+     "baseAmount": 10
+    },
+    {
+     "id": "bodyweight-hearts-Q",
+     "suit": "hearts",
+     "rank": "Q",
+     "exerciseId": "bw-jump-squat",
+     "baseAmount": 10
+    },
+    {
+     "id": "bodyweight-hearts-K",
+     "suit": "hearts",
+     "rank": "K",
+     "exerciseId": "bw-jump-squat",
+     "baseAmount": 10
+    },
+    {
+     "id": "bodyweight-diamonds-A",
+     "suit": "diamonds",
+     "rank": "A",
+     "exerciseId": "bw-pike-push-up",
+     "baseAmount": 11
+    },
+    {
+     "id": "bodyweight-diamonds-2",
+     "suit": "diamonds",
+     "rank": "2",
+     "exerciseId": "bw-push-up",
+     "baseAmount": 2
+    },
+    {
+     "id": "bodyweight-diamonds-3",
+     "suit": "diamonds",
+     "rank": "3",
+     "exerciseId": "bw-push-up",
+     "baseAmount": 3
+    },
+    {
+     "id": "bodyweight-diamonds-4",
+     "suit": "diamonds",
+     "rank": "4",
+     "exerciseId": "bw-push-up",
+     "baseAmount": 4
+    },
+    {
+     "id": "bodyweight-diamonds-5",
+     "suit": "diamonds",
+     "rank": "5",
+     "exerciseId": "bw-push-up",
+     "baseAmount": 5
+    },
+    {
+     "id": "bodyweight-diamonds-6",
+     "suit": "diamonds",
+     "rank": "6",
+     "exerciseId": "bw-wide-push-up",
+     "baseAmount": 6
+    },
+    {
+     "id": "bodyweight-diamonds-7",
+     "suit": "diamonds",
+     "rank": "7",
+     "exerciseId": "bw-wide-push-up",
+     "baseAmount": 7
+    },
+    {
+     "id": "bodyweight-diamonds-8",
+     "suit": "diamonds",
+     "rank": "8",
+     "exerciseId": "bw-wide-push-up",
+     "baseAmount": 8
+    },
+    {
+     "id": "bodyweight-diamonds-9",
+     "suit": "diamonds",
+     "rank": "9",
+     "exerciseId": "bw-wide-push-up",
+     "baseAmount": 9
+    },
+    {
+     "id": "bodyweight-diamonds-10",
+     "suit": "diamonds",
+     "rank": "10",
+     "exerciseId": "bw-pike-push-up",
+     "baseAmount": 10
+    },
+    {
+     "id": "bodyweight-diamonds-J",
+     "suit": "diamonds",
+     "rank": "J",
+     "exerciseId": "bw-pike-push-up",
+     "baseAmount": 10
+    },
+    {
+     "id": "bodyweight-diamonds-Q",
+     "suit": "diamonds",
+     "rank": "Q",
+     "exerciseId": "bw-pike-push-up",
+     "baseAmount": 10
+    },
+    {
+     "id": "bodyweight-diamonds-K",
+     "suit": "diamonds",
+     "rank": "K",
+     "exerciseId": "bw-pike-push-up",
+     "baseAmount": 10
+    },
+    {
+     "id": "bodyweight-clubs-A",
+     "suit": "clubs",
+     "rank": "A",
+     "exerciseId": "bw-snow-angel",
+     "baseAmount": 11
+    },
+    {
+     "id": "bodyweight-clubs-2",
+     "suit": "clubs",
+     "rank": "2",
+     "exerciseId": "bw-superman",
+     "baseAmount": 2
+    },
+    {
+     "id": "bodyweight-clubs-3",
+     "suit": "clubs",
+     "rank": "3",
+     "exerciseId": "bw-superman",
+     "baseAmount": 3
+    },
+    {
+     "id": "bodyweight-clubs-4",
+     "suit": "clubs",
+     "rank": "4",
+     "exerciseId": "bw-superman",
+     "baseAmount": 4
+    },
+    {
+     "id": "bodyweight-clubs-5",
+     "suit": "clubs",
+     "rank": "5",
+     "exerciseId": "bw-superman",
+     "baseAmount": 5
+    },
+    {
+     "id": "bodyweight-clubs-6",
+     "suit": "clubs",
+     "rank": "6",
+     "exerciseId": "bw-prone-y",
+     "baseAmount": 6
+    },
+    {
+     "id": "bodyweight-clubs-7",
+     "suit": "clubs",
+     "rank": "7",
+     "exerciseId": "bw-prone-y",
+     "baseAmount": 7
+    },
+    {
+     "id": "bodyweight-clubs-8",
+     "suit": "clubs",
+     "rank": "8",
+     "exerciseId": "bw-prone-y",
+     "baseAmount": 8
+    },
+    {
+     "id": "bodyweight-clubs-9",
+     "suit": "clubs",
+     "rank": "9",
+     "exerciseId": "bw-prone-y",
+     "baseAmount": 9
+    },
+    {
+     "id": "bodyweight-clubs-10",
+     "suit": "clubs",
+     "rank": "10",
+     "exerciseId": "bw-snow-angel",
+     "baseAmount": 10
+    },
+    {
+     "id": "bodyweight-clubs-J",
+     "suit": "clubs",
+     "rank": "J",
+     "exerciseId": "bw-snow-angel",
+     "baseAmount": 10
+    },
+    {
+     "id": "bodyweight-clubs-Q",
+     "suit": "clubs",
+     "rank": "Q",
+     "exerciseId": "bw-snow-angel",
+     "baseAmount": 10
+    },
+    {
+     "id": "bodyweight-clubs-K",
+     "suit": "clubs",
+     "rank": "K",
+     "exerciseId": "bw-snow-angel",
+     "baseAmount": 10
+    },
+    {
+     "id": "bodyweight-spades-A",
+     "suit": "spades",
+     "rank": "A",
+     "exerciseId": "bw-mountain-climber",
+     "baseAmount": 11
+    },
+    {
+     "id": "bodyweight-spades-2",
+     "suit": "spades",
+     "rank": "2",
+     "exerciseId": "bw-crunch",
+     "baseAmount": 2
+    },
+    {
+     "id": "bodyweight-spades-3",
+     "suit": "spades",
+     "rank": "3",
+     "exerciseId": "bw-crunch",
+     "baseAmount": 3
+    },
+    {
+     "id": "bodyweight-spades-4",
+     "suit": "spades",
+     "rank": "4",
+     "exerciseId": "bw-crunch",
+     "baseAmount": 4
+    },
+    {
+     "id": "bodyweight-spades-5",
+     "suit": "spades",
+     "rank": "5",
+     "exerciseId": "bw-crunch",
+     "baseAmount": 5
+    },
+    {
+     "id": "bodyweight-spades-6",
+     "suit": "spades",
+     "rank": "6",
+     "exerciseId": "bw-plank",
+     "baseAmount": 30
+    },
+    {
+     "id": "bodyweight-spades-7",
+     "suit": "spades",
+     "rank": "7",
+     "exerciseId": "bw-plank",
+     "baseAmount": 35
+    },
+    {
+     "id": "bodyweight-spades-8",
+     "suit": "spades",
+     "rank": "8",
+     "exerciseId": "bw-plank",
+     "baseAmount": 40
+    },
+    {
+     "id": "bodyweight-spades-9",
+     "suit": "spades",
+     "rank": "9",
+     "exerciseId": "bw-plank",
+     "baseAmount": 45
+    },
+    {
+     "id": "bodyweight-spades-10",
+     "suit": "spades",
+     "rank": "10",
+     "exerciseId": "bw-mountain-climber",
+     "baseAmount": 10
+    },
+    {
+     "id": "bodyweight-spades-J",
+     "suit": "spades",
+     "rank": "J",
+     "exerciseId": "bw-mountain-climber",
+     "baseAmount": 10
+    },
+    {
+     "id": "bodyweight-spades-Q",
+     "suit": "spades",
+     "rank": "Q",
+     "exerciseId": "bw-mountain-climber",
+     "baseAmount": 10
+    },
+    {
+     "id": "bodyweight-spades-K",
+     "suit": "spades",
+     "rank": "K",
+     "exerciseId": "bw-mountain-climber",
+     "baseAmount": 10
+    },
+    {
+     "id": "bodyweight-joker-1",
+     "suit": "joker",
+     "rank": "JOKER",
+     "exerciseId": null,
+     "baseAmount": 0
+    },
+    {
+     "id": "bodyweight-joker-2",
+     "suit": "joker",
+     "rank": "JOKER",
+     "exerciseId": null,
+     "baseAmount": 0
+    }
+   ],
+   "builtIn": true,
+   "updatedAt": 0
+  },
+  {
+   "id": "deck-dumbbell",
+   "name": "Dumbbell deck",
+   "category": "dumbbell",
+   "suits": [
+    {
+     "suit": "hearts",
+     "label": "Legs",
+     "color": "suit-hearts",
+     "muscleGroups": [
+      "legs"
+     ]
+    },
+    {
+     "suit": "diamonds",
+     "label": "Push",
+     "color": "suit-diamonds",
+     "muscleGroups": [
+      "chest",
+      "shoulders"
+     ]
+    },
+    {
+     "suit": "clubs",
+     "label": "Pull",
+     "color": "suit-clubs",
+     "muscleGroups": [
+      "back",
+      "arms"
+     ]
+    },
+    {
+     "suit": "spades",
+     "label": "Core",
+     "color": "suit-spades",
+     "muscleGroups": [
+      "core"
+     ]
+    },
+    {
+     "suit": "joker",
+     "label": "Wild",
+     "color": "suit-joker",
+     "muscleGroups": [
+      "full-body"
+     ]
+    }
+   ],
+   "cards": [
+    {
+     "id": "dumbbell-hearts-A",
+     "suit": "hearts",
+     "rank": "A",
+     "exerciseId": "db-reverse-lunge",
+     "baseAmount": 11
+    },
+    {
+     "id": "dumbbell-hearts-2",
+     "suit": "hearts",
+     "rank": "2",
+     "exerciseId": "db-goblet-squat",
+     "baseAmount": 2
+    },
+    {
+     "id": "dumbbell-hearts-3",
+     "suit": "hearts",
+     "rank": "3",
+     "exerciseId": "db-goblet-squat",
+     "baseAmount": 3
+    },
+    {
+     "id": "dumbbell-hearts-4",
+     "suit": "hearts",
+     "rank": "4",
+     "exerciseId": "db-goblet-squat",
+     "baseAmount": 4
+    },
+    {
+     "id": "dumbbell-hearts-5",
+     "suit": "hearts",
+     "rank": "5",
+     "exerciseId": "db-goblet-squat",
+     "baseAmount": 5
+    },
+    {
+     "id": "dumbbell-hearts-6",
+     "suit": "hearts",
+     "rank": "6",
+     "exerciseId": "db-rdl",
+     "baseAmount": 6
+    },
+    {
+     "id": "dumbbell-hearts-7",
+     "suit": "hearts",
+     "rank": "7",
+     "exerciseId": "db-rdl",
+     "baseAmount": 7
+    },
+    {
+     "id": "dumbbell-hearts-8",
+     "suit": "hearts",
+     "rank": "8",
+     "exerciseId": "db-rdl",
+     "baseAmount": 8
+    },
+    {
+     "id": "dumbbell-hearts-9",
+     "suit": "hearts",
+     "rank": "9",
+     "exerciseId": "db-rdl",
+     "baseAmount": 9
+    },
+    {
+     "id": "dumbbell-hearts-10",
+     "suit": "hearts",
+     "rank": "10",
+     "exerciseId": "db-reverse-lunge",
+     "baseAmount": 10
+    },
+    {
+     "id": "dumbbell-hearts-J",
+     "suit": "hearts",
+     "rank": "J",
+     "exerciseId": "db-reverse-lunge",
+     "baseAmount": 10
+    },
+    {
+     "id": "dumbbell-hearts-Q",
+     "suit": "hearts",
+     "rank": "Q",
+     "exerciseId": "db-reverse-lunge",
+     "baseAmount": 10
+    },
+    {
+     "id": "dumbbell-hearts-K",
+     "suit": "hearts",
+     "rank": "K",
+     "exerciseId": "db-reverse-lunge",
+     "baseAmount": 10
+    },
+    {
+     "id": "dumbbell-diamonds-A",
+     "suit": "diamonds",
+     "rank": "A",
+     "exerciseId": "db-overhead-press",
+     "baseAmount": 11
+    },
+    {
+     "id": "dumbbell-diamonds-2",
+     "suit": "diamonds",
+     "rank": "2",
+     "exerciseId": "db-floor-press",
+     "baseAmount": 2
+    },
+    {
+     "id": "dumbbell-diamonds-3",
+     "suit": "diamonds",
+     "rank": "3",
+     "exerciseId": "db-floor-press",
+     "baseAmount": 3
+    },
+    {
+     "id": "dumbbell-diamonds-4",
+     "suit": "diamonds",
+     "rank": "4",
+     "exerciseId": "db-floor-press",
+     "baseAmount": 4
+    },
+    {
+     "id": "dumbbell-diamonds-5",
+     "suit": "diamonds",
+     "rank": "5",
+     "exerciseId": "db-floor-press",
+     "baseAmount": 5
+    },
+    {
+     "id": "dumbbell-diamonds-6",
+     "suit": "diamonds",
+     "rank": "6",
+     "exerciseId": "db-front-raise",
+     "baseAmount": 6
+    },
+    {
+     "id": "dumbbell-diamonds-7",
+     "suit": "diamonds",
+     "rank": "7",
+     "exerciseId": "db-front-raise",
+     "baseAmount": 7
+    },
+    {
+     "id": "dumbbell-diamonds-8",
+     "suit": "diamonds",
+     "rank": "8",
+     "exerciseId": "db-front-raise",
+     "baseAmount": 8
+    },
+    {
+     "id": "dumbbell-diamonds-9",
+     "suit": "diamonds",
+     "rank": "9",
+     "exerciseId": "db-front-raise",
+     "baseAmount": 9
+    },
+    {
+     "id": "dumbbell-diamonds-10",
+     "suit": "diamonds",
+     "rank": "10",
+     "exerciseId": "db-overhead-press",
+     "baseAmount": 10
+    },
+    {
+     "id": "dumbbell-diamonds-J",
+     "suit": "diamonds",
+     "rank": "J",
+     "exerciseId": "db-overhead-press",
+     "baseAmount": 10
+    },
+    {
+     "id": "dumbbell-diamonds-Q",
+     "suit": "diamonds",
+     "rank": "Q",
+     "exerciseId": "db-overhead-press",
+     "baseAmount": 10
+    },
+    {
+     "id": "dumbbell-diamonds-K",
+     "suit": "diamonds",
+     "rank": "K",
+     "exerciseId": "db-overhead-press",
+     "baseAmount": 10
+    },
+    {
+     "id": "dumbbell-clubs-A",
+     "suit": "clubs",
+     "rank": "A",
+     "exerciseId": "db-upright-row",
+     "baseAmount": 11
+    },
+    {
+     "id": "dumbbell-clubs-2",
+     "suit": "clubs",
+     "rank": "2",
+     "exerciseId": "db-curl",
+     "baseAmount": 2
+    },
+    {
+     "id": "dumbbell-clubs-3",
+     "suit": "clubs",
+     "rank": "3",
+     "exerciseId": "db-curl",
+     "baseAmount": 3
+    },
+    {
+     "id": "dumbbell-clubs-4",
+     "suit": "clubs",
+     "rank": "4",
+     "exerciseId": "db-curl",
+     "baseAmount": 4
+    },
+    {
+     "id": "dumbbell-clubs-5",
+     "suit": "clubs",
+     "rank": "5",
+     "exerciseId": "db-curl",
+     "baseAmount": 5
+    },
+    {
+     "id": "dumbbell-clubs-6",
+     "suit": "clubs",
+     "rank": "6",
+     "exerciseId": "db-bent-row",
+     "baseAmount": 6
+    },
+    {
+     "id": "dumbbell-clubs-7",
+     "suit": "clubs",
+     "rank": "7",
+     "exerciseId": "db-bent-row",
+     "baseAmount": 7
+    },
+    {
+     "id": "dumbbell-clubs-8",
+     "suit": "clubs",
+     "rank": "8",
+     "exerciseId": "db-bent-row",
+     "baseAmount": 8
+    },
+    {
+     "id": "dumbbell-clubs-9",
+     "suit": "clubs",
+     "rank": "9",
+     "exerciseId": "db-bent-row",
+     "baseAmount": 9
+    },
+    {
+     "id": "dumbbell-clubs-10",
+     "suit": "clubs",
+     "rank": "10",
+     "exerciseId": "db-upright-row",
+     "baseAmount": 10
+    },
+    {
+     "id": "dumbbell-clubs-J",
+     "suit": "clubs",
+     "rank": "J",
+     "exerciseId": "db-upright-row",
+     "baseAmount": 10
+    },
+    {
+     "id": "dumbbell-clubs-Q",
+     "suit": "clubs",
+     "rank": "Q",
+     "exerciseId": "db-upright-row",
+     "baseAmount": 10
+    },
+    {
+     "id": "dumbbell-clubs-K",
+     "suit": "clubs",
+     "rank": "K",
+     "exerciseId": "db-upright-row",
+     "baseAmount": 10
+    },
+    {
+     "id": "dumbbell-spades-A",
+     "suit": "spades",
+     "rank": "A",
+     "exerciseId": "db-weighted-crunch",
+     "baseAmount": 11
+    },
+    {
+     "id": "dumbbell-spades-2",
+     "suit": "spades",
+     "rank": "2",
+     "exerciseId": "db-suitcase-hold",
+     "baseAmount": 10
+    },
+    {
+     "id": "dumbbell-spades-3",
+     "suit": "spades",
+     "rank": "3",
+     "exerciseId": "db-suitcase-hold",
+     "baseAmount": 15
+    },
+    {
+     "id": "dumbbell-spades-4",
+     "suit": "spades",
+     "rank": "4",
+     "exerciseId": "db-suitcase-hold",
+     "baseAmount": 20
+    },
+    {
+     "id": "dumbbell-spades-5",
+     "suit": "spades",
+     "rank": "5",
+     "exerciseId": "db-suitcase-hold",
+     "baseAmount": 25
+    },
+    {
+     "id": "dumbbell-spades-6",
+     "suit": "spades",
+     "rank": "6",
+     "exerciseId": "db-russian-twist",
+     "baseAmount": 6
+    },
+    {
+     "id": "dumbbell-spades-7",
+     "suit": "spades",
+     "rank": "7",
+     "exerciseId": "db-russian-twist",
+     "baseAmount": 7
+    },
+    {
+     "id": "dumbbell-spades-8",
+     "suit": "spades",
+     "rank": "8",
+     "exerciseId": "db-russian-twist",
+     "baseAmount": 8
+    },
+    {
+     "id": "dumbbell-spades-9",
+     "suit": "spades",
+     "rank": "9",
+     "exerciseId": "db-russian-twist",
+     "baseAmount": 9
+    },
+    {
+     "id": "dumbbell-spades-10",
+     "suit": "spades",
+     "rank": "10",
+     "exerciseId": "db-weighted-crunch",
+     "baseAmount": 10
+    },
+    {
+     "id": "dumbbell-spades-J",
+     "suit": "spades",
+     "rank": "J",
+     "exerciseId": "db-weighted-crunch",
+     "baseAmount": 10
+    },
+    {
+     "id": "dumbbell-spades-Q",
+     "suit": "spades",
+     "rank": "Q",
+     "exerciseId": "db-weighted-crunch",
+     "baseAmount": 10
+    },
+    {
+     "id": "dumbbell-spades-K",
+     "suit": "spades",
+     "rank": "K",
+     "exerciseId": "db-weighted-crunch",
+     "baseAmount": 10
+    },
+    {
+     "id": "dumbbell-joker-1",
+     "suit": "joker",
+     "rank": "JOKER",
+     "exerciseId": null,
+     "baseAmount": 0
+    },
+    {
+     "id": "dumbbell-joker-2",
+     "suit": "joker",
+     "rank": "JOKER",
+     "exerciseId": null,
+     "baseAmount": 0
+    }
+   ],
+   "builtIn": true,
+   "updatedAt": 0
+  },
+  {
+   "id": "deck-kettlebell",
+   "name": "Kettlebell deck",
+   "category": "kettlebell",
+   "suits": [
+    {
+     "suit": "hearts",
+     "label": "Legs",
+     "color": "suit-hearts",
+     "muscleGroups": [
+      "legs"
+     ]
+    },
+    {
+     "suit": "diamonds",
+     "label": "Push",
+     "color": "suit-diamonds",
+     "muscleGroups": [
+      "chest",
+      "shoulders"
+     ]
+    },
+    {
+     "suit": "clubs",
+     "label": "Pull",
+     "color": "suit-clubs",
+     "muscleGroups": [
+      "back",
+      "arms"
+     ]
+    },
+    {
+     "suit": "spades",
+     "label": "Core",
+     "color": "suit-spades",
+     "muscleGroups": [
+      "core"
+     ]
+    },
+    {
+     "suit": "joker",
+     "label": "Wild",
+     "color": "suit-joker",
+     "muscleGroups": [
+      "full-body"
+     ]
+    }
+   ],
+   "cards": [
+    {
+     "id": "kettlebell-hearts-A",
+     "suit": "hearts",
+     "rank": "A",
+     "exerciseId": "kb-swing",
+     "baseAmount": 11
+    },
+    {
+     "id": "kettlebell-hearts-2",
+     "suit": "hearts",
+     "rank": "2",
+     "exerciseId": "kb-goblet-squat",
+     "baseAmount": 2
+    },
+    {
+     "id": "kettlebell-hearts-3",
+     "suit": "hearts",
+     "rank": "3",
+     "exerciseId": "kb-goblet-squat",
+     "baseAmount": 3
+    },
+    {
+     "id": "kettlebell-hearts-4",
+     "suit": "hearts",
+     "rank": "4",
+     "exerciseId": "kb-goblet-squat",
+     "baseAmount": 4
+    },
+    {
+     "id": "kettlebell-hearts-5",
+     "suit": "hearts",
+     "rank": "5",
+     "exerciseId": "kb-goblet-squat",
+     "baseAmount": 5
+    },
+    {
+     "id": "kettlebell-hearts-6",
+     "suit": "hearts",
+     "rank": "6",
+     "exerciseId": "kb-reverse-lunge",
+     "baseAmount": 6
+    },
+    {
+     "id": "kettlebell-hearts-7",
+     "suit": "hearts",
+     "rank": "7",
+     "exerciseId": "kb-reverse-lunge",
+     "baseAmount": 7
+    },
+    {
+     "id": "kettlebell-hearts-8",
+     "suit": "hearts",
+     "rank": "8",
+     "exerciseId": "kb-reverse-lunge",
+     "baseAmount": 8
+    },
+    {
+     "id": "kettlebell-hearts-9",
+     "suit": "hearts",
+     "rank": "9",
+     "exerciseId": "kb-reverse-lunge",
+     "baseAmount": 9
+    },
+    {
+     "id": "kettlebell-hearts-10",
+     "suit": "hearts",
+     "rank": "10",
+     "exerciseId": "kb-swing",
+     "baseAmount": 10
+    },
+    {
+     "id": "kettlebell-hearts-J",
+     "suit": "hearts",
+     "rank": "J",
+     "exerciseId": "kb-swing",
+     "baseAmount": 10
+    },
+    {
+     "id": "kettlebell-hearts-Q",
+     "suit": "hearts",
+     "rank": "Q",
+     "exerciseId": "kb-swing",
+     "baseAmount": 10
+    },
+    {
+     "id": "kettlebell-hearts-K",
+     "suit": "hearts",
+     "rank": "K",
+     "exerciseId": "kb-swing",
+     "baseAmount": 10
+    },
+    {
+     "id": "kettlebell-diamonds-A",
+     "suit": "diamonds",
+     "rank": "A",
+     "exerciseId": "kb-thruster",
+     "baseAmount": 11
+    },
+    {
+     "id": "kettlebell-diamonds-2",
+     "suit": "diamonds",
+     "rank": "2",
+     "exerciseId": "kb-floor-press",
+     "baseAmount": 2
+    },
+    {
+     "id": "kettlebell-diamonds-3",
+     "suit": "diamonds",
+     "rank": "3",
+     "exerciseId": "kb-floor-press",
+     "baseAmount": 3
+    },
+    {
+     "id": "kettlebell-diamonds-4",
+     "suit": "diamonds",
+     "rank": "4",
+     "exerciseId": "kb-floor-press",
+     "baseAmount": 4
+    },
+    {
+     "id": "kettlebell-diamonds-5",
+     "suit": "diamonds",
+     "rank": "5",
+     "exerciseId": "kb-floor-press",
+     "baseAmount": 5
+    },
+    {
+     "id": "kettlebell-diamonds-6",
+     "suit": "diamonds",
+     "rank": "6",
+     "exerciseId": "kb-press",
+     "baseAmount": 6
+    },
+    {
+     "id": "kettlebell-diamonds-7",
+     "suit": "diamonds",
+     "rank": "7",
+     "exerciseId": "kb-press",
+     "baseAmount": 7
+    },
+    {
+     "id": "kettlebell-diamonds-8",
+     "suit": "diamonds",
+     "rank": "8",
+     "exerciseId": "kb-press",
+     "baseAmount": 8
+    },
+    {
+     "id": "kettlebell-diamonds-9",
+     "suit": "diamonds",
+     "rank": "9",
+     "exerciseId": "kb-press",
+     "baseAmount": 9
+    },
+    {
+     "id": "kettlebell-diamonds-10",
+     "suit": "diamonds",
+     "rank": "10",
+     "exerciseId": "kb-thruster",
+     "baseAmount": 10
+    },
+    {
+     "id": "kettlebell-diamonds-J",
+     "suit": "diamonds",
+     "rank": "J",
+     "exerciseId": "kb-thruster",
+     "baseAmount": 10
+    },
+    {
+     "id": "kettlebell-diamonds-Q",
+     "suit": "diamonds",
+     "rank": "Q",
+     "exerciseId": "kb-thruster",
+     "baseAmount": 10
+    },
+    {
+     "id": "kettlebell-diamonds-K",
+     "suit": "diamonds",
+     "rank": "K",
+     "exerciseId": "kb-thruster",
+     "baseAmount": 10
+    },
+    {
+     "id": "kettlebell-clubs-A",
+     "suit": "clubs",
+     "rank": "A",
+     "exerciseId": "kb-high-pull",
+     "baseAmount": 11
+    },
+    {
+     "id": "kettlebell-clubs-2",
+     "suit": "clubs",
+     "rank": "2",
+     "exerciseId": "kb-deadlift",
+     "baseAmount": 2
+    },
+    {
+     "id": "kettlebell-clubs-3",
+     "suit": "clubs",
+     "rank": "3",
+     "exerciseId": "kb-deadlift",
+     "baseAmount": 3
+    },
+    {
+     "id": "kettlebell-clubs-4",
+     "suit": "clubs",
+     "rank": "4",
+     "exerciseId": "kb-deadlift",
+     "baseAmount": 4
+    },
+    {
+     "id": "kettlebell-clubs-5",
+     "suit": "clubs",
+     "rank": "5",
+     "exerciseId": "kb-deadlift",
+     "baseAmount": 5
+    },
+    {
+     "id": "kettlebell-clubs-6",
+     "suit": "clubs",
+     "rank": "6",
+     "exerciseId": "kb-row",
+     "baseAmount": 6
+    },
+    {
+     "id": "kettlebell-clubs-7",
+     "suit": "clubs",
+     "rank": "7",
+     "exerciseId": "kb-row",
+     "baseAmount": 7
+    },
+    {
+     "id": "kettlebell-clubs-8",
+     "suit": "clubs",
+     "rank": "8",
+     "exerciseId": "kb-row",
+     "baseAmount": 8
+    },
+    {
+     "id": "kettlebell-clubs-9",
+     "suit": "clubs",
+     "rank": "9",
+     "exerciseId": "kb-row",
+     "baseAmount": 9
+    },
+    {
+     "id": "kettlebell-clubs-10",
+     "suit": "clubs",
+     "rank": "10",
+     "exerciseId": "kb-high-pull",
+     "baseAmount": 10
+    },
+    {
+     "id": "kettlebell-clubs-J",
+     "suit": "clubs",
+     "rank": "J",
+     "exerciseId": "kb-high-pull",
+     "baseAmount": 10
+    },
+    {
+     "id": "kettlebell-clubs-Q",
+     "suit": "clubs",
+     "rank": "Q",
+     "exerciseId": "kb-high-pull",
+     "baseAmount": 10
+    },
+    {
+     "id": "kettlebell-clubs-K",
+     "suit": "clubs",
+     "rank": "K",
+     "exerciseId": "kb-high-pull",
+     "baseAmount": 10
+    },
+    {
+     "id": "kettlebell-spades-A",
+     "suit": "spades",
+     "rank": "A",
+     "exerciseId": "kb-russian-twist",
+     "baseAmount": 11
+    },
+    {
+     "id": "kettlebell-spades-2",
+     "suit": "spades",
+     "rank": "2",
+     "exerciseId": "kb-halo",
+     "baseAmount": 2
+    },
+    {
+     "id": "kettlebell-spades-3",
+     "suit": "spades",
+     "rank": "3",
+     "exerciseId": "kb-halo",
+     "baseAmount": 3
+    },
+    {
+     "id": "kettlebell-spades-4",
+     "suit": "spades",
+     "rank": "4",
+     "exerciseId": "kb-halo",
+     "baseAmount": 4
+    },
+    {
+     "id": "kettlebell-spades-5",
+     "suit": "spades",
+     "rank": "5",
+     "exerciseId": "kb-halo",
+     "baseAmount": 5
+    },
+    {
+     "id": "kettlebell-spades-6",
+     "suit": "spades",
+     "rank": "6",
+     "exerciseId": "kb-farmer-hold",
+     "baseAmount": 30
+    },
+    {
+     "id": "kettlebell-spades-7",
+     "suit": "spades",
+     "rank": "7",
+     "exerciseId": "kb-farmer-hold",
+     "baseAmount": 35
+    },
+    {
+     "id": "kettlebell-spades-8",
+     "suit": "spades",
+     "rank": "8",
+     "exerciseId": "kb-farmer-hold",
+     "baseAmount": 40
+    },
+    {
+     "id": "kettlebell-spades-9",
+     "suit": "spades",
+     "rank": "9",
+     "exerciseId": "kb-farmer-hold",
+     "baseAmount": 45
+    },
+    {
+     "id": "kettlebell-spades-10",
+     "suit": "spades",
+     "rank": "10",
+     "exerciseId": "kb-russian-twist",
+     "baseAmount": 10
+    },
+    {
+     "id": "kettlebell-spades-J",
+     "suit": "spades",
+     "rank": "J",
+     "exerciseId": "kb-russian-twist",
+     "baseAmount": 10
+    },
+    {
+     "id": "kettlebell-spades-Q",
+     "suit": "spades",
+     "rank": "Q",
+     "exerciseId": "kb-russian-twist",
+     "baseAmount": 10
+    },
+    {
+     "id": "kettlebell-spades-K",
+     "suit": "spades",
+     "rank": "K",
+     "exerciseId": "kb-russian-twist",
+     "baseAmount": 10
+    },
+    {
+     "id": "kettlebell-joker-1",
+     "suit": "joker",
+     "rank": "JOKER",
+     "exerciseId": null,
+     "baseAmount": 0
+    },
+    {
+     "id": "kettlebell-joker-2",
+     "suit": "joker",
+     "rank": "JOKER",
+     "exerciseId": null,
+     "baseAmount": 0
+    }
+   ],
+   "builtIn": true,
+   "updatedAt": 0
+  },
+  {
+   "id": "deck-barbell",
+   "name": "Barbell deck",
+   "category": "barbell",
+   "suits": [
+    {
+     "suit": "hearts",
+     "label": "Legs",
+     "color": "suit-hearts",
+     "muscleGroups": [
+      "legs"
+     ]
+    },
+    {
+     "suit": "diamonds",
+     "label": "Push",
+     "color": "suit-diamonds",
+     "muscleGroups": [
+      "chest",
+      "shoulders"
+     ]
+    },
+    {
+     "suit": "clubs",
+     "label": "Pull",
+     "color": "suit-clubs",
+     "muscleGroups": [
+      "back",
+      "arms"
+     ]
+    },
+    {
+     "suit": "spades",
+     "label": "Core",
+     "color": "suit-spades",
+     "muscleGroups": [
+      "core"
+     ]
+    },
+    {
+     "suit": "joker",
+     "label": "Wild",
+     "color": "suit-joker",
+     "muscleGroups": [
+      "full-body"
+     ]
+    }
+   ],
+   "cards": [
+    {
+     "id": "barbell-hearts-A",
+     "suit": "hearts",
+     "rank": "A",
+     "exerciseId": "bb-lunge",
+     "baseAmount": 11
+    },
+    {
+     "id": "barbell-hearts-2",
+     "suit": "hearts",
+     "rank": "2",
+     "exerciseId": "bb-back-squat",
+     "baseAmount": 2
+    },
+    {
+     "id": "barbell-hearts-3",
+     "suit": "hearts",
+     "rank": "3",
+     "exerciseId": "bb-back-squat",
+     "baseAmount": 3
+    },
+    {
+     "id": "barbell-hearts-4",
+     "suit": "hearts",
+     "rank": "4",
+     "exerciseId": "bb-back-squat",
+     "baseAmount": 4
+    },
+    {
+     "id": "barbell-hearts-5",
+     "suit": "hearts",
+     "rank": "5",
+     "exerciseId": "bb-back-squat",
+     "baseAmount": 5
+    },
+    {
+     "id": "barbell-hearts-6",
+     "suit": "hearts",
+     "rank": "6",
+     "exerciseId": "bb-front-squat",
+     "baseAmount": 6
+    },
+    {
+     "id": "barbell-hearts-7",
+     "suit": "hearts",
+     "rank": "7",
+     "exerciseId": "bb-front-squat",
+     "baseAmount": 7
+    },
+    {
+     "id": "barbell-hearts-8",
+     "suit": "hearts",
+     "rank": "8",
+     "exerciseId": "bb-front-squat",
+     "baseAmount": 8
+    },
+    {
+     "id": "barbell-hearts-9",
+     "suit": "hearts",
+     "rank": "9",
+     "exerciseId": "bb-front-squat",
+     "baseAmount": 9
+    },
+    {
+     "id": "barbell-hearts-10",
+     "suit": "hearts",
+     "rank": "10",
+     "exerciseId": "bb-lunge",
+     "baseAmount": 10
+    },
+    {
+     "id": "barbell-hearts-J",
+     "suit": "hearts",
+     "rank": "J",
+     "exerciseId": "bb-lunge",
+     "baseAmount": 10
+    },
+    {
+     "id": "barbell-hearts-Q",
+     "suit": "hearts",
+     "rank": "Q",
+     "exerciseId": "bb-lunge",
+     "baseAmount": 10
+    },
+    {
+     "id": "barbell-hearts-K",
+     "suit": "hearts",
+     "rank": "K",
+     "exerciseId": "bb-lunge",
+     "baseAmount": 10
+    },
+    {
+     "id": "barbell-diamonds-A",
+     "suit": "diamonds",
+     "rank": "A",
+     "exerciseId": "bb-push-press",
+     "baseAmount": 11
+    },
+    {
+     "id": "barbell-diamonds-2",
+     "suit": "diamonds",
+     "rank": "2",
+     "exerciseId": "bb-floor-press",
+     "baseAmount": 2
+    },
+    {
+     "id": "barbell-diamonds-3",
+     "suit": "diamonds",
+     "rank": "3",
+     "exerciseId": "bb-floor-press",
+     "baseAmount": 3
+    },
+    {
+     "id": "barbell-diamonds-4",
+     "suit": "diamonds",
+     "rank": "4",
+     "exerciseId": "bb-floor-press",
+     "baseAmount": 4
+    },
+    {
+     "id": "barbell-diamonds-5",
+     "suit": "diamonds",
+     "rank": "5",
+     "exerciseId": "bb-floor-press",
+     "baseAmount": 5
+    },
+    {
+     "id": "barbell-diamonds-6",
+     "suit": "diamonds",
+     "rank": "6",
+     "exerciseId": "bb-overhead-press",
+     "baseAmount": 6
+    },
+    {
+     "id": "barbell-diamonds-7",
+     "suit": "diamonds",
+     "rank": "7",
+     "exerciseId": "bb-overhead-press",
+     "baseAmount": 7
+    },
+    {
+     "id": "barbell-diamonds-8",
+     "suit": "diamonds",
+     "rank": "8",
+     "exerciseId": "bb-overhead-press",
+     "baseAmount": 8
+    },
+    {
+     "id": "barbell-diamonds-9",
+     "suit": "diamonds",
+     "rank": "9",
+     "exerciseId": "bb-overhead-press",
+     "baseAmount": 9
+    },
+    {
+     "id": "barbell-diamonds-10",
+     "suit": "diamonds",
+     "rank": "10",
+     "exerciseId": "bb-push-press",
+     "baseAmount": 10
+    },
+    {
+     "id": "barbell-diamonds-J",
+     "suit": "diamonds",
+     "rank": "J",
+     "exerciseId": "bb-push-press",
+     "baseAmount": 10
+    },
+    {
+     "id": "barbell-diamonds-Q",
+     "suit": "diamonds",
+     "rank": "Q",
+     "exerciseId": "bb-push-press",
+     "baseAmount": 10
+    },
+    {
+     "id": "barbell-diamonds-K",
+     "suit": "diamonds",
+     "rank": "K",
+     "exerciseId": "bb-push-press",
+     "baseAmount": 10
+    },
+    {
+     "id": "barbell-clubs-A",
+     "suit": "clubs",
+     "rank": "A",
+     "exerciseId": "bb-deadlift",
+     "baseAmount": 11
+    },
+    {
+     "id": "barbell-clubs-2",
+     "suit": "clubs",
+     "rank": "2",
+     "exerciseId": "bb-curl",
+     "baseAmount": 2
+    },
+    {
+     "id": "barbell-clubs-3",
+     "suit": "clubs",
+     "rank": "3",
+     "exerciseId": "bb-curl",
+     "baseAmount": 3
+    },
+    {
+     "id": "barbell-clubs-4",
+     "suit": "clubs",
+     "rank": "4",
+     "exerciseId": "bb-curl",
+     "baseAmount": 4
+    },
+    {
+     "id": "barbell-clubs-5",
+     "suit": "clubs",
+     "rank": "5",
+     "exerciseId": "bb-curl",
+     "baseAmount": 5
+    },
+    {
+     "id": "barbell-clubs-6",
+     "suit": "clubs",
+     "rank": "6",
+     "exerciseId": "bb-bent-row",
+     "baseAmount": 6
+    },
+    {
+     "id": "barbell-clubs-7",
+     "suit": "clubs",
+     "rank": "7",
+     "exerciseId": "bb-bent-row",
+     "baseAmount": 7
+    },
+    {
+     "id": "barbell-clubs-8",
+     "suit": "clubs",
+     "rank": "8",
+     "exerciseId": "bb-bent-row",
+     "baseAmount": 8
+    },
+    {
+     "id": "barbell-clubs-9",
+     "suit": "clubs",
+     "rank": "9",
+     "exerciseId": "bb-bent-row",
+     "baseAmount": 9
+    },
+    {
+     "id": "barbell-clubs-10",
+     "suit": "clubs",
+     "rank": "10",
+     "exerciseId": "bb-deadlift",
+     "baseAmount": 10
+    },
+    {
+     "id": "barbell-clubs-J",
+     "suit": "clubs",
+     "rank": "J",
+     "exerciseId": "bb-deadlift",
+     "baseAmount": 10
+    },
+    {
+     "id": "barbell-clubs-Q",
+     "suit": "clubs",
+     "rank": "Q",
+     "exerciseId": "bb-deadlift",
+     "baseAmount": 10
+    },
+    {
+     "id": "barbell-clubs-K",
+     "suit": "clubs",
+     "rank": "K",
+     "exerciseId": "bb-deadlift",
+     "baseAmount": 10
+    },
+    {
+     "id": "barbell-spades-A",
+     "suit": "spades",
+     "rank": "A",
+     "exerciseId": "bb-rollout",
+     "baseAmount": 11
+    },
+    {
+     "id": "barbell-spades-2",
+     "suit": "spades",
+     "rank": "2",
+     "exerciseId": "bb-good-morning",
+     "baseAmount": 2
+    },
+    {
+     "id": "barbell-spades-3",
+     "suit": "spades",
+     "rank": "3",
+     "exerciseId": "bb-good-morning",
+     "baseAmount": 3
+    },
+    {
+     "id": "barbell-spades-4",
+     "suit": "spades",
+     "rank": "4",
+     "exerciseId": "bb-good-morning",
+     "baseAmount": 4
+    },
+    {
+     "id": "barbell-spades-5",
+     "suit": "spades",
+     "rank": "5",
+     "exerciseId": "bb-good-morning",
+     "baseAmount": 5
+    },
+    {
+     "id": "barbell-spades-6",
+     "suit": "spades",
+     "rank": "6",
+     "exerciseId": "bb-hip-thrust",
+     "baseAmount": 6
+    },
+    {
+     "id": "barbell-spades-7",
+     "suit": "spades",
+     "rank": "7",
+     "exerciseId": "bb-hip-thrust",
+     "baseAmount": 7
+    },
+    {
+     "id": "barbell-spades-8",
+     "suit": "spades",
+     "rank": "8",
+     "exerciseId": "bb-hip-thrust",
+     "baseAmount": 8
+    },
+    {
+     "id": "barbell-spades-9",
+     "suit": "spades",
+     "rank": "9",
+     "exerciseId": "bb-hip-thrust",
+     "baseAmount": 9
+    },
+    {
+     "id": "barbell-spades-10",
+     "suit": "spades",
+     "rank": "10",
+     "exerciseId": "bb-rollout",
+     "baseAmount": 10
+    },
+    {
+     "id": "barbell-spades-J",
+     "suit": "spades",
+     "rank": "J",
+     "exerciseId": "bb-rollout",
+     "baseAmount": 10
+    },
+    {
+     "id": "barbell-spades-Q",
+     "suit": "spades",
+     "rank": "Q",
+     "exerciseId": "bb-rollout",
+     "baseAmount": 10
+    },
+    {
+     "id": "barbell-spades-K",
+     "suit": "spades",
+     "rank": "K",
+     "exerciseId": "bb-rollout",
+     "baseAmount": 10
+    },
+    {
+     "id": "barbell-joker-1",
+     "suit": "joker",
+     "rank": "JOKER",
+     "exerciseId": null,
+     "baseAmount": 0
+    },
+    {
+     "id": "barbell-joker-2",
+     "suit": "joker",
+     "rank": "JOKER",
+     "exerciseId": null,
+     "baseAmount": 0
+    }
+   ],
+   "builtIn": true,
+   "updatedAt": 0
+  },
+  {
+   "id": "deck-band",
+   "name": "Resistance band deck",
+   "category": "band",
+   "suits": [
+    {
+     "suit": "hearts",
+     "label": "Legs",
+     "color": "suit-hearts",
+     "muscleGroups": [
+      "legs"
+     ]
+    },
+    {
+     "suit": "diamonds",
+     "label": "Push",
+     "color": "suit-diamonds",
+     "muscleGroups": [
+      "chest",
+      "shoulders"
+     ]
+    },
+    {
+     "suit": "clubs",
+     "label": "Pull",
+     "color": "suit-clubs",
+     "muscleGroups": [
+      "back",
+      "arms"
+     ]
+    },
+    {
+     "suit": "spades",
+     "label": "Core",
+     "color": "suit-spades",
+     "muscleGroups": [
+      "core"
+     ]
+    },
+    {
+     "suit": "joker",
+     "label": "Wild",
+     "color": "suit-joker",
+     "muscleGroups": [
+      "full-body"
+     ]
+    }
+   ],
+   "cards": [
+    {
+     "id": "band-hearts-A",
+     "suit": "hearts",
+     "rank": "A",
+     "exerciseId": "rb-lateral-walk",
+     "baseAmount": 11
+    },
+    {
+     "id": "band-hearts-2",
+     "suit": "hearts",
+     "rank": "2",
+     "exerciseId": "rb-squat",
+     "baseAmount": 2
+    },
+    {
+     "id": "band-hearts-3",
+     "suit": "hearts",
+     "rank": "3",
+     "exerciseId": "rb-squat",
+     "baseAmount": 3
+    },
+    {
+     "id": "band-hearts-4",
+     "suit": "hearts",
+     "rank": "4",
+     "exerciseId": "rb-squat",
+     "baseAmount": 4
+    },
+    {
+     "id": "band-hearts-5",
+     "suit": "hearts",
+     "rank": "5",
+     "exerciseId": "rb-squat",
+     "baseAmount": 5
+    },
+    {
+     "id": "band-hearts-6",
+     "suit": "hearts",
+     "rank": "6",
+     "exerciseId": "rb-glute-bridge",
+     "baseAmount": 6
+    },
+    {
+     "id": "band-hearts-7",
+     "suit": "hearts",
+     "rank": "7",
+     "exerciseId": "rb-glute-bridge",
+     "baseAmount": 7
+    },
+    {
+     "id": "band-hearts-8",
+     "suit": "hearts",
+     "rank": "8",
+     "exerciseId": "rb-glute-bridge",
+     "baseAmount": 8
+    },
+    {
+     "id": "band-hearts-9",
+     "suit": "hearts",
+     "rank": "9",
+     "exerciseId": "rb-glute-bridge",
+     "baseAmount": 9
+    },
+    {
+     "id": "band-hearts-10",
+     "suit": "hearts",
+     "rank": "10",
+     "exerciseId": "rb-lateral-walk",
+     "baseAmount": 10
+    },
+    {
+     "id": "band-hearts-J",
+     "suit": "hearts",
+     "rank": "J",
+     "exerciseId": "rb-lateral-walk",
+     "baseAmount": 10
+    },
+    {
+     "id": "band-hearts-Q",
+     "suit": "hearts",
+     "rank": "Q",
+     "exerciseId": "rb-lateral-walk",
+     "baseAmount": 10
+    },
+    {
+     "id": "band-hearts-K",
+     "suit": "hearts",
+     "rank": "K",
+     "exerciseId": "rb-lateral-walk",
+     "baseAmount": 10
+    },
+    {
+     "id": "band-diamonds-A",
+     "suit": "diamonds",
+     "rank": "A",
+     "exerciseId": "rb-overhead-press",
+     "baseAmount": 11
+    },
+    {
+     "id": "band-diamonds-2",
+     "suit": "diamonds",
+     "rank": "2",
+     "exerciseId": "rb-chest-press",
+     "baseAmount": 2
+    },
+    {
+     "id": "band-diamonds-3",
+     "suit": "diamonds",
+     "rank": "3",
+     "exerciseId": "rb-chest-press",
+     "baseAmount": 3
+    },
+    {
+     "id": "band-diamonds-4",
+     "suit": "diamonds",
+     "rank": "4",
+     "exerciseId": "rb-chest-press",
+     "baseAmount": 4
+    },
+    {
+     "id": "band-diamonds-5",
+     "suit": "diamonds",
+     "rank": "5",
+     "exerciseId": "rb-chest-press",
+     "baseAmount": 5
+    },
+    {
+     "id": "band-diamonds-6",
+     "suit": "diamonds",
+     "rank": "6",
+     "exerciseId": "rb-pushdown",
+     "baseAmount": 6
+    },
+    {
+     "id": "band-diamonds-7",
+     "suit": "diamonds",
+     "rank": "7",
+     "exerciseId": "rb-pushdown",
+     "baseAmount": 7
+    },
+    {
+     "id": "band-diamonds-8",
+     "suit": "diamonds",
+     "rank": "8",
+     "exerciseId": "rb-pushdown",
+     "baseAmount": 8
+    },
+    {
+     "id": "band-diamonds-9",
+     "suit": "diamonds",
+     "rank": "9",
+     "exerciseId": "rb-pushdown",
+     "baseAmount": 9
+    },
+    {
+     "id": "band-diamonds-10",
+     "suit": "diamonds",
+     "rank": "10",
+     "exerciseId": "rb-overhead-press",
+     "baseAmount": 10
+    },
+    {
+     "id": "band-diamonds-J",
+     "suit": "diamonds",
+     "rank": "J",
+     "exerciseId": "rb-overhead-press",
+     "baseAmount": 10
+    },
+    {
+     "id": "band-diamonds-Q",
+     "suit": "diamonds",
+     "rank": "Q",
+     "exerciseId": "rb-overhead-press",
+     "baseAmount": 10
+    },
+    {
+     "id": "band-diamonds-K",
+     "suit": "diamonds",
+     "rank": "K",
+     "exerciseId": "rb-overhead-press",
+     "baseAmount": 10
+    },
+    {
+     "id": "band-clubs-A",
+     "suit": "clubs",
+     "rank": "A",
+     "exerciseId": "rb-curl",
+     "baseAmount": 11
+    },
+    {
+     "id": "band-clubs-2",
+     "suit": "clubs",
+     "rank": "2",
+     "exerciseId": "rb-row",
+     "baseAmount": 2
+    },
+    {
+     "id": "band-clubs-3",
+     "suit": "clubs",
+     "rank": "3",
+     "exerciseId": "rb-row",
+     "baseAmount": 3
+    },
+    {
+     "id": "band-clubs-4",
+     "suit": "clubs",
+     "rank": "4",
+     "exerciseId": "rb-row",
+     "baseAmount": 4
+    },
+    {
+     "id": "band-clubs-5",
+     "suit": "clubs",
+     "rank": "5",
+     "exerciseId": "rb-row",
+     "baseAmount": 5
+    },
+    {
+     "id": "band-clubs-6",
+     "suit": "clubs",
+     "rank": "6",
+     "exerciseId": "rb-pull-apart",
+     "baseAmount": 6
+    },
+    {
+     "id": "band-clubs-7",
+     "suit": "clubs",
+     "rank": "7",
+     "exerciseId": "rb-pull-apart",
+     "baseAmount": 7
+    },
+    {
+     "id": "band-clubs-8",
+     "suit": "clubs",
+     "rank": "8",
+     "exerciseId": "rb-pull-apart",
+     "baseAmount": 8
+    },
+    {
+     "id": "band-clubs-9",
+     "suit": "clubs",
+     "rank": "9",
+     "exerciseId": "rb-pull-apart",
+     "baseAmount": 9
+    },
+    {
+     "id": "band-clubs-10",
+     "suit": "clubs",
+     "rank": "10",
+     "exerciseId": "rb-curl",
+     "baseAmount": 10
+    },
+    {
+     "id": "band-clubs-J",
+     "suit": "clubs",
+     "rank": "J",
+     "exerciseId": "rb-curl",
+     "baseAmount": 10
+    },
+    {
+     "id": "band-clubs-Q",
+     "suit": "clubs",
+     "rank": "Q",
+     "exerciseId": "rb-curl",
+     "baseAmount": 10
+    },
+    {
+     "id": "band-clubs-K",
+     "suit": "clubs",
+     "rank": "K",
+     "exerciseId": "rb-curl",
+     "baseAmount": 10
+    },
+    {
+     "id": "band-spades-A",
+     "suit": "spades",
+     "rank": "A",
+     "exerciseId": "rb-dead-bug",
+     "baseAmount": 11
+    },
+    {
+     "id": "band-spades-2",
+     "suit": "spades",
+     "rank": "2",
+     "exerciseId": "rb-pallof",
+     "baseAmount": 2
+    },
+    {
+     "id": "band-spades-3",
+     "suit": "spades",
+     "rank": "3",
+     "exerciseId": "rb-pallof",
+     "baseAmount": 3
+    },
+    {
+     "id": "band-spades-4",
+     "suit": "spades",
+     "rank": "4",
+     "exerciseId": "rb-pallof",
+     "baseAmount": 4
+    },
+    {
+     "id": "band-spades-5",
+     "suit": "spades",
+     "rank": "5",
+     "exerciseId": "rb-pallof",
+     "baseAmount": 5
+    },
+    {
+     "id": "band-spades-6",
+     "suit": "spades",
+     "rank": "6",
+     "exerciseId": "rb-woodchop",
+     "baseAmount": 6
+    },
+    {
+     "id": "band-spades-7",
+     "suit": "spades",
+     "rank": "7",
+     "exerciseId": "rb-woodchop",
+     "baseAmount": 7
+    },
+    {
+     "id": "band-spades-8",
+     "suit": "spades",
+     "rank": "8",
+     "exerciseId": "rb-woodchop",
+     "baseAmount": 8
+    },
+    {
+     "id": "band-spades-9",
+     "suit": "spades",
+     "rank": "9",
+     "exerciseId": "rb-woodchop",
+     "baseAmount": 9
+    },
+    {
+     "id": "band-spades-10",
+     "suit": "spades",
+     "rank": "10",
+     "exerciseId": "rb-dead-bug",
+     "baseAmount": 10
+    },
+    {
+     "id": "band-spades-J",
+     "suit": "spades",
+     "rank": "J",
+     "exerciseId": "rb-dead-bug",
+     "baseAmount": 10
+    },
+    {
+     "id": "band-spades-Q",
+     "suit": "spades",
+     "rank": "Q",
+     "exerciseId": "rb-dead-bug",
+     "baseAmount": 10
+    },
+    {
+     "id": "band-spades-K",
+     "suit": "spades",
+     "rank": "K",
+     "exerciseId": "rb-dead-bug",
+     "baseAmount": 10
+    },
+    {
+     "id": "band-joker-1",
+     "suit": "joker",
+     "rank": "JOKER",
+     "exerciseId": null,
+     "baseAmount": 0
+    },
+    {
+     "id": "band-joker-2",
+     "suit": "joker",
+     "rank": "JOKER",
+     "exerciseId": null,
+     "baseAmount": 0
+    }
+   ],
+   "builtIn": true,
+   "updatedAt": 0
+  },
+  {
+   "id": "deck-ball",
+   "name": "Exercise ball deck",
+   "category": "ball",
+   "suits": [
+    {
+     "suit": "hearts",
+     "label": "Legs",
+     "color": "suit-hearts",
+     "muscleGroups": [
+      "legs"
+     ]
+    },
+    {
+     "suit": "diamonds",
+     "label": "Push",
+     "color": "suit-diamonds",
+     "muscleGroups": [
+      "chest",
+      "shoulders"
+     ]
+    },
+    {
+     "suit": "clubs",
+     "label": "Pull",
+     "color": "suit-clubs",
+     "muscleGroups": [
+      "back",
+      "arms"
+     ]
+    },
+    {
+     "suit": "spades",
+     "label": "Core",
+     "color": "suit-spades",
+     "muscleGroups": [
+      "core"
+     ]
+    },
+    {
+     "suit": "joker",
+     "label": "Wild",
+     "color": "suit-joker",
+     "muscleGroups": [
+      "full-body"
+     ]
+    }
+   ],
+   "cards": [
+    {
+     "id": "ball-hearts-A",
+     "suit": "hearts",
+     "rank": "A",
+     "exerciseId": "sb-hamstring-curl",
+     "baseAmount": 11
+    },
+    {
+     "id": "ball-hearts-2",
+     "suit": "hearts",
+     "rank": "2",
+     "exerciseId": "sb-wall-squat",
+     "baseAmount": 2
+    },
+    {
+     "id": "ball-hearts-3",
+     "suit": "hearts",
+     "rank": "3",
+     "exerciseId": "sb-wall-squat",
+     "baseAmount": 3
+    },
+    {
+     "id": "ball-hearts-4",
+     "suit": "hearts",
+     "rank": "4",
+     "exerciseId": "sb-wall-squat",
+     "baseAmount": 4
+    },
+    {
+     "id": "ball-hearts-5",
+     "suit": "hearts",
+     "rank": "5",
+     "exerciseId": "sb-wall-squat",
+     "baseAmount": 5
+    },
+    {
+     "id": "ball-hearts-6",
+     "suit": "hearts",
+     "rank": "6",
+     "exerciseId": "sb-bridge",
+     "baseAmount": 6
+    },
+    {
+     "id": "ball-hearts-7",
+     "suit": "hearts",
+     "rank": "7",
+     "exerciseId": "sb-bridge",
+     "baseAmount": 7
+    },
+    {
+     "id": "ball-hearts-8",
+     "suit": "hearts",
+     "rank": "8",
+     "exerciseId": "sb-bridge",
+     "baseAmount": 8
+    },
+    {
+     "id": "ball-hearts-9",
+     "suit": "hearts",
+     "rank": "9",
+     "exerciseId": "sb-bridge",
+     "baseAmount": 9
+    },
+    {
+     "id": "ball-hearts-10",
+     "suit": "hearts",
+     "rank": "10",
+     "exerciseId": "sb-hamstring-curl",
+     "baseAmount": 10
+    },
+    {
+     "id": "ball-hearts-J",
+     "suit": "hearts",
+     "rank": "J",
+     "exerciseId": "sb-hamstring-curl",
+     "baseAmount": 10
+    },
+    {
+     "id": "ball-hearts-Q",
+     "suit": "hearts",
+     "rank": "Q",
+     "exerciseId": "sb-hamstring-curl",
+     "baseAmount": 10
+    },
+    {
+     "id": "ball-hearts-K",
+     "suit": "hearts",
+     "rank": "K",
+     "exerciseId": "sb-hamstring-curl",
+     "baseAmount": 10
+    },
+    {
+     "id": "ball-diamonds-A",
+     "suit": "diamonds",
+     "rank": "A",
+     "exerciseId": "sb-pike",
+     "baseAmount": 11
+    },
+    {
+     "id": "ball-diamonds-2",
+     "suit": "diamonds",
+     "rank": "2",
+     "exerciseId": "sb-incline-push-up",
+     "baseAmount": 2
+    },
+    {
+     "id": "ball-diamonds-3",
+     "suit": "diamonds",
+     "rank": "3",
+     "exerciseId": "sb-incline-push-up",
+     "baseAmount": 3
+    },
+    {
+     "id": "ball-diamonds-4",
+     "suit": "diamonds",
+     "rank": "4",
+     "exerciseId": "sb-incline-push-up",
+     "baseAmount": 4
+    },
+    {
+     "id": "ball-diamonds-5",
+     "suit": "diamonds",
+     "rank": "5",
+     "exerciseId": "sb-incline-push-up",
+     "baseAmount": 5
+    },
+    {
+     "id": "ball-diamonds-6",
+     "suit": "diamonds",
+     "rank": "6",
+     "exerciseId": "sb-decline-push-up",
+     "baseAmount": 6
+    },
+    {
+     "id": "ball-diamonds-7",
+     "suit": "diamonds",
+     "rank": "7",
+     "exerciseId": "sb-decline-push-up",
+     "baseAmount": 7
+    },
+    {
+     "id": "ball-diamonds-8",
+     "suit": "diamonds",
+     "rank": "8",
+     "exerciseId": "sb-decline-push-up",
+     "baseAmount": 8
+    },
+    {
+     "id": "ball-diamonds-9",
+     "suit": "diamonds",
+     "rank": "9",
+     "exerciseId": "sb-decline-push-up",
+     "baseAmount": 9
+    },
+    {
+     "id": "ball-diamonds-10",
+     "suit": "diamonds",
+     "rank": "10",
+     "exerciseId": "sb-pike",
+     "baseAmount": 10
+    },
+    {
+     "id": "ball-diamonds-J",
+     "suit": "diamonds",
+     "rank": "J",
+     "exerciseId": "sb-pike",
+     "baseAmount": 10
+    },
+    {
+     "id": "ball-diamonds-Q",
+     "suit": "diamonds",
+     "rank": "Q",
+     "exerciseId": "sb-pike",
+     "baseAmount": 10
+    },
+    {
+     "id": "ball-diamonds-K",
+     "suit": "diamonds",
+     "rank": "K",
+     "exerciseId": "sb-pike",
+     "baseAmount": 10
+    },
+    {
+     "id": "ball-clubs-A",
+     "suit": "clubs",
+     "rank": "A",
+     "exerciseId": "sb-superman-hold",
+     "baseAmount": 55
+    },
+    {
+     "id": "ball-clubs-2",
+     "suit": "clubs",
+     "rank": "2",
+     "exerciseId": "sb-back-extension",
+     "baseAmount": 2
+    },
+    {
+     "id": "ball-clubs-3",
+     "suit": "clubs",
+     "rank": "3",
+     "exerciseId": "sb-back-extension",
+     "baseAmount": 3
+    },
+    {
+     "id": "ball-clubs-4",
+     "suit": "clubs",
+     "rank": "4",
+     "exerciseId": "sb-back-extension",
+     "baseAmount": 4
+    },
+    {
+     "id": "ball-clubs-5",
+     "suit": "clubs",
+     "rank": "5",
+     "exerciseId": "sb-back-extension",
+     "baseAmount": 5
+    },
+    {
+     "id": "ball-clubs-6",
+     "suit": "clubs",
+     "rank": "6",
+     "exerciseId": "sb-y-raise",
+     "baseAmount": 6
+    },
+    {
+     "id": "ball-clubs-7",
+     "suit": "clubs",
+     "rank": "7",
+     "exerciseId": "sb-y-raise",
+     "baseAmount": 7
+    },
+    {
+     "id": "ball-clubs-8",
+     "suit": "clubs",
+     "rank": "8",
+     "exerciseId": "sb-y-raise",
+     "baseAmount": 8
+    },
+    {
+     "id": "ball-clubs-9",
+     "suit": "clubs",
+     "rank": "9",
+     "exerciseId": "sb-y-raise",
+     "baseAmount": 9
+    },
+    {
+     "id": "ball-clubs-10",
+     "suit": "clubs",
+     "rank": "10",
+     "exerciseId": "sb-superman-hold",
+     "baseAmount": 50
+    },
+    {
+     "id": "ball-clubs-J",
+     "suit": "clubs",
+     "rank": "J",
+     "exerciseId": "sb-superman-hold",
+     "baseAmount": 50
+    },
+    {
+     "id": "ball-clubs-Q",
+     "suit": "clubs",
+     "rank": "Q",
+     "exerciseId": "sb-superman-hold",
+     "baseAmount": 50
+    },
+    {
+     "id": "ball-clubs-K",
+     "suit": "clubs",
+     "rank": "K",
+     "exerciseId": "sb-superman-hold",
+     "baseAmount": 50
+    },
+    {
+     "id": "ball-spades-A",
+     "suit": "spades",
+     "rank": "A",
+     "exerciseId": "sb-pass",
+     "baseAmount": 11
+    },
+    {
+     "id": "ball-spades-2",
+     "suit": "spades",
+     "rank": "2",
+     "exerciseId": "sb-crunch",
+     "baseAmount": 2
+    },
+    {
+     "id": "ball-spades-3",
+     "suit": "spades",
+     "rank": "3",
+     "exerciseId": "sb-crunch",
+     "baseAmount": 3
+    },
+    {
+     "id": "ball-spades-4",
+     "suit": "spades",
+     "rank": "4",
+     "exerciseId": "sb-crunch",
+     "baseAmount": 4
+    },
+    {
+     "id": "ball-spades-5",
+     "suit": "spades",
+     "rank": "5",
+     "exerciseId": "sb-crunch",
+     "baseAmount": 5
+    },
+    {
+     "id": "ball-spades-6",
+     "suit": "spades",
+     "rank": "6",
+     "exerciseId": "sb-plank",
+     "baseAmount": 30
+    },
+    {
+     "id": "ball-spades-7",
+     "suit": "spades",
+     "rank": "7",
+     "exerciseId": "sb-plank",
+     "baseAmount": 35
+    },
+    {
+     "id": "ball-spades-8",
+     "suit": "spades",
+     "rank": "8",
+     "exerciseId": "sb-plank",
+     "baseAmount": 40
+    },
+    {
+     "id": "ball-spades-9",
+     "suit": "spades",
+     "rank": "9",
+     "exerciseId": "sb-plank",
+     "baseAmount": 45
+    },
+    {
+     "id": "ball-spades-10",
+     "suit": "spades",
+     "rank": "10",
+     "exerciseId": "sb-pass",
+     "baseAmount": 10
+    },
+    {
+     "id": "ball-spades-J",
+     "suit": "spades",
+     "rank": "J",
+     "exerciseId": "sb-pass",
+     "baseAmount": 10
+    },
+    {
+     "id": "ball-spades-Q",
+     "suit": "spades",
+     "rank": "Q",
+     "exerciseId": "sb-pass",
+     "baseAmount": 10
+    },
+    {
+     "id": "ball-spades-K",
+     "suit": "spades",
+     "rank": "K",
+     "exerciseId": "sb-pass",
+     "baseAmount": 10
+    },
+    {
+     "id": "ball-joker-1",
+     "suit": "joker",
+     "rank": "JOKER",
+     "exerciseId": null,
+     "baseAmount": 0
+    },
+    {
+     "id": "ball-joker-2",
+     "suit": "joker",
+     "rank": "JOKER",
+     "exerciseId": null,
+     "baseAmount": 0
+    }
+   ],
+   "builtIn": true,
+   "updatedAt": 0
+  },
+  {
+   "id": "deck-suspension",
+   "name": "Suspension deck",
+   "category": "suspension",
+   "suits": [
+    {
+     "suit": "hearts",
+     "label": "Legs",
+     "color": "suit-hearts",
+     "muscleGroups": [
+      "legs"
+     ]
+    },
+    {
+     "suit": "diamonds",
+     "label": "Push",
+     "color": "suit-diamonds",
+     "muscleGroups": [
+      "chest",
+      "shoulders"
+     ]
+    },
+    {
+     "suit": "clubs",
+     "label": "Pull",
+     "color": "suit-clubs",
+     "muscleGroups": [
+      "back",
+      "arms"
+     ]
+    },
+    {
+     "suit": "spades",
+     "label": "Core",
+     "color": "suit-spades",
+     "muscleGroups": [
+      "core"
+     ]
+    },
+    {
+     "suit": "joker",
+     "label": "Wild",
+     "color": "suit-joker",
+     "muscleGroups": [
+      "full-body"
+     ]
+    }
+   ],
+   "cards": [
+    {
+     "id": "suspension-hearts-A",
+     "suit": "hearts",
+     "rank": "A",
+     "exerciseId": "st-hamstring-curl",
+     "baseAmount": 11
+    },
+    {
+     "id": "suspension-hearts-2",
+     "suit": "hearts",
+     "rank": "2",
+     "exerciseId": "st-squat",
+     "baseAmount": 2
+    },
+    {
+     "id": "suspension-hearts-3",
+     "suit": "hearts",
+     "rank": "3",
+     "exerciseId": "st-squat",
+     "baseAmount": 3
+    },
+    {
+     "id": "suspension-hearts-4",
+     "suit": "hearts",
+     "rank": "4",
+     "exerciseId": "st-squat",
+     "baseAmount": 4
+    },
+    {
+     "id": "suspension-hearts-5",
+     "suit": "hearts",
+     "rank": "5",
+     "exerciseId": "st-squat",
+     "baseAmount": 5
+    },
+    {
+     "id": "suspension-hearts-6",
+     "suit": "hearts",
+     "rank": "6",
+     "exerciseId": "st-lunge",
+     "baseAmount": 6
+    },
+    {
+     "id": "suspension-hearts-7",
+     "suit": "hearts",
+     "rank": "7",
+     "exerciseId": "st-lunge",
+     "baseAmount": 7
+    },
+    {
+     "id": "suspension-hearts-8",
+     "suit": "hearts",
+     "rank": "8",
+     "exerciseId": "st-lunge",
+     "baseAmount": 8
+    },
+    {
+     "id": "suspension-hearts-9",
+     "suit": "hearts",
+     "rank": "9",
+     "exerciseId": "st-lunge",
+     "baseAmount": 9
+    },
+    {
+     "id": "suspension-hearts-10",
+     "suit": "hearts",
+     "rank": "10",
+     "exerciseId": "st-hamstring-curl",
+     "baseAmount": 10
+    },
+    {
+     "id": "suspension-hearts-J",
+     "suit": "hearts",
+     "rank": "J",
+     "exerciseId": "st-hamstring-curl",
+     "baseAmount": 10
+    },
+    {
+     "id": "suspension-hearts-Q",
+     "suit": "hearts",
+     "rank": "Q",
+     "exerciseId": "st-hamstring-curl",
+     "baseAmount": 10
+    },
+    {
+     "id": "suspension-hearts-K",
+     "suit": "hearts",
+     "rank": "K",
+     "exerciseId": "st-hamstring-curl",
+     "baseAmount": 10
+    },
+    {
+     "id": "suspension-diamonds-A",
+     "suit": "diamonds",
+     "rank": "A",
+     "exerciseId": "st-push-up",
+     "baseAmount": 11
+    },
+    {
+     "id": "suspension-diamonds-2",
+     "suit": "diamonds",
+     "rank": "2",
+     "exerciseId": "st-chest-press",
+     "baseAmount": 2
+    },
+    {
+     "id": "suspension-diamonds-3",
+     "suit": "diamonds",
+     "rank": "3",
+     "exerciseId": "st-chest-press",
+     "baseAmount": 3
+    },
+    {
+     "id": "suspension-diamonds-4",
+     "suit": "diamonds",
+     "rank": "4",
+     "exerciseId": "st-chest-press",
+     "baseAmount": 4
+    },
+    {
+     "id": "suspension-diamonds-5",
+     "suit": "diamonds",
+     "rank": "5",
+     "exerciseId": "st-chest-press",
+     "baseAmount": 5
+    },
+    {
+     "id": "suspension-diamonds-6",
+     "suit": "diamonds",
+     "rank": "6",
+     "exerciseId": "st-triceps",
+     "baseAmount": 6
+    },
+    {
+     "id": "suspension-diamonds-7",
+     "suit": "diamonds",
+     "rank": "7",
+     "exerciseId": "st-triceps",
+     "baseAmount": 7
+    },
+    {
+     "id": "suspension-diamonds-8",
+     "suit": "diamonds",
+     "rank": "8",
+     "exerciseId": "st-triceps",
+     "baseAmount": 8
+    },
+    {
+     "id": "suspension-diamonds-9",
+     "suit": "diamonds",
+     "rank": "9",
+     "exerciseId": "st-triceps",
+     "baseAmount": 9
+    },
+    {
+     "id": "suspension-diamonds-10",
+     "suit": "diamonds",
+     "rank": "10",
+     "exerciseId": "st-push-up",
+     "baseAmount": 10
+    },
+    {
+     "id": "suspension-diamonds-J",
+     "suit": "diamonds",
+     "rank": "J",
+     "exerciseId": "st-push-up",
+     "baseAmount": 10
+    },
+    {
+     "id": "suspension-diamonds-Q",
+     "suit": "diamonds",
+     "rank": "Q",
+     "exerciseId": "st-push-up",
+     "baseAmount": 10
+    },
+    {
+     "id": "suspension-diamonds-K",
+     "suit": "diamonds",
+     "rank": "K",
+     "exerciseId": "st-push-up",
+     "baseAmount": 10
+    },
+    {
+     "id": "suspension-clubs-A",
+     "suit": "clubs",
+     "rank": "A",
+     "exerciseId": "st-curl",
+     "baseAmount": 11
+    },
+    {
+     "id": "suspension-clubs-2",
+     "suit": "clubs",
+     "rank": "2",
+     "exerciseId": "st-row",
+     "baseAmount": 2
+    },
+    {
+     "id": "suspension-clubs-3",
+     "suit": "clubs",
+     "rank": "3",
+     "exerciseId": "st-row",
+     "baseAmount": 3
+    },
+    {
+     "id": "suspension-clubs-4",
+     "suit": "clubs",
+     "rank": "4",
+     "exerciseId": "st-row",
+     "baseAmount": 4
+    },
+    {
+     "id": "suspension-clubs-5",
+     "suit": "clubs",
+     "rank": "5",
+     "exerciseId": "st-row",
+     "baseAmount": 5
+    },
+    {
+     "id": "suspension-clubs-6",
+     "suit": "clubs",
+     "rank": "6",
+     "exerciseId": "st-y-fly",
+     "baseAmount": 6
+    },
+    {
+     "id": "suspension-clubs-7",
+     "suit": "clubs",
+     "rank": "7",
+     "exerciseId": "st-y-fly",
+     "baseAmount": 7
+    },
+    {
+     "id": "suspension-clubs-8",
+     "suit": "clubs",
+     "rank": "8",
+     "exerciseId": "st-y-fly",
+     "baseAmount": 8
+    },
+    {
+     "id": "suspension-clubs-9",
+     "suit": "clubs",
+     "rank": "9",
+     "exerciseId": "st-y-fly",
+     "baseAmount": 9
+    },
+    {
+     "id": "suspension-clubs-10",
+     "suit": "clubs",
+     "rank": "10",
+     "exerciseId": "st-curl",
+     "baseAmount": 10
+    },
+    {
+     "id": "suspension-clubs-J",
+     "suit": "clubs",
+     "rank": "J",
+     "exerciseId": "st-curl",
+     "baseAmount": 10
+    },
+    {
+     "id": "suspension-clubs-Q",
+     "suit": "clubs",
+     "rank": "Q",
+     "exerciseId": "st-curl",
+     "baseAmount": 10
+    },
+    {
+     "id": "suspension-clubs-K",
+     "suit": "clubs",
+     "rank": "K",
+     "exerciseId": "st-curl",
+     "baseAmount": 10
+    },
+    {
+     "id": "suspension-spades-A",
+     "suit": "spades",
+     "rank": "A",
+     "exerciseId": "st-pike",
+     "baseAmount": 11
+    },
+    {
+     "id": "suspension-spades-2",
+     "suit": "spades",
+     "rank": "2",
+     "exerciseId": "st-plank",
+     "baseAmount": 10
+    },
+    {
+     "id": "suspension-spades-3",
+     "suit": "spades",
+     "rank": "3",
+     "exerciseId": "st-plank",
+     "baseAmount": 15
+    },
+    {
+     "id": "suspension-spades-4",
+     "suit": "spades",
+     "rank": "4",
+     "exerciseId": "st-plank",
+     "baseAmount": 20
+    },
+    {
+     "id": "suspension-spades-5",
+     "suit": "spades",
+     "rank": "5",
+     "exerciseId": "st-plank",
+     "baseAmount": 25
+    },
+    {
+     "id": "suspension-spades-6",
+     "suit": "spades",
+     "rank": "6",
+     "exerciseId": "st-knee-tuck",
+     "baseAmount": 6
+    },
+    {
+     "id": "suspension-spades-7",
+     "suit": "spades",
+     "rank": "7",
+     "exerciseId": "st-knee-tuck",
+     "baseAmount": 7
+    },
+    {
+     "id": "suspension-spades-8",
+     "suit": "spades",
+     "rank": "8",
+     "exerciseId": "st-knee-tuck",
+     "baseAmount": 8
+    },
+    {
+     "id": "suspension-spades-9",
+     "suit": "spades",
+     "rank": "9",
+     "exerciseId": "st-knee-tuck",
+     "baseAmount": 9
+    },
+    {
+     "id": "suspension-spades-10",
+     "suit": "spades",
+     "rank": "10",
+     "exerciseId": "st-pike",
+     "baseAmount": 10
+    },
+    {
+     "id": "suspension-spades-J",
+     "suit": "spades",
+     "rank": "J",
+     "exerciseId": "st-pike",
+     "baseAmount": 10
+    },
+    {
+     "id": "suspension-spades-Q",
+     "suit": "spades",
+     "rank": "Q",
+     "exerciseId": "st-pike",
+     "baseAmount": 10
+    },
+    {
+     "id": "suspension-spades-K",
+     "suit": "spades",
+     "rank": "K",
+     "exerciseId": "st-pike",
+     "baseAmount": 10
+    },
+    {
+     "id": "suspension-joker-1",
+     "suit": "joker",
+     "rank": "JOKER",
+     "exerciseId": null,
+     "baseAmount": 0
+    },
+    {
+     "id": "suspension-joker-2",
+     "suit": "joker",
+     "rank": "JOKER",
+     "exerciseId": null,
+     "baseAmount": 0
+    }
+   ],
+   "builtIn": true,
+   "updatedAt": 0
+  },
+  {
+   "id": "deck-flexibility",
+   "name": "Flexibility deck",
+   "category": "flexibility",
+   "suits": [
+    {
+     "suit": "hearts",
+     "label": "Hips & legs",
+     "color": "suit-hearts",
+     "muscleGroups": [
+      "legs"
+     ]
+    },
+    {
+     "suit": "diamonds",
+     "label": "Shoulders & chest",
+     "color": "suit-diamonds",
+     "muscleGroups": [
+      "shoulders",
+      "chest"
+     ]
+    },
+    {
+     "suit": "clubs",
+     "label": "Spine",
+     "color": "suit-clubs",
+     "muscleGroups": [
+      "back"
+     ]
+    },
+    {
+     "suit": "spades",
+     "label": "Balance & calves",
+     "color": "suit-spades",
+     "muscleGroups": [
+      "core",
+      "mobility"
+     ]
+    },
+    {
+     "suit": "joker",
+     "label": "Wild",
+     "color": "suit-joker",
+     "muscleGroups": [
+      "full-body"
+     ]
+    }
+   ],
+   "cards": [
+    {
+     "id": "flexibility-hearts-A",
+     "suit": "hearts",
+     "rank": "A",
+     "exerciseId": "fx-hip-flexor",
+     "baseAmount": 55
+    },
+    {
+     "id": "flexibility-hearts-2",
+     "suit": "hearts",
+     "rank": "2",
+     "exerciseId": "fx-quad",
+     "baseAmount": 10
+    },
+    {
+     "id": "flexibility-hearts-3",
+     "suit": "hearts",
+     "rank": "3",
+     "exerciseId": "fx-quad",
+     "baseAmount": 15
+    },
+    {
+     "id": "flexibility-hearts-4",
+     "suit": "hearts",
+     "rank": "4",
+     "exerciseId": "fx-quad",
+     "baseAmount": 20
+    },
+    {
+     "id": "flexibility-hearts-5",
+     "suit": "hearts",
+     "rank": "5",
+     "exerciseId": "fx-quad",
+     "baseAmount": 25
+    },
+    {
+     "id": "flexibility-hearts-6",
+     "suit": "hearts",
+     "rank": "6",
+     "exerciseId": "fx-hamstring",
+     "baseAmount": 30
+    },
+    {
+     "id": "flexibility-hearts-7",
+     "suit": "hearts",
+     "rank": "7",
+     "exerciseId": "fx-hamstring",
+     "baseAmount": 35
+    },
+    {
+     "id": "flexibility-hearts-8",
+     "suit": "hearts",
+     "rank": "8",
+     "exerciseId": "fx-hamstring",
+     "baseAmount": 40
+    },
+    {
+     "id": "flexibility-hearts-9",
+     "suit": "hearts",
+     "rank": "9",
+     "exerciseId": "fx-hamstring",
+     "baseAmount": 45
+    },
+    {
+     "id": "flexibility-hearts-10",
+     "suit": "hearts",
+     "rank": "10",
+     "exerciseId": "fx-hip-flexor",
+     "baseAmount": 50
+    },
+    {
+     "id": "flexibility-hearts-J",
+     "suit": "hearts",
+     "rank": "J",
+     "exerciseId": "fx-hip-flexor",
+     "baseAmount": 50
+    },
+    {
+     "id": "flexibility-hearts-Q",
+     "suit": "hearts",
+     "rank": "Q",
+     "exerciseId": "fx-hip-flexor",
+     "baseAmount": 50
+    },
+    {
+     "id": "flexibility-hearts-K",
+     "suit": "hearts",
+     "rank": "K",
+     "exerciseId": "fx-hip-flexor",
+     "baseAmount": 50
+    },
+    {
+     "id": "flexibility-diamonds-A",
+     "suit": "diamonds",
+     "rank": "A",
+     "exerciseId": "fx-doorway",
+     "baseAmount": 55
+    },
+    {
+     "id": "flexibility-diamonds-2",
+     "suit": "diamonds",
+     "rank": "2",
+     "exerciseId": "fx-cross-body",
+     "baseAmount": 10
+    },
+    {
+     "id": "flexibility-diamonds-3",
+     "suit": "diamonds",
+     "rank": "3",
+     "exerciseId": "fx-cross-body",
+     "baseAmount": 15
+    },
+    {
+     "id": "flexibility-diamonds-4",
+     "suit": "diamonds",
+     "rank": "4",
+     "exerciseId": "fx-cross-body",
+     "baseAmount": 20
+    },
+    {
+     "id": "flexibility-diamonds-5",
+     "suit": "diamonds",
+     "rank": "5",
+     "exerciseId": "fx-cross-body",
+     "baseAmount": 25
+    },
+    {
+     "id": "flexibility-diamonds-6",
+     "suit": "diamonds",
+     "rank": "6",
+     "exerciseId": "fx-triceps",
+     "baseAmount": 30
+    },
+    {
+     "id": "flexibility-diamonds-7",
+     "suit": "diamonds",
+     "rank": "7",
+     "exerciseId": "fx-triceps",
+     "baseAmount": 35
+    },
+    {
+     "id": "flexibility-diamonds-8",
+     "suit": "diamonds",
+     "rank": "8",
+     "exerciseId": "fx-triceps",
+     "baseAmount": 40
+    },
+    {
+     "id": "flexibility-diamonds-9",
+     "suit": "diamonds",
+     "rank": "9",
+     "exerciseId": "fx-triceps",
+     "baseAmount": 45
+    },
+    {
+     "id": "flexibility-diamonds-10",
+     "suit": "diamonds",
+     "rank": "10",
+     "exerciseId": "fx-doorway",
+     "baseAmount": 50
+    },
+    {
+     "id": "flexibility-diamonds-J",
+     "suit": "diamonds",
+     "rank": "J",
+     "exerciseId": "fx-doorway",
+     "baseAmount": 50
+    },
+    {
+     "id": "flexibility-diamonds-Q",
+     "suit": "diamonds",
+     "rank": "Q",
+     "exerciseId": "fx-doorway",
+     "baseAmount": 50
+    },
+    {
+     "id": "flexibility-diamonds-K",
+     "suit": "diamonds",
+     "rank": "K",
+     "exerciseId": "fx-doorway",
+     "baseAmount": 50
+    },
+    {
+     "id": "flexibility-clubs-A",
+     "suit": "clubs",
+     "rank": "A",
+     "exerciseId": "fx-supine-twist",
+     "baseAmount": 55
+    },
+    {
+     "id": "flexibility-clubs-2",
+     "suit": "clubs",
+     "rank": "2",
+     "exerciseId": "fx-cat-cow",
+     "baseAmount": 2
+    },
+    {
+     "id": "flexibility-clubs-3",
+     "suit": "clubs",
+     "rank": "3",
+     "exerciseId": "fx-cat-cow",
+     "baseAmount": 3
+    },
+    {
+     "id": "flexibility-clubs-4",
+     "suit": "clubs",
+     "rank": "4",
+     "exerciseId": "fx-cat-cow",
+     "baseAmount": 4
+    },
+    {
+     "id": "flexibility-clubs-5",
+     "suit": "clubs",
+     "rank": "5",
+     "exerciseId": "fx-cat-cow",
+     "baseAmount": 5
+    },
+    {
+     "id": "flexibility-clubs-6",
+     "suit": "clubs",
+     "rank": "6",
+     "exerciseId": "fx-knee-hug",
+     "baseAmount": 30
+    },
+    {
+     "id": "flexibility-clubs-7",
+     "suit": "clubs",
+     "rank": "7",
+     "exerciseId": "fx-knee-hug",
+     "baseAmount": 35
+    },
+    {
+     "id": "flexibility-clubs-8",
+     "suit": "clubs",
+     "rank": "8",
+     "exerciseId": "fx-knee-hug",
+     "baseAmount": 40
+    },
+    {
+     "id": "flexibility-clubs-9",
+     "suit": "clubs",
+     "rank": "9",
+     "exerciseId": "fx-knee-hug",
+     "baseAmount": 45
+    },
+    {
+     "id": "flexibility-clubs-10",
+     "suit": "clubs",
+     "rank": "10",
+     "exerciseId": "fx-supine-twist",
+     "baseAmount": 50
+    },
+    {
+     "id": "flexibility-clubs-J",
+     "suit": "clubs",
+     "rank": "J",
+     "exerciseId": "fx-supine-twist",
+     "baseAmount": 50
+    },
+    {
+     "id": "flexibility-clubs-Q",
+     "suit": "clubs",
+     "rank": "Q",
+     "exerciseId": "fx-supine-twist",
+     "baseAmount": 50
+    },
+    {
+     "id": "flexibility-clubs-K",
+     "suit": "clubs",
+     "rank": "K",
+     "exerciseId": "fx-supine-twist",
+     "baseAmount": 50
+    },
+    {
+     "id": "flexibility-spades-A",
+     "suit": "spades",
+     "rank": "A",
+     "exerciseId": "fx-leg-swing",
+     "baseAmount": 11
+    },
+    {
+     "id": "flexibility-spades-2",
+     "suit": "spades",
+     "rank": "2",
+     "exerciseId": "fx-wall-calf",
+     "baseAmount": 10
+    },
+    {
+     "id": "flexibility-spades-3",
+     "suit": "spades",
+     "rank": "3",
+     "exerciseId": "fx-wall-calf",
+     "baseAmount": 15
+    },
+    {
+     "id": "flexibility-spades-4",
+     "suit": "spades",
+     "rank": "4",
+     "exerciseId": "fx-wall-calf",
+     "baseAmount": 20
+    },
+    {
+     "id": "flexibility-spades-5",
+     "suit": "spades",
+     "rank": "5",
+     "exerciseId": "fx-wall-calf",
+     "baseAmount": 25
+    },
+    {
+     "id": "flexibility-spades-6",
+     "suit": "spades",
+     "rank": "6",
+     "exerciseId": "fx-toe-reach",
+     "baseAmount": 30
+    },
+    {
+     "id": "flexibility-spades-7",
+     "suit": "spades",
+     "rank": "7",
+     "exerciseId": "fx-toe-reach",
+     "baseAmount": 35
+    },
+    {
+     "id": "flexibility-spades-8",
+     "suit": "spades",
+     "rank": "8",
+     "exerciseId": "fx-toe-reach",
+     "baseAmount": 40
+    },
+    {
+     "id": "flexibility-spades-9",
+     "suit": "spades",
+     "rank": "9",
+     "exerciseId": "fx-toe-reach",
+     "baseAmount": 45
+    },
+    {
+     "id": "flexibility-spades-10",
+     "suit": "spades",
+     "rank": "10",
+     "exerciseId": "fx-leg-swing",
+     "baseAmount": 10
+    },
+    {
+     "id": "flexibility-spades-J",
+     "suit": "spades",
+     "rank": "J",
+     "exerciseId": "fx-leg-swing",
+     "baseAmount": 10
+    },
+    {
+     "id": "flexibility-spades-Q",
+     "suit": "spades",
+     "rank": "Q",
+     "exerciseId": "fx-leg-swing",
+     "baseAmount": 10
+    },
+    {
+     "id": "flexibility-spades-K",
+     "suit": "spades",
+     "rank": "K",
+     "exerciseId": "fx-leg-swing",
+     "baseAmount": 10
+    },
+    {
+     "id": "flexibility-joker-1",
+     "suit": "joker",
+     "rank": "JOKER",
+     "exerciseId": null,
+     "baseAmount": 0
+    },
+    {
+     "id": "flexibility-joker-2",
+     "suit": "joker",
+     "rank": "JOKER",
+     "exerciseId": null,
+     "baseAmount": 0
+    }
+   ],
+   "builtIn": true,
+   "updatedAt": 0
+  },
+  {
+   "id": "deck-yoga",
+   "name": "Yoga deck",
+   "category": "yoga",
+   "suits": [
+    {
+     "suit": "hearts",
+     "label": "Hips & legs",
+     "color": "suit-hearts",
+     "muscleGroups": [
+      "legs"
+     ]
+    },
+    {
+     "suit": "diamonds",
+     "label": "Shoulders & chest",
+     "color": "suit-diamonds",
+     "muscleGroups": [
+      "shoulders",
+      "chest"
+     ]
+    },
+    {
+     "suit": "clubs",
+     "label": "Spine",
+     "color": "suit-clubs",
+     "muscleGroups": [
+      "back"
+     ]
+    },
+    {
+     "suit": "spades",
+     "label": "Balance & calves",
+     "color": "suit-spades",
+     "muscleGroups": [
+      "core",
+      "mobility"
+     ]
+    },
+    {
+     "suit": "joker",
+     "label": "Wild",
+     "color": "suit-joker",
+     "muscleGroups": [
+      "full-body"
+     ]
+    }
+   ],
+   "cards": [
+    {
+     "id": "yoga-hearts-A",
+     "suit": "hearts",
+     "rank": "A",
+     "exerciseId": "yg-chair",
+     "baseAmount": 55
+    },
+    {
+     "id": "yoga-hearts-2",
+     "suit": "hearts",
+     "rank": "2",
+     "exerciseId": "yg-low-lunge",
+     "baseAmount": 10
+    },
+    {
+     "id": "yoga-hearts-3",
+     "suit": "hearts",
+     "rank": "3",
+     "exerciseId": "yg-low-lunge",
+     "baseAmount": 15
+    },
+    {
+     "id": "yoga-hearts-4",
+     "suit": "hearts",
+     "rank": "4",
+     "exerciseId": "yg-low-lunge",
+     "baseAmount": 20
+    },
+    {
+     "id": "yoga-hearts-5",
+     "suit": "hearts",
+     "rank": "5",
+     "exerciseId": "yg-low-lunge",
+     "baseAmount": 25
+    },
+    {
+     "id": "yoga-hearts-6",
+     "suit": "hearts",
+     "rank": "6",
+     "exerciseId": "yg-warrior-2",
+     "baseAmount": 30
+    },
+    {
+     "id": "yoga-hearts-7",
+     "suit": "hearts",
+     "rank": "7",
+     "exerciseId": "yg-warrior-2",
+     "baseAmount": 35
+    },
+    {
+     "id": "yoga-hearts-8",
+     "suit": "hearts",
+     "rank": "8",
+     "exerciseId": "yg-warrior-2",
+     "baseAmount": 40
+    },
+    {
+     "id": "yoga-hearts-9",
+     "suit": "hearts",
+     "rank": "9",
+     "exerciseId": "yg-warrior-2",
+     "baseAmount": 45
+    },
+    {
+     "id": "yoga-hearts-10",
+     "suit": "hearts",
+     "rank": "10",
+     "exerciseId": "yg-chair",
+     "baseAmount": 50
+    },
+    {
+     "id": "yoga-hearts-J",
+     "suit": "hearts",
+     "rank": "J",
+     "exerciseId": "yg-chair",
+     "baseAmount": 50
+    },
+    {
+     "id": "yoga-hearts-Q",
+     "suit": "hearts",
+     "rank": "Q",
+     "exerciseId": "yg-chair",
+     "baseAmount": 50
+    },
+    {
+     "id": "yoga-hearts-K",
+     "suit": "hearts",
+     "rank": "K",
+     "exerciseId": "yg-chair",
+     "baseAmount": 50
+    },
+    {
+     "id": "yoga-diamonds-A",
+     "suit": "diamonds",
+     "rank": "A",
+     "exerciseId": "yg-puppy",
+     "baseAmount": 55
+    },
+    {
+     "id": "yoga-diamonds-2",
+     "suit": "diamonds",
+     "rank": "2",
+     "exerciseId": "yg-upward-salute",
+     "baseAmount": 10
+    },
+    {
+     "id": "yoga-diamonds-3",
+     "suit": "diamonds",
+     "rank": "3",
+     "exerciseId": "yg-upward-salute",
+     "baseAmount": 15
+    },
+    {
+     "id": "yoga-diamonds-4",
+     "suit": "diamonds",
+     "rank": "4",
+     "exerciseId": "yg-upward-salute",
+     "baseAmount": 20
+    },
+    {
+     "id": "yoga-diamonds-5",
+     "suit": "diamonds",
+     "rank": "5",
+     "exerciseId": "yg-upward-salute",
+     "baseAmount": 25
+    },
+    {
+     "id": "yoga-diamonds-6",
+     "suit": "diamonds",
+     "rank": "6",
+     "exerciseId": "yg-down-dog",
+     "baseAmount": 30
+    },
+    {
+     "id": "yoga-diamonds-7",
+     "suit": "diamonds",
+     "rank": "7",
+     "exerciseId": "yg-down-dog",
+     "baseAmount": 35
+    },
+    {
+     "id": "yoga-diamonds-8",
+     "suit": "diamonds",
+     "rank": "8",
+     "exerciseId": "yg-down-dog",
+     "baseAmount": 40
+    },
+    {
+     "id": "yoga-diamonds-9",
+     "suit": "diamonds",
+     "rank": "9",
+     "exerciseId": "yg-down-dog",
+     "baseAmount": 45
+    },
+    {
+     "id": "yoga-diamonds-10",
+     "suit": "diamonds",
+     "rank": "10",
+     "exerciseId": "yg-puppy",
+     "baseAmount": 50
+    },
+    {
+     "id": "yoga-diamonds-J",
+     "suit": "diamonds",
+     "rank": "J",
+     "exerciseId": "yg-puppy",
+     "baseAmount": 50
+    },
+    {
+     "id": "yoga-diamonds-Q",
+     "suit": "diamonds",
+     "rank": "Q",
+     "exerciseId": "yg-puppy",
+     "baseAmount": 50
+    },
+    {
+     "id": "yoga-diamonds-K",
+     "suit": "diamonds",
+     "rank": "K",
+     "exerciseId": "yg-puppy",
+     "baseAmount": 50
+    },
+    {
+     "id": "yoga-clubs-A",
+     "suit": "clubs",
+     "rank": "A",
+     "exerciseId": "yg-bridge",
+     "baseAmount": 55
+    },
+    {
+     "id": "yoga-clubs-2",
+     "suit": "clubs",
+     "rank": "2",
+     "exerciseId": "yg-cobra",
+     "baseAmount": 10
+    },
+    {
+     "id": "yoga-clubs-3",
+     "suit": "clubs",
+     "rank": "3",
+     "exerciseId": "yg-cobra",
+     "baseAmount": 15
+    },
+    {
+     "id": "yoga-clubs-4",
+     "suit": "clubs",
+     "rank": "4",
+     "exerciseId": "yg-cobra",
+     "baseAmount": 20
+    },
+    {
+     "id": "yoga-clubs-5",
+     "suit": "clubs",
+     "rank": "5",
+     "exerciseId": "yg-cobra",
+     "baseAmount": 25
+    },
+    {
+     "id": "yoga-clubs-6",
+     "suit": "clubs",
+     "rank": "6",
+     "exerciseId": "yg-child",
+     "baseAmount": 30
+    },
+    {
+     "id": "yoga-clubs-7",
+     "suit": "clubs",
+     "rank": "7",
+     "exerciseId": "yg-child",
+     "baseAmount": 35
+    },
+    {
+     "id": "yoga-clubs-8",
+     "suit": "clubs",
+     "rank": "8",
+     "exerciseId": "yg-child",
+     "baseAmount": 40
+    },
+    {
+     "id": "yoga-clubs-9",
+     "suit": "clubs",
+     "rank": "9",
+     "exerciseId": "yg-child",
+     "baseAmount": 45
+    },
+    {
+     "id": "yoga-clubs-10",
+     "suit": "clubs",
+     "rank": "10",
+     "exerciseId": "yg-bridge",
+     "baseAmount": 50
+    },
+    {
+     "id": "yoga-clubs-J",
+     "suit": "clubs",
+     "rank": "J",
+     "exerciseId": "yg-bridge",
+     "baseAmount": 50
+    },
+    {
+     "id": "yoga-clubs-Q",
+     "suit": "clubs",
+     "rank": "Q",
+     "exerciseId": "yg-bridge",
+     "baseAmount": 50
+    },
+    {
+     "id": "yoga-clubs-K",
+     "suit": "clubs",
+     "rank": "K",
+     "exerciseId": "yg-bridge",
+     "baseAmount": 50
+    },
+    {
+     "id": "yoga-spades-A",
+     "suit": "spades",
+     "rank": "A",
+     "exerciseId": "yg-boat",
+     "baseAmount": 55
+    },
+    {
+     "id": "yoga-spades-2",
+     "suit": "spades",
+     "rank": "2",
+     "exerciseId": "yg-mountain",
+     "baseAmount": 10
+    },
+    {
+     "id": "yoga-spades-3",
+     "suit": "spades",
+     "rank": "3",
+     "exerciseId": "yg-mountain",
+     "baseAmount": 15
+    },
+    {
+     "id": "yoga-spades-4",
+     "suit": "spades",
+     "rank": "4",
+     "exerciseId": "yg-mountain",
+     "baseAmount": 20
+    },
+    {
+     "id": "yoga-spades-5",
+     "suit": "spades",
+     "rank": "5",
+     "exerciseId": "yg-mountain",
+     "baseAmount": 25
+    },
+    {
+     "id": "yoga-spades-6",
+     "suit": "spades",
+     "rank": "6",
+     "exerciseId": "yg-tree",
+     "baseAmount": 30
+    },
+    {
+     "id": "yoga-spades-7",
+     "suit": "spades",
+     "rank": "7",
+     "exerciseId": "yg-tree",
+     "baseAmount": 35
+    },
+    {
+     "id": "yoga-spades-8",
+     "suit": "spades",
+     "rank": "8",
+     "exerciseId": "yg-tree",
+     "baseAmount": 40
+    },
+    {
+     "id": "yoga-spades-9",
+     "suit": "spades",
+     "rank": "9",
+     "exerciseId": "yg-tree",
+     "baseAmount": 45
+    },
+    {
+     "id": "yoga-spades-10",
+     "suit": "spades",
+     "rank": "10",
+     "exerciseId": "yg-boat",
+     "baseAmount": 50
+    },
+    {
+     "id": "yoga-spades-J",
+     "suit": "spades",
+     "rank": "J",
+     "exerciseId": "yg-boat",
+     "baseAmount": 50
+    },
+    {
+     "id": "yoga-spades-Q",
+     "suit": "spades",
+     "rank": "Q",
+     "exerciseId": "yg-boat",
+     "baseAmount": 50
+    },
+    {
+     "id": "yoga-spades-K",
+     "suit": "spades",
+     "rank": "K",
+     "exerciseId": "yg-boat",
+     "baseAmount": 50
+    },
+    {
+     "id": "yoga-joker-1",
+     "suit": "joker",
+     "rank": "JOKER",
+     "exerciseId": null,
+     "baseAmount": 0
+    },
+    {
+     "id": "yoga-joker-2",
+     "suit": "joker",
+     "rank": "JOKER",
+     "exerciseId": null,
+     "baseAmount": 0
+    }
+   ],
+   "builtIn": true,
+   "updatedAt": 0
+  },
+  {
+   "id": "deck-running",
+   "name": "Running deck",
+   "category": "running",
+   "suits": [
+    {
+     "suit": "hearts",
+     "label": "Drills",
+     "color": "suit-hearts",
+     "muscleGroups": [
+      "cardio"
+     ]
+    },
+    {
+     "suit": "diamonds",
+     "label": "Strength",
+     "color": "suit-diamonds",
+     "muscleGroups": [
+      "legs"
+     ]
+    },
+    {
+     "suit": "clubs",
+     "label": "Running",
+     "color": "suit-clubs",
+     "muscleGroups": [
+      "cardio"
+     ]
+    },
+    {
+     "suit": "spades",
+     "label": "Mobility",
+     "color": "suit-spades",
+     "muscleGroups": [
+      "mobility"
+     ]
+    },
+    {
+     "suit": "joker",
+     "label": "Wild",
+     "color": "suit-joker",
+     "muscleGroups": [
+      "full-body"
+     ]
+    }
+   ],
+   "cards": [
+    {
+     "id": "running-hearts-A",
+     "suit": "hearts",
+     "rank": "A",
+     "exerciseId": "rn-a-skip",
+     "baseAmount": 11
+    },
+    {
+     "id": "running-hearts-2",
+     "suit": "hearts",
+     "rank": "2",
+     "exerciseId": "rn-butt-kicks",
+     "baseAmount": 10
+    },
+    {
+     "id": "running-hearts-3",
+     "suit": "hearts",
+     "rank": "3",
+     "exerciseId": "rn-butt-kicks",
+     "baseAmount": 15
+    },
+    {
+     "id": "running-hearts-4",
+     "suit": "hearts",
+     "rank": "4",
+     "exerciseId": "rn-butt-kicks",
+     "baseAmount": 20
+    },
+    {
+     "id": "running-hearts-5",
+     "suit": "hearts",
+     "rank": "5",
+     "exerciseId": "rn-butt-kicks",
+     "baseAmount": 25
+    },
+    {
+     "id": "running-hearts-6",
+     "suit": "hearts",
+     "rank": "6",
+     "exerciseId": "rn-high-knees",
+     "baseAmount": 30
+    },
+    {
+     "id": "running-hearts-7",
+     "suit": "hearts",
+     "rank": "7",
+     "exerciseId": "rn-high-knees",
+     "baseAmount": 35
+    },
+    {
+     "id": "running-hearts-8",
+     "suit": "hearts",
+     "rank": "8",
+     "exerciseId": "rn-high-knees",
+     "baseAmount": 40
+    },
+    {
+     "id": "running-hearts-9",
+     "suit": "hearts",
+     "rank": "9",
+     "exerciseId": "rn-high-knees",
+     "baseAmount": 45
+    },
+    {
+     "id": "running-hearts-10",
+     "suit": "hearts",
+     "rank": "10",
+     "exerciseId": "rn-a-skip",
+     "baseAmount": 10
+    },
+    {
+     "id": "running-hearts-J",
+     "suit": "hearts",
+     "rank": "J",
+     "exerciseId": "rn-a-skip",
+     "baseAmount": 10
+    },
+    {
+     "id": "running-hearts-Q",
+     "suit": "hearts",
+     "rank": "Q",
+     "exerciseId": "rn-a-skip",
+     "baseAmount": 10
+    },
+    {
+     "id": "running-hearts-K",
+     "suit": "hearts",
+     "rank": "K",
+     "exerciseId": "rn-a-skip",
+     "baseAmount": 10
+    },
+    {
+     "id": "running-diamonds-A",
+     "suit": "diamonds",
+     "rank": "A",
+     "exerciseId": "rn-walking-lunge",
+     "baseAmount": 11
+    },
+    {
+     "id": "running-diamonds-2",
+     "suit": "diamonds",
+     "rank": "2",
+     "exerciseId": "rn-calf-raise",
+     "baseAmount": 2
+    },
+    {
+     "id": "running-diamonds-3",
+     "suit": "diamonds",
+     "rank": "3",
+     "exerciseId": "rn-calf-raise",
+     "baseAmount": 3
+    },
+    {
+     "id": "running-diamonds-4",
+     "suit": "diamonds",
+     "rank": "4",
+     "exerciseId": "rn-calf-raise",
+     "baseAmount": 4
+    },
+    {
+     "id": "running-diamonds-5",
+     "suit": "diamonds",
+     "rank": "5",
+     "exerciseId": "rn-calf-raise",
+     "baseAmount": 5
+    },
+    {
+     "id": "running-diamonds-6",
+     "suit": "diamonds",
+     "rank": "6",
+     "exerciseId": "rn-single-leg-bridge",
+     "baseAmount": 6
+    },
+    {
+     "id": "running-diamonds-7",
+     "suit": "diamonds",
+     "rank": "7",
+     "exerciseId": "rn-single-leg-bridge",
+     "baseAmount": 7
+    },
+    {
+     "id": "running-diamonds-8",
+     "suit": "diamonds",
+     "rank": "8",
+     "exerciseId": "rn-single-leg-bridge",
+     "baseAmount": 8
+    },
+    {
+     "id": "running-diamonds-9",
+     "suit": "diamonds",
+     "rank": "9",
+     "exerciseId": "rn-single-leg-bridge",
+     "baseAmount": 9
+    },
+    {
+     "id": "running-diamonds-10",
+     "suit": "diamonds",
+     "rank": "10",
+     "exerciseId": "rn-walking-lunge",
+     "baseAmount": 10
+    },
+    {
+     "id": "running-diamonds-J",
+     "suit": "diamonds",
+     "rank": "J",
+     "exerciseId": "rn-walking-lunge",
+     "baseAmount": 10
+    },
+    {
+     "id": "running-diamonds-Q",
+     "suit": "diamonds",
+     "rank": "Q",
+     "exerciseId": "rn-walking-lunge",
+     "baseAmount": 10
+    },
+    {
+     "id": "running-diamonds-K",
+     "suit": "diamonds",
+     "rank": "K",
+     "exerciseId": "rn-walking-lunge",
+     "baseAmount": 10
+    },
+    {
+     "id": "running-clubs-A",
+     "suit": "clubs",
+     "rank": "A",
+     "exerciseId": "rn-hill-sprint",
+     "baseAmount": 55
+    },
+    {
+     "id": "running-clubs-2",
+     "suit": "clubs",
+     "rank": "2",
+     "exerciseId": "rn-easy-jog",
+     "baseAmount": 10
+    },
+    {
+     "id": "running-clubs-3",
+     "suit": "clubs",
+     "rank": "3",
+     "exerciseId": "rn-easy-jog",
+     "baseAmount": 15
+    },
+    {
+     "id": "running-clubs-4",
+     "suit": "clubs",
+     "rank": "4",
+     "exerciseId": "rn-easy-jog",
+     "baseAmount": 20
+    },
+    {
+     "id": "running-clubs-5",
+     "suit": "clubs",
+     "rank": "5",
+     "exerciseId": "rn-easy-jog",
+     "baseAmount": 25
+    },
+    {
+     "id": "running-clubs-6",
+     "suit": "clubs",
+     "rank": "6",
+     "exerciseId": "rn-strides",
+     "baseAmount": 30
+    },
+    {
+     "id": "running-clubs-7",
+     "suit": "clubs",
+     "rank": "7",
+     "exerciseId": "rn-strides",
+     "baseAmount": 35
+    },
+    {
+     "id": "running-clubs-8",
+     "suit": "clubs",
+     "rank": "8",
+     "exerciseId": "rn-strides",
+     "baseAmount": 40
+    },
+    {
+     "id": "running-clubs-9",
+     "suit": "clubs",
+     "rank": "9",
+     "exerciseId": "rn-strides",
+     "baseAmount": 45
+    },
+    {
+     "id": "running-clubs-10",
+     "suit": "clubs",
+     "rank": "10",
+     "exerciseId": "rn-hill-sprint",
+     "baseAmount": 50
+    },
+    {
+     "id": "running-clubs-J",
+     "suit": "clubs",
+     "rank": "J",
+     "exerciseId": "rn-hill-sprint",
+     "baseAmount": 50
+    },
+    {
+     "id": "running-clubs-Q",
+     "suit": "clubs",
+     "rank": "Q",
+     "exerciseId": "rn-hill-sprint",
+     "baseAmount": 50
+    },
+    {
+     "id": "running-clubs-K",
+     "suit": "clubs",
+     "rank": "K",
+     "exerciseId": "rn-hill-sprint",
+     "baseAmount": 50
+    },
+    {
+     "id": "running-spades-A",
+     "suit": "spades",
+     "rank": "A",
+     "exerciseId": "rn-calf-stretch",
+     "baseAmount": 55
+    },
+    {
+     "id": "running-spades-2",
+     "suit": "spades",
+     "rank": "2",
+     "exerciseId": "rn-leg-swing",
+     "baseAmount": 2
+    },
+    {
+     "id": "running-spades-3",
+     "suit": "spades",
+     "rank": "3",
+     "exerciseId": "rn-leg-swing",
+     "baseAmount": 3
+    },
+    {
+     "id": "running-spades-4",
+     "suit": "spades",
+     "rank": "4",
+     "exerciseId": "rn-leg-swing",
+     "baseAmount": 4
+    },
+    {
+     "id": "running-spades-5",
+     "suit": "spades",
+     "rank": "5",
+     "exerciseId": "rn-leg-swing",
+     "baseAmount": 5
+    },
+    {
+     "id": "running-spades-6",
+     "suit": "spades",
+     "rank": "6",
+     "exerciseId": "rn-knee-hug",
+     "baseAmount": 6
+    },
+    {
+     "id": "running-spades-7",
+     "suit": "spades",
+     "rank": "7",
+     "exerciseId": "rn-knee-hug",
+     "baseAmount": 7
+    },
+    {
+     "id": "running-spades-8",
+     "suit": "spades",
+     "rank": "8",
+     "exerciseId": "rn-knee-hug",
+     "baseAmount": 8
+    },
+    {
+     "id": "running-spades-9",
+     "suit": "spades",
+     "rank": "9",
+     "exerciseId": "rn-knee-hug",
+     "baseAmount": 9
+    },
+    {
+     "id": "running-spades-10",
+     "suit": "spades",
+     "rank": "10",
+     "exerciseId": "rn-calf-stretch",
+     "baseAmount": 50
+    },
+    {
+     "id": "running-spades-J",
+     "suit": "spades",
+     "rank": "J",
+     "exerciseId": "rn-calf-stretch",
+     "baseAmount": 50
+    },
+    {
+     "id": "running-spades-Q",
+     "suit": "spades",
+     "rank": "Q",
+     "exerciseId": "rn-calf-stretch",
+     "baseAmount": 50
+    },
+    {
+     "id": "running-spades-K",
+     "suit": "spades",
+     "rank": "K",
+     "exerciseId": "rn-calf-stretch",
+     "baseAmount": 50
+    },
+    {
+     "id": "running-joker-1",
+     "suit": "joker",
+     "rank": "JOKER",
+     "exerciseId": null,
+     "baseAmount": 0
+    },
+    {
+     "id": "running-joker-2",
+     "suit": "joker",
+     "rank": "JOKER",
+     "exerciseId": null,
+     "baseAmount": 0
+    }
+   ],
+   "builtIn": true,
+   "updatedAt": 0
+  }
+ ]
+}

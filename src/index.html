@@ -4,16 +4,18 @@
     <meta charset="utf-8" />
     <title>Deckfit</title>
     <base href="/" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content="Turn a deck of exercise cards into workout games, solo or with friends." />
+    <!-- Toolbar colour per theme; the dark value matches --table in _card-tokens.scss. -->
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#eef2ef" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#151b28" />
+    <!-- iOS add-to-home-screen: standalone, translucent status bar under the safe area. -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="DeckFit" />
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <link rel="manifest" href="manifest.webmanifest" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
-      rel="stylesheet"
-    />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   </head>
   <body>
     <app-root></app-root>

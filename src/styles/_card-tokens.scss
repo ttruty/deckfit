@@ -1,0 +1,165 @@
+// DeckFit card visual system.
+// Fonts are self-hosted via @fontsource so cards render offline:
+//   npm i @fontsource/big-shoulders-display @fontsource/atkinson-hyperlegible
+
+:root {
+  --paper: #eef2ef;
+  --table: #d5ddd8;
+  --ink: #1f2a44;
+  --ink-far: #9aa3b5;
+
+  // Plate fills. Every one carries its --on-* text at WCAG AA (4.5:1) — see the contrast note below.
+  --suit-hearts: #d7263d;   // legs / hips / drills
+  --suit-diamonds: #e89a00; // push / shoulders / strength
+  --suit-clubs: #168378;    // pull / spine / running
+  --suit-spades: #2e4ac9;   // core / balance / mobility
+  --suit-joker: #7b3fbf;
+
+  // The same suits as *text* on paper (rank, pip, suit labels): darkened for AA in light theme,
+  // lightened in dark theme. Never use a plate fill for text on paper.
+  --suit-text-hearts: #b92134;
+  --suit-text-diamonds: #825600;
+  --suit-text-clubs: #126b62;
+  --suit-text-spades: #2e4ac9;
+  --suit-text-joker: #7b3fbf;
+
+  --on-hearts: #ffffff;
+  --on-diamonds: #1f2a44;   // amber needs dark text for AA contrast
+  --on-clubs: #ffffff;
+  --on-spades: #ffffff;
+  --on-joker: #ffffff;
+
+  --font-display: 'Big Shoulders Display', 'Arial Narrow', sans-serif;
+  --font-text: 'Atkinson Hyperlegible', system-ui, sans-serif;
+
+  --card-radius: 14px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --paper: #232c40;
+    --table: #151b28;
+    --ink: #eef2ef;
+    --ink-far: #6b7690;
+
+    --suit-text-hearts: #e5707f;
+    --suit-text-diamonds: #e89a00;
+    --suit-text-clubs: #49a197;
+    --suit-text-spades: #7d8fde;
+    --suit-text-joker: #ab84d6;
+  }
+}
+:root[data-theme='dark'] {
+  --paper: #232c40;
+  --table: #151b28;
+  --ink: #eef2ef;
+  --ink-far: #6b7690;
+
+  --suit-text-hearts: #e5707f;
+  --suit-text-diamonds: #e89a00;
+  --suit-text-clubs: #49a197;
+  --suit-text-spades: #7d8fde;
+  --suit-text-joker: #ab84d6;
+}
+
+.card-face {
+  --suit: var(--suit-hearts);
+  --on-suit: var(--on-hearts);
+  --suit-text: var(--suit-text-hearts);
+  &.hearts   { --suit: var(--suit-hearts);   --on-suit: var(--on-hearts);   --suit-text: var(--suit-text-hearts); }
+  &.diamonds { --suit: var(--suit-diamonds); --on-suit: var(--on-diamonds); --suit-text: var(--suit-text-diamonds); }
+  &.clubs    { --suit: var(--suit-clubs);    --on-suit: var(--on-clubs);    --suit-text: var(--suit-text-clubs); }
+  &.spades   { --suit: var(--suit-spades);   --on-suit: var(--on-spades);   --suit-text: var(--suit-text-spades); }
+  &.joker    { --suit: var(--suit-joker);    --on-suit: var(--on-joker);    --suit-text: var(--suit-text-joker); }
+
+  position: relative;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  width: 100%;
+  aspect-ratio: 5 / 7;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  font-family: var(--font-text);
+  color: var(--ink);
+
+  .corner {
+    position: absolute;
+    top: 0.5em;
+    left: 0.6em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--suit-text);
+    line-height: 0.82;
+    z-index: 1;
+  }
+  .rank {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 2.9em;
+  }
+  .pip { font-size: 1.25em; }
+
+  .figure {
+    padding: 1.4em 0.6em 0.2em 2em;
+    min-height: 0;
+    svg { width: 100%; height: 100%; display: block; }
+  }
+
+  .plate {
+    background: var(--suit);
+    color: var(--on-suit);
+    padding: 0.6em 0.75em 0.7em;
+  }
+  .name {
+    font-weight: 700;
+    font-size: 1.05em;
+    line-height: 1.15;
+    min-height: 2.3em;
+    display: flex;
+    align-items: flex-end;
+  }
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 0.25em;
+  }
+  .amount {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.7em;
+    line-height: 1;
+    small { font-family: var(--font-text); font-weight: 400; font-size: 0.45em; margin-left: 0.2em; }
+  }
+  .group { font-size: 0.75em; }
+}
+
+// Figure strokes — shared by the component and generated SVGs.
+.ex-figure {
+  .near, .far, .prop { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .near { stroke: var(--ink); stroke-width: 5.2; }
+  .far  { stroke: var(--ink-far); stroke-width: 5; }
+  .head { fill: var(--ink); }
+  .ghost {
+    .near, .far { stroke: var(--suit, var(--ink)); opacity: 0.3; }
+    .head { fill: var(--suit, var(--ink)); opacity: 0.3; }
+  }
+  .ground { stroke: var(--ink); stroke-width: 1.2; opacity: 0.22; }
+  .prop.ink  { stroke: var(--ink); stroke-width: 3; }
+  .prop.far  { stroke: var(--ink-far); stroke-width: 3; }
+  .prop.suit { stroke: var(--suit, var(--ink)); stroke-width: 2.4; }
+  .prop.dashed { stroke-dasharray: 3 2.5; }
+  .prop.suit-tint {
+    fill: color-mix(in srgb, var(--suit, var(--ink)) 20%, transparent);
+    stroke: var(--suit, var(--ink));
+    stroke-width: 2;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .card-face .ex-figure .main { animation: figure-settle 480ms ease-out both; }
+  @keyframes figure-settle { from { opacity: 0; transform: translateY(3px); } }
+}

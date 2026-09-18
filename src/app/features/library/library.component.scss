@@ -1,0 +1,36 @@
+.page { max-width: 1200px; margin: 0 auto; padding: 16px; }
+
+.head {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
+  h1 { font: var(--mat-sys-headline-medium); margin: 0; flex: 1 1 100%; }
+  .search { flex: 1 1 240px; }
+  .filters-toggle { min-height: 48px; }
+}
+
+.filters {
+  display: none;
+  gap: 12px;
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--mat-sys-surface-container-low);
+  &.open { display: grid; }
+  fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+  legend { font: var(--mat-sys-label-large); margin-bottom: 4px; }
+  mat-form-field { max-width: 320px; }
+  > button { justify-self: start; }
+}
+
+// Wide screens: filters always visible.
+@media (min-width: 960px) {
+  .filters-toggle { display: none; }
+  .filters { display: grid; grid-template-columns: 1fr 1fr; align-items: start; }
+}
+
+.count { font: var(--mat-sys-body-medium); color: var(--mat-sys-on-surface-variant); margin: 16px 0 8px; }
+
+.grid {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
+.empty { grid-column: 1 / -1; padding: 24px 0; }

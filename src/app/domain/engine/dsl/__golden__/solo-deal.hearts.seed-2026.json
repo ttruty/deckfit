@@ -1,0 +1,467 @@
+[
+ {
+  "type": "GameStarted",
+  "players": [
+   "p1"
+  ]
+ },
+ {
+  "type": "CardsShuffled",
+  "zone": "draw",
+  "count": 13
+ },
+ {
+  "type": "CardFlipped",
+  "zone": "table",
+  "cardId": "bodyweight-hearts-3"
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-hearts-3"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-air-squat",
+   "amount": 3,
+   "measure": "reps",
+   "id": "t1",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t1",
+  "playerId": "p1",
+  "exerciseKey": "bw-air-squat",
+  "amount": 3
+ },
+ {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "discard",
+  "cardIds": [
+   "bodyweight-hearts-3"
+  ]
+ },
+ {
+  "type": "CardFlipped",
+  "zone": "table",
+  "cardId": "bodyweight-hearts-K"
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-hearts-K"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-jump-squat",
+   "amount": 10,
+   "measure": "reps",
+   "id": "t2",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t2",
+  "playerId": "p1",
+  "exerciseKey": "bw-jump-squat",
+  "amount": 10
+ },
+ {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "discard",
+  "cardIds": [
+   "bodyweight-hearts-K"
+  ]
+ },
+ {
+  "type": "CardFlipped",
+  "zone": "table",
+  "cardId": "bodyweight-hearts-Q"
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-hearts-Q"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-jump-squat",
+   "amount": 10,
+   "measure": "reps",
+   "id": "t3",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t3",
+  "playerId": "p1",
+  "exerciseKey": "bw-jump-squat",
+  "amount": 10
+ },
+ {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "discard",
+  "cardIds": [
+   "bodyweight-hearts-Q"
+  ]
+ },
+ {
+  "type": "CardFlipped",
+  "zone": "table",
+  "cardId": "bodyweight-hearts-A"
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-hearts-A"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-jump-squat",
+   "amount": 11,
+   "measure": "reps",
+   "id": "t4",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t4",
+  "playerId": "p1",
+  "exerciseKey": "bw-jump-squat",
+  "amount": 11
+ },
+ {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "discard",
+  "cardIds": [
+   "bodyweight-hearts-A"
+  ]
+ },
+ {
+  "type": "CardFlipped",
+  "zone": "table",
+  "cardId": "bodyweight-hearts-J"
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-hearts-J"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-jump-squat",
+   "amount": 10,
+   "measure": "reps",
+   "id": "t5",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t5",
+  "playerId": "p1",
+  "exerciseKey": "bw-jump-squat",
+  "amount": 10
+ },
+ {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "discard",
+  "cardIds": [
+   "bodyweight-hearts-J"
+  ]
+ },
+ {
+  "type": "CardFlipped",
+  "zone": "table",
+  "cardId": "bodyweight-hearts-10"
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-hearts-10"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-jump-squat",
+   "amount": 10,
+   "measure": "reps",
+   "id": "t6",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t6",
+  "playerId": "p1",
+  "exerciseKey": "bw-jump-squat",
+  "amount": 10
+ },
+ {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "discard",
+  "cardIds": [
+   "bodyweight-hearts-10"
+  ]
+ },
+ {
+  "type": "CardFlipped",
+  "zone": "table",
+  "cardId": "bodyweight-hearts-5"
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-hearts-5"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-air-squat",
+   "amount": 5,
+   "measure": "reps",
+   "id": "t7",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t7",
+  "playerId": "p1",
+  "exerciseKey": "bw-air-squat",
+  "amount": 5
+ },
+ {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "discard",
+  "cardIds": [
+   "bodyweight-hearts-5"
+  ]
+ },
+ {
+  "type": "CardFlipped",
+  "zone": "table",
+  "cardId": "bodyweight-hearts-9"
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-hearts-9"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-reverse-lunge",
+   "amount": 9,
+   "measure": "reps",
+   "id": "t8",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t8",
+  "playerId": "p1",
+  "exerciseKey": "bw-reverse-lunge",
+  "amount": 9
+ },
+ {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "discard",
+  "cardIds": [
+   "bodyweight-hearts-9"
+  ]
+ },
+ {
+  "type": "CardFlipped",
+  "zone": "table",
+  "cardId": "bodyweight-hearts-2"
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-hearts-2"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-air-squat",
+   "amount": 2,
+   "measure": "reps",
+   "id": "t9",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t9",
+  "playerId": "p1",
+  "exerciseKey": "bw-air-squat",
+  "amount": 2
+ },
+ {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "discard",
+  "cardIds": [
+   "bodyweight-hearts-2"
+  ]
+ },
+ {
+  "type": "CardFlipped",
+  "zone": "table",
+  "cardId": "bodyweight-hearts-7"
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-hearts-7"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-reverse-lunge",
+   "amount": 7,
+   "measure": "reps",
+   "id": "t10",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t10",
+  "playerId": "p1",
+  "exerciseKey": "bw-reverse-lunge",
+  "amount": 7
+ },
+ {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "discard",
+  "cardIds": [
+   "bodyweight-hearts-7"
+  ]
+ },
+ {
+  "type": "CardFlipped",
+  "zone": "table",
+  "cardId": "bodyweight-hearts-8"
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-hearts-8"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-reverse-lunge",
+   "amount": 8,
+   "measure": "reps",
+   "id": "t11",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t11",
+  "playerId": "p1",
+  "exerciseKey": "bw-reverse-lunge",
+  "amount": 8
+ },
+ {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "discard",
+  "cardIds": [
+   "bodyweight-hearts-8"
+  ]
+ },
+ {
+  "type": "CardFlipped",
+  "zone": "table",
+  "cardId": "bodyweight-hearts-4"
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-hearts-4"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-air-squat",
+   "amount": 4,
+   "measure": "reps",
+   "id": "t12",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t12",
+  "playerId": "p1",
+  "exerciseKey": "bw-air-squat",
+  "amount": 4
+ },
+ {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "discard",
+  "cardIds": [
+   "bodyweight-hearts-4"
+  ]
+ },
+ {
+  "type": "CardFlipped",
+  "zone": "table",
+  "cardId": "bodyweight-hearts-6"
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "bodyweight-hearts-6"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-reverse-lunge",
+   "amount": 6,
+   "measure": "reps",
+   "id": "t13",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t13",
+  "playerId": "p1",
+  "exerciseKey": "bw-reverse-lunge",
+  "amount": 6
+ },
+ {
+  "type": "GameOver",
+  "reason": "end",
+  "scores": {
+   "p1": 95
+  }
+ }
+]

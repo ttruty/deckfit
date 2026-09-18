@@ -1,0 +1,59 @@
+@let o = store.dryRunOptions();
+<div class="controls">
+  <label class="ctl">Deck
+    <select [value]="o.deckId" (change)="setOption('deckId', $any($event.target).value)">
+      @for (d of store.deckList(); track d.id) { <option [value]="d.id">{{ d.name }}</option> }
+    </select>
+  </label>
+  <label class="ctl">Players
+    <select [value]="o.players" (change)="setOption('players', $any($event.target).value)">
+      @for (n of playerRange(); track n) { <option [value]="n">{{ n }}</option> }
+    </select>
+  </label>
+  <label class="ctl">Seed
+    <input type="number" min="0" [value]="o.seed" (change)="setOption('seed', $any($event.target).value)" />
+  </label>
+  <button mat-flat-button type="button" (click)="run()" [disabled]="!store.validation().game">
+    <mat-icon>play_arrow</mat-icon>Run {{ turns }} turns
+  </button>
+  <button mat-stroked-button type="button" (click)="newSeed()" [disabled]="!store.validation().game"><mat-icon>casino</mat-icon>New seed</button>
+</div>
+@if (!store.validation().game) {
+  <p class="hint">Fix the problems above to run the game.</p>
+}
+
+@if (view(); as v) {
+  <section class="result" aria-live="polite" aria-label="Dry run result">
+    @if (v.error) {
+      <p class="error" role="alert"><mat-icon>error</mat-icon> The scripted players got stuck: {{ v.error }}</p>
+    } @else {
+      <dl class="stats">
+        <div><dt>Turns</dt><dd>{{ v.turns }}</dd></div>
+        <div><dt>Reps</dt><dd data-stat="reps">{{ v.total.reps }}</dd></div>
+        <div><dt>Timed work</dt><dd data-stat="seconds">{{ format(v.total.seconds) }}</dd></div>
+        <div><dt>Rest</dt><dd>{{ format(v.total.restSeconds) }}</dd></div>
+        <div><dt>Estimated time</dt><dd data-stat="time">{{ format(v.total.totalSeconds) }}</dd></div>
+      </dl>
+      <p class="hint">
+        {{ v.finished ? 'The game finished' : 'Stopped after ' + v.turns + ' turns' }} · {{ v.game.name }} on {{ v.deck.name }}, seed {{ o.seed }}.
+        Time assumes about 3 seconds per rep.
+      </p>
+      @if (v.players.length > 1) {
+        <table class="per-player">
+          <thead><tr><th scope="col">Player</th><th scope="col">Reps</th><th scope="col">Timed</th><th scope="col">Estimated</th></tr></thead>
+          <tbody>
+            @for (p of v.players; track p.id) {
+              <tr><th scope="row">{{ p.id }}</th><td>{{ p.est.reps }}</td><td>{{ format(p.est.seconds) }}</td><td>{{ format(p.est.totalSeconds) }}</td></tr>
+            }
+          </tbody>
+        </table>
+      }
+    }
+    @if (v.lines.length) {
+      <h3>Event log <span class="count">({{ v.lines.length }})</span></h3>
+      <ol class="log">
+        @for (l of v.lines; track $index) { <li [attr.data-type]="l.type">{{ l.text }}</li> }
+      </ol>
+    }
+  </section>
+}

@@ -1,0 +1,142 @@
+@let b = block();
+@switch (b.kind) {
+  @case ('deal') {
+    <span class="row">
+      <label class="ctl">To
+        <select [value]="inner()['to']" (change)="setInner('to', $any($event.target).value)">
+          @for (z of dealTargets; track z) { <option [value]="z">{{ zoneLabel[z] }}</option> }
+        </select>
+      </label>
+      <df-number-ref label="Cards" [value]="inner()['count']" [min]="0" (valueChange)="setInner('count', $event)" />
+      <label class="ctl">Face
+        <select [value]="faceUpValue(inner()['faceUp'])" (change)="setInner('faceUp', parseFaceUp($any($event.target).value))">
+          <option value="">Default</option><option value="up">Face up</option><option value="down">Face down</option>
+        </select>
+      </label>
+      <label class="ctl">Only
+        <select [value]="onlyValue()" (change)="setOnly($any($event.target).value)">
+          <option value="">Any card</option><option value="reps">Rep exercises</option><option value="seconds">Timed exercises</option>
+        </select>
+      </label>
+    </span>
+  }
+  @case ('flip') {
+    <span class="row">
+      <label class="ctl">Onto
+        <select [value]="inner()['to'] ?? ''" (change)="setInner('to', $any($event.target).value)">
+          <option value="">Table (default)</option>
+          @for (z of zones; track z) { <option [value]="z">{{ zoneLabel[z] }}</option> }
+        </select>
+      </label>
+      <label class="ctl">Only
+        <select [value]="onlyValue()" (change)="setOnly($any($event.target).value)">
+          <option value="">Any card</option><option value="reps">Rep exercises</option><option value="seconds">Timed exercises</option>
+        </select>
+      </label>
+    </span>
+  }
+  @case ('move') {
+    <df-selectors-field [value]="body()['move']" label="Move" (valueChange)="set(['move'], $event)" />
+    <span class="row">
+      <label class="ctl">To
+        <select [value]="body()['to']" (change)="set(['to'], $any($event.target).value)">
+          @for (z of zones; track z) { <option [value]="z">{{ zoneLabel[z] }}</option> }
+        </select>
+      </label>
+      <label class="ctl">Face
+        <select [value]="faceUpValue(body()['faceUp'])" (change)="set(['faceUp'], parseFaceUp($any($event.target).value))">
+          <option value="">Default</option><option value="up">Face up</option><option value="down">Face down</option>
+        </select>
+      </label>
+    </span>
+  }
+  @case ('refill') {
+    <span class="row">
+      <label class="ctl">Zone
+        <select [value]="inner()['zone']" (change)="setInner('zone', $any($event.target).value)">
+          @for (z of zones; track z) { <option [value]="z">{{ zoneLabel[z] }}</option> }
+        </select>
+      </label>
+      <df-number-ref label="Until it holds" [value]="inner()['to']" (valueChange)="setInner('to', $event)" [fallback]="4" />
+      <label class="ctl">Only
+        <select [value]="onlyValue()" (change)="setOnly($any($event.target).value)">
+          <option value="">Any card</option><option value="reps">Rep exercises</option><option value="seconds">Timed exercises</option>
+        </select>
+      </label>
+    </span>
+  }
+  @case ('assign') {
+    <df-selectors-field [value]="assignCards()" label="Exercises on" (valueChange)="setAssign({ cards: $event })" />
+    <span class="row">
+      <label class="ctl">To
+        <select [value]="assignOption('to') ?? 'current'" (change)="setAssign({ to: $any($event.target).value })">
+          @for (t of assignTargets; track t) { <option [value]="t">{{ assignLabel[t] }}</option> }
+        </select>
+      </label>
+      @if (assignOption('timedSec') === undefined) {
+        <button type="button" class="text-btn" (click)="setAssign({ timedSec: 20 })">+ Fixed time for timed exercises</button>
+      } @else {
+        <df-number-ref label="Timed exercises last (s)" [value]="assignOption('timedSec')" [min]="1" (valueChange)="setAssign({ timedSec: $event })" [fallback]="20" />
+        <button type="button" class="text-btn" (click)="setAssign({ timedSec: undefined })">Remove</button>
+      }
+    </span>
+  }
+  @case ('timer') {
+    <span class="row">
+      <label class="ctl">Id
+        <input type="text" [value]="inner()['id']" (input)="set(['timer', 'id'], $any($event.target).value)" />
+      </label>
+      <label class="ctl">Kind
+        <select [value]="inner()['kind']" (change)="setTimerKind($any($event.target).value)">
+          <option value="countdown">Countdown</option><option value="interval">Work / rest interval</option>
+        </select>
+      </label>
+      <df-number-ref [label]="inner()['kind'] === 'interval' ? 'Work (s)' : 'Seconds'" [value]="inner()['seconds']" [min]="1" [fallback]="60" (valueChange)="setInner('seconds', $event)" />
+      @if (inner()['kind'] === 'interval') {
+        <df-number-ref label="Rest (s)" [value]="inner()['restSeconds']" [min]="1" [fallback]="10" (valueChange)="setInner('restSeconds', $event)" />
+      }
+      <label class="ctl">Label
+        <input type="text" [value]="inner()['label'] ?? ''" (input)="setInner('label', $any($event.target).value)" />
+      </label>
+    </span>
+  }
+  @case ('incr') {
+    <span class="row">
+      <label class="ctl">Counter
+        <input type="text" [value]="body()['incr']" (input)="set(['incr'], $any($event.target).value)" />
+      </label>
+      <df-number-ref label="By" [value]="body()['by'] ?? 1" (valueChange)="set(['by'], $event === 1 ? undefined : $event)" />
+    </span>
+  }
+  @case ('reset') {
+    <label class="ctl">Counter
+      <input type="text" [value]="body()['reset']" (input)="set(['reset'], $any($event.target).value)" />
+    </label>
+  }
+  @case ('winners') {
+    <span class="row">
+      <label class="ctl">Winner
+        <select [value]="winnersMode()" (change)="setWinnersMode($any($event.target).value)">
+          <option value="high">Highest card</option><option value="low">Lowest card</option>
+          <option value="poker">Best poker hand</option><option value="empty-team">Team that emptied its hand</option>
+        </select>
+      </label>
+      @if (winnersMode() !== 'empty-team') {
+        <df-selector-field [value]="$any(inner()['cards'])" label="Each player's" [allowIntent]="false" (valueChange)="setInner('cards', $event)" />
+      }
+    </span>
+  }
+  @case ('reveal') {
+    <df-selectors-field [value]="body()['reveal']" label="Reveal" (valueChange)="set(['reveal'], $event)" />
+  }
+  @case ('if') {
+    <df-condition-editor [value]="body()['if']" label="If" (valueChange)="set(['if'], $event)" />
+  }
+  @case ('repeat') {
+    <df-number-ref label="Times" [value]="body()['repeat']" [min]="1" [fallback]="2" (valueChange)="set(['repeat'], $event)" />
+  }
+  @case ('reshuffle') { <p class="help">The discard pile is shuffled back into the draw pile.</p> }
+  @case ('startBetting') { <p class="help">Players bet reps in turn; the game’s betting steps run when it closes.</p> }
+  @case ('assignPot') { <p class="help">Everyone who didn’t win works the pot on their highest card.</p> }
+  @case ('turn') { <p class="help">The next player in seat order takes the turn.</p> }
+}

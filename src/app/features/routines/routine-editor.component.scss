@@ -1,0 +1,43 @@
+.page { max-width: 840px; margin: 0 auto; padding: 8px 16px 32px; }
+.back { margin-left: -8px; }
+h1 { font: var(--mat-sys-headline-medium); margin: 4px 0 16px; }
+
+.form { display: grid; gap: 16px; }
+.step {
+  display: grid; gap: 12px; padding: 16px; border-radius: 16px;
+  background: var(--mat-sys-surface-container-low); border: 1px solid var(--mat-sys-outline-variant);
+}
+h2 { display: flex; align-items: center; gap: 10px; font: var(--mat-sys-title-large); margin: 0; }
+h3 { font: var(--mat-sys-title-medium); margin: 8px 0 0; }
+.num {
+  display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 50%;
+  font: var(--mat-sys-label-large); background: var(--mat-sys-primary); color: var(--mat-sys-on-primary);
+}
+
+.suit-summary { list-style: none; margin: -4px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 16px; font: var(--mat-sys-body-medium); }
+.pip { font-size: 1.15em; }
+.pip[data-suit='hearts'] { color: var(--suit-text-hearts); }
+.pip[data-suit='diamonds'] { color: var(--suit-text-diamonds); }
+.pip[data-suit='clubs'] { color: var(--suit-text-clubs); }
+.pip[data-suit='spades'] { color: var(--suit-text-spades); }
+
+.filters {
+  display: grid; gap: 10px; margin: 0; padding: 12px; border-radius: 12px; border: 1px solid var(--mat-sys-outline-variant);
+  legend { font: var(--mat-sys-title-small); padding: 0 4px; }
+}
+.sub { font: var(--mat-sys-label-large); }
+.narrow { max-width: 280px; }
+.preview { margin: 0; font: var(--mat-sys-body-medium); color: var(--mat-sys-on-surface-variant); &.warn { color: var(--mat-sys-error); } }
+
+.games { display: grid; gap: 8px; }
+.game { padding: 4px 8px; border-radius: 12px; border: 1px solid var(--mat-sys-outline-variant); }
+.game-name { display: block; font: var(--mat-sys-title-small); padding-top: 6px; }
+.game-summary { display: block; font: var(--mat-sys-body-small); color: var(--mat-sys-on-surface-variant); padding-bottom: 6px; }
+
+.grid { display: grid; gap: 4px 12px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); align-items: start; }
+.wide { grid-column: 1 / -1; display: grid; gap: 6px; }
+.help { margin: 0; font: var(--mat-sys-body-small); color: var(--mat-sys-on-surface-variant); }
+
+.name { width: min(100%, 480px); }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 8px; }
+.spacer { flex: 1; }

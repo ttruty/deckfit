@@ -1,0 +1,96 @@
+<div class="page">
+  <h1>Settings</h1>
+
+  <section class="card" aria-labelledby="you">
+    <h2 id="you">You</h2>
+    <p class="hint">The name other players see in a room. Nothing leaves this device until you join one.</p>
+    <div class="row">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Display name</mat-label>
+        <input matInput [formControl]="name" maxlength="30" placeholder="You" (keyup.enter)="saveName()" />
+      </mat-form-field>
+      <button mat-stroked-button type="button" (click)="saveName()" [disabled]="name.invalid">Save</button>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="look">
+    <h2 id="look">Look</h2>
+    <mat-radio-group class="themes" [value]="theme.mode()" (change)="theme.set($event.value)" aria-labelledby="look">
+      @for (t of themes; track t.mode) {
+        <mat-radio-button [value]="t.mode">
+          {{ t.label }} <span class="hint">{{ t.hint }}</span>
+        </mat-radio-button>
+      }
+    </mat-radio-group>
+  </section>
+
+  <section class="card" aria-labelledby="sound">
+    <h2 id="sound">Sound</h2>
+    <mat-slide-toggle [checked]="audio.beeps()" (change)="audio.beeps.set($event.checked)">Beeps for flips, countdowns and finishes</mat-slide-toggle>
+    <mat-slide-toggle [checked]="audio.speech()" (change)="audio.speech.set($event.checked)" [disabled]="!speechSupported()">
+      Speak each task out loud
+    </mat-slide-toggle>
+    @if (!speechSupported()) { <p class="hint">This browser has no speech synthesis.</p> }
+  </section>
+
+  <section class="card" aria-labelledby="data">
+    <h2 id="data">Your data</h2>
+    <p class="hint">
+      Decks, games, exercises and routines you made, as one JSON file. Built-in content isn't included — it's already in the app.
+    </p>
+    <div class="row">
+      <button mat-flat-button type="button" (click)="exportData(false)" [disabled]="busy() !== null">
+        <mat-icon>download</mat-icon>{{ busy() === 'export' ? 'Exporting…' : 'Export' }}
+      </button>
+      @if (shareSupported) {
+        <button mat-stroked-button type="button" (click)="exportData(true)" [disabled]="busy() !== null"><mat-icon>ios_share</mat-icon>Share</button>
+      }
+      <button mat-stroked-button type="button" (click)="file.click()" [disabled]="busy() !== null">
+        <mat-icon>upload</mat-icon>{{ busy() === 'import' ? 'Importing…' : 'Import' }}
+      </button>
+      <input #file type="file" accept="application/json,.json" class="sr-only" (change)="importFile(file)" aria-label="Choose a DeckFit backup file" />
+    </div>
+    @if (importProblems().length) {
+      <div role="alert" class="problems">
+        <p>That file couldn't be imported:</p>
+        <ul>@for (p of importProblems(); track $index) { <li>{{ p }}</li> }</ul>
+      </div>
+    }
+  </section>
+
+  <section class="card" aria-labelledby="safety">
+    <h2 id="safety">Safety</h2>
+    <p class="hint">
+      @if (info.value()?.acceptedAt; as at) { You accepted the safety notice on {{ at | date: 'longDate' }}. }
+      @else { Please read the safety notice before you work out. }
+    </p>
+    <button mat-stroked-button type="button" (click)="showDisclaimer()"><mat-icon>health_and_safety</mat-icon>Read the safety notice</button>
+  </section>
+
+  <section class="card" aria-labelledby="install">
+    <h2 id="install">Install</h2>
+    @switch (install.state()) {
+      @case ('installed') { <p class="hint">DeckFit is installed on this device. </p> }
+      @case ('prompt') {
+        <p class="hint">Add DeckFit to your home screen: full screen, and it keeps working offline.</p>
+        <button mat-flat-button type="button" (click)="install.install()"><mat-icon>install_mobile</mat-icon>Install DeckFit</button>
+      }
+      @case ('ios') {
+        <p class="hint">In Safari, tap <mat-icon inline>ios_share</mat-icon> Share, then “Add to Home Screen”.</p>
+      }
+      @default { <p class="hint">This browser can't install apps. It still works offline once you've opened it.</p> }
+    }
+    @if (install.dismissed() && install.state() !== 'installed') {
+      <button mat-stroked-button type="button" (click)="install.reset()">Show the install prompt again</button>
+    }
+  </section>
+
+  <section class="card" aria-labelledby="about">
+    <h2 id="about">About</h2>
+    <dl class="about">
+      <div><dt>Content version</dt><dd>{{ info.value()?.contentVersion ?? '—' }}</dd></div>
+      <div><dt>Device id</dt><dd class="mono">{{ info.value()?.me?.id ?? '—' }}</dd></div>
+    </dl>
+    <p class="hint">DeckFit works offline. When a new version is ready you'll get a "Reload" prompt.</p>
+  </section>
+</div>

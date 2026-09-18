@@ -1,0 +1,169 @@
+@if (vm(); as v) {
+  <div class="table-page">
+    <p class="sr-only" aria-live="polite">{{ announcement() }}</p>
+
+    <header class="bar">
+      <div class="title">
+        <span class="game">{{ v.gameName }}</span>
+        <span class="sub">{{ v.deckName }}@if (v.round) { · Round {{ v.round }} } · {{ v.drawCount }} in the deck</span>
+      </div>
+    </header>
+
+    <ul class="players" aria-label="Players">
+      @for (p of v.players; track p.id) {
+        <li [class.me]="p.isMe" [class.working]="p.working">
+          <span class="avatar" aria-hidden="true">{{ p.name.charAt(0).toUpperCase() }}</span>
+          <span class="info">
+            <span class="name">{{ p.name }} @if (p.isMe) {<span class="you">(you)</span>}</span>
+            <span class="stat">
+              @if (p.turn) { <span class="turn">{{ p.isMe ? 'Your turn' : 'Turn' }}</span> }
+              {{ p.details }}
+            </span>
+          </span>
+          @if (p.pileTop) {
+            <span class="mini-card" aria-hidden="true"><df-card-face [card]="p.pileTop" /></span>
+          }
+          @if (p.revealed.length) {
+            <span class="revealed-row" aria-label="Revealed cards">
+              @for (c of p.revealed; track c.id) {
+                <span class="revealed" [attr.data-card-id]="c.id"><df-card-face [card]="c.face" /></span>
+              }
+            </span>
+          }
+        </li>
+      }
+    </ul>
+
+    @if (v.center.length) {
+      <section class="center" aria-label="Center">
+        <ul class="center-cards">
+          @for (c of v.center; track c.key) {
+            <li class="dealt" [attr.data-card-id]="c.face ? c.id : null">
+              @if (c.face; as f) { <df-card-face [card]="f" /> } @else { <df-card-back /> }
+            </li>
+          }
+        </ul>
+        @if (v.bluff) {
+          <p class="hint">{{ v.tableCount }} {{ v.tableCount === 1 ? 'card' : 'cards' }} in the pile
+            @if (v.bluff.claim; as cl) { · {{ cl.name }} claims {{ cl.count }} × {{ cl.rank }} }</p>
+        }
+      </section>
+    }
+
+    @if (v.watching) {
+      <section class="panel" role="status">
+        <p class="hint"><mat-icon inline>visibility</mat-icon> You joined after this game started, so you're watching. You'll be in the next one.</p>
+      </section>
+    }
+
+    @if (v.problem) {
+      <section class="panel" role="alert"><p class="hint">{{ v.problem }}</p></section>
+    }
+
+    @if (v.finished) {
+      <section class="panel" aria-labelledby="over-title">
+        <h2 id="over-title">Game over</h2>
+        <p class="hint">Saved to your history.</p>
+        <ol class="scores">
+          @for (s of v.scores; track s.id) {
+            <li [class.me]="s.isMe"><span>{{ s.name }}</span><span>{{ s.score }} {{ v.roundsWon ? 'won' : 'pts' }}</span></li>
+          }
+        </ol>
+      </section>
+    } @else if (v.judge?.isMe) {
+      <section class="panel" aria-labelledby="judge-title">
+        <df-judge-panel [tasks]="v.judging" [canDeal]="v.canFlip" (done)="complete($event)" (skip)="skip($event)" (deal)="flip()" />
+      </section>
+    } @else if (v.myTask; as t) {
+      <section class="panel task" aria-labelledby="task-title">
+        <h2 id="task-title">{{ t.name }}</h2>
+        @if (t.task.measure === 'reps') {
+          <df-stepper [(value)]="reps" [min]="0" [max]="999" unit="reps" />
+        } @else {
+          <p class="amount">{{ t.task.amount }} <small>sec</small></p>
+        }
+        <div class="actions">
+          <button mat-stroked-button class="big" (click)="skip(t.task.id)">Skip</button>
+          <button mat-flat-button class="big" (click)="complete(t.task.id, t.task.measure === 'reps' ? reps() : undefined)">
+            <mat-icon>check</mat-icon>Done
+          </button>
+        </div>
+      </section>
+    } @else {
+      <section class="panel" aria-label="Your move">
+        @if (v.betting?.open) {
+          @let b = v.betting!;
+          <p class="pot">Pot <strong>{{ b.pot }}</strong> reps · stake {{ b.current }} · you’re in for {{ b.myStake }}</p>
+        }
+        @if (v.myHand.length) {
+          <p class="hint">
+            @if (v.bluff?.canClaim) { Pick up to {{ v.bluff!.maxCards }} cards to lay face down as {{ v.bluff!.rank }}s. }
+            @else if (v.canPlay) { Tap a card to play it on the center card. }
+            @else { {{ v.teamHand ? 'Your team’s hand' : 'Your hand' }} }
+          </p>
+          <ul class="hand">
+            @for (c of v.myHand; track c.id) {
+              <li>
+                @if (v.bluff) {
+                  <button type="button" class="card-button" [class.selected]="selected().has(c.id)" [attr.data-card-id]="c.id"
+                          [disabled]="!v.bluff.canClaim" [attr.aria-pressed]="selected().has(c.id)" (click)="toggle(c.id)"
+                          [attr.aria-label]="'Select ' + c.label">
+                    <df-card-face [card]="c.face" />
+                  </button>
+                } @else {
+                  <button type="button" class="card-button" [attr.data-card-id]="c.id" [disabled]="!v.canPlay"
+                          (click)="play(c.id)" [attr.aria-label]="'Play ' + c.label">
+                    <df-card-face [card]="c.face" />
+                  </button>
+                }
+              </li>
+            }
+          </ul>
+        }
+        @if (v.betting?.canAct) {
+          @let b = v.betting!;
+          @if (b.minRaise <= b.maxBet) {
+            <df-stepper [(value)]="betAmount" [min]="b.minRaise" [max]="b.maxBet" unit="rep stake" />
+          }
+          <div class="actions">
+            @if (b.minRaise <= b.maxBet) {
+              <button mat-flat-button class="big" (click)="bet(betAmount())">{{ b.current ? 'Raise' : 'Bet' }} to {{ betAmount() }}</button>
+            }
+            @if (b.toCall) {
+              <button mat-flat-button class="big" (click)="call()">Call {{ b.toCall }}</button>
+              <button mat-stroked-button class="big" (click)="pass()">Fold</button>
+            } @else {
+              <button mat-stroked-button class="big" (click)="pass()">Check</button>
+            }
+          </div>
+        }
+        @if (v.bluff; as bl) {
+          <div class="actions">
+            @if (bl.canClaim) {
+              <button mat-flat-button class="big" [disabled]="!selected().size" (click)="claim()">
+                Claim {{ selected().size }} × {{ bl.rank }}
+              </button>
+            }
+            @if (bl.canChallenge) {
+              <button mat-stroked-button class="big" (click)="call()">Call bluff</button>
+            }
+          </div>
+        }
+        <div class="actions">
+          @if (v.canFlip) {
+            <button mat-flat-button class="big" (click)="flip()"><mat-icon>style</mat-icon>{{ v.betting ? 'Deal a hand' : 'Flip' }}</button>
+          } @else if (v.waitingFor) {
+            <p class="hint">{{ v.waitingFor }}</p>
+          }
+          @if (v.canPass && !v.betting && !v.bluff) {
+            <button mat-stroked-button class="big" (click)="pass()">Stuck? Draw a card</button>
+          }
+        </div>
+      </section>
+    }
+
+    @if (toast(); as message) {
+      <p class="toast" role="alert">{{ message }}</p>
+    }
+  </div>
+}

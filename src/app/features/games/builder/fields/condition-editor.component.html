@@ -1,0 +1,123 @@
+<div class="cond">
+  <label class="ctl">{{ label() }}
+    <select [value]="kind() ?? ''" (change)="setKind($any($event.target).value)">
+      @if (!kind()) { <option value="" disabled>Choose…</option> }
+      @for (k of kinds; track k) { <option [value]="k">{{ kindLabel[k] }}</option> }
+    </select>
+  </label>
+
+  @switch (kind()) {
+    @case ('empty') {
+      <label class="ctl">Zone
+        <select [value]="$any(value()).split('.')[0]" (change)="valueChange.emit($any($event.target).value + '.empty')">
+          @for (z of zones; track z) { <option [value]="z">{{ zoneLabel[z] }}</option> }
+        </select>
+      </label>
+    }
+    @case ('anyEmpty') {
+      <label class="ctl">Zones
+        <select [value]="obj()['anyEmpty']" (change)="set('anyEmpty', $any($event.target).value)">
+          @for (z of playerZones; track z) { <option [value]="z">{{ zoneLabel[z] }}</option> }
+        </select>
+      </label>
+    }
+    @case ('flag') {
+      <label class="ctl">Flag
+        <input type="text" [value]="obj()['flag']" [attr.list]="flagListId" (input)="set('flag', $any($event.target).value)" />
+      </label>
+      <datalist [id]="flagListId">@for (f of flags; track f) { <option [value]="f"></option> }</datalist>
+    }
+    @case ('match') {
+      <df-selectors-field [value]="obj()['match']" label="Cards" [min]="2" [asArray]="true" (valueChange)="set('match', $event)" />
+      <span class="row">
+        <label class="ctl">Match on
+          <select [value]="matchOnSetting() === null ? 'fixed' : matchOnSetting()" (change)="setMatchOnMode($any($event.target).value)">
+            <option value="fixed">Fixed</option>
+            @for (s of enumSettings(); track s.key) { <option [value]="s.key">Setting: {{ s.label }}</option> }
+            <option value="new">New setting…</option>
+          </select>
+        </label>
+        @if (matchOnSetting() === null) {
+          <label class="ctl">Rule
+            <select [value]="obj()['on']" (change)="set('on', $any($event.target).value)">
+              @for (m of matchOn; track m) { <option [value]="m">{{ m }}</option> }
+            </select>
+          </label>
+        }
+      </span>
+    }
+    @case ('compare') {
+      <df-selector-field [value]="$any(obj()['compare'])[0]" label="This card" (valueChange)="set('compare', [$event, $any(obj()['compare'])[1]])" />
+      <df-selector-field [value]="$any(obj()['compare'])[1]" label="beats" (valueChange)="set('compare', [$any(obj()['compare'])[0], $event])" />
+      <label class="ctl">Higher or lower
+        <select [value]="obj()['wins']" (change)="set('wins', $any($event.target).value)">
+          <option value="high">Higher wins</option><option value="low">Lower wins</option>
+        </select>
+      </label>
+    }
+    @case ('count') {
+      <span class="row">
+        <label class="ctl">Zone
+          <select [value]="obj()['count']" (change)="set('count', $any($event.target).value)">
+            @for (z of zones; track z) { <option [value]="z">{{ zoneLabel[z] }}</option> }
+          </select>
+        </label>
+        <label class="ctl">Is
+          <select [value]="op()" (change)="setOp($any($event.target).value)">
+            @for (c of comparisons; track c.op) { <option [value]="c.op">{{ c.label }}</option> }
+          </select>
+        </label>
+        <df-number-ref label="Cards" [value]="obj()[op()]" (valueChange)="set(op(), $event)" />
+      </span>
+    }
+    @case ('var') {
+      <span class="row">
+        <label class="ctl">Counter
+          <input type="text" [value]="obj()['var']" (input)="set('var', $any($event.target).value)" />
+        </label>
+        <label class="ctl">Is
+          <select [value]="op()" (change)="setOp($any($event.target).value)">
+            @for (c of comparisons; track c.op) { <option [value]="c.op">{{ c.label }}</option> }
+          </select>
+        </label>
+        <df-number-ref label="Value" [value]="obj()[op()]" (valueChange)="set(op(), $event)" />
+      </span>
+    }
+    @case ('elapsed') {
+      <label class="ctl">Timer id
+        <input type="text" [value]="obj()['elapsed']" (input)="set('elapsed', $any($event.target).value)" />
+      </label>
+    }
+    @case ('setting') {
+      <span class="row">
+        <label class="ctl">Setting
+          <select [value]="obj()['setting']" (change)="set('setting', $any($event.target).value)">
+            <option value="" disabled>Choose…</option>
+            @for (k of store.settingKeys(); track k) { <option [value]="k">{{ k }}</option> }
+          </select>
+        </label>
+        <label class="ctl">Equals
+          <input type="text" [value]="obj()['equals']" (input)="setEquals($any($event.target).value)" />
+        </label>
+      </span>
+    }
+    @case ('not') {
+      <div class="nested">
+        <df-condition-editor [value]="obj()['not']" label="Not when" [depth]="depth() + 1" (valueChange)="set('not', $event)" />
+      </div>
+    }
+    @default {
+      @if (kind() === 'all' || kind() === 'any') {
+        <div class="nested">
+          @for (c of children(); track $index; let i = $index) {
+            <div class="nested-item">
+              <df-condition-editor [value]="c" [label]="(kind() === 'all' ? 'And ' : 'Or ') + (i + 1)" [depth]="depth() + 1" (valueChange)="setChild(i, $event)" />
+              <button type="button" class="icon-btn" (click)="removeChild(i)" [attr.aria-label]="'Remove condition ' + (i + 1)"><mat-icon>close</mat-icon></button>
+            </div>
+          }
+          <button type="button" class="text-btn" (click)="addChild()">+ Condition</button>
+        </div>
+      }
+    }
+  }
+</div>

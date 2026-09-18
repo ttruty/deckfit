@@ -1,0 +1,94 @@
+<div class="page">
+  <df-install-banner />
+  <section class="hero" aria-labelledby="quick-title">
+    <div>
+      <h1 id="quick-title">Quick start</h1>
+      <p>{{ data.value()?.quickStart ?? 'Bodyweight deck · Solo Deal' }} — flip a card, do the work.</p>
+    </div>
+    <button mat-flat-button class="big" (click)="quickStart()" [disabled]="starting() !== null">
+      <mat-icon>play_arrow</mat-icon>{{ starting() === 'quick' ? 'Starting…' : 'Start' }}
+    </button>
+  </section>
+
+  <section aria-labelledby="fav-title">
+    <div class="section-head">
+      <h2 id="fav-title">Favorites</h2>
+      <a mat-button routerLink="/routines/new"><mat-icon>add</mat-icon>New routine</a>
+    </div>
+    @if (data.isLoading() && !data.hasValue()) {
+      <p role="status">Loading…</p>
+    } @else {
+      <ul class="routines">
+        @for (item of data.value()?.favorites ?? []; track item.routine.id) {
+          <li class="routine favorite">
+            <button class="start" (click)="startRoutine(item.routine)" [disabled]="starting() !== null || !item.playable"
+                    [attr.aria-label]="'Start ' + item.routine.name">
+              <mat-icon class="play" aria-hidden="true">{{ starting() === item.routine.id ? 'hourglass_top' : 'play_circle' }}</mat-icon>
+              <span class="text">
+                <span class="name">{{ item.routine.name }}</span>
+                <span class="sub">{{ item.subtitle }}</span>
+              </span>
+            </button>
+            <a mat-icon-button [routerLink]="['/routines', item.routine.id, 'edit']" [attr.aria-label]="'Edit ' + item.routine.name">
+              <mat-icon>edit</mat-icon>
+            </a>
+          </li>
+        } @empty {
+          <li class="empty">
+            @if (hasRoutines()) {
+              Mark a routine as a favorite to start it here with one tap.
+            } @else {
+              Save a routine (deck + game + settings) and mark it favorite to start it here with one tap.
+            }
+          </li>
+        }
+      </ul>
+    }
+  </section>
+
+  @if (data.value()?.others?.length) {
+    <section aria-labelledby="other-title">
+      <h2 id="other-title">Your routines</h2>
+      <ul class="routines">
+        @for (item of data.value()!.others; track item.routine.id) {
+          <li class="routine">
+            <button class="start" (click)="startRoutine(item.routine)" [disabled]="starting() !== null || !item.playable"
+                    [attr.aria-label]="'Start ' + item.routine.name">
+              <mat-icon class="play" aria-hidden="true">{{ starting() === item.routine.id ? 'hourglass_top' : 'play_circle_outline' }}</mat-icon>
+              <span class="text">
+                <span class="name">{{ item.routine.name }}</span>
+                <span class="sub">{{ item.subtitle }}</span>
+              </span>
+            </button>
+            <a mat-icon-button [routerLink]="['/routines', item.routine.id, 'edit']" [attr.aria-label]="'Edit ' + item.routine.name">
+              <mat-icon>edit</mat-icon>
+            </a>
+          </li>
+        }
+      </ul>
+    </section>
+  }
+
+  <section class="join" aria-labelledby="join-title">
+    <h2 id="join-title">Play with friends</h2>
+    <p class="lede">Everyone plays on their own phone. Start a room and share the code, or join one.</p>
+    @if (!realtime) {
+      <p class="offline-note" role="note">
+        <mat-icon>wifi_off</mat-icon>
+        No realtime server configured, so rooms stay in this browser — another device or browser will get “Room not found”.
+        Run <code>npm run start:local</code> with keys in <code>environment.local.ts</code> (check them with <code>npm run check:realtime</code>).
+      </p>
+    }
+    <div class="room-actions">
+      <a mat-flat-button routerLink="/room/new"><mat-icon>group_add</mat-icon>Start a room</a>
+      <form [formGroup]="joinForm" (ngSubmit)="joinRoom()" class="join-form">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Room code</mat-label>
+          <input matInput [formControl]="roomCode" maxlength="6" autocapitalize="characters" autocomplete="off" spellcheck="false" />
+          @if (roomCode.touched && roomCode.invalid) { <mat-error>6 letters or digits</mat-error> }
+        </mat-form-field>
+        <button mat-stroked-button type="submit"><mat-icon>group</mat-icon>Join</button>
+      </form>
+    </div>
+  </section>
+</div>

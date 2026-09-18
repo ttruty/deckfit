@@ -1,0 +1,44 @@
+<div class="page">
+  <a mat-button routerLink="/" class="back"><mat-icon>arrow_back</mat-icon>Home</a>
+  <h1>New room</h1>
+  <p class="lede">Friends join with the room code or by scanning the QR code. Everyone plays on their own phone.</p>
+  @if (!realtime) {
+    <p class="offline-note" role="alert">
+      <mat-icon>wifi_off</mat-icon>
+      <span>
+        No realtime server is configured, so this room stays in this browser — other devices will get “Room not found”.
+        Put your Supabase URL and publishable key in <code>src/environments/environment.local.ts</code>, check them with
+        <code>npm run check:realtime</code>, and serve with <code>npm run start:local</code>.
+      </span>
+    </p>
+  }
+
+  @if (options.isLoading() && !options.hasValue()) {
+    <p role="status">Loading routines…</p>
+  } @else if (options.value(); as opts) {
+    <form class="form" [formGroup]="form" (ngSubmit)="create()">
+      <mat-form-field appearance="outline">
+        <mat-label>Your name</mat-label>
+        <input matInput [formControl]="name" maxlength="30" autocomplete="nickname" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Routine</mat-label>
+        <mat-select [formControl]="routineId">
+          @for (o of opts; track o.routine.id) {
+            <mat-option [value]="o.routine.id" [disabled]="!o.fitsGroup">
+              {{ o.routine.name }} — {{ o.gameName }}@if (!o.fitsGroup) { (solo only) }
+            </mat-option>
+          }
+        </mat-select>
+        <mat-hint>Only games for 2 or more players can be played in a room.</mat-hint>
+      </mat-form-field>
+
+      @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
+
+      <button mat-flat-button class="big" type="submit" [disabled]="busy() || !routineId.value">
+        <mat-icon>group_add</mat-icon>{{ busy() ? 'Creating…' : 'Create room' }}
+      </button>
+    </form>
+  }
+</div>

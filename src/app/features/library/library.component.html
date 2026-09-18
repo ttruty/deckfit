@@ -1,0 +1,89 @@
+@let f = store.filters();
+<div class="page">
+  <header class="head">
+    <h1>Library</h1>
+    <mat-form-field class="search" appearance="outline" subscriptSizing="dynamic">
+      <mat-icon matPrefix>search</mat-icon>
+      <mat-label>Search exercises</mat-label>
+      <input #search matInput type="search" [value]="f.query" (input)="setQuery(search.value)" />
+    </mat-form-field>
+    <a mat-flat-button class="new-exercise" routerLink="/library/new"><mat-icon>add</mat-icon>New exercise</a>
+    <button mat-stroked-button class="filters-toggle" (click)="showFilters.set(!showFilters())"
+            [attr.aria-expanded]="showFilters()" aria-controls="library-filters">
+      <mat-icon>tune</mat-icon>
+      Filters{{ store.activeCount() ? ' (' + store.activeCount() + ')' : '' }}
+    </button>
+  </header>
+
+  <section id="library-filters" class="filters" [class.open]="showFilters()" aria-label="Filters">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Category</mat-label>
+      <mat-select [value]="f.category" (valueChange)="setCategory($event)">
+        <mat-option [value]="null">All categories</mat-option>
+        @for (c of categories; track c) {
+          <mat-option [value]="c">{{ labels.CATEGORY_LABEL[c] }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <fieldset>
+      <legend>Muscle group</legend>
+      <mat-chip-listbox multiple [value]="f.muscleGroups" (change)="setMuscles($event)" aria-label="Muscle group">
+        @for (m of muscles; track m) {
+          <mat-chip-option [value]="m">{{ labels.MUSCLE_LABEL[m] }}</mat-chip-option>
+        }
+      </mat-chip-listbox>
+    </fieldset>
+
+    <fieldset>
+      <legend>Equipment</legend>
+      <mat-chip-listbox multiple [value]="f.equipment" (change)="setEquipment($event)" aria-label="Equipment">
+        @for (e of equipment; track e) {
+          <mat-chip-option [value]="e">{{ labels.EQUIPMENT_LABEL[e] }}</mat-chip-option>
+        }
+      </mat-chip-listbox>
+    </fieldset>
+
+    <fieldset>
+      <legend>Difficulty up to</legend>
+      <mat-chip-listbox [value]="f.maxDifficulty" (change)="setDifficulty($event)" aria-label="Maximum difficulty">
+        @for (d of difficulties; track d) {
+          <mat-chip-option [value]="d">{{ d }} · {{ labels.DIFFICULTY_LABEL[d] }}</mat-chip-option>
+        }
+      </mat-chip-listbox>
+    </fieldset>
+
+    <fieldset>
+      <legend>Measure</legend>
+      <mat-chip-listbox [value]="f.measure" (change)="setMeasure($event)" aria-label="Measure">
+        @for (m of measures; track m) {
+          <mat-chip-option [value]="m">{{ labels.MEASURE_LABEL[m] }}</mat-chip-option>
+        }
+      </mat-chip-listbox>
+    </fieldset>
+
+    @if (store.activeCount()) {
+      <button mat-button (click)="store.reset()"><mat-icon>clear_all</mat-icon>Clear filters</button>
+    }
+  </section>
+
+  <p class="count" role="status" aria-live="polite">
+    @if (store.loading() && !store.total()) {
+      Loading exercises…
+    } @else if (store.error()) {
+      Couldn't load exercises.
+    } @else {
+      {{ store.results().length }} of {{ store.total() }} exercises
+    }
+  </p>
+
+  <ul class="grid">
+    @for (ex of store.results(); track ex.id) {
+      <li><df-exercise-tile [exercise]="ex" /></li>
+    } @empty {
+      @if (store.total()) {
+        <li class="empty">No exercises match these filters.</li>
+      }
+    }
+  </ul>
+</div>

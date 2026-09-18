@@ -1,0 +1,46 @@
+<div class="page">
+  <h1>Decks</h1>
+
+  @if (data.isLoading() && !data.hasValue()) {
+    <p role="status">Loading decks…</p>
+  } @else if (data.error()) {
+    <p role="alert">Couldn't load decks.</p>
+  }
+
+  @for (section of sections(); track section.id) {
+    <section [attr.aria-labelledby]="'decks-' + section.id">
+      <h2 [id]="'decks-' + section.id">{{ section.title }}</h2>
+      <ul class="decks">
+        @for (item of section.decks; track item.deck.id) {
+          <li class="deck">
+            <a class="preview" [routerLink]="['/decks', item.deck.id, 'edit']" [attr.aria-label]="'Open ' + item.deck.name">
+              @if (item.preview) { <df-card-face [card]="item.preview" /> }
+            </a>
+            <div class="info">
+              <h3><a [routerLink]="['/decks', item.deck.id, 'edit']">{{ item.deck.name }}</a></h3>
+              <p class="meta">
+                @if (item.category) { {{ item.category }} · }{{ item.cardCount }} cards
+              </p>
+              <ul class="suits">
+                @for (s of item.suits; track s.suit) {
+                  <li><span class="pip" [attr.data-suit]="s.suit" [attr.aria-label]="s.name">{{ s.symbol }}</span> {{ s.label }}</li>
+                }
+              </ul>
+              <div class="actions">
+                @if (item.deck.builtIn) {
+                  <button mat-stroked-button (click)="duplicate(item.deck)"><mat-icon>content_copy</mat-icon>Duplicate to edit</button>
+                } @else {
+                  <a mat-stroked-button [routerLink]="['/decks', item.deck.id, 'edit']"><mat-icon>edit</mat-icon>Edit</a>
+                  <button mat-button (click)="duplicate(item.deck)"><mat-icon>content_copy</mat-icon>Duplicate</button>
+                  <button mat-button (click)="remove(item.deck)" [attr.aria-label]="'Delete ' + item.deck.name"><mat-icon>delete</mat-icon>Delete</button>
+                }
+              </div>
+            </div>
+          </li>
+        } @empty {
+          <li class="empty">{{ section.empty }}</li>
+        }
+      </ul>
+    </section>
+  }
+</div>

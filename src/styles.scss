@@ -5,8 +5,25 @@
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 
+// Card fonts, self-hosted for offline play (weights used by _card-tokens.scss).
+@use '@fontsource/big-shoulders-display/700' as display-700;
+@use '@fontsource/big-shoulders-display/800' as display-800;
+@use '@fontsource/atkinson-hyperlegible/400' as text-400;
+@use '@fontsource/atkinson-hyperlegible/700' as text-700;
+// Material's UI font and icon font, self-hosted as well: anything from Google Fonts would be
+// missing offline and on a first visit behind a slow network (§11).
+@use '@fontsource/roboto/300' as roboto-300;
+@use '@fontsource/roboto/400' as roboto-400;
+@use '@fontsource/roboto/500' as roboto-500;
+@use '@fontsource/material-icons' as material-icons;
+@use 'styles/card-tokens';
+
 html {
   height: 100%;
+  // mat.theme emits light-dark() colors; ThemeService's data-theme pins the scheme.
+  color-scheme: light dark;
+  &[data-theme='light'] { color-scheme: light; }
+  &[data-theme='dark'] { color-scheme: dark; }
   @include mat.theme(
     (
       color: (
@@ -19,12 +36,24 @@ html {
   );
 }
 
-body {
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
-  color-scheme: light;
+// @fontsource ships only the @font-face; these are the rules Google's stylesheet would add.
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
 
+body {
   // Set a default background, font and text colors for the application using
   // Angular Material's system-level CSS variables. Learn more about these
   // variables at https://material.angular.dev/guide/system-variables

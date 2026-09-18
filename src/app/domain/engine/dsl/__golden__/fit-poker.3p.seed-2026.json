@@ -1,0 +1,480 @@
+[
+ {
+  "type": "GameStarted",
+  "players": [
+   "p1",
+   "p2",
+   "p3"
+  ]
+ },
+ {
+  "type": "CardsShuffled",
+  "zone": "draw",
+  "count": 54
+ },
+ {
+  "type": "CardsShuffled",
+  "zone": "draw",
+  "count": 54
+ },
+ {
+  "type": "CardsDealt",
+  "zone": "hand:p1",
+  "cardIds": [
+   "bodyweight-clubs-8",
+   "bodyweight-clubs-9",
+   "bodyweight-hearts-9",
+   "bodyweight-spades-2",
+   "bodyweight-joker-2"
+  ],
+  "faceUp": false
+ },
+ {
+  "type": "CardsDealt",
+  "zone": "hand:p2",
+  "cardIds": [
+   "bodyweight-clubs-K",
+   "bodyweight-diamonds-J",
+   "bodyweight-hearts-4",
+   "bodyweight-diamonds-Q",
+   "bodyweight-spades-10"
+  ],
+  "faceUp": false
+ },
+ {
+  "type": "CardsDealt",
+  "zone": "hand:p3",
+  "cardIds": [
+   "bodyweight-diamonds-A",
+   "bodyweight-spades-Q",
+   "bodyweight-diamonds-K",
+   "bodyweight-spades-9",
+   "bodyweight-hearts-5"
+  ],
+  "faceUp": false
+ },
+ {
+  "type": "BetPlaced",
+  "playerId": "p1",
+  "amount": 2,
+  "pot": 2
+ },
+ {
+  "type": "BetPlaced",
+  "playerId": "p2",
+  "amount": 2,
+  "pot": 4
+ },
+ {
+  "type": "BetPlaced",
+  "playerId": "p3",
+  "amount": 2,
+  "pot": 6
+ },
+ {
+  "type": "CardsRevealed",
+  "cardIds": [
+   "bodyweight-clubs-8",
+   "bodyweight-clubs-9",
+   "bodyweight-hearts-9",
+   "bodyweight-spades-2",
+   "bodyweight-joker-2",
+   "bodyweight-clubs-K",
+   "bodyweight-diamonds-J",
+   "bodyweight-hearts-4",
+   "bodyweight-diamonds-Q",
+   "bodyweight-spades-10",
+   "bodyweight-diamonds-A",
+   "bodyweight-spades-Q",
+   "bodyweight-diamonds-K",
+   "bodyweight-spades-9",
+   "bodyweight-hearts-5"
+  ]
+ },
+ {
+  "type": "RoundWon",
+  "playerId": "p1",
+  "round": 1
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "id": "t1",
+   "playerId": "p2",
+   "cardIds": [
+    "bodyweight-clubs-K"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-snow-angel",
+   "amount": 6,
+   "measure": "reps",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "id": "t2",
+   "playerId": "p3",
+   "cardIds": [
+    "bodyweight-diamonds-A"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-pike-push-up",
+   "amount": 6,
+   "measure": "reps",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t1",
+  "playerId": "p2",
+  "exerciseKey": "bw-snow-angel",
+  "amount": 6
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t2",
+  "playerId": "p3",
+  "exerciseKey": "bw-pike-push-up",
+  "amount": 6
+ },
+ {
+  "type": "CardsMoved",
+  "from": "hand:p1",
+  "to": "discard",
+  "cardIds": [
+   "bodyweight-clubs-8",
+   "bodyweight-clubs-9",
+   "bodyweight-hearts-9",
+   "bodyweight-spades-2",
+   "bodyweight-joker-2"
+  ]
+ },
+ {
+  "type": "CardsMoved",
+  "from": "hand:p2",
+  "to": "discard",
+  "cardIds": [
+   "bodyweight-clubs-K",
+   "bodyweight-diamonds-J",
+   "bodyweight-hearts-4",
+   "bodyweight-diamonds-Q",
+   "bodyweight-spades-10"
+  ]
+ },
+ {
+  "type": "CardsMoved",
+  "from": "hand:p3",
+  "to": "discard",
+  "cardIds": [
+   "bodyweight-diamonds-A",
+   "bodyweight-spades-Q",
+   "bodyweight-diamonds-K",
+   "bodyweight-spades-9",
+   "bodyweight-hearts-5"
+  ]
+ },
+ {
+  "type": "CardsShuffled",
+  "zone": "draw",
+  "count": 54
+ },
+ {
+  "type": "CardsDealt",
+  "zone": "hand:p1",
+  "cardIds": [
+   "bodyweight-spades-4",
+   "bodyweight-hearts-2",
+   "bodyweight-diamonds-9",
+   "bodyweight-diamonds-8",
+   "bodyweight-clubs-6"
+  ],
+  "faceUp": false
+ },
+ {
+  "type": "CardsDealt",
+  "zone": "hand:p2",
+  "cardIds": [
+   "bodyweight-spades-Q",
+   "bodyweight-diamonds-4",
+   "bodyweight-joker-2",
+   "bodyweight-diamonds-K",
+   "bodyweight-hearts-J"
+  ],
+  "faceUp": false
+ },
+ {
+  "type": "CardsDealt",
+  "zone": "hand:p3",
+  "cardIds": [
+   "bodyweight-spades-2",
+   "bodyweight-diamonds-6",
+   "bodyweight-clubs-8",
+   "bodyweight-clubs-K",
+   "bodyweight-spades-6"
+  ],
+  "faceUp": false
+ },
+ {
+  "type": "BetPlaced",
+  "playerId": "p3",
+  "amount": 2,
+  "pot": 2
+ },
+ {
+  "type": "BetPlaced",
+  "playerId": "p1",
+  "amount": 2,
+  "pot": 4
+ },
+ {
+  "type": "BetPlaced",
+  "playerId": "p2",
+  "amount": 2,
+  "pot": 6
+ },
+ {
+  "type": "CardsRevealed",
+  "cardIds": [
+   "bodyweight-spades-4",
+   "bodyweight-hearts-2",
+   "bodyweight-diamonds-9",
+   "bodyweight-diamonds-8",
+   "bodyweight-clubs-6",
+   "bodyweight-spades-Q",
+   "bodyweight-diamonds-4",
+   "bodyweight-joker-2",
+   "bodyweight-diamonds-K",
+   "bodyweight-hearts-J",
+   "bodyweight-spades-2",
+   "bodyweight-diamonds-6",
+   "bodyweight-clubs-8",
+   "bodyweight-clubs-K",
+   "bodyweight-spades-6"
+  ]
+ },
+ {
+  "type": "RoundWon",
+  "playerId": "p3",
+  "round": 2
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "id": "t3",
+   "playerId": "p1",
+   "cardIds": [
+    "bodyweight-diamonds-9"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-wide-push-up",
+   "amount": 6,
+   "measure": "reps",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "id": "t4",
+   "playerId": "p2",
+   "cardIds": [
+    "bodyweight-diamonds-K"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-pike-push-up",
+   "amount": 6,
+   "measure": "reps",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t3",
+  "playerId": "p1",
+  "exerciseKey": "bw-wide-push-up",
+  "amount": 6
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t4",
+  "playerId": "p2",
+  "exerciseKey": "bw-pike-push-up",
+  "amount": 6
+ },
+ {
+  "type": "CardsMoved",
+  "from": "hand:p1",
+  "to": "discard",
+  "cardIds": [
+   "bodyweight-spades-4",
+   "bodyweight-hearts-2",
+   "bodyweight-diamonds-9",
+   "bodyweight-diamonds-8",
+   "bodyweight-clubs-6"
+  ]
+ },
+ {
+  "type": "CardsMoved",
+  "from": "hand:p2",
+  "to": "discard",
+  "cardIds": [
+   "bodyweight-spades-Q",
+   "bodyweight-diamonds-4",
+   "bodyweight-joker-2",
+   "bodyweight-diamonds-K",
+   "bodyweight-hearts-J"
+  ]
+ },
+ {
+  "type": "CardsMoved",
+  "from": "hand:p3",
+  "to": "discard",
+  "cardIds": [
+   "bodyweight-spades-2",
+   "bodyweight-diamonds-6",
+   "bodyweight-clubs-8",
+   "bodyweight-clubs-K",
+   "bodyweight-spades-6"
+  ]
+ },
+ {
+  "type": "CardsShuffled",
+  "zone": "draw",
+  "count": 54
+ },
+ {
+  "type": "CardsDealt",
+  "zone": "hand:p1",
+  "cardIds": [
+   "bodyweight-diamonds-6",
+   "bodyweight-spades-Q",
+   "bodyweight-diamonds-J",
+   "bodyweight-spades-2",
+   "bodyweight-diamonds-Q"
+  ],
+  "faceUp": false
+ },
+ {
+  "type": "CardsDealt",
+  "zone": "hand:p2",
+  "cardIds": [
+   "bodyweight-diamonds-10",
+   "bodyweight-clubs-4",
+   "bodyweight-hearts-4",
+   "bodyweight-spades-J",
+   "bodyweight-clubs-3"
+  ],
+  "faceUp": false
+ },
+ {
+  "type": "CardsDealt",
+  "zone": "hand:p3",
+  "cardIds": [
+   "bodyweight-diamonds-8",
+   "bodyweight-clubs-6",
+   "bodyweight-spades-10",
+   "bodyweight-spades-K",
+   "bodyweight-diamonds-K"
+  ],
+  "faceUp": false
+ },
+ {
+  "type": "BetPlaced",
+  "playerId": "p2",
+  "amount": 2,
+  "pot": 2
+ },
+ {
+  "type": "BetPlaced",
+  "playerId": "p3",
+  "amount": 2,
+  "pot": 4
+ },
+ {
+  "type": "BetPlaced",
+  "playerId": "p1",
+  "amount": 2,
+  "pot": 6
+ },
+ {
+  "type": "CardsRevealed",
+  "cardIds": [
+   "bodyweight-diamonds-6",
+   "bodyweight-spades-Q",
+   "bodyweight-diamonds-J",
+   "bodyweight-spades-2",
+   "bodyweight-diamonds-Q",
+   "bodyweight-diamonds-10",
+   "bodyweight-clubs-4",
+   "bodyweight-hearts-4",
+   "bodyweight-spades-J",
+   "bodyweight-clubs-3",
+   "bodyweight-diamonds-8",
+   "bodyweight-clubs-6",
+   "bodyweight-spades-10",
+   "bodyweight-spades-K",
+   "bodyweight-diamonds-K"
+  ]
+ },
+ {
+  "type": "RoundWon",
+  "playerId": "p3",
+  "round": 3
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "id": "t5",
+   "playerId": "p1",
+   "cardIds": [
+    "bodyweight-spades-Q"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-mountain-climber",
+   "amount": 6,
+   "measure": "reps",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "id": "t6",
+   "playerId": "p2",
+   "cardIds": [
+    "bodyweight-spades-J"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-mountain-climber",
+   "amount": 6,
+   "measure": "reps",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t5",
+  "playerId": "p1",
+  "exerciseKey": "bw-mountain-climber",
+  "amount": 6
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t6",
+  "playerId": "p2",
+  "exerciseKey": "bw-mountain-climber",
+  "amount": 6
+ },
+ {
+  "type": "GameOver",
+  "reason": "end",
+  "scores": {
+   "p1": 1,
+   "p2": 0,
+   "p3": 2
+  }
+ }
+]

@@ -1,0 +1,81 @@
+:host { display: block; min-height: 100dvh; background: var(--table); color: var(--ink); }
+
+.play {
+  display: grid; grid-template-rows: auto 1fr auto; min-height: 100dvh; max-width: 1100px; margin: 0 auto;
+  padding: env(safe-area-inset-top) max(12px, env(safe-area-inset-right)) env(safe-area-inset-bottom) max(12px, env(safe-area-inset-left));
+  box-sizing: border-box; gap: 8px;
+}
+.center { display: grid; place-items: center; gap: 12px; min-height: 60dvh; font: var(--mat-sys-title-medium); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.bar {
+  display: flex; align-items: center; gap: 4px; min-height: 56px; color: var(--ink);
+  .title { flex: 1; display: grid; min-width: 0; line-height: 1.15; }
+  .game { font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; }
+  .deck { font: var(--mat-sys-body-small); opacity: 0.8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cap { display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; margin-inline: 8px; }
+  .cap-label { font: var(--mat-sys-label-medium); }
+  .cap.rest { color: var(--suit-text-clubs); }
+  a, button { color: inherit; }
+}
+
+// ── Table ───────────────────────────────────────────────────────────────────
+
+.table { display: flex; align-items: center; justify-content: center; gap: 16px; min-height: 0; padding-block: 8px; }
+
+.cards {
+  list-style: none; margin: 0; padding: 0; flex: 1; min-width: 0;
+  display: grid; gap: 12px; justify-content: center; align-content: center;
+  grid-template-columns: repeat(var(--cols, 1), minmax(0, var(--card-w, 240px)));
+  font-size: var(--card-font, 16px);
+  &[data-count='1'] { --cols: 1; --card-w: min(60vw, 42dvh, 280px); --card-font: clamp(12px, 3.6vw, 18px); }
+  &[data-count='2'] { --cols: 2; --card-w: min(38vw, 36dvh, 220px); --card-font: clamp(9px, 2.4vw, 14px); }
+  &[data-count='3'] { --cols: 3; --card-w: min(26vw, 30dvh, 190px); --card-font: clamp(8px, 1.8vw, 13px); }
+  &[data-count='4'] { --cols: 4; --card-w: min(20vw, 28dvh, 180px); --card-font: clamp(7px, 1.5vw, 12px); }
+  @media (max-width: 599.98px) {
+    &[data-count='4'] { --cols: 2; --card-w: min(34vw, 22dvh); --card-font: clamp(8px, 2.2vw, 11px); }
+    &[data-count='3'] { --cols: 3; --card-w: min(26vw, 24dvh); }
+  }
+  li { border-radius: var(--card-radius); transition: none; }
+  li.active { box-shadow: 0 0 0 4px var(--mat-sys-primary); }
+}
+
+// Deal + flip: new cards slide in from the pile side and turn face-up.
+@media (prefers-reduced-motion: no-preference) {
+  .cards li.dealt { animation: deal-in 480ms cubic-bezier(0.2, 0.8, 0.2, 1) both; transform-origin: center; }
+  .cards li.dealt:nth-child(2) { animation-delay: 60ms; }
+  .cards li.dealt:nth-child(3) { animation-delay: 120ms; }
+  .cards li.dealt:nth-child(4) { animation-delay: 180ms; }
+  @keyframes deal-in {
+    0% { opacity: 0; transform: translateX(-40px) rotateY(90deg) scale(0.9); }
+    55% { opacity: 1; transform: translateX(0) rotateY(90deg) scale(1); }
+    100% { transform: rotateY(0) scale(1); }
+  }
+  .cards li.active { transition: box-shadow 200ms ease-out; }
+}
+
+// ── Panels ──────────────────────────────────────────────────────────────────
+
+.panel {
+  display: grid; gap: 12px; justify-items: center; padding: 16px; margin-bottom: 8px; border-radius: 24px;
+  background: var(--mat-sys-surface); color: var(--mat-sys-on-surface); box-shadow: 0 -2px 16px rgb(0 0 0 / 0.12);
+}
+.task-head {
+  display: flex; align-items: center; gap: 12px; justify-self: stretch;
+  --suit: var(--mat-sys-primary);
+  .mini { width: 56px; height: 56px; flex: none; }
+  h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.6rem, 6vw, 2.4rem); line-height: 1; margin: 0; }
+  .cues { margin: 4px 0 0; font: var(--mat-sys-body-medium); color: var(--mat-sys-on-surface-variant); }
+}
+.work { --ring-size: min(180px, 26dvh); display: grid; place-items: center; min-height: 96px; }
+
+.actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.big { min-height: 56px; min-width: 112px; font-size: 1.05rem; }
+.flip { min-width: 200px; min-height: 64px; font-size: 1.25rem; }
+.progress { margin: 0; font: var(--mat-sys-body-medium); color: var(--mat-sys-on-surface-variant); }
+
+.toast {
+  position: fixed; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom)); transform: translateX(-50%);
+  margin: 0; padding: 10px 16px; border-radius: 12px; background: var(--mat-sys-inverse-surface); color: var(--mat-sys-inverse-on-surface);
+}
+

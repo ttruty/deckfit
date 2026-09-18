@@ -1,0 +1,66 @@
+@for (s of entries(); track s.key) {
+  @let d = s.def;
+  @let issues = problems(s.key);
+  <article class="setting" [class.invalid]="issues.length" [attr.data-setting]="s.key" [attr.aria-label]="'Setting ' + (d.label ?? s.key)">
+    <header>
+      <code>{{ s.key }}</code>
+      <span class="type">{{ d.type }}</span>
+      <span class="uses">{{ s.uses ? 'used in ' + s.uses + (s.uses === 1 ? ' place' : ' places') : 'not used yet' }}</span>
+      <span class="spacer"></span>
+      <button type="button" class="icon-btn" (click)="remove(s.key)" [attr.aria-label]="'Remove setting ' + (d.label ?? s.key)"><mat-icon>delete</mat-icon></button>
+    </header>
+    <div class="row">
+      <label class="ctl">Label
+        <input type="text" [value]="d.label ?? ''" (input)="patch(s.key, d, ['label'], $any($event.target).value || undefined)" />
+      </label>
+      @switch (d.type) {
+        @case ('number') {
+          <label class="ctl">Min <input type="number" [value]="d.min" (input)="patch(s.key, d, ['min'], num($any($event.target).value))" /></label>
+          <label class="ctl">Max <input type="number" [value]="d.max" (input)="patch(s.key, d, ['max'], num($any($event.target).value))" /></label>
+          <label class="ctl">Step <input type="number" [value]="d.step ?? ''" (input)="patch(s.key, d, ['step'], num($any($event.target).value))" /></label>
+          <label class="ctl">Default
+            <input type="number" [value]="d.default ?? ''" [disabled]="d.default === null" (input)="patch(s.key, d, ['default'], num($any($event.target).value))" />
+          </label>
+          <label class="check"><input type="checkbox" [checked]="d.default === null" (change)="patch(s.key, d, ['default'], $any($event.target).checked ? null : d.min)" /> Off by default</label>
+        }
+        @case ('enum') {
+          <label class="ctl">Options (comma separated)
+            <input type="text" [value]="d.options.join(', ')" (change)="patch(s.key, d, ['options'], options($any($event.target).value))" />
+          </label>
+          <label class="ctl">Default
+            <select [value]="d.default" (change)="patch(s.key, d, ['default'], $any($event.target).value)">
+              @for (o of d.options; track o) { <option [value]="o">{{ o }}</option> }
+            </select>
+          </label>
+        }
+        @case ('boolean') {
+          <label class="check"><input type="checkbox" [checked]="d.default" (change)="patch(s.key, d, ['default'], $any($event.target).checked)" /> On by default</label>
+        }
+        @case ('suits') {
+          <fieldset class="suits"><legend>Default suits</legend>
+            @for (suit of suits; track suit) {
+              <label class="check"><input type="checkbox" [checked]="d.default.includes(suit)" (change)="toggleSuit(s.key, d, suit, $any($event.target).checked)" />
+                {{ suitSymbol[suit] }} {{ suitName[suit] }}</label>
+            }
+          </fieldset>
+        }
+      }
+    </div>
+    @if (issues.length) {
+      <ul class="problems">@for (p of issues; track $index) { <li>{{ p }}</li> }</ul>
+    }
+  </article>
+} @empty {
+  <p class="hint">No adjustable settings yet. Use <mat-icon inline>tune</mat-icon> next to a number in a step, or add one here.</p>
+}
+<div class="row add">
+  <label class="ctl">New setting
+    <input type="text" placeholder="Label, e.g. Hand size" [value]="newLabel()" (input)="newLabel.set($any($event.target).value)" />
+  </label>
+  <label class="ctl">Type
+    <select [value]="newType()" (change)="newType.set($any($event.target).value)">
+      <option value="number">Number</option><option value="enum">Choice</option><option value="boolean">On/off</option><option value="suits">Suits</option>
+    </select>
+  </label>
+  <button type="button" class="text-btn" (click)="add()">+ Add setting</button>
+</div>

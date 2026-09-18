@@ -1,0 +1,71 @@
+# Deploys DeckFit to GitHub Pages (CLAUDE.md §11).
+#
+# Settings → Pages → Source: "GitHub Actions".
+# Settings → Secrets and variables → Actions:
+#   SUPABASE_URL  (variable or secret) – https://<project>.supabase.co
+#   SUPABASE_KEY  (secret)             – the *publishable/anon* key; it ships to browsers,
+#                                        never a service-role key.
+# Without them the site still works for solo play; rooms stay on this device.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: Write Supabase config
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL || vars.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          if [ -n "$SUPABASE_URL" ] && [ -n "$SUPABASE_KEY" ]; then
+            cat > src/environments/environment.local.ts <<CONFIG
+          export const environment = {
+            supabaseUrl: '$SUPABASE_URL',
+            supabaseKey: '$SUPABASE_KEY',
+          };
+          CONFIG
+            echo "SUPABASE_ENV=local" >> "$GITHUB_ENV"
+          else
+            echo "::warning::No Supabase config; rooms will only work on a single device."
+          fi
+
+      - run: npm test
+      - name: Build
+        env:
+          BASE_HREF: /${{ github.event.repository.name }}/
+        run: npm run build:pages
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/deckfit/browser
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

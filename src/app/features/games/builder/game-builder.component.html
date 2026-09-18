@@ -1,0 +1,251 @@
+<div class="page">
+  <a mat-button routerLink="/games" class="back"><mat-icon>arrow_back</mat-icon>Games</a>
+
+  @if (!store.loaded()) {
+    <p role="status">Loading…</p>
+  } @else if (store.loadError(); as error) {
+    <p role="alert">{{ error }}</p>
+  } @else {
+    @let g = v();
+    @let d = store.draft();
+    <h1>{{ store.isNew() ? 'New game' : 'Edit game' }}</h1>
+    @if (store.copiedFrom(); as source) {
+      <p class="notice"><mat-icon>content_copy</mat-icon> Starting from “{{ source }}”. Saving creates your own copy; the original stays unchanged.</p>
+    }
+
+    <div class="layout">
+      <div class="main">
+        <!-- 1. Basics -->
+        <section class="card" aria-labelledby="basics" data-field="name">
+          <h2 id="basics"><span class="num">1</span> Basics</h2>
+          <div class="row">
+            <label class="ctl grow">Name
+              <input type="text" [value]="g.name" (input)="set(['name'], $any($event.target).value)" [attr.aria-invalid]="fp('name').length > 0" maxlength="60" />
+            </label>
+            <label class="ctl" data-field="scoring">Scoring
+              <select [value]="g.scoring" (change)="set(['scoring'], $any($event.target).value)">
+                <option value="total-work">Total work (reps and time)</option>
+                <option value="rounds-won">Rounds won</option>
+              </select>
+            </label>
+          </div>
+          <label class="ctl" data-field="summary">Summary
+            <textarea rows="2" [value]="g.summary" (input)="set(['summary'], $any($event.target).value)" [attr.aria-invalid]="fp('summary').length > 0"></textarea>
+          </label>
+          <div class="row" data-field="players">
+            <label class="ctl">Min players
+              <input type="number" min="1" max="8" [value]="g.playersMin ?? ''" (input)="set(['players', 'min'], num($any($event.target).value))" />
+            </label>
+            <label class="ctl">Max players
+              <input type="number" min="1" max="8" [value]="g.playersMax ?? ''" (input)="set(['players', 'max'], num($any($event.target).value))" />
+            </label>
+          </div>
+          @for (p of [...fp('name'), ...fp('summary'), ...fp('players'), ...fp('scoring'), ...fp('id')]; track $index) { <p class="problem">{{ p }}</p> }
+        </section>
+
+        <!-- 2. Setup -->
+        <section class="card" aria-labelledby="setup" data-field="setup">
+          <h2 id="setup"><span class="num">2</span> Setup</h2>
+          <label class="check"><input type="checkbox" [checked]="g.shuffle" (change)="set(['setup', 'shuffle'], $any($event.target).checked)" /> Shuffle the deck</label>
+          <label class="check">
+            <input type="checkbox" [checked]="g.filterSuits !== null || g.filterSetting !== null"
+                   (change)="toggle(['setup', 'filter'], $any($event.target).checked, { suits: ['hearts', 'diamonds', 'clubs', 'spades'] })" />
+            Play with only some suits
+          </label>
+          @if (g.filterSuits; as fs) {
+            <fieldset class="suits"><legend>Suits in play</legend>
+              @for (suit of suits; track suit) {
+                <label class="check"><input type="checkbox" [checked]="fs.includes(suit)" (change)="toggleFilterSuit(suit, $any($event.target).checked)" /> {{ suitSymbol[suit] }} {{ suitName[suit] }}</label>
+              }
+            </fieldset>
+          } @else if (g.filterSetting) {
+            <p class="hint">Suits come from the setting <code>{{ g.filterSetting }}</code>.</p>
+          }
+          <h3>Deal</h3>
+          <df-block-list [ref]="{ slot: 'setup.deal' }" [blocks]="d.slots['setup.deal'] ?? []" label="Setup steps" />
+          @for (p of fp('setup'); track $index) { <p class="problem">{{ p }}</p> }
+        </section>
+
+        <!-- 3. Turns and actions -->
+        <section class="card" aria-labelledby="turns" data-field="turn">
+          <h2 id="turns"><span class="num">3</span> Turns</h2>
+          <label class="ctl">How players act
+            <select [value]="g.turnMode" (change)="setTurnMode($any($event.target).value)">
+              <option value="steps">Players take turns (each Flip runs the turn steps)</option>
+              <option value="simultaneous">Everyone flips, then the round resolves</option>
+              <option value="none">No turns (actions or bluff rules only)</option>
+            </select>
+          </label>
+          @if (g.turnMode === 'steps') {
+            <df-block-list [ref]="{ slot: 'turn.steps' }" [blocks]="d.slots['turn.steps'] ?? []" label="Turn steps" />
+          } @else if (g.turnMode === 'simultaneous') {
+            <h3>Each player, when they flip</h3>
+            <df-block-list [ref]="{ slot: 'turn.each' }" [blocks]="d.slots['turn.each'] ?? []" label="Each player's steps" />
+            <h3>Then, once everyone has acted</h3>
+            <df-block-list [ref]="{ slot: 'turn.then' }" [blocks]="d.slots['turn.then'] ?? []" label="Round steps" />
+          }
+          @for (p of fp('turn'); track $index) { <p class="problem">{{ p }}</p> }
+          <label class="check"><input type="checkbox" [checked]="g.race" (change)="toggle(['race'], $any($event.target).checked, true)" /> Race: the first player to finish a round’s exercises wins it</label>
+
+          <div data-field="actions">
+            <h3>Free actions</h3>
+            @for (action of ['play', 'pass']; track action) {
+              @let a = $any(action);
+              @let on = action === 'play' ? g.playAction : g.passAction;
+              <label class="check">
+                <input type="checkbox" [checked]="on" (change)="toggleAction(a, $any($event.target).checked)" />
+                {{ action === 'play' ? 'Players may play a card from their hand at any time' : 'Players may pass when stuck' }}
+              </label>
+              @if (on) {
+                <div class="action">
+                  @for (r of requirements(a); track $index; let i = $index) {
+                    <div class="requirement">
+                      <df-condition-editor [value]="r.when" label="Only if" (valueChange)="setRequirement(a, i, { when: $event })" />
+                      <label class="ctl">Otherwise reject as
+                        <input type="text" [value]="r.reason" (input)="setRequirement(a, i, { reason: $any($event.target).value })" />
+                      </label>
+                      <button type="button" class="icon-btn" (click)="removeRequirement(a, i)" aria-label="Remove requirement"><mat-icon>close</mat-icon></button>
+                    </div>
+                  }
+                  <button type="button" class="text-btn" (click)="addRequirement(a)">+ Requirement</button>
+                  <df-block-list [ref]="{ slot: action === 'play' ? 'actions.play.steps' : 'actions.pass.steps' }"
+                                 [blocks]="d.slots[action === 'play' ? 'actions.play.steps' : 'actions.pass.steps'] ?? []"
+                                 [label]="action === 'play' ? 'Play steps' : 'Pass steps'" />
+                </div>
+              }
+            }
+            @for (p of fp('actions'); track $index) { <p class="problem">{{ p }}</p> }
+          </div>
+
+          <div data-field="timing">
+            <label class="check">
+              <input type="checkbox" [checked]="g.timing !== null" (change)="toggle(['timing'], $any($event.target).checked, { windowMs: 300, intents: ['play'] })" />
+              Speed game: resolve near-simultaneous moves by time (multiplayer)
+            </label>
+            @if (g.timing; as t) {
+              <div class="row">
+                <label class="ctl">Window (ms)
+                  <input type="number" min="0" max="2000" [value]="t.windowMs ?? ''" (input)="set(['timing', 'windowMs'], num($any($event.target).value))" />
+                </label>
+                @for (i of ['play', 'pass', 'flip', 'completeTask']; track i) {
+                  <label class="check"><input type="checkbox" [checked]="timingIntents().includes(i)" (change)="toggleTimingIntent(i, $any($event.target).checked)" /> {{ i }}</label>
+                }
+              </div>
+              @for (p of fp('timing'); track $index) { <p class="problem">{{ p }}</p> }
+            }
+          </div>
+        </section>
+
+        <!-- 4. End -->
+        <section class="card" aria-labelledby="end" data-field="end">
+          <h2 id="end"><span class="num">4</span> End</h2>
+          <df-condition-editor [value]="g.endWhen" label="The game ends when" (valueChange)="set(['end', 'when'], $event)" />
+          <label class="check">
+            <input type="checkbox" [checked]="g.endThen" (change)="toggle(['end', 'then'], $any($event.target).checked, [])" />
+            Run steps when it ends (e.g. leftover cards become exercises)
+          </label>
+          @if (g.endThen) {
+            <df-block-list [ref]="{ slot: 'end.then' }" [blocks]="d.slots['end.then'] ?? []" label="Final steps" />
+          }
+          @for (p of fp('end'); track $index) { <p class="problem">{{ p }}</p> }
+        </section>
+
+        <!-- 5. Task rules -->
+        <section class="card" aria-labelledby="tasks" data-field="defaults">
+          <h2 id="tasks"><span class="num">5</span> Task rules</h2>
+          <p class="hint">Defaults for this game; routines can still change them. Leave blank for the app default.</p>
+          <div class="row">
+            <label class="ctl">Rep multiplier
+              <select [value]="g.defaults.repMultiplier ?? ''" (change)="set(['defaults', 'repMultiplier'], num($any($event.target).value))">
+                <option value="">Default (×1)</option>
+                @for (m of multipliers; track m) { <option [value]="m">×{{ m }}</option> }
+              </select>
+            </label>
+            <label class="ctl">Face cards (reps)
+              <input type="number" min="0" placeholder="10" [value]="g.defaults.faceCardValue ?? ''" (input)="set(['defaults', 'faceCardValue'], num($any($event.target).value))" />
+            </label>
+            <label class="ctl">Aces (reps)
+              <input type="number" min="0" placeholder="11" [value]="g.defaults.aceValue ?? ''" (input)="set(['defaults', 'aceValue'], num($any($event.target).value))" />
+            </label>
+            <label class="ctl">Jokers
+              <select [value]="g.defaults.jokerRule" (change)="set(['defaults', 'jokerRule'], $any($event.target).value || undefined)">
+                <option value="">Default (rest)</option>
+                @for (j of jokerRules; track j.value) { <option [value]="j.value">{{ j.label }}</option> }
+              </select>
+            </label>
+            <label class="ctl">Max reps per task
+              <input type="number" min="1" placeholder="No cap" [value]="g.defaults.maxRepCap ?? ''" (input)="set(['defaults', 'maxRepCap'], num($any($event.target).value))" />
+            </label>
+            <label class="ctl">Rounds
+              <input type="number" min="1" placeholder="—" [value]="g.defaults.rounds ?? ''" (input)="set(['defaults', 'rounds'], num($any($event.target).value))" />
+            </label>
+            <label class="ctl">Time limit (s)
+              <input type="number" min="1" placeholder="—" [value]="g.defaults.timeLimitSec ?? ''" (input)="set(['defaults', 'timeLimitSec'], num($any($event.target).value))" />
+            </label>
+          </div>
+          @for (p of fp('defaults'); track $index) { <p class="problem">{{ p }}</p> }
+        </section>
+
+        <!-- 6. Hidden information -->
+        <section class="card" aria-labelledby="hidden" data-field="hidden">
+          <h2 id="hidden"><span class="num">6</span> Teams and hidden information</h2>
+          <div class="row">
+            <label class="ctl" data-field="teams">Teams
+              <select [value]="g.teamsSize ?? ''" (change)="set(['teams'], $any($event.target).value ? { size: +$any($event.target).value } : undefined)">
+                <option value="">No teams</option>
+                @for (n of [2, 3, 4]; track n) { <option [value]="n">Teams of {{ n }}</option> }
+              </select>
+            </label>
+            <label class="ctl" data-field="bluff">Bluff claims
+              <select [value]="g.bluffMax ?? ''" (change)="set(['bluff'], $any($event.target).value ? { maxCards: +$any($event.target).value } : undefined)">
+                <option value="">Off</option>
+                @for (n of [1, 2, 3, 4, 5, 6, 7, 8]; track n) { <option [value]="n">Up to {{ n }} per claim</option> }
+              </select>
+            </label>
+            <label class="check" data-field="betting">
+              <input type="checkbox" [checked]="g.betting !== null" (change)="toggle(['betting'], $any($event.target).checked, { maxBet: 20, then: [] })" /> Betting rounds
+            </label>
+            <label class="check">
+              <input type="checkbox" [checked]="g.hidden" (change)="toggle(['hidden'], $any($event.target).checked, true)" /> Hands are private (multiplayer)
+            </label>
+          </div>
+          @if (g.betting; as bet) {
+            <df-number-ref label="Maximum stake (reps)" [value]="bet.maxBet" [min]="1" [fallback]="20" (valueChange)="set(['betting', 'maxBet'], $event)" />
+            <h3>When a betting round closes</h3>
+            <df-block-list [ref]="{ slot: 'betting.then' }" [blocks]="d.slots['betting.then'] ?? []" label="Showdown steps" />
+          }
+          @for (p of [...fp('hidden'), ...fp('teams'), ...fp('bluff'), ...fp('betting')]; track $index) { <p class="problem">{{ p }}</p> }
+        </section>
+
+        <!-- 7. Settings -->
+        <section class="card" aria-labelledby="settings" data-field="settingsSchema">
+          <h2 id="settings"><span class="num">7</span> Adjustable settings</h2>
+          <df-settings-editor />
+        </section>
+
+        <!-- 8. Dry run -->
+        <section class="card" aria-labelledby="dryrun">
+          <h2 id="dryrun"><span class="num">8</span> Dry run</h2>
+          <df-dry-run-panel />
+        </section>
+      </div>
+
+      <aside class="side">
+        <df-block-palette />
+      </aside>
+    </div>
+
+    <div class="save-bar">
+      @if (problemCount()) {
+        <button type="button" class="problems-btn" (click)="goToFirstProblem()">
+          <mat-icon>error</mat-icon>{{ problemCount() }} {{ problemCount() === 1 ? 'problem' : 'problems' }}
+        </button>
+      } @else {
+        <span class="ok"><mat-icon>check_circle</mat-icon>Ready to play</span>
+      }
+      <span class="spacer"></span>
+      <a mat-button routerLink="/games">Cancel</a>
+      <button mat-flat-button type="button" (click)="save()" [disabled]="!store.dirty() && !store.isNew()">Save game</button>
+    </div>
+  }
+</div>

@@ -1,0 +1,97 @@
+<div class="page">
+  <h1>History</h1>
+
+  @if (data.isLoading() && !data.hasValue()) {
+    <p role="status">Loading…</p>
+  } @else if (data.error()) {
+    <p role="alert">Couldn't load your history.</p>
+  } @else if (stats(); as s) {
+    @if (!s.workouts) {
+      <div class="empty">
+        <p>No workouts yet. Finished and in-progress workouts show up here.</p>
+        <a mat-flat-button routerLink="/"><mat-icon>play_arrow</mat-icon>Start one</a>
+      </div>
+    } @else {
+      <dl class="tiles">
+        <div><dt>Workouts</dt><dd>{{ s.workouts }}</dd></div>
+        <div><dt>Reps</dt><dd>{{ s.reps | number }}</dd></div>
+        <div><dt>Timed work</dt><dd>{{ formatSeconds(s.seconds) }}</dd></div>
+        <div><dt>Minutes</dt><dd>{{ s.minutes | number }}</dd></div>
+      </dl>
+
+      <section aria-labelledby="groups-title">
+        <h2 id="groups-title">By suit group</h2>
+        <div class="bar-lists">
+          @for (list of [{ title: 'Reps', unit: 'reps', rows: groupBars().reps }, { title: 'Timed', unit: 'sec', rows: groupBars().seconds }]; track list.title) {
+            @if (list.rows.length) {
+              <figure class="bars">
+                <figcaption>{{ list.title }}</figcaption>
+                <ul>
+                  @for (g of list.rows; track g.label) {
+                    <li [attr.aria-label]="g.label + ' (' + g.suitName + '): ' + g.value + ' ' + list.unit" [title]="g.label + ': ' + g.value + ' ' + list.unit">
+                      <span class="label"><span class="pip" [attr.data-suit]="g.suit" aria-hidden="true">{{ g.symbol }}</span>{{ g.label }}</span>
+                      <span class="track" aria-hidden="true"><span class="fill" [style.width.%]="g.pct"></span></span>
+                      <span class="value" aria-hidden="true">{{ g.value | number }}</span>
+                    </li>
+                  }
+                </ul>
+              </figure>
+            }
+          }
+        </div>
+      </section>
+
+      <section aria-labelledby="exercise-title">
+        <h2 id="exercise-title">By exercise</h2>
+        <div class="table-wrap">
+          <table class="exercises">
+            <thead><tr><th scope="col">Exercise</th><th scope="col" class="num">Total</th><th scope="col" class="num">Workouts</th></tr></thead>
+            <tbody>
+              @for (e of s.byExercise; track e.key) {
+                <tr>
+                  <th scope="row">
+                    @if (e.key.startsWith('wild') || e.key === 'bonus-cardio' || e.name === 'Removed exercise') {
+                      {{ e.name }}
+                    } @else {
+                      <a [routerLink]="['/library', e.key]">{{ e.name }}</a>
+                    }
+                  </th>
+                  <td class="num">{{ e.measure === 'seconds' ? formatSeconds(e.amount) : (e.amount | number) + ' reps' }}</td>
+                  <td class="num">{{ e.sessions }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section aria-labelledby="sessions-title">
+        <h2 id="sessions-title">Workouts</h2>
+        <ul class="sessions">
+          @for (r of s.sessions; track r.session.id) {
+            <li>
+              <div class="when">
+                <span class="date">{{ r.session.startedAt | date: 'EEE d MMM' }}</span>
+                <span class="time">{{ r.session.startedAt | date: 'shortTime' }}</span>
+              </div>
+              <div class="what">
+                <span class="name">
+                  {{ r.session.game.name }}
+                  @if (r.session.roomId) { <span class="room" [attr.title]="'Room ' + r.session.roomId">with {{ r.session.players.length - 1 }} others</span> }
+                </span>
+                <span class="sub">{{ r.session.deck.name }} · {{ r.tasks }} tasks · {{ r.reps | number }} reps@if (r.seconds) { · {{ formatSeconds(r.seconds) }} }</span>
+              </div>
+              @if (r.inProgress) {
+                <a mat-stroked-button [routerLink]="['/play', r.session.id]"><mat-icon>play_arrow</mat-icon>Resume</a>
+              } @else {
+                <span class="badge" [class.abandoned]="r.session.outcome === 'abandoned'">
+                  {{ r.session.outcome === 'abandoned' ? 'Ended early' : r.minutes + ' min' }}
+                </span>
+              }
+            </li>
+          }
+        </ul>
+      </section>
+    }
+  }
+</div>

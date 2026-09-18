@@ -1,0 +1,74 @@
+<div class="list" cdkDropList [id]="id()" [cdkDropListData]="ref()" [cdkDropListConnectedTo]="store.listIds()"
+     [cdkDropListEnterPredicate]="canEnter" (cdkDropListDropped)="drop($event)"
+     [class.nested]="depth() > 0" [attr.data-list]="id()" role="group" [attr.aria-label]="label()">
+  @for (b of blocks(); track b.uid; let i = $index; let last = $last) {
+    @let info = primitive[b.kind];
+    @let issues = problems(b.uid);
+    <article class="block" cdkDrag [cdkDragData]="{ uid: b.uid }" (cdkDragStarted)="store.dragging.set(b.uid)" (cdkDragEnded)="store.dragging.set(null)"
+             [attr.data-block-uid]="b.uid" [attr.data-kind]="b.kind" [class.invalid]="issues.length"
+             [attr.aria-label]="(i + 1) + '. ' + info.label" [attr.aria-describedby]="issues.length ? 'problems-' + b.uid : null">
+      <div *cdkDragPlaceholder class="drop-line" aria-hidden="true"></div>
+      <header>
+        <button type="button" class="icon-btn handle" cdkDragHandle aria-label="Drag to move" title="Drag to move"><mat-icon>drag_indicator</mat-icon></button>
+        <mat-icon class="kind-icon" aria-hidden="true">{{ info.icon }}</mat-icon>
+        <span class="title">{{ info.label }}</span>
+        @if (issues.length) { <mat-icon class="warn" aria-hidden="true">error</mat-icon> }
+        <span class="spacer"></span>
+        <button type="button" class="icon-btn" [matMenuTriggerFor]="blockMenu" [attr.aria-label]="'Actions for ' + info.label + ' ' + (i + 1)"><mat-icon>more_vert</mat-icon></button>
+        <mat-menu #blockMenu="matMenu">
+          <button mat-menu-item [disabled]="i === 0" (click)="store.nudge(b.uid, -1)"><mat-icon>arrow_upward</mat-icon>Move up</button>
+          <button mat-menu-item [disabled]="last" (click)="store.nudge(b.uid, 1)"><mat-icon>arrow_downward</mat-icon>Move down</button>
+          <button mat-menu-item (click)="store.duplicate(b.uid)"><mat-icon>content_copy</mat-icon>Duplicate</button>
+          @if (b.kind === 'if') {
+            @if (b.children.else) {
+              <button mat-menu-item (click)="store.setChildList(b.uid, 'else', false)"><mat-icon>remove</mat-icon>Remove “else”</button>
+            } @else {
+              <button mat-menu-item (click)="store.setChildList(b.uid, 'else', true)"><mat-icon>add</mat-icon>Add “else”</button>
+            }
+          }
+          <button mat-menu-item (click)="store.remove(b.uid)"><mat-icon>delete</mat-icon>Delete</button>
+        </mat-menu>
+      </header>
+
+      <df-step-fields [block]="b" (bodyChange)="store.update(b.uid, $event)" />
+
+      @if (issues.length) {
+        <ul class="problems" [id]="'problems-' + b.uid">
+          @for (p of issues; track $index) { <li>{{ p }}</li> }
+        </ul>
+      }
+
+      @if (b.kind === 'if') {
+        <div class="branch">
+          <span class="branch-label">Then</span>
+          <df-block-list [ref]="{ uid: b.uid, child: 'then' }" [blocks]="b.children.then ?? []" [label]="'Then steps of ' + info.label" [depth]="depth() + 1" />
+        </div>
+        @if (b.children.else) {
+          <div class="branch else">
+            <span class="branch-label">Else</span>
+            <df-block-list [ref]="{ uid: b.uid, child: 'else' }" [blocks]="b.children.else" [label]="'Else steps of ' + info.label" [depth]="depth() + 1" />
+          </div>
+        }
+      }
+      @if (b.kind === 'repeat') {
+        <div class="branch">
+          <span class="branch-label">Steps</span>
+          <df-block-list [ref]="{ uid: b.uid, child: 'steps' }" [blocks]="b.children.steps ?? []" [label]="'Repeated steps'" [depth]="depth() + 1" />
+        </div>
+      }
+    </article>
+  } @empty {
+    <p class="empty">Drop steps here</p>
+  }
+  <button type="button" class="add" [matMenuTriggerFor]="addMenu" [attr.aria-label]="'Add step to ' + label()"><mat-icon>add</mat-icon>Add step</button>
+  <mat-menu #addMenu="matMenu">
+    @for (g of groups; track g.name) {
+      <button mat-menu-item [matMenuTriggerFor]="groupMenu">{{ g.name }}</button>
+      <mat-menu #groupMenu="matMenu">
+        @for (p of g.items; track p.kind) {
+          <button mat-menu-item (click)="add(p.kind)"><mat-icon>{{ p.icon }}</mat-icon>{{ p.label }}</button>
+        }
+      </mat-menu>
+    }
+  </mat-menu>
+</div>
