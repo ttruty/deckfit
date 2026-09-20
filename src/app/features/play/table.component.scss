@@ -26,15 +26,15 @@
 .cards {
   list-style: none; margin: 0; padding: 0; flex: 1; min-width: 0;
   display: grid; gap: 12px; justify-content: center; align-content: center;
+  // Cards size their own type from their width (§9a), so these only choose the layout.
   grid-template-columns: repeat(var(--cols, 1), minmax(0, var(--card-w, 240px)));
-  font-size: var(--card-font, 16px);
-  &[data-count='1'] { --cols: 1; --card-w: min(60vw, 42dvh, 280px); --card-font: clamp(12px, 3.6vw, 18px); }
-  &[data-count='2'] { --cols: 2; --card-w: min(38vw, 36dvh, 220px); --card-font: clamp(9px, 2.4vw, 14px); }
-  &[data-count='3'] { --cols: 3; --card-w: min(26vw, 30dvh, 190px); --card-font: clamp(8px, 1.8vw, 13px); }
-  &[data-count='4'] { --cols: 4; --card-w: min(20vw, 28dvh, 180px); --card-font: clamp(7px, 1.5vw, 12px); }
+  &[data-count='1'] { --cols: 1; --card-w: min(60vw, 42dvh, 280px); }
+  &[data-count='2'] { --cols: 2; --card-w: min(38vw, 36dvh, 220px); }
+  &[data-count='3'] { --cols: 3; --card-w: min(26vw, 30dvh, 190px); }
+  &[data-count='4'] { --cols: 4; --card-w: min(20vw, 28dvh, 180px); }
   @media (max-width: 599.98px) {
-    &[data-count='4'] { --cols: 2; --card-w: min(34vw, 22dvh); --card-font: clamp(8px, 2.2vw, 11px); }
-    &[data-count='3'] { --cols: 3; --card-w: min(26vw, 24dvh); }
+    &[data-count='4'] { --cols: 2; --card-w: min(38vw, 24dvh); }
+    &[data-count='3'] { --cols: 3; --card-w: min(28vw, 24dvh); }
   }
   li { border-radius: var(--card-radius); transition: none; }
   li.active { box-shadow: 0 0 0 4px var(--mat-sys-primary); }

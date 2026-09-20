@@ -37,12 +37,13 @@ const card = (deck, suit, ex, rank) => {
   const c = deck.cards.find((k) => k.suit === suit && k.rank === rank);
   const label = deck.suits.find((s) => s.suit === suit).label;
   const unit = ex.measure === 'seconds' ? 'sec' : 'reps';
-  return `<article class="card-face ${suit}" aria-label="${rank} of ${suit}: ${ex.name}, ${c.baseAmount} ${unit}">
+  // .card-box is the size container the card's type is measured against (see _card-tokens.scss).
+  return `<div class="card-box"><article class="card-face ${suit}" aria-label="${rank} of ${suit}: ${ex.name}, ${c.baseAmount} ${unit}">
     <div class="corner" aria-hidden="true"><span class="rank">${rank}</span><span class="pip">${PIP[suit]}</span></div>
     <div class="figure">${mod.figureSvg(ex.figure, poses)}</div>
     <div class="plate"><div class="name">${ex.name}</div>
       <div class="meta"><span class="amount">${c.baseAmount}<small>${unit}</small></span><span class="group">${label}</span></div></div>
-  </article>`;
+  </article></div>`;
 };
 
 const sections = decks.map((deck) => {

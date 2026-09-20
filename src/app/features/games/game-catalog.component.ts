@@ -6,12 +6,15 @@ import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { GameRepository, RoutineRepository } from '../../core/db/repositories';
 import type { GameDefinition } from '../../domain/models/game.schema';
+import { HowToPlayComponent } from '../../shared/ui/how-to-play/how-to-play.component';
+
+const settingCount = (g: GameDefinition) => Object.keys(g.settingsSchema).length;
 
 /** /games — built-in and user-built games, with the builder's entry points (§6.4, §8). */
 @Component({
   selector: 'df-game-catalog',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, MatButtonModule, MatIconModule],
+  imports: [RouterLink, MatButtonModule, MatIconModule, HowToPlayComponent],
   templateUrl: './game-catalog.component.html',
   styleUrl: './game-catalog.component.scss',
 })
@@ -29,9 +32,11 @@ export class GameCatalogComponent {
       multiplayer: g.players.max >= 2,
       players: g.players.min === g.players.max ? `${g.players.min} ${g.players.min === 1 ? 'player' : 'players'}` : `${g.players.min}–${g.players.max} players`,
       tags: [
-        g.scoring === 'rounds-won' ? 'Rounds won' : 'Total work',
-        ...(g.teams ? ['Teams'] : []), ...(g.hidden ? ['Hidden hands'] : []), ...(g.timing ? ['Speed'] : []),
-        ...(Object.keys(g.settingsSchema).length ? [`${Object.keys(g.settingsSchema).length} settings`] : []),
+        g.scoring === 'rounds-won' ? 'Most rounds wins' : 'Most work wins',
+        ...(g.teams ? [`Teams of ${g.teams.size}`] : []),
+        ...(g.hidden ? ['Your cards stay private'] : []),
+        ...(g.timing ? ['Be quick'] : []),
+        ...(settingCount(g) ? [`${settingCount(g)} ${settingCount(g) === 1 ? 'setting' : 'settings'} to tune`] : []),
       ],
     });
     return [

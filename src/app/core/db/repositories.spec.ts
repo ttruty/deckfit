@@ -124,7 +124,7 @@ describe('repositories', () => {
       expect(await meta.get('disclaimerAcceptedAt')).toBeUndefined();
       await meta.set('disclaimerAcceptedAt', 123);
       expect(await meta.get('disclaimerAcceptedAt')).toBe(123);
-      expect(await meta.get('contentVersion')).toBe('e1.d1.g5');
+      expect(await meta.get('contentVersion')).toBe('e1.d1.g6');
     });
   });
 });

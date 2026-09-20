@@ -10,3 +10,9 @@ h3 { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 1
 .summary { margin: 0; font: var(--mat-sys-body-medium); }
 .actions { display: flex; flex-wrap: wrap; gap: 4px 8px; margin-top: 6px; }
 .empty { color: var(--mat-sys-on-surface-variant); font: var(--mat-sys-body-medium); }
+
+.rules {
+  font: var(--mat-sys-body-medium);
+  summary { cursor: pointer; color: var(--mat-sys-primary); font: var(--mat-sys-label-large); padding: 4px 0; }
+  df-how-to-play { padding: 4px 0 2px; }
+}

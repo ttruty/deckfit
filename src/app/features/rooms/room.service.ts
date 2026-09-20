@@ -35,6 +35,8 @@ export class RoomService {
   private log: EngineEvent[] = [];
   private startedAt = 0;
   private savedSessionId: string | null = null;
+  /** Whether this game's GameOver has been handled (ready flags cleared, session saved). */
+  private finished = false;
   private session: RoomSession | null = null;
   private game: RoomGame | null = null;
   private subs: Subscription[] = [];
@@ -58,7 +60,9 @@ export class RoomService {
 
   async create(routine: RoomRoutine): Promise<string> {
     await this.leave();
-    return this.attach(await RoomSession.host(this.transportFactory(), await this.identity.me(), routine)).code;
+    return this.attach(
+      await RoomSession.host(this.transportFactory(), await this.identity.me(), routine),
+    ).code;
   }
 
   /** Joins `code` unless already in it. Rejects when the room doesn't exist. */
@@ -89,6 +93,35 @@ export class RoomService {
     session.start(await this.starter.build(view.routine, view.players, seed));
   }
 
+  /**
+   * Host: deal the same routine again for everyone at the table, without a trip through the
+   * lobby. Everyone present counts as in — including anyone who joined mid-game and watched.
+   * Returns why it couldn't (too many players for the game, say), else null.
+   */
+  async rematch(): Promise<string | null> {
+    const session = this.session;
+    if (!session?.snapshot?.routine) return 'This room has no routine to replay.';
+    try {
+      session.readyAll();
+      const view = session.snapshot;
+      if (view.blocker) return view.blocker;
+      session.start(await this.starter.build(view.routine!, view.players));
+      return null;
+    } catch (err) {
+      return err instanceof Error ? err.message : 'Could not start another game.';
+    }
+  }
+
+  /** Host: end the finished game and take everyone back to the lobby to pick something else. */
+  endGame(): void {
+    this.session?.endGame();
+  }
+
+  /** Player: tell the host you're up for another game (the lobby's ready flag). */
+  wantRematch(): void {
+    this.session?.setReady(true);
+  }
+
   dispatch(intent: IntentInput): void {
     this.game?.dispatch(intent);
   }
@@ -113,13 +146,31 @@ export class RoomService {
    * Saves a finished room game to History, as this device's player (§10). Hidden games redact
    * other players' totals, so only your own work is complete in the record.
    */
+  /** The room is back in the lobby: drop this device's game, keeping the connection. */
+  private clearGame(): void {
+    this.game?.dispose();
+    this.game = null;
+    this.start.set(null);
+    this.state.set(null);
+    this.events.set([]);
+    this.rejection.set(null);
+    this.problem.set(null);
+    this.spectating.set(false);
+  }
+
   private async saveSession(start: GameStart, state: GameState): Promise<void> {
     const me = this.me();
     if (state.phase !== 'finished' || this.savedSessionId || !me) return;
     this.savedSessionId = newId('session');
     const session = roomSessionRecord({
-      id: this.savedSessionId, start, state, playerId: me, roomId: this.code, log: this.log,
-      startedAt: this.startedAt || this.clock.epoch(), endedAt: this.clock.epoch(),
+      id: this.savedSessionId,
+      start,
+      state,
+      playerId: me,
+      roomId: this.code,
+      log: this.log,
+      startedAt: this.startedAt || this.clock.epoch(),
+      endedAt: this.clock.epoch(),
     });
     try {
       await this.sessions.save(session);
@@ -133,6 +184,7 @@ export class RoomService {
     this.session = session;
     this.me.set(session.me.id);
     this.subs.push(session.view.subscribe((v) => this.view.set(v)));
+    session.onEnd(() => this.clearGame());
     session.onStart((start, resumed) => {
       // A resumed copy arrives when this device joined mid-game; ignore it if we're already playing.
       if (resumed && this.game) return;
@@ -144,12 +196,18 @@ export class RoomService {
       this.log = [];
       this.startedAt = this.clock.epoch();
       this.savedSessionId = null;
+      this.finished = false;
       this.subs.push(
         game.updates$.subscribe((u) => {
           this.state.set(u.state);
           if (u.events.length) {
             this.events.set(u.events);
             this.log.push(...u.events);
+          }
+          if (u.state.phase === 'finished' && !this.finished) {
+            this.finished = true;
+            // Nobody is "ready" for a game that's over: each player says again if they want another.
+            this.session?.clearReady();
           }
           void this.saveSession(start, u.state);
         }),

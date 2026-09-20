@@ -78,11 +78,30 @@
 
       <section class="routine" aria-labelledby="routine-title">
         <h2 id="routine-title">Routine</h2>
+        @if (v.isHost) {
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="swap">
+            <mat-label>Game</mat-label>
+            <mat-select [value]="v.routine?.routine?.id ?? ''" [disabled]="swapping()"
+                        (selectionChange)="changeRoutine($event.value)">
+              @for (o of choices.value() ?? []; track o.routine.id) {
+                <mat-option [value]="o.routine.id">{{ o.routine.name }} — {{ o.gameName }}</mat-option>
+              }
+            </mat-select>
+            <mat-hint>Changing the game asks everyone to get ready again.</mat-hint>
+          </mat-form-field>
+          @if (swapError()) { <p class="error" role="alert">{{ swapError() }}</p> }
+        }
         @if (v.routine; as r) {
           <div class="routine-card">
             <p class="routine-name">{{ r.routine.name }}</p>
             <p class="game">{{ r.preview.gameName }} · {{ r.preview.deckName }}</p>
             <p class="summary">{{ r.preview.gameSummary }}</p>
+            @if (r.preview.gameHowTo?.length) {
+              <details class="rules">
+                <summary>How to play</summary>
+                <df-how-to-play [steps]="r.preview.gameHowTo ?? []" />
+              </details>
+            }
             <ul class="facts">
               <li>{{ r.preview.cardCount }} cards</li>
               <li>{{ r.preview.players.min === r.preview.players.max ? r.preview.players.min : r.preview.players.min + '–' + r.preview.players.max }} players</li>

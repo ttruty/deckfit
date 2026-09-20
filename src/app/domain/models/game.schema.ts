@@ -244,6 +244,8 @@ export const GameDefinitionSchema = z
     name: z.string().min(1),
     summary: z.string().min(1),
     players: PlayerRangeSchema,
+    /** Plain-language rules, one short step each: shown in the catalog, the lobby and in play. */
+    howTo: z.array(z.string().min(1)).max(8).optional(),
     setup: z.strictObject({
       /** Keep only cards whose suit is in this list (removed cards leave play). */
       filter: z.strictObject({ suits: orSetting(z.array(SuitSchema).min(1)) }).optional(),

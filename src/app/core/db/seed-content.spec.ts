@@ -20,7 +20,7 @@ describe('seedContent', () => {
 
   it('seeds all built-in content on first run and stamps the version', async () => {
     const result = await seedContent(db, content);
-    expect(result).toMatchObject({ seeded: true, version: 'e1.d1.g5', written: { exercises: 120, decks: 10, games: 10 }, skipped: [], removed: [] });
+    expect(result).toMatchObject({ seeded: true, version: 'e1.d1.g6', written: { exercises: 120, decks: 10, games: 10 }, skipped: [], removed: [] });
     expect(await db.exercises.count()).toBe(120);
     expect(await db.decks.count()).toBe(10);
     expect(await db.games.count()).toBe(10);
@@ -39,7 +39,7 @@ describe('seedContent', () => {
     content.exercises.version = 2;
     content.exercises.exercises[0].name = 'Air Squat v2';
     const result = await seedContent(db, content);
-    expect(result).toMatchObject({ seeded: true, version: 'e2.d1.g5' });
+    expect(result).toMatchObject({ seeded: true, version: 'e2.d1.g6' });
     expect((await db.exercises.get('bw-air-squat'))?.name).toBe('Air Squat v2');
   });
 

@@ -7,7 +7,9 @@
         <span class="game">{{ v.gameName }}</span>
         <span class="sub">{{ v.deckName }}@if (v.round) { · Round {{ v.round }} } · {{ v.drawCount }} in the deck</span>
       </div>
+      <button mat-stroked-button type="button" (click)="showRules()"><mat-icon>help_outline</mat-icon>Rules</button>
     </header>
+    <p class="objective">{{ v.objective }}</p>
 
     <ul class="players" aria-label="Players">
       @for (p of v.players; track p.id) {
@@ -20,7 +22,9 @@
               {{ p.details }}
             </span>
           </span>
-          @if (p.pileTop) {
+          @if (p.pileHidden) {
+            <span class="mini-card" [attr.aria-label]="p.name + ' has not flipped yet'"><df-card-back /></span>
+          } @else if (p.pileTop) {
             <span class="mini-card" aria-hidden="true"><df-card-face [card]="p.pileTop" /></span>
           }
           @if (p.revealed.length) {
@@ -60,15 +64,44 @@
       <section class="panel" role="alert"><p class="hint">{{ v.problem }}</p></section>
     }
 
-    @if (v.finished) {
+    @if (v.finished && v.result; as r) {
       <section class="panel" aria-labelledby="over-title">
-        <h2 id="over-title">Game over</h2>
-        <p class="hint">Saved to your history.</p>
-        <ol class="scores">
-          @for (s of v.scores; track s.id) {
-            <li [class.me]="s.isMe"><span>{{ s.name }}</span><span>{{ s.score }} {{ v.roundsWon ? 'won' : 'pts' }}</span></li>
-          }
-        </ol>
+        <df-game-result [headline]="r.headline" [scores]="r.scores" [unit]="v.scoreLabel" [help]="v.scoreHelp + ' Saved to your history.'" />
+
+        @if (next(); as n) {
+          <div class="next">
+            <div class="actions">
+              @if (n.isHost) {
+                <button mat-flat-button class="big" [disabled]="starting()" (click)="rematch()">
+                  <mat-icon>replay</mat-icon>{{ starting() ? 'Dealing…' : 'Play again' }}
+                </button>
+                <button mat-stroked-button class="big" (click)="changeGame()">
+                  <mat-icon>swap_horiz</mat-icon>Change game
+                </button>
+              } @else {
+                <button mat-flat-button class="big" [disabled]="n.iAmIn" (click)="wantRematch()">
+                  <mat-icon>{{ n.iAmIn ? 'check' : 'replay' }}</mat-icon>{{ n.iAmIn ? 'You’re in' : 'Play again' }}
+                </button>
+              }
+            </div>
+            <p class="hint" role="status">
+              @if (n.isHost) {
+                @if (n.othersIn.length) {
+                  {{ n.othersIn.join(', ') }} {{ n.othersIn.length === 1 ? 'is' : 'are' }} up for another.
+                } @else if (n.others) {
+                  “Play again” deals {{ n.gameName }} again for everyone here. “Change game” takes you all back to the lobby.
+                } @else {
+                  Waiting for someone to join, or change the game from the lobby.
+                }
+              } @else if (n.iAmIn) {
+                The host knows you're in. They pick what's next.
+              } @else {
+                Say you're in, and the host can deal another game.
+              }
+            </p>
+            @if (nextError(); as e) { <p class="error" role="alert">{{ e }}</p> }
+          </div>
+        }
       </section>
     } @else if (v.judge?.isMe) {
       <section class="panel" aria-labelledby="judge-title">

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <clipPath id="tile"><rect width="512" height="512" rx="112" /></clipPath>
+  </defs>
+  <g clip-path="url(#tile)">
+    <rect width="512" height="512" fill="#1f2a44" />
+    <g transform="translate(256 256) scale(1) translate(-256 -256)">
+      <g transform="translate(170 264) rotate(-18)">
+     <rect x="-98" y="-136" width="196" height="272" rx="26" fill="#d7263d" stroke="#1f2a44" stroke-width="10" />
+   </g>
+      <g transform="translate(342 264) rotate(18)">
+     <rect x="-98" y="-136" width="196" height="272" rx="26" fill="#2e4ac9" stroke="#1f2a44" stroke-width="10" />
+   </g>
+      <g transform="translate(256 250) rotate(0)">
+     <rect x="-104" y="-143" width="208" height="286" rx="26" fill="#eef2ef" stroke="#1f2a44" stroke-width="10" />
+   </g>
+      <path transform="translate(163 119) scale(0.072)" fill="#d7263d"
+  d="M256 448l-30-27C118 322 48 259 48 179 48 122 94 76 151 76c30 0 59 14 78 36l27 32 27-32c19-22 48-36 78-36 57 0 103 46 103 103 0 80-70 143-178 242l-30 27z" />
+      <g transform="translate(256 258)">
+    <circle cx="0" cy="-96" r="25" fill="#1f2a44" />
+    <path d="M0 -70 V 10" fill="none" stroke="#1f2a44" stroke-width="30" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M0 -52 L -64 -96 M0 -52 L 64 -96" fill="none" stroke="#1f2a44" stroke-width="30" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M0 10 L -58 92 M0 10 L 58 92" fill="none" stroke="#1f2a44" stroke-width="30" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+    </g>
+  </g>
+</svg>

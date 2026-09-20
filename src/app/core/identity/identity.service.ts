@@ -2,8 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import type { SessionPlayer } from '../../domain/models/schemas';
 import { newId } from '../db/deckfit-db';
 import { MetaRepository } from '../db/repositories';
-
-const DEFAULT_NAME = 'You';
+import { DEFAULT_NAME } from './player-name';
 
 /** Anonymous device identity (§1 non-goals: no accounts). Created on first use, kept in `meta`. */
 @Injectable({ providedIn: 'root' })

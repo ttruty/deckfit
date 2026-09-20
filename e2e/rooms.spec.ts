@@ -127,3 +127,216 @@ test.describe('joining after the game has started', () => {
     for (const page of [ann, bo, cy]) await page.context().close();
   });
 });
+
+test.describe('what the table shows between rounds', () => {
+  test.skip(!hasRealtimeBackend(), 'needs supabaseUrl + supabaseKey in src/environments/environment.local.ts');
+
+  test('a player who hasn’t flipped shows a card back, not last round’s card', async ({ browser }) => {
+    const ann = await newDevice(browser);
+    const bo = await newDevice(browser);
+
+    await ann.goto('/room/new');
+    await ann.getByRole('button', { name: 'Create room' }).waitFor();
+    await ann.getByLabel('Routine').click();
+    await ann.getByRole('option', { name: /^High Card Duel/ }).click();
+    const code = await createRoom(ann, 'Ann', { keepCurrentPage: true });
+    await joinRoom(bo, code, 'Bo');
+    await bo.getByRole('button', { name: "I'm ready" }).click();
+    await ann.getByRole('button', { name: "I'm ready" }).click();
+    await ann.getByRole('button', { name: 'Start game' }).click();
+    await expect(ann.locator('df-room-table')).toBeVisible();
+
+    const faces = ann.locator('.players df-card-face');
+    const backs = ann.locator('.players df-card-back');
+    const flip = (page: typeof ann) => page.getByRole('button', { name: 'Flip', exact: true }).click();
+
+    // Ann flips: her card shows, Bo is face down until he plays.
+    await flip(ann);
+    await expect(faces).toHaveCount(1);
+    await expect(backs).toHaveCount(1);
+    await expect(ann.locator('.players li', { hasText: 'Bo' })).toContainText('yet to flip');
+
+    // Both in: the round resolves and both cards are on show to compare.
+    await flip(bo);
+    await expect(faces).toHaveCount(2);
+    await expect(backs).toHaveCount(0);
+
+    // Next round: the losers work first, then Ann flips again and Bo goes face down once more —
+    // last round's card must not linger.
+    for (let i = 0; i < 6 && !(await ann.getByRole('button', { name: 'Flip', exact: true }).count()); i++) {
+      for (const page of [ann, bo]) {
+        const done = page.getByRole('button', { name: 'Done', exact: true });
+        if (await done.count()) await done.first().click().catch(() => undefined);
+      }
+      await ann.waitForTimeout(250);
+    }
+    await flip(ann);
+    await expect(faces).toHaveCount(1);
+    await expect(backs).toHaveCount(1);
+
+    for (const page of [ann, bo]) await page.context().close();
+  });
+});
+
+test.describe('understanding the game', () => {
+  test.skip(!hasRealtimeBackend(), 'needs supabaseUrl + supabaseKey in src/environments/environment.local.ts');
+
+  test('the table says what the game is, who won each round, and who won overall', async ({ browser }) => {
+    test.setTimeout(120_000); // it plays a whole six-round game on two devices
+    const ann = await newDevice(browser);
+    const bo = await newDevice(browser);
+
+    await ann.goto('/room/new');
+    await ann.getByRole('button', { name: 'Create room' }).waitFor();
+    await ann.getByLabel('Routine').click();
+    await ann.getByRole('option', { name: /^High Card Duel/ }).click();
+    const code = await createRoom(ann, 'Ann', { keepCurrentPage: true });
+    await joinRoom(bo, code, 'Bo');
+    // The rules travel with the room, so a joiner can read them before it starts.
+    await expect(bo.getByText('How to play')).toBeVisible();
+    await bo.getByText('How to play').click();
+    await expect(bo.getByText(/highest card wins the round/i)).toBeVisible();
+
+    await bo.getByRole('button', { name: "I'm ready" }).click();
+    await ann.getByRole('button', { name: "I'm ready" }).click();
+    await ann.getByRole('button', { name: 'Start game' }).click();
+
+    // What this game is, right under the title, plus rules on demand.
+    await expect(ann.locator('.objective')).toContainText(/highest card/i);
+    await ann.getByRole('button', { name: 'Rules' }).click();
+    await expect(ann.getByRole('dialog')).toContainText('Everyone turns a card over at the same time.');
+    await ann.getByRole('button', { name: 'Got it' }).click();
+
+    // Play rounds until somebody takes the game; every round says who won.
+    // Watch for a round announcement for as long as the game runs (toasts auto-hide).
+    const sawRoundToast = ann
+      .getByRole('alert')
+      .filter({ hasText: /win(s)? round/ })
+      .waitFor({ timeout: 40_000 })
+      .then(() => true)
+      .catch(() => false);
+
+    for (let i = 0; i < 40 && !(await ann.locator('df-game-result').count()); i++) {
+      for (const page of [ann, bo]) {
+        for (const label of ['Flip', 'Done']) {
+          const button = page.getByRole('button', { name: label, exact: true });
+          if (await button.count()) await button.first().click().catch(() => undefined);
+        }
+      }
+      await ann.waitForTimeout(150);
+    }
+
+    expect(await sawRoundToast).toBe(true); // every round says who took it
+    await expect(ann.locator('df-game-result')).toBeVisible();
+
+    // Fireworks for a player who won (a tie means both did); losing just slumps the row.
+    for (const page of [ann, bo]) {
+      await expect(page.locator('df-game-result')).toBeVisible();
+      const won = await page.locator('df-game-result li.me.won').count();
+      const fireworks = page.locator('df-game-result df-fireworks');
+      await expect(fireworks).toHaveCount(won ? 1 : 0);
+      if (!won) await expect(page.locator('df-game-result li.me.lost')).toHaveCount(1);
+    }
+
+    const winner = (await ann.locator('df-game-result li.me.won').count()) ? ann : bo;
+    await expect(winner.locator('df-game-result df-fireworks .spark').first()).toBeVisible();
+
+    // …and nothing moves for a player who asked for less motion.
+    await winner.emulateMedia({ reducedMotion: 'reduce' });
+    await expect(winner.locator('df-game-result df-fireworks')).toBeHidden();
+    await expect(winner.locator('df-game-result')).toBeVisible(); // the result itself still reads fine
+    await winner.emulateMedia({ reducedMotion: null });
+
+    // The end names a winner in words, not just numbers.
+    const result = ann.locator('df-game-result');
+    await expect(result).toBeVisible();
+    await expect(result.getByRole('heading')).toHaveText(/win|tie|Nobody scored/i);
+    await expect(result).toContainText('rounds won');
+    await expect(result.locator('li').first()).toContainText(/🏆|1/);
+
+    for (const page of [ann, bo]) await page.context().close();
+  });
+
+});
+
+test.describe('what happens after a game', () => {
+  test.skip(!hasRealtimeBackend(), 'needs supabaseUrl + supabaseKey in src/environments/environment.local.ts');
+
+  test('the host can swap the game in the lobby, and everyone says they are ready again', async ({ browser }) => {
+    const ann = await newDevice(browser);
+    const bo = await newDevice(browser);
+
+    const code = await createRoom(ann, 'Ann');
+    await joinRoom(bo, code, 'Bo');
+    await bo.getByRole('button', { name: "I'm ready" }).click();
+    await ann.getByRole('button', { name: "I'm ready" }).click();
+    await expect(bo.locator('.blocker')).toContainText("Everyone's ready");
+
+    // Only the host gets the picker.
+    await expect(bo.locator('.routine .swap')).toHaveCount(0);
+    await ann.getByLabel('Game').click();
+    await ann.getByRole('option', { name: /High Card Duel/ }).click();
+
+    // The new game travels to the joiner, and nobody is ready for something they didn't pick.
+    await expect(bo.locator('.routine .game')).toContainText('High Card Duel');
+    await expect(bo.getByRole('button', { name: "I'm ready" })).toBeVisible();
+    await expect(bo.locator('.blocker')).toContainText('ready');
+
+    for (const page of [ann, bo]) await page.context().close();
+  });
+
+  test('when the game ends, players can ask for another and the host deals a fresh one', async ({ browser }) => {
+    test.setTimeout(180_000); // plays a whole six-round game, then starts a second
+    const ann = await newDevice(browser);
+    const bo = await newDevice(browser);
+
+    await ann.goto('/room/new');
+    await ann.getByRole('button', { name: 'Create room' }).waitFor();
+    await ann.getByLabel('Routine').click();
+    await ann.getByRole('option', { name: /^High Card Duel/ }).click();
+    const code = await createRoom(ann, 'Ann', { keepCurrentPage: true });
+    await joinRoom(bo, code, 'Bo');
+    await bo.getByRole('button', { name: "I'm ready" }).click();
+    await ann.getByRole('button', { name: "I'm ready" }).click();
+    await ann.getByRole('button', { name: 'Start game' }).click();
+
+    const playOut = async () => {
+      for (let i = 0; i < 40 && !(await ann.locator('df-game-result').count()); i++) {
+        for (const page of [ann, bo]) {
+          for (const label of ['Flip', 'Done']) {
+            const button = page.getByRole('button', { name: label, exact: true });
+            if (await button.count()) await button.first().click().catch(() => undefined);
+          }
+        }
+        await ann.waitForTimeout(150);
+      }
+    };
+    await playOut();
+    await expect(ann.locator('df-game-result')).toBeVisible();
+
+    // A player says they're in; the host sees it.
+    await bo.getByRole('button', { name: 'Play again' }).click();
+    await expect(bo.getByRole('button', { name: 'You’re in' })).toBeDisabled();
+    await expect(ann.locator('.next .hint')).toContainText('Bo is up for another');
+
+    // The host deals again: same game, clean slate, on both devices.
+    await ann.getByRole('button', { name: 'Play again' }).click();
+    for (const page of [ann, bo]) {
+      await expect(page.locator('df-game-result')).toHaveCount(0);
+      await expect(page.getByRole('button', { name: 'Flip', exact: true })).toBeVisible();
+      await expect(page.locator('.players li').first()).toContainText('0 won');
+    }
+
+    // Finish the rematch and take everyone back to the lobby to pick something else.
+    await playOut();
+    await expect(ann.locator('df-game-result')).toBeVisible();
+    await ann.getByRole('button', { name: 'Change game' }).click();
+    for (const page of [ann, bo]) {
+      await expect(page.locator('df-room-table')).toHaveCount(0);
+      await expect(page.locator('.code')).toHaveText(code);
+    }
+    await expect(bo.getByRole('button', { name: "I'm ready" })).toBeVisible();
+
+    for (const page of [ann, bo]) await page.context().close();
+  });
+});

@@ -68,6 +68,7 @@ npm run content:build   # python3 tools/build_content.py (regenerates assets/con
 npm run content:preview # tools/out/card-preview.html contact sheet
 npm run content:shots   # Playwright screenshots of the contact sheet
 npm run contrast        # WCAG AA check of the card palette in both themes (tools/check_contrast.mjs)
+npm run icons           # regenerate the app icon set from tools/build_icons.mjs (§11)
 npm run check:realtime  # is the Supabase Realtime backend working? (subscribe, broadcast, presence, two clients)
 npm run serve:pwa       # production build served on :4311 (service worker; used by the offline e2e)
 BASE_HREF=/<repo>/ npm run build:pages   # GitHub Pages build (base href, 404.html fallback, .nojekyll)
@@ -128,6 +129,8 @@ src/styles/_card-tokens.scss   # palette, fonts, card + figure styles
 tools/
   build_content.py      # source of truth for poses, exercises, decks
   build_preview.mjs     # contact sheet of every card → tools/out/card-preview.html
+  build_icons.mjs       # the app icon, drawn in code → public/icons, favicon.svg/.ico (npm run icons)
+  brand/                # GENERATED: icon.svg, icon-maskable.svg (the mark, for reuse)
   check_contrast.mjs    # WCAG AA check of the card tokens (npm run contrast)
   shot.cjs              # Playwright screenshots of the contact sheet for visual QA
 ```
@@ -511,6 +514,12 @@ not write a one-off game component.
 
 ### 6.3 Built-in games (original names)
 
+Every built-in game carries `howTo`: three or four plain-language steps (no jargon,
+no engine words). They show as "How to play" in the catalog and the room lobby (the
+routine preview carries `gameHowTo`, so a joiner reads them without the game
+installed) and behind the **Rules** button while playing. Custom games get the same
+field in the builder's Basics section. Keep them short and original (§1 content rule).
+
 | Id | Players | Mechanic |
 |---|---|---|
 | `solo-deal` | 1 | Flip one card at a time, do it. Optional suit filter and time cap. |
@@ -644,6 +653,11 @@ All `NetMessage`s are Zod-validated on receipt; drop invalid ones.
   round or someone's turn can't wait forever. They keep their room seat but are
   out of that game.
 - Lobby shows code, QR, player list, ready toggles, and routine preview.
+- After a game: the host deals the same routine again in one tap (everyone still at
+  the table is in, including anyone who joined mid-game and watched) or takes the room
+  back to the lobby to pick another game; other players say whether they're in, which
+  is the lobby's ready flag. A finished game clears every ready flag, so "in" always
+  means someone said so after this game.
 
 Implementation (`core/sync`, framework-free except `sync.providers.ts`):
 - **Messages** (`net-message.ts`): Zod union — game: `intent`, `events`
@@ -718,6 +732,16 @@ Implementation (`core/sync`, framework-free except `sync.providers.ts`):
   - *Seats / rejoin*: `seats` lists ids in first-join order and never drops
     them, so a returning device id gets its old seat. A host that rejoins with no
     state is handed the room back by any peer that kept it.
+  - *Names*: a device that never set one is called "You" locally, so every other
+    screen renames it by seat — `core/identity/player-name.ts` (`seatName`,
+    `playerLabel`) is the one place that decides, used by the room view and the
+    table; only your own row ever says "You".
+  - *After a game* (§7 above): `clearReady()` (the host calls it on GameOver),
+    `readyAll()` + `start()` = rematch, `endGame()` = back to the lobby (phase
+    `lobby`, ready cleared, `ownStart` dropped). Peers notice the phase going
+    `playing` → `lobby` and fire `onEnd`, which is how `RoomService` drops the
+    finished game while keeping the connection. A rematch never passes through the
+    lobby: the second `start` replaces each device's RoomGame in place.
   - *Clock offset*: joiners (and everyone after a host change) ping the host 5×;
     offset = t1 − (t0+t2)/2 from the lowest-RTT sample; `hostNow()` stamps
     timing-sensitive intents.
@@ -756,8 +780,10 @@ Implementation (`core/sync`, framework-free except `sync.providers.ts`):
   preselects that game's routine). /room/new offers one default routine per
   built-in game with max players ≥ 2.
   While playing, the lobby shows `df-room-table` (full screen via
-  `ShellService.requestImmersive`): players strip (cards, wins, flipped /
-  working out), center, your hand as playable cards (`data-card-id`), Flip /
+  `ShellService.requestImmersive`): players strip (wins, flipped / yet to flip /
+  working out, and their card — face down (`df-card-back`) until they flip in a
+  simultaneous round, so last round's card never lingers; every card shows again
+  once the round resolves, to compare), center, your hand as playable cards (`data-card-id`), Flip /
   "Stuck? Draw a card" per game rules, your task (stepper), rejection toasts,
   final scores. Hidden games: face-down cards render as `df-card-back`; the
   players strip shows turn, team, stake/folded and any revealed cards
@@ -766,12 +792,20 @@ Implementation (`core/sync`, framework-free except `sync.providers.ts`):
   up to maxCards, "Claim N × rank", "Call bluff", pile count + last claim, a
   toast naming the challenge result); team games show your team's hand. A
   `problem` shows as a notice. Multiplayer sessions are not saved to History yet.
+  When the game is over, the result panel carries what's next: the host gets
+  **Play again** (`RoomService.rematch`, a fresh seed) and **Change game**
+  (`endGame`, back to the lobby), everyone else gets **Play again** as "I'm in"
+  and sees who else has said so. In the lobby the host has a **Game** picker
+  (built-in group routines + this device's saved ones) that re-broadcasts the
+  routine and un-readies everyone.
 - **Tests**: unit specs drive several loopback / fake-Realtime peers
   (`room-session`, `room-resilience`, `game-client`, `supabase-transport`,
   and in `room-game`: a dropout dropped after 20s so the round resolves, and a
   judge marking another player's task done);
   `e2e/rooms.spec.ts` uses two–three real browser contexts against Supabase
-  (join + see each other, reload keeps seat, host migration after 10s);
+  (join + see each other, reload keeps seat, host migration after 10s, the host
+  swapping the game in the lobby, and a finished game → a player asks for another →
+  the host deals it → Change game returns everyone to the lobby);
   `e2e/neighbor-rush.spec.ts` finds a seed with the real engine where both
   players hold a card fitting the center but not each other, clicks both at once,
   and checks exactly one lands and the other player gets the toast.
@@ -824,6 +858,18 @@ Lazy-load every feature route. Guard `/play` against a missing session and
 - Screen Wake Lock during play; audio + optional speech cues ("Ten squats").
 - Motion: flip/deal animations via CSS; respect `prefers-reduced-motion`.
 - Multiplayer: player strip with avatars, card counts, "working out" status.
+- Results are said in words: every round raises a toast ("You win round 3"),
+  and the end shows `df-game-result` — a headline ("You win!", "Ann wins!",
+  "It's a tie", "Nobody scored"), places with 🏆, and each score with its unit
+  spelled out plus what the unit means.
+- Winning is celebrated: `df-fireworks` (CSS-only bursts in the suit colours,
+  three cycles then gone) plays for a player who won — a tie celebrates both,
+  and a spectator sees the winner's. Losing rows slump instead (a short fade and
+  desaturate, staggered by place). Finishing a solo workout celebrates too.
+  Every one of these sits behind `prefers-reduced-motion: no-preference`, and
+  the fireworks render nothing at all under `reduce` (§9).
+- The room table carries the game's one-line objective under the title and a
+  **Rules** button; solo play has the same button in its bar.
 - Accessibility: WCAG AA contrast, suits never conveyed by color alone,
   screen-reader announcements for dealt cards and assigned tasks.
 
@@ -879,6 +925,11 @@ Original look; do not imitate any commercial deck's artwork or layout.
 - **Card layout** (5:7): large rank + pip top-left in suit color; pictogram in
   the upper field; solid suit-colored plate at the bottom with exercise name,
   amount + unit, and the suit's label from the deck.
+- **Cards size themselves.** `df-card-face` (and `.card-box` in the contact
+  sheet) is a `container-type: inline-size` wrapper and the card's type is
+  `8.5cqw`, so callers set a width and never a font-size. Below 132px the
+  pictogram drops and the rank grows; below 74px only the rank, suit and amount
+  remain — a 52px card in the players strip still reads "2♥ 2 reps".
 - **Pictograms**: side-view figure facing right in a 100×100 box, ground at
   y=90. Thick round strokes, detached circular head, far limbs lighter. The
   **start pose is a ghost in the suit color, the end pose is solid ink** — this
@@ -984,11 +1035,20 @@ Implementation (`core/db`):
 - iOS: test add-to-home-screen, safe-area insets, audio unlock on first tap.
 
 Implementation:
+- **The icon is drawn in code**: `tools/build_icons.mjs` (`npm run icons`) holds one SVG
+  of the mark — an ink squircle, three fanned cards (hearts red, spades blue, paper
+  front with a small heart pip) and a solid jumping-jack figure in the brand's stroke
+  style (§9a) — and renders every file with Playwright Chromium: `public/icons/icon-*.png`
+  at the manifest sizes, `icon-maskable-{192,512}.png` (art at 0.74 inside the safe zone,
+  colour bleeding to the edges), `apple-touch-icon.png` (square tile, full-size art —
+  iOS does its own rounding), `public/favicon.svg`, and a PNG-embedded `favicon.ico`
+  at 16/32/48. Icons ≤ 152px drop the pip; below that it is noise. Edit the script,
+  never the PNGs, and check the result at 48px before committing.
 - `public/manifest.webmanifest`: name/short_name, description, theme and
   background colours, `standalone`, icons at every size with separate `any` and
   `maskable` entries, and shortcuts (room, library).
 - `index.html`: `viewport-fit=cover`, per-scheme `theme-color`, apple
-  mobile-web-app tags and touch icon.
+  mobile-web-app tags, the touch icon and both favicons (svg + ico).
 - Safe areas: the toolbar pads the top inset, the bottom nav the bottom inset,
   content the side insets; immersive screens (play, room) carry all of them.
 - Updates: `core/pwa/app-update.service.ts` (loaded lazily so the snackbar stays

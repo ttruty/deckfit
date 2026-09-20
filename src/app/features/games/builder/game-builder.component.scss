@@ -39,3 +39,5 @@ textarea {
 .problems-btn { display: inline-flex; gap: 6px; align-items: center; border: 0; background: none; color: var(--mat-sys-error); font: var(--mat-sys-label-large); cursor: pointer; min-height: 40px; }
 .ok { display: inline-flex; gap: 6px; align-items: center; color: var(--mat-sys-primary); font: var(--mat-sys-label-large); }
 @media (max-width: 599.98px) { .save-bar { bottom: calc(72px + env(safe-area-inset-bottom)); } .page { padding-bottom: 72px; } }
+
+.how-to { display: grid; gap: 6px; justify-items: start; .row { width: 100%; } }

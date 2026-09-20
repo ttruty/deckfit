@@ -64,6 +64,7 @@ export class GameBuilderComponent implements HasUnsavedChanges {
     return {
       name: String(at('name') ?? ''),
       summary: String(at('summary') ?? ''),
+      howTo: (at('howTo') as string[] | undefined) ?? [],
       playersMin: n('players', 'min'),
       playersMax: n('players', 'max'),
       scoring: String(at('scoring') ?? 'total-work'),
@@ -111,6 +112,22 @@ export class GameBuilderComponent implements HasUnsavedChanges {
 
   protected num(raw: string): number | undefined {
     return raw === '' ? undefined : Number(raw);
+  }
+
+  /** Plain-language rules for this game (§6.3 `howTo`), shown in the catalog, lobby and in play. */
+  protected setStep(i: number, text: string): void {
+    const steps = [...this.v().howTo];
+    steps[i] = text;
+    this.set(['howTo'], steps);
+  }
+
+  protected addStep(): void {
+    this.set(['howTo'], [...this.v().howTo, '']);
+  }
+
+  protected removeStep(i: number): void {
+    const steps = this.v().howTo.filter((_, j) => j !== i);
+    this.set(['howTo'], steps.length ? steps : undefined);
   }
 
   protected setTurnMode(mode: TurnMode): void {

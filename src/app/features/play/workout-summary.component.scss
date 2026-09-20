@@ -18,3 +18,5 @@ h1 { font-family: var(--font-display); font-weight: 800; font-size: 2.2rem; marg
 }
 .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.summary { position: relative; }

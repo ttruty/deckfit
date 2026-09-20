@@ -14,30 +14,71 @@ import { ManualScheduler } from './scheduler';
 const content = loadContent();
 const deck = content.decks.decks.find((d) => d.id === 'deck-bodyweight')!;
 
-function startFor(gameId: string, players: { id: string; name: string }[], seed = 2026, settings = {}): GameStart {
+function startFor(
+  gameId: string,
+  players: { id: string; name: string }[],
+  seed = 2026,
+  settings = {},
+): GameStart {
   const game = content.games.games.find((g) => g.id === gameId)!;
   return {
-    seed, game, settings: resolveSettings(game, settings),
+    seed,
+    game,
+    settings: resolveSettings(game, settings),
     players: players.map((p, seat) => ({ ...p, seat })),
     deck: { id: deck.id, name: deck.name, suits: deck.suits, cards: deck.cards },
     exercises: content.exercises.exercises,
   };
 }
 
-async function room(gameId: string, opts: { scheduler?: ManualScheduler; settings?: Record<string, unknown> } = {}) {
+async function room(
+  gameId: string,
+  opts: { scheduler?: ManualScheduler; settings?: Record<string, unknown> } = {},
+) {
   const hub = new LoopbackHub();
   const sOpts = { clockSamples: 0, ...(opts.scheduler ? { scheduler: opts.scheduler } : {}) };
-  const ann = await RoomSession.host(new LoopbackTransport(hub), { id: 'ann', name: 'Ann' }, intervalRoomRoutine(), sOpts);
-  const bo = await RoomSession.join(new LoopbackTransport(hub), ann.code, { id: 'bo', name: 'Bo' }, sOpts);
-  const cy = await RoomSession.join(new LoopbackTransport(hub), ann.code, { id: 'cy', name: 'Cy' }, sOpts);
+  const ann = await RoomSession.host(
+    new LoopbackTransport(hub),
+    { id: 'ann', name: 'Ann' },
+    intervalRoomRoutine(),
+    sOpts,
+  );
+  const bo = await RoomSession.join(
+    new LoopbackTransport(hub),
+    ann.code,
+    { id: 'bo', name: 'Bo' },
+    sOpts,
+  );
+  const cy = await RoomSession.join(
+    new LoopbackTransport(hub),
+    ann.code,
+    { id: 'cy', name: 'Cy' },
+    sOpts,
+  );
   await flush();
   const sessions = [ann, bo, cy];
   for (const s of sessions) s.setReady(true);
   await flush();
   const games: RoomGame[] = [];
   const gOpts = opts.scheduler ? { scheduler: opts.scheduler } : {};
-  for (const s of sessions) s.onStart((start, resumed) => games.push(new RoomGame(s, start, { ...gOpts, resumed })));
-  ann.start(startFor(gameId, sessions.map((s) => s.me), 2026, opts.settings ?? {}));
+  // One live game per device, replaced on a new start — the same bookkeeping RoomService does.
+  for (const s of sessions)
+    s.onStart((start, resumed) => {
+      const i = games.findIndex((g) => g.me === s.me.id);
+      if (i >= 0 && resumed) return;
+      if (i >= 0) games[i].dispose();
+      const game = new RoomGame(s, start, { ...gOpts, resumed });
+      if (i >= 0) games[i] = game;
+      else games.push(game);
+    });
+  ann.start(
+    startFor(
+      gameId,
+      sessions.map((s) => s.me),
+      2026,
+      opts.settings ?? {},
+    ),
+  );
   await flush(12);
   return { hub, sessions, games, gOpts, byId: (id: string) => games.find((g) => g.me === id)! };
 }
@@ -49,6 +90,36 @@ describe('RoomGame (3 loopback devices)', () => {
     expect(games.filter((g) => g.isHost).map((g) => g.me)).toEqual(['ann']);
     expect(games[0].state.phase).toBe('playing');
     expect(new Set(games.map((g) => hashState(g.state))).size).toBe(1);
+  });
+
+  it('a rematch starts a second game on the same room, in step on every device', async () => {
+    const { sessions, games, byId } = await room('high-card-duel');
+    const freshDraw = byId('ann').state.zones.draw.length;
+    for (const id of ['ann', 'bo', 'cy']) byId(id).dispatch({ type: 'flip' });
+    await flush(12);
+    expect(byId('ann').state.zones.draw.length).toBeLessThan(freshDraw);
+
+    // The host deals again (RoomService.rematch): everyone drops game one and follows the new deal.
+    sessions[0].readyAll();
+    sessions[0].start(
+      startFor(
+        'high-card-duel',
+        sessions.map((s) => s.me),
+        7,
+      ),
+    );
+    await flush(12);
+
+    expect(games).toHaveLength(3);
+    expect(games.filter((g) => g.isHost).map((g) => g.me)).toEqual(['ann']);
+    expect(new Set(games.map((g) => hashState(g.state))).size).toBe(1);
+    for (const g of games) {
+      expect(g.state.phase).toBe('playing');
+      expect(g.state.tasks).toEqual([]);
+      expect(g.state.players.every((p) => (g.state.scores[p.id] ?? 0) === 0)).toBe(true);
+    }
+    // A fresh deal, not a continuation of the first game: the deck is whole again.
+    for (const g of games) expect(g.state.zones.draw.length).toBe(freshDraw);
   });
 
   it('a full high-card-duel round played from three devices', async () => {
@@ -125,7 +196,8 @@ describe('RoomGame dropouts', () => {
     expect(hashState(byId('bo').state)).toBe(hashState(state));
 
     // The game carries on with two players (the round's losers work first).
-    for (const t of state.tasks.filter((x) => x.status === 'pending')) byId(t.playerId).dispatch({ type: 'completeTask', taskId: t.id });
+    for (const t of state.tasks.filter((x) => x.status === 'pending'))
+      byId(t.playerId).dispatch({ type: 'completeTask', taskId: t.id });
     await flush(12);
     byId('ann').dispatch({ type: 'flip' });
     byId('bo').dispatch({ type: 'flip' });
@@ -167,10 +239,19 @@ describe('RoomGame with a judge (rep-race)', () => {
 
 describe('arriving after the game has started', () => {
   /** Joins `hub`'s room as a new device and builds whatever game the host hands it. */
-  async function joinLate(hub: LoopbackHub, code: string, who: { id: string; name: string }, gOpts: object) {
-    const session = await RoomSession.join(new LoopbackTransport(hub), code, who, { clockSamples: 0 });
+  async function joinLate(
+    hub: LoopbackHub,
+    code: string,
+    who: { id: string; name: string },
+    gOpts: object,
+  ) {
+    const session = await RoomSession.join(new LoopbackTransport(hub), code, who, {
+      clockSamples: 0,
+    });
     let game: RoomGame | null = null;
-    session.onStart((start, resumed) => (game = new RoomGame(session, start, { ...gOpts, resumed })));
+    session.onStart(
+      (start, resumed) => (game = new RoomGame(session, start, { ...gOpts, resumed })),
+    );
     await flush(16);
     return { session, game: game as unknown as RoomGame };
   }

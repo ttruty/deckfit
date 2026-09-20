@@ -52,3 +52,7 @@ section { padding: 16px; border-radius: 20px; background: var(--mat-sys-surface-
   .pip[data-suit='clubs'] { color: var(--suit-text-clubs); }
   .pip[data-suit='spades'] { color: var(--suit-text-spades); }
 }
+
+.rules summary { cursor: pointer; color: var(--mat-sys-primary); font: var(--mat-sys-label-large); padding: 4px 0; }
+
+.routine .swap { width: 100%; }

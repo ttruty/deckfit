@@ -1,5 +1,6 @@
 <section class="panel summary" aria-labelledby="summary-title">
   @let s = summary();
+  @if (s.outcome === 'finished') { <df-fireworks [count]="4" /> }
   <h1 id="summary-title">{{ s.outcome === 'finished' ? 'Workout complete' : 'Workout ended' }}</h1>
   <dl class="stats">
     <div><dt>Time</dt><dd>{{ s.minutes }} min</dd></div>

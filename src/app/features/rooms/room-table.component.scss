@@ -2,8 +2,11 @@
 .table-page { display: grid; gap: 12px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
+.bar { display: flex; align-items: center; gap: 12px; }
+.bar .title { flex: 1; min-width: 0; }
 .bar .game { font-family: var(--font-display); font-weight: 800; font-size: 1.8rem; display: block; line-height: 1; }
 .bar .sub { font: var(--mat-sys-body-small); color: var(--mat-sys-on-surface-variant); }
+.objective { margin: -4px 0 0; font: var(--mat-sys-body-medium); color: var(--mat-sys-on-surface-variant); }
 
 .players {
   list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -15,15 +18,15 @@
   .name { font: var(--mat-sys-title-small); }
   .turn { display: inline-block; margin-right: 4px; padding: 0 6px; border-radius: 8px; background: var(--mat-sys-primary-container); color: var(--mat-sys-on-primary-container); font-weight: 600; }
   .you, .stat { font: var(--mat-sys-body-small); color: var(--mat-sys-on-surface-variant); }
-  .mini-card { width: 44px; font-size: 4px; flex: none; }
+  .mini-card { width: 52px; flex: none; }
   li:has(.revealed-row) { flex-wrap: wrap; }
   .revealed-row { flex-basis: 100%; display: flex; gap: 4px; }
-  .revealed { flex: 1 1 0; min-width: 0; max-width: 40px; font-size: 3.5px; }
+  .revealed { flex: 1 1 0; min-width: 0; max-width: 46px; }
 }
 
 .center { display: grid; place-items: center; min-height: 120px; padding: 12px; border-radius: 20px; background: var(--table); }
 .center-cards {
-  list-style: none; margin: 0; padding: 0; display: flex; gap: 10px; justify-content: center; font-size: 10px;
+  list-style: none; margin: 0; padding: 0; display: flex; gap: 10px; justify-content: center;
   li { width: 120px; }
   li:last-child { width: 150px; font-size: 12px; }
 }
@@ -39,8 +42,16 @@
 .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; align-items: center; }
 .big { min-height: 56px; min-width: 120px; font-size: 1.05rem; }
 
+/* What happens after the game: rematch, change game, or say you're in. */
+.next {
+  display: grid; gap: 10px; justify-items: center; width: 100%;
+  padding-top: 12px; border-top: 1px solid var(--mat-sys-outline-variant);
+  .hint { text-align: center; max-width: 42ch; }
+}
+.error { margin: 0; font: var(--mat-sys-body-medium); color: var(--mat-sys-error); text-align: center; }
+
 .hand {
-  list-style: none; margin: 0; padding: 4px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; font-size: 8px;
+  list-style: none; margin: 0; padding: 4px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
   li { width: 96px; }
 }
 .card-button {
@@ -52,11 +63,6 @@
 }
 .pot { margin: 0; font: var(--mat-sys-title-medium); strong { font-family: var(--font-display); font-size: 1.6rem; } }
 
-.scores {
-  margin: 0; padding: 0; list-style: none; width: min(100%, 360px);
-  li { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--mat-sys-outline-variant); font: var(--mat-sys-body-large); }
-  li.me { font-weight: 700; }
-}
 
 .toast {
   position: fixed; left: 50%; bottom: calc(88px + env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 5; margin: 0;

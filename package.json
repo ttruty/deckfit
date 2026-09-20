@@ -15,7 +15,8 @@
     "contrast": "node tools/check_contrast.mjs",
     "serve:pwa": "ng build && npx --yes http-server dist/deckfit/browser -p 4311 -c-1 --silent",
     "check:realtime": "node tools/check_realtime.mjs",
-    "build:pages": "node tools/build_pages.mjs"
+    "build:pages": "node tools/build_pages.mjs",
+    "icons": "node tools/build_icons.mjs"
   },
   "private": true,
   "packageManager": "npm@11.19.0",

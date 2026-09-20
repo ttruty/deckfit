@@ -28,6 +28,9 @@
             <span class="cap-label">{{ timerLabel }}</span>{{ t.remaining }}
           </span>
         }
+        <button mat-icon-button (click)="showRules()" aria-label="How to play" matTooltip="How to play">
+          <mat-icon>help_outline</mat-icon>
+        </button>
         <button mat-icon-button (click)="toggleBeeps()" [attr.aria-pressed]="audio.beeps()" [attr.aria-label]="audio.beeps() ? 'Mute beeps' : 'Unmute beeps'">
           <mat-icon>{{ audio.beeps() ? 'volume_up' : 'volume_off' }}</mat-icon>
         </button>

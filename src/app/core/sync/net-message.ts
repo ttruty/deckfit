@@ -23,6 +23,8 @@ export const RoomRoutineSchema = z.object({
     deckName: z.string(),
     gameName: z.string(),
     gameSummary: z.string(),
+    /** The game's `howTo` steps (§6.3), so a joiner can read the rules before it starts. */
+    gameHowTo: z.array(z.string()).optional(),
     players: PlayerRangeSchema,
     cardCount: z.number().int().nonnegative(),
     suits: z.array(z.object({ suit: SuitSchema, label: z.string() })),

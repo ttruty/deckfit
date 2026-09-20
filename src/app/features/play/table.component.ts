@@ -13,6 +13,9 @@ import { TimerRingComponent } from '../../shared/ui/timer-ring/timer-ring.compon
 import { DrawPileComponent } from './draw-pile.component';
 import { PlayStore } from './play.store';
 import { WorkoutSummaryComponent } from './workout-summary.component';
+import { GameRepository } from '../../core/db/repositories';
+import { HowToPlayDialog, type HowToPlayData } from '../../shared/ui/how-to-play/how-to-play.dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'df-table',
@@ -35,6 +38,9 @@ export class TableComponent {
   protected readonly wakeLock = inject(WakeLockService);
 
   /** Reps actually done; resets to the task amount whenever the task changes. */
+  private readonly dialog = inject(MatDialog);
+  private readonly games = inject(GameRepository);
+
   protected readonly reps = linkedSignal(() => this.store.currentTask()?.task.amount ?? 0);
 
   constructor() {
@@ -42,6 +48,26 @@ export class TableComponent {
       const id = this.sessionId();
       untracked(() => void this.store.load(id));
     });
+  }
+
+  /** The game's rules, without leaving the workout. */
+  protected async showRules(): Promise<void> {
+    const session = this.store.session();
+    const game = session ? await this.games.get(session.game.id) : undefined;
+    if (!session) return;
+    const settings = session.settings;
+    const data: HowToPlayData = {
+      name: session.game.name,
+      summary: game?.summary ?? '',
+      steps: game?.howTo ?? [],
+      facts: [
+        session.deck.name,
+        ...(settings.repMultiplier === 1 ? [] : [`×${settings.repMultiplier} reps`]),
+        ...(settings.maxRepCap ? [`max ${settings.maxRepCap} per task`] : []),
+        `jokers: ${settings.jokerRule}`,
+      ],
+    };
+    this.dialog.open(HowToPlayDialog, { data, maxWidth: '520px' });
   }
 
   protected done(): void {

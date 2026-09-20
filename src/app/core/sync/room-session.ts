@@ -3,6 +3,7 @@ import { ClockSync, type ClockEstimate } from './clock-sync';
 import type { GameStart, NetMessage, RoomRoutine, RoomState } from './net-message';
 import { realScheduler, type Scheduler } from './scheduler';
 import type { PlayerId, PlayerInfo, PlayerPresence, SyncTransport } from './sync-transport';
+import { seatName } from '../identity/player-name';
 
 /** §7: the host must be gone this long before someone else takes over. */
 export const HOST_MIGRATION_MS = 10_000;
@@ -54,6 +55,7 @@ export class RoomSession {
   private room: RoomState;
   private readonly view$ = new BehaviorSubject<LobbyView | null>(null);
   private readonly startListeners = new Set<(start: GameStart, resumed: boolean) => void>();
+  private readonly endListeners = new Set<() => void>();
   private readonly hostListeners = new Set<(hostId: PlayerId, epoch: number) => void>();
   private migrationTimer: unknown = null;
   /** Ready flags from players the host can't see in presence yet (presence may lag broadcast). */
@@ -80,7 +82,10 @@ export class RoomSession {
     this.clockSamples = opts.clockSamples ?? 5;
     this.clock = new ClockSync(transport, me.id, this.scheduler);
     this.room = {
-      code, hostId, routine, phase: 'lobby',
+      code,
+      hostId,
+      routine,
+      phase: 'lobby',
       // A joiner's epoch starts below any real one so the first room-state is accepted.
       epoch: known ? 0 : -1,
       seats: known ? [me.id] : [],
@@ -89,7 +94,12 @@ export class RoomSession {
   }
 
   /** Creates a room with this player as host. */
-  static async host(transport: SyncTransport, me: PlayerInfo, routine: RoomRoutine | null, opts: RoomSessionOptions = {}): Promise<RoomSession> {
+  static async host(
+    transport: SyncTransport,
+    me: PlayerInfo,
+    routine: RoomRoutine | null,
+    opts: RoomSessionOptions = {},
+  ): Promise<RoomSession> {
     const info = await transport.createRoom(me);
     const session = new RoomSession(transport, me, info.code, info.hostId, routine, true, opts);
     session.listen();
@@ -98,7 +108,12 @@ export class RoomSession {
   }
 
   /** Joins an existing room (also a rejoin, with the same player id); rejects if it doesn't exist. */
-  static async join(transport: SyncTransport, code: string, me: PlayerInfo, opts: RoomSessionOptions = {}): Promise<RoomSession> {
+  static async join(
+    transport: SyncTransport,
+    code: string,
+    me: PlayerInfo,
+    opts: RoomSessionOptions = {},
+  ): Promise<RoomSession> {
     const info = await transport.joinRoom(code, me);
     const session = new RoomSession(transport, me, info.code, info.hostId, null, false, opts);
     session.listen();
@@ -151,7 +166,11 @@ export class RoomSession {
   /** Host only: changing the routine clears everyone's ready flag (they agreed to something else). */
   setRoutine(routine: RoomRoutine): void {
     if (!this.isHost) throw new Error('Only the host can change the routine');
-    this.room = { ...this.room, routine, ready: Object.fromEntries(Object.keys(this.room.ready).map((id) => [id, false])) };
+    this.room = {
+      ...this.room,
+      routine,
+      ready: this.allReady(false),
+    };
     this.publish();
   }
 
@@ -175,10 +194,43 @@ export class RoomSession {
     this.transport.send({ kind: 'start', from: this._me.id, start: publicStart(start) });
   }
 
+  /**
+   * Host only: the game is over — everyone goes back to the lobby, where the host can pick
+   * another routine. Ready flags clear, so each player says again that they're in (§7 rematch).
+   */
+  endGame(): void {
+    if (!this.isHost) throw new Error('Only the host can end the game');
+    if (this.room.phase !== 'playing') return;
+    this.ownStart = null;
+    this.room = { ...this.room, phase: 'lobby', ready: this.allReady(false) };
+    this.publish();
+    this.fireEnd();
+  }
+
+  /** Host only: everyone present is in for the next game — how a one-tap rematch skips the lobby. */
+  readyAll(): void {
+    if (!this.isHost) throw new Error('Only the host can start');
+    this.room = { ...this.room, ready: this.allReady(true) };
+    this.publish();
+  }
+
+  /** Host only: drop every ready flag without leaving the game (a finished game asks again). */
+  clearReady(): void {
+    if (!this.isHost) return;
+    this.room = { ...this.room, ready: this.allReady(false) };
+    this.publish();
+  }
+
   /** `resumed` is true when the game was already running when this device arrived. */
   onStart(listener: (start: GameStart, resumed: boolean) => void): () => void {
     this.startListeners.add(listener);
     return () => this.startListeners.delete(listener);
+  }
+
+  /** Fires when the room goes back to the lobby after a game (the host ended it). */
+  onEnd(listener: () => void): () => void {
+    this.endListeners.add(listener);
+    return () => this.endListeners.delete(listener);
   }
 
   /** Fires when the host changes (migration or a returning claimant with a newer epoch). */
@@ -210,8 +262,13 @@ export class RoomSession {
   private onPresence(list: PlayerPresence[]): void {
     this.presence = list;
     if (this.isHost) {
-      const seats = [...this.room.seats, ...list.map((p) => p.id).filter((id) => !this.room.seats.includes(id))];
-      const ready = Object.fromEntries(list.map((p) => [p.id, this.earlyReady.get(p.id) ?? this.room.ready[p.id] ?? false]));
+      const seats = [
+        ...this.room.seats,
+        ...list.map((p) => p.id).filter((id) => !this.room.seats.includes(id)),
+      ];
+      const ready = Object.fromEntries(
+        list.map((p) => [p.id, this.earlyReady.get(p.id) ?? this.room.ready[p.id] ?? false]),
+      );
       for (const p of list) this.earlyReady.delete(p.id);
       this.room = { ...this.room, seats, ready };
       this.publish();
@@ -227,12 +284,23 @@ export class RoomSession {
         // The host answers everyone. Peers also answer the host itself when it rejoins
         // (e.g. after a reload) so it can resume the room it lost.
         if (this.isHost || (msg.from === this.room.hostId && this.room.epoch >= 0)) {
-          this.transport.send({ kind: 'room-state', from: this._me.id, state: this.room }, msg.from);
+          this.transport.send(
+            { kind: 'room-state', from: this._me.id, state: this.room },
+            msg.from,
+          );
         }
         // Someone arriving (or coming back) mid-game needs the start payload too, or they'd sit
         // in the lobby while everyone else plays. Players resume; anyone else watches (§7).
-        if (this.isHost && this.room.phase === 'playing' && this.ownStart && msg.from !== this._me.id) {
-          this.transport.send({ kind: 'start', from: this._me.id, start: publicStart(this.ownStart), resumed: true }, msg.from);
+        if (
+          this.isHost &&
+          this.room.phase === 'playing' &&
+          this.ownStart &&
+          msg.from !== this._me.id
+        ) {
+          this.transport.send(
+            { kind: 'start', from: this._me.id, start: publicStart(this.ownStart), resumed: true },
+            msg.from,
+          );
         }
         break;
       case 'room-state':
@@ -249,7 +317,11 @@ export class RoomSession {
         break;
       case 'start':
         if (msg.from !== this.room.hostId) break;
-        for (const l of this.startListeners) l(msg.from === this._me.id && this.ownStart ? this.ownStart : msg.start, msg.resumed === true);
+        for (const l of this.startListeners)
+          l(
+            msg.from === this._me.id && this.ownStart ? this.ownStart : msg.start,
+            msg.resumed === true,
+          );
         break;
     }
   }
@@ -269,24 +341,33 @@ export class RoomSession {
     const claimantPresent = this.presence.some((p) => p.id === from);
     const hostPresent = this.presence.some((p) => p.id === this.room.hostId);
     // The rightful successor is the earliest-seated present player other than the current host.
-    const rightfulSuccessor = this.orderedPresent().find((p) => p.id !== this.room.hostId)?.id === from;
+    const rightfulSuccessor =
+      this.orderedPresent().find((p) => p.id !== this.room.hostId)?.id === from;
     const oldHostGone = !hostPresent || (this.room.hostId === this._me.id && rightfulSuccessor);
-    const newer = state.epoch > this.room.epoch && (this.room.epoch < 0 || (claimantPresent && oldHostGone));
+    const newer =
+      state.epoch > this.room.epoch && (this.room.epoch < 0 || (claimantPresent && oldHostGone));
     const sameTermSameHost = state.epoch === this.room.epoch && state.hostId === this.room.hostId;
     // Simultaneous claims in one term: the earlier seat wins.
     const sameTermEarlierSeat =
-      state.epoch === this.room.epoch && state.hostId !== this.room.hostId && claimantPresent && oldHostGone &&
+      state.epoch === this.room.epoch &&
+      state.hostId !== this.room.hostId &&
+      claimantPresent &&
+      oldHostGone &&
       this.seatOf(state.hostId, state.seats) < this.seatOf(this.room.hostId, state.seats);
     if (!newer && !sameTermSameHost && !sameTermEarlierSeat) return;
 
     const hostChanged = state.hostId !== this.room.hostId;
     const firstState = this.room.epoch < 0;
+    const gameEnded = this.room.phase === 'playing' && state.phase === 'lobby';
     this.room = state;
     this.emit();
+    if (gameEnded) this.fireEnd();
     this.watchHost();
     if (hostChanged || firstState) {
-      if (hostChanged && !firstState) for (const l of this.hostListeners) l(state.hostId, state.epoch);
-      if (this.clockSamples > 0) void this.clock.measure(state.hostId, { count: this.clockSamples });
+      if (hostChanged && !firstState)
+        for (const l of this.hostListeners) l(state.hostId, state.epoch);
+      if (this.clockSamples > 0)
+        void this.clock.measure(state.hostId, { count: this.clockSamples });
     }
   }
 
@@ -334,6 +415,18 @@ export class RoomSession {
     }
   }
 
+  private fireEnd(): void {
+    for (const l of this.endListeners) l();
+  }
+
+  /** Every present player's ready flag set to `ready` (the room only tracks who is here). */
+  private allReady(ready: boolean): Record<PlayerId, boolean> {
+    const ids = this.presence.length
+      ? this.presence.map((p) => p.id)
+      : Object.keys(this.room.ready);
+    return Object.fromEntries(ids.map((id) => [id, ready]));
+  }
+
   private seatOf(id: PlayerId, seats: readonly PlayerId[]): number {
     const i = seats.indexOf(id);
     return i < 0 ? Number.MAX_SAFE_INTEGER : i;
@@ -341,19 +434,28 @@ export class RoomSession {
 
   /** Present players ordered by room seat, then by transport seat for anyone not yet seated. */
   private orderedPresent(): PlayerPresence[] {
-    return [...this.presence].sort((a, b) => this.seatOf(a.id, this.room.seats) - this.seatOf(b.id, this.room.seats) || a.seat - b.seat);
+    return [...this.presence].sort(
+      (a, b) =>
+        this.seatOf(a.id, this.room.seats) - this.seatOf(b.id, this.room.seats) || a.seat - b.seat,
+    );
   }
 
   /** Host: broadcast room state and update the local view. */
   private publish(): void {
-    if (this.isHost) this.transport.send({ kind: 'room-state', from: this._me.id, state: this.room });
+    if (this.isHost)
+      this.transport.send({ kind: 'room-state', from: this._me.id, state: this.room });
     this.emit();
   }
 
   private emit(): void {
     if (this.closed) return;
     const players = this.orderedPresent().map((p, seat) => ({
-      ...p, seat, isHost: p.id === this.room.hostId, ready: this.room.ready[p.id] ?? false, isMe: p.id === this._me.id,
+      ...p,
+      name: p.id === this._me.id ? p.name : seatName(p.name, seat),
+      seat,
+      isHost: p.id === this.room.hostId,
+      ready: this.room.ready[p.id] ?? false,
+      isMe: p.id === this._me.id,
     }));
     this.view$.next({
       code: this.room.code,
@@ -380,8 +482,10 @@ function publicStart(start: GameStart): GameStart {
 export function startBlocker(room: RoomState, players: readonly LobbyPlayer[]): string | null {
   if (!room.routine) return 'Pick a routine first.';
   const { min, max } = room.routine.preview.players;
-  if (players.length < min) return `${room.routine.preview.gameName} needs at least ${min} players.`;
-  if (players.length > max) return `${room.routine.preview.gameName} allows at most ${max} players.`;
+  if (players.length < min)
+    return `${room.routine.preview.gameName} needs at least ${min} players.`;
+  if (players.length > max)
+    return `${room.routine.preview.gameName} allows at most ${max} players.`;
   const waiting = players.filter((p) => !p.ready).length;
   if (waiting) return `Waiting for ${waiting} ${waiting === 1 ? 'player' : 'players'} to be ready.`;
   return null;

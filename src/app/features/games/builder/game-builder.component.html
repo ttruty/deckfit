@@ -40,6 +40,20 @@
               <input type="number" min="1" max="8" [value]="g.playersMax ?? ''" (input)="set(['players', 'max'], num($any($event.target).value))" />
             </label>
           </div>
+          <div class="how-to" data-field="howTo">
+            <h3>How to play</h3>
+            <p class="hint">One short step each — players see these in the catalog, the lobby and while playing.</p>
+            @for (step of g.howTo; track $index; let i = $index) {
+              <div class="row">
+                <label class="ctl grow">Step {{ i + 1 }}
+                  <input type="text" [value]="step" maxlength="160" (input)="setStep(i, $any($event.target).value)" />
+                </label>
+                <button type="button" class="icon-btn" (click)="removeStep(i)" [attr.aria-label]="'Remove step ' + (i + 1)"><mat-icon>close</mat-icon></button>
+              </div>
+            }
+            @if (g.howTo.length < 8) { <button type="button" class="text-btn" (click)="addStep()">+ Add a step</button> }
+            @for (p of fp('howTo'); track $index) { <p class="problem">{{ p }}</p> }
+          </div>
           @for (p of [...fp('name'), ...fp('summary'), ...fp('players'), ...fp('scoring'), ...fp('id')]; track $index) { <p class="problem">{{ p }}</p> }
         </section>
 

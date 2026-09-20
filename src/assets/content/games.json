@@ -1,10 +1,16 @@
 {
- "version": 5,
+ "version": 6,
  "games": [
   {
    "id": "solo-deal",
    "name": "Solo Deal",
    "summary": "Turn over one card at a time and do what it says until the deck runs out.",
+   "howTo": [
+    "Tap Deal to turn over a card.",
+    "Do the exercise shown \u2014 the big number is your target, already adjusted for your settings.",
+    "Tap Done (or Skip) and turn the next card.",
+    "The workout ends when the deck runs out, or when the time cap does."
+   ],
    "players": {
     "min": 1,
     "max": 1
@@ -85,6 +91,12 @@
    "id": "end-match",
    "name": "End Match",
    "summary": "Lay out a row of four. When the two ends match, work both ends and clear the row; otherwise work the middle pair.",
+   "howTo": [
+    "Four cards sit face up in a row.",
+    "If the two end cards match \u2014 by suit, unless you change it in the settings \u2014 do both, then clear the whole row.",
+    "If they do not match, do the two middle cards instead and discard them.",
+    "The row refills to four. You are done when the deck and the row are empty."
+   ],
    "players": {
     "min": 1,
     "max": 1
@@ -188,6 +200,12 @@
    "id": "pyramid-climb",
    "name": "Pyramid Climb",
    "summary": "Climb row by row: one card, then two, then three, each row a little longer than the last.",
+   "howTo": [
+    "The first row is one card, the next is two, then three, and so on.",
+    "Do every card in the row, then tap for the next row.",
+    "Each row is longer than the last, so the work builds as you go.",
+    "It ends after the last row, or early if the deck runs out."
+   ],
    "players": {
     "min": 1,
     "max": 1
@@ -250,6 +268,12 @@
    "id": "interval-deck",
    "name": "Interval Deck",
    "summary": "Short rounds of all-out work and brief rest. Each round a card picks the exercise; log what you managed.",
+   "howTo": [
+    "Every round turns over one card: that is the exercise for everybody.",
+    "Work for the work window, then take the rest window before the next card.",
+    "Log the reps you actually managed \u2014 that is your score for the round.",
+    "After the set number of rounds, the highest total wins."
+   ],
    "players": {
     "min": 1,
     "max": 6
@@ -346,6 +370,12 @@
    "id": "high-card-duel",
    "name": "High Card Duel",
    "summary": "Everyone turns over a card at once. The highest card rests; everybody else works every card on the table.",
+   "howTo": [
+    "Everyone turns a card over at the same time.",
+    "The highest card wins the round \u2014 aces are high, jokers never win.",
+    "Everyone else does every card on the table, including the winner\u2019s.",
+    "Whoever has won the most rounds at the end takes it."
+   ],
    "players": {
     "min": 2,
     "max": 6
@@ -420,6 +450,12 @@
    "id": "rep-race",
    "name": "Rep Race",
    "summary": "Everyone gets the same short set of rep cards. First to finish the set takes the round.",
+   "howTo": [
+    "Everyone gets the same short set of rep cards, face up.",
+    "Go together: the first to finish the whole set takes the round.",
+    "Timed cards are swapped out as they come up, so it is always reps.",
+    "Turn on the judge setting and one player sits out each round to count for everyone else."
+   ],
    "players": {
     "min": 2,
     "max": 6
@@ -515,6 +551,12 @@
    "id": "neighbor-rush",
    "name": "Neighbor Rush",
    "summary": "No turns: race to play cards onto the center pile by neighboring rank or matching suit. Whatever is left in your hand at the end is your workout.",
+   "howTo": [
+    "One card sits in the middle and everyone plays at once \u2014 there are no turns.",
+    "Play a card from your hand that shares the middle card\u2019s suit, or is one rank above or below it.",
+    "Stuck? Draw a card and keep looking.",
+    "The moment someone empties their hand the game stops, and every card still in your hand is your workout."
+   ],
    "players": {
     "min": 2,
     "max": 6
@@ -642,6 +684,12 @@
    "id": "fit-poker",
    "name": "Fit Poker",
    "summary": "Five-card showdown where the chips are reps. Bet, call, or fold \u2014 everyone who loses the hand works off the pot.",
+   "howTo": [
+    "Each hand deals you five cards that only you can see.",
+    "Bet, call or fold in turn \u2014 the stakes are reps, not chips.",
+    "When the betting closes, hands are revealed and the best poker hand wins the pot.",
+    "Everyone who lost works off the pot, using the exercise on their highest card."
+   ],
    "players": {
     "min": 2,
     "max": 6
@@ -731,6 +779,12 @@
    "id": "bluff-pile",
    "name": "Bluff Pile",
    "summary": "Lay cards face down and name the rank \u2014 truthfully or not. Get caught bluffing, or call wrong, and you work the whole pile.",
+   "howTo": [
+    "Put one to four cards face down and say what rank they are. The rank climbs each turn: A, 2, 3, and on.",
+    "You are allowed to lie \u2014 nobody can see the cards you played.",
+    "Anyone can call bluff. The cards are turned over: if it was a lie the liar works the whole pile, if it was true the challenger does.",
+    "Whoever gets rid of all their cards first wins."
+   ],
    "players": {
     "min": 3,
     "max": 6
@@ -777,6 +831,12 @@
    "id": "team-relay",
    "name": "Team Relay",
    "summary": "Teams share one hand and take turns: flip your team\u2019s next card and do it, then a teammate takes the next. First team through its hand wins.",
+   "howTo": [
+    "You are in teams of two, and each team shares one hand of cards.",
+    "On your turn, flip your team\u2019s next card and do it.",
+    "Your teammate takes the following card, so you alternate down the hand.",
+    "The first team to clear its hand wins \u2014 everyone on it."
+   ],
    "players": {
     "min": 4,
     "max": 8

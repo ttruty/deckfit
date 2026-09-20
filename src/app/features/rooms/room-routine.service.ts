@@ -51,6 +51,7 @@ export class RoomRoutineService {
         deckName: deck.name,
         gameName: game.name,
         gameSummary: game.summary,
+        ...(game.howTo?.length ? { gameHowTo: game.howTo } : {}),
         players: game.players,
         cardCount: applyDeckFilters(deck.cards, byId, routine.deckFilters).length,
         suits: deck.suits.filter((s) => s.suit !== 'joker').map((s) => ({ suit: s.suit, label: s.label })),

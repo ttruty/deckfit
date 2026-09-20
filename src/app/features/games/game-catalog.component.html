@@ -19,6 +19,12 @@
             <h3>{{ item.game.name }}</h3>
             <p class="meta">{{ item.players }} · {{ item.tags.join(' · ') }}</p>
             <p class="summary">{{ item.game.summary }}</p>
+            @if (item.game.howTo?.length) {
+              <details class="rules">
+                <summary>How to play</summary>
+                <df-how-to-play [steps]="item.game.howTo ?? []" />
+              </details>
+            }
             <div class="actions">
               @if (item.multiplayer) {
                 <a mat-flat-button routerLink="/room/new" [queryParams]="{ game: item.game.id }"><mat-icon>group_add</mat-icon>Start a room</a>
