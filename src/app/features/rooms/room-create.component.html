@@ -22,7 +22,7 @@
         <input matInput [formControl]="name" maxlength="30" autocomplete="nickname" />
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
         <mat-label>Routine</mat-label>
         <mat-select [formControl]="routineId">
           @for (o of opts; track o.routine.id) {
@@ -31,19 +31,10 @@
             </mat-option>
           }
         </mat-select>
-        <mat-hint>Only games for 2 or more players can be played in a room.</mat-hint>
+        <mat-hint>Rooms need a game for 2 or more players.</mat-hint>
       </mat-form-field>
 
-      <div class="intensity">
-        <p class="intensity-label" id="room-intensity">Intensity</p>
-        <div class="levels" role="group" aria-labelledby="room-intensity">
-          @for (level of intensities; track level) {
-            <button type="button" class="level" [class.on]="intensity() === level" [attr.aria-pressed]="intensity() === level"
-                    (click)="setIntensity(level)">{{ intensityLabel[level] }}</button>
-          }
-        </div>
-        <p class="hint">{{ intensityHelp[intensity()] }} — the same for everyone in the room.</p>
-      </div>
+      <df-intensity-picker [(value)]="intensity" label="Intensity for everyone" />
 
       @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
 

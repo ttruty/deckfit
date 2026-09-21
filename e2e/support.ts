@@ -13,9 +13,14 @@ export function hasRealtimeBackend(): boolean {
 /**
  * A fresh device: its own context (IndexedDB, device id). The §12 safety notice appears on every
  * fresh device, so it's accepted automatically — `settings.spec.ts` covers the notice itself.
+ * `phone: true` gives a 390×844 touch viewport, for checking layouts that only stack there.
  */
-export async function newDevice(browser: Browser, opts: { keepDisclaimer?: boolean } = {}): Promise<Page> {
-  const context = await browser.newContext({ viewport: { width: 1100, height: 900 } });
+export async function newDevice(browser: Browser, opts: { keepDisclaimer?: boolean; phone?: boolean } = {}): Promise<Page> {
+  const context = await browser.newContext(
+    opts.phone
+      ? { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true }
+      : { viewport: { width: 1100, height: 900 } },
+  );
   const page = await context.newPage();
   page.on('pageerror', (e) => console.error(`[pageerror] ${e.message}`));
   if (!opts.keepDisclaimer) {

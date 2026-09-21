@@ -22,8 +22,9 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { BundleImportError, BundleService } from '../../core/db/bundle.service';
 import { GameRepository, RoutineRepository } from '../../core/db/repositories';
 import { RoomRoutineService } from './room-routine.service';
-import { INTENSITY_HELP, INTENSITY_LABEL, SUIT_SYMBOL } from '../../shared/labels';
-import { INTENSITIES, type Intensity } from '../../domain/models/schemas';
+import { INTENSITY_LABEL, SUIT_SYMBOL } from '../../shared/labels';
+import type { Intensity } from '../../domain/models/schemas';
+import { IntensityPickerComponent } from '../../shared/ui/intensity-picker/intensity-picker.component';
 import { QrCodeComponent } from '../../shared/ui/qr-code/qr-code.component';
 import { RoomTableComponent } from './room-table.component';
 import { RoomService } from './room.service';
@@ -43,6 +44,7 @@ import { HowToPlayComponent } from '../../shared/ui/how-to-play/how-to-play.comp
     QrCodeComponent,
     RoomTableComponent,
     HowToPlayComponent,
+    IntensityPickerComponent,
   ],
   templateUrl: './lobby.component.html',
   styleUrl: './lobby.component.scss',
@@ -66,9 +68,7 @@ export class LobbyComponent implements OnDestroy {
   protected readonly saved = signal(false);
   protected readonly saveError = signal<string | null>(null);
   protected readonly suitSymbol = SUIT_SYMBOL;
-  protected readonly intensities = INTENSITIES;
   protected readonly intensityLabel = INTENSITY_LABEL;
-  protected readonly intensityHelp = INTENSITY_HELP;
   protected readonly canShare = typeof navigator !== 'undefined' && 'share' in navigator;
 
   protected readonly nameForm = new FormGroup({

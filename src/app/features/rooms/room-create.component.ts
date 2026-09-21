@@ -12,13 +12,12 @@ import { RoomRoutineService, ROOM_DEFAULT_PREFIX, ROOM_DEFAULT_ROUTINE_ID } from
 import { REALTIME_CONFIGURED } from '../../core/sync/realtime-config';
 import { RoomService } from './room.service';
 import { PreferencesService } from '../../core/settings/preferences.service';
-import { INTENSITIES, type Intensity } from '../../domain/models/schemas';
-import { INTENSITY_HELP, INTENSITY_LABEL } from '../../shared/labels';
+import { IntensityPickerComponent } from '../../shared/ui/intensity-picker/intensity-picker.component';
 
 @Component({
   selector: 'df-room-create',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, RouterLink, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSelectModule],
+  imports: [ReactiveFormsModule, RouterLink, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSelectModule, IntensityPickerComponent],
   templateUrl: './room-create.component.html',
   styleUrl: './room-create.component.scss',
 })
@@ -38,9 +37,6 @@ export class RoomCreateComponent {
 
   /** The room's intensity (§6.1); starts from this device's default and is remembered. */
   protected readonly intensity = this.prefs.intensity;
-  protected readonly intensities = INTENSITIES;
-  protected readonly intensityLabel = INTENSITY_LABEL;
-  protected readonly intensityHelp = INTENSITY_HELP;
 
   protected readonly name = new FormControl('', { nonNullable: true, validators: [Validators.maxLength(30)] });
   protected readonly routineId = new FormControl('', { nonNullable: true, validators: [Validators.required] });
@@ -76,10 +72,6 @@ export class RoomCreateComponent {
       const preferred = forGame ?? opts.find((o) => o.routine.id === ROOM_DEFAULT_ROUTINE_ID) ?? opts.find((o) => o.fitsGroup);
       this.routineId.setValue(preferred?.routine.id ?? '');
     });
-  }
-
-  protected setIntensity(intensity: Intensity): void {
-    this.prefs.intensity.set(intensity);
   }
 
   protected async create(): Promise<void> {

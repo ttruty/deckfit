@@ -34,7 +34,7 @@ h3 { font: var(--mat-sys-title-medium); margin: 8px 0 0; }
 .game-name { display: block; font: var(--mat-sys-title-small); padding-top: 6px; }
 .game-summary { display: block; font: var(--mat-sys-body-small); color: var(--mat-sys-on-surface-variant); padding-bottom: 6px; }
 
-.grid { display: grid; gap: 4px 12px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); align-items: start; }
+.grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); align-items: start; }
 .wide { grid-column: 1 / -1; display: grid; gap: 6px; }
 .help { margin: 0; font: var(--mat-sys-body-small); color: var(--mat-sys-on-surface-variant); }
 

@@ -7,6 +7,9 @@ h2 { font: var(--mat-sys-title-large); margin: 0 0 12px; display: flex; align-it
 
 .layout {
   display: grid; gap: 16px; margin-top: 8px;
+  /* Narrow screens stack; without these areas the named `grid-area`s below have no lines to
+     resolve against and every section piles into the first cell. */
+  grid-template-areas: 'invite' 'players' 'routine';
   @media (min-width: 840px) { grid-template-columns: 280px 1fr; grid-template-areas: 'invite players' 'invite routine'; align-items: start; }
 }
 section { padding: 16px; border-radius: 20px; background: var(--mat-sys-surface-container-low); }
@@ -57,13 +60,4 @@ section { padding: 16px; border-radius: 20px; background: var(--mat-sys-surface-
 
 .routine .swap { width: 100%; }
 
-/* Host's intensity control, under the game picker (§6.1). */
-.routine .intensity { display: grid; gap: 6px; margin-bottom: 12px; }
-.routine .intensity-label { margin: 0; font: var(--mat-sys-title-small); }
-.routine .levels { display: flex; gap: 6px; flex-wrap: wrap; }
-.routine .level {
-  min-height: 44px; padding: 6px 16px; border-radius: 999px; cursor: pointer; font: var(--mat-sys-label-large);
-  border: 1px solid var(--mat-sys-outline-variant); background: transparent; color: inherit;
-  &.on { background: var(--mat-sys-primary); color: var(--mat-sys-on-primary); border-color: transparent; }
-}
-.routine .intensity .hint { margin: 0; font: var(--mat-sys-body-small); color: var(--mat-sys-on-surface-variant); }
+.routine .intensity { margin: 10px 0 12px; }

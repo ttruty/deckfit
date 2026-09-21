@@ -105,7 +105,7 @@
           <p class="example" role="status">{{ workExample() }}</p>
         </div>
         <div class="grid" formGroupName="core">
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
             <mat-label>Rep multiplier</mat-label>
             <mat-select formControlName="repMultiplier">
               @for (m of multipliers; track m) { <mat-option [value]="m">×{{ m }}</mat-option> }

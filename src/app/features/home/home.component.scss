@@ -41,11 +41,4 @@ h2 { font: var(--mat-sys-title-large); margin: 0 0 8px; }
   code { font-family: monospace; white-space: nowrap; }
 }
 
-/* Intensity for Quick Start: a segmented control that remembers the choice (§6.1). */
-.intensity { display: flex; gap: 6px; margin-top: 10px; }
-.level {
-  min-height: 40px; padding: 6px 14px; border-radius: 999px; cursor: pointer; font: var(--mat-sys-label-large);
-  border: 1px solid var(--mat-sys-outline-variant); background: transparent; color: inherit;
-  &.on { background: var(--mat-sys-primary); color: var(--mat-sys-on-primary); border-color: transparent; }
-}
-.intensity-help { margin: 6px 0 0; font: var(--mat-sys-body-small); color: var(--mat-sys-on-surface-variant); }
+.hero .intensity { margin-top: 10px; }

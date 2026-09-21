@@ -2,7 +2,7 @@
 .back { margin-left: -8px; }
 h1 { font: var(--mat-sys-headline-medium); margin: 4px 0 8px; }
 .lede { font: var(--mat-sys-body-large); color: var(--mat-sys-on-surface-variant); margin: 0 0 20px; }
-.form { display: grid; gap: 8px; }
+.form { display: grid; gap: 16px; }
 .big { min-height: 56px; justify-self: start; padding-inline: 24px; margin-top: 8px; }
 .error { color: var(--mat-sys-error); margin: 0; }
 
@@ -12,13 +12,3 @@ h1 { font: var(--mat-sys-headline-medium); margin: 4px 0 8px; }
   code { font-family: monospace; white-space: nowrap; }
 }
 
-/* Intensity for the room (§6.1): everyone plays at the host's level. */
-.intensity { display: grid; gap: 6px; }
-.intensity-label { margin: 0; font: var(--mat-sys-title-small); }
-.levels { display: flex; gap: 6px; flex-wrap: wrap; }
-.level {
-  min-height: 44px; padding: 6px 16px; border-radius: 999px; cursor: pointer; font: var(--mat-sys-label-large);
-  border: 1px solid var(--mat-sys-outline-variant); background: transparent; color: inherit;
-  &.on { background: var(--mat-sys-primary); color: var(--mat-sys-on-primary); border-color: transparent; }
-}
-.intensity .hint { margin: 0; font: var(--mat-sys-body-small); color: var(--mat-sys-on-surface-variant); }

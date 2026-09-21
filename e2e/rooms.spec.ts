@@ -262,6 +262,28 @@ test.describe('understanding the game', () => {
 test.describe('what happens after a game', () => {
   test.skip(!hasRealtimeBackend(), 'needs supabaseUrl + supabaseKey in src/environments/environment.local.ts');
 
+  test('the lobby stacks on a phone: code, players and routine each get their own space', async ({ browser }) => {
+    const ann = await newDevice(browser, { phone: true });
+    await createRoom(ann, 'Ann');
+
+    // The three panels sit one below the other. (They share a grid; with no single-column areas
+    // they all landed in the first cell and overlapped.)
+    const boxes = await Promise.all(
+      ['.invite', '.players', '.routine'].map(async (sel) => (await ann.locator(sel).boundingBox())!),
+    );
+    for (const box of boxes) expect(box).not.toBeNull();
+    for (let i = 1; i < boxes.length; i++) {
+      expect(boxes[i].y).toBeGreaterThanOrEqual(boxes[i - 1].y + boxes[i - 1].height - 1);
+    }
+    // Nothing spills sideways either.
+    const overflow = await ann.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(overflow).toBeLessThanOrEqual(0);
+    await expect(ann.locator('.code')).toBeVisible();
+    await expect(ann.getByRole('button', { name: "I'm ready" })).toBeVisible();
+
+    await ann.context().close();
+  });
+
   test('the host can swap the game in the lobby, and everyone says they are ready again', async ({ browser }) => {
     const ann = await newDevice(browser);
     const bo = await newDevice(browser);
@@ -282,6 +304,12 @@ test.describe('what happens after a game', () => {
     await expect(bo.getByRole('button', { name: "I'm ready" })).toBeVisible();
     await expect(bo.locator('.blocker')).toContainText('ready');
 
+    // Intensity is the host's call too, and the joiner sees what they'll be working at (§6.1).
+    await expect(bo.locator('.routine .facts')).toContainText('Moderate intensity');
+    await ann.locator('df-intensity-picker').getByRole('button', { name: 'High' }).click();
+    await expect(bo.locator('.routine .facts')).toContainText('High intensity');
+    await expect(bo.locator('df-intensity-picker')).toHaveCount(0); // players don't get the control
+
     for (const page of [ann, bo]) await page.context().close();
   });
 
@@ -300,12 +328,14 @@ test.describe('what happens after a game', () => {
     await ann.getByRole('button', { name: "I'm ready" }).click();
     await ann.getByRole('button', { name: 'Start game' }).click();
 
+    // Clicks are best-effort with a short timeout: a toast can briefly cover a button, and the
+    // default 30s actionability wait would eat the whole test budget.
     const playOut = async () => {
-      for (let i = 0; i < 40 && !(await ann.locator('df-game-result').count()); i++) {
+      for (let i = 0; i < 60 && !(await ann.locator('df-game-result').count()); i++) {
         for (const page of [ann, bo]) {
           for (const label of ['Flip', 'Done']) {
             const button = page.getByRole('button', { name: label, exact: true });
-            if (await button.count()) await button.first().click().catch(() => undefined);
+            if (await button.count()) await button.first().click({ timeout: 1500 }).catch(() => undefined);
           }
         }
         await ann.waitForTimeout(150);

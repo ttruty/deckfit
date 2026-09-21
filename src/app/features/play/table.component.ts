@@ -16,6 +16,7 @@ import { WorkoutSummaryComponent } from './workout-summary.component';
 import { GameRepository } from '../../core/db/repositories';
 import { HowToPlayDialog, type HowToPlayData } from '../../shared/ui/how-to-play/how-to-play.dialog';
 import { MatDialog } from '@angular/material/dialog';
+import { INTENSITY_LABEL } from '../../shared/labels';
 
 @Component({
   selector: 'df-table',
@@ -62,6 +63,7 @@ export class TableComponent {
       steps: game?.howTo ?? [],
       facts: [
         session.deck.name,
+        `${INTENSITY_LABEL[settings.intensity ?? 'moderate']} intensity`,
         ...(settings.repMultiplier === 1 ? [] : [`×${settings.repMultiplier} reps`]),
         ...(settings.maxRepCap ? [`max ${settings.maxRepCap} per task`] : []),
         `jokers: ${settings.jokerRule}`,

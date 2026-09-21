@@ -28,7 +28,7 @@ import {
   winsOf,
 } from '../../domain/engine/dsl/interpreter';
 import { HIDDEN_CARD } from '../../domain/engine/redact';
-import { SUIT_NAME } from '../../shared/labels';
+import { INTENSITY_LABEL, SUIT_NAME } from '../../shared/labels';
 import { CardBackComponent } from '../../shared/ui/card-back/card-back.component';
 import { CardFaceComponent } from '../../shared/ui/card-face/card-face.component';
 import { toCardFaceModel } from '../../shared/ui/card-face/card-face-model';
@@ -478,6 +478,7 @@ export class RoomTableComponent {
       facts: [
         `${start.players.length} players`,
         `${start.deck.name}`,
+        `${INTENSITY_LABEL[settings.intensity ?? 'moderate']} intensity`,
         ...(settings.repMultiplier === 1 ? [] : [`×${settings.repMultiplier} reps`]),
         ...(settings.maxRepCap ? [`max ${settings.maxRepCap} per task`] : []),
         `jokers: ${settings.jokerRule}`,

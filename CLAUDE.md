@@ -208,6 +208,7 @@ interface Routine {
 }
 
 interface GameSettings {
+  intensity?: 'low' | 'moderate' | 'high'; // scales every task; absent on old records = moderate
   repMultiplier: number;        // 0.5–3
   faceCardValue: number;        // reps for J/Q/K
   aceValue: number;
@@ -295,8 +296,14 @@ Amount rules (`domain/engine/amounts.ts`):
   the exercise is timed.
 - One task per exercise per assignment (cards summed), in order of first
   appearance; jokers of the same rule are grouped into one task.
-- Order: sum → × `repMultiplier` → round half up → cap (`maxRepCap` reps, or
-  `maxRepCap × 5` seconds). Zero-amount tasks are dropped.
+- Order: sum → × intensity → × `repMultiplier` → round half up → cap (`maxRepCap`
+  reps, or `maxRepCap × 5` seconds). Zero-amount tasks are dropped.
+- **Intensity** (`INTENSITY_FACTOR`: low 0.7, moderate 1, high 1.4) is the plain-language
+  knob over the same maths as `repMultiplier`, and applies to reps and held seconds
+  alike (a 10-rep card is 7 / 10 / 14). Rest is never scaled, and neither is a game's
+  fixed work window — interval-deck still works 20 seconds, but the rep targets in it
+  scale. Records saved before it read as `moderate` (`workScale()` is the one place
+  that decides).
 - Jokers by `jokerRule`: `skip` → no task; `rest` → 30s per joker, never
   multiplied or capped, not counted in totals; `wild` → `faceCardValue` reps
   per joker, multiplied and capped, and the player may name the exercise on
@@ -775,6 +782,10 @@ Implementation (`core/sync`, framework-free except `sync.providers.ts`):
   link, presence with ready status and host badge, host-away notice, rename,
   ready toggle, routine preview, "Save routine to my device", host Start (enabled
   when `blocker` is null; dev builds honor `?seed=` for reproducible e2e deals).
+  The lobby is a three-panel grid (invite / players / routine) that stacks on a phone:
+  it declares `grid-template-areas` for one column too, or the named `grid-area`s have no
+  lines to resolve against and every panel lands in the first cell (`e2e/rooms.spec.ts`
+  checks the stack at 390px — `newDevice(browser, { phone: true })`).
   Getting there: Home has "Start a room" beside the join-by-code form, and every
   multiplayer game in /games has "Start a room" (`/room/new?game=<id>`, which
   preselects that game's routine). /room/new offers one default routine per
@@ -842,7 +853,7 @@ vendor code inside `core/sync/*` so this stays swappable.
 | `/play/:sessionId` | Table view |
 | `/room/new`, `/room/:code` | Lobby, then play |
 | `/history` | Past sessions, totals per exercise/muscle group |
-| `/settings` | Display name, theme, sound, data export/import, safety notice, about (no units: nothing records weights) |
+| `/settings` | Display name, theme, default intensity, sound, data export/import, safety notice, about (no units: nothing records weights) |
 
 Lazy-load every feature route. Guard `/play` against a missing session and
 `/room/:code` against an invalid code.
@@ -872,6 +883,16 @@ Lazy-load every feature route. Guard `/play` against a missing session and
   **Rules** button; solo play has the same button in its bar.
 - Accessibility: WCAG AA contrast, suits never conveyed by color alone,
   screen-reader announcements for dealt cards and assigned tasks.
+
+Intensity (§6.1) is picked with one shared control, `shared/ui/intensity-picker`
+(`df-intensity-picker`, low / moderate / high with a one-line explanation):
+- Home's Quick Start and /room/new use the **device default** (`PreferencesService.intensity`,
+  stored in `meta`), which /settings also sets; a saved routine carries its own.
+- The routine form has it as the headline of step 3, with `repMultiplier` demoted to fine
+  tuning under it, and a live example ("A 10-rep card asks for 14").
+- In a room the host owns it: /room/new builds the routine at that level, and the lobby
+  picker re-broadcasts the routine (so everyone re-readies). The lobby's routine facts and
+  the in-play **Rules** dialog both name it.
 
 Implementation (`features/play`):
 - `SessionLauncher` creates the Session (random seed, deck snapshot after
@@ -993,7 +1014,7 @@ exercises and every pose id exists.
   downloaded from /settings (and shareable via the share sheet where it takes
   files — a separate button, since desktop Chrome would otherwise swallow the
   download).
-- Device preferences (theme, beeps, speech) live in `meta` too, loaded by
+- Device preferences (theme, beeps, speech, default intensity) live in `meta` too, loaded by
   `PreferencesService` from the lazy app initializer and written on change; no
   localStorage (§2).
 - Room invites may carry a routine bundle so joiners don't need it locally.
