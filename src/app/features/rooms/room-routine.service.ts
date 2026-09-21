@@ -4,7 +4,7 @@ import { DeckRepository, ExerciseRepository, GameRepository } from '../../core/d
 import type { RoomRoutine } from '../../core/sync/net-message';
 import { resolveSettings } from '../../domain/engine/dsl/settings';
 import { applyDeckFilters } from '../../domain/models/deck-rules';
-import type { Routine } from '../../domain/models/schemas';
+import type { Intensity, Routine } from '../../domain/models/schemas';
 
 /** Unsaved, built-in routines offered for rooms: one per group game, on the bodyweight deck. */
 export const ROOM_DEFAULT_PREFIX = 'room-default-';
@@ -34,7 +34,11 @@ export class RoomRoutineService {
     }));
   }
 
-  async build(routine: Routine): Promise<RoomRoutine> {
+  /** `intensity` overrides the routine's own (how /room/new offers low / moderate / high). */
+  async build(source: Routine, opts: { intensity?: Intensity } = {}): Promise<RoomRoutine> {
+    const routine: Routine = opts.intensity
+      ? { ...source, settings: { ...source.settings, intensity: opts.intensity } }
+      : source;
     const [deck, game] = await Promise.all([this.decks.get(routine.deckId), this.games.get(routine.gameId)]);
     if (!deck || !game) throw new Error('This routine’s deck or game is missing.');
     const saved = !routine.id.startsWith(ROOM_DEFAULT_PREFIX);

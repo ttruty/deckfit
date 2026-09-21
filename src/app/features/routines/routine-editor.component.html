@@ -92,12 +92,25 @@
       <!-- 3. Settings -->
       <section class="step">
         <h2><span class="num">3</span> Settings</h2>
+        <div class="intensity" formGroupName="core">
+          <p class="intensity-label" id="intensity-label">Intensity</p>
+          <mat-radio-group formControlName="intensity" class="levels" aria-labelledby="intensity-label">
+            @for (level of intensities; track level) {
+              <mat-radio-button [value]="level" class="level">
+                <span class="level-name">{{ intensityLabel[level] }}</span>
+                <span class="level-help">{{ intensityHelp[level] }}</span>
+              </mat-radio-button>
+            }
+          </mat-radio-group>
+          <p class="example" role="status">{{ workExample() }}</p>
+        </div>
         <div class="grid" formGroupName="core">
           <mat-form-field appearance="outline">
             <mat-label>Rep multiplier</mat-label>
             <mat-select formControlName="repMultiplier">
               @for (m of multipliers; track m) { <mat-option [value]="m">×{{ m }}</mat-option> }
             </mat-select>
+            <mat-hint>Fine tuning on top of the intensity</mat-hint>
           </mat-form-field>
           <mat-form-field appearance="outline">
             <mat-label>Jokers</mat-label>

@@ -11,6 +11,9 @@ import { IdentityService } from '../../core/identity/identity.service';
 import { RoomRoutineService, ROOM_DEFAULT_PREFIX, ROOM_DEFAULT_ROUTINE_ID } from './room-routine.service';
 import { REALTIME_CONFIGURED } from '../../core/sync/realtime-config';
 import { RoomService } from './room.service';
+import { PreferencesService } from '../../core/settings/preferences.service';
+import { INTENSITIES, type Intensity } from '../../domain/models/schemas';
+import { INTENSITY_HELP, INTENSITY_LABEL } from '../../shared/labels';
 
 @Component({
   selector: 'df-room-create',
@@ -31,6 +34,13 @@ export class RoomCreateComponent {
   private readonly router = inject(Router);
   /** False when no realtime backend is configured: the room won't be reachable from another device. */
   protected readonly realtime = inject(REALTIME_CONFIGURED);
+  private readonly prefs = inject(PreferencesService);
+
+  /** The room's intensity (§6.1); starts from this device's default and is remembered. */
+  protected readonly intensity = this.prefs.intensity;
+  protected readonly intensities = INTENSITIES;
+  protected readonly intensityLabel = INTENSITY_LABEL;
+  protected readonly intensityHelp = INTENSITY_HELP;
 
   protected readonly name = new FormControl('', { nonNullable: true, validators: [Validators.maxLength(30)] });
   protected readonly routineId = new FormControl('', { nonNullable: true, validators: [Validators.required] });
@@ -68,6 +78,10 @@ export class RoomCreateComponent {
     });
   }
 
+  protected setIntensity(intensity: Intensity): void {
+    this.prefs.intensity.set(intensity);
+  }
+
   protected async create(): Promise<void> {
     const option = this.options.value()?.find((o) => o.routine.id === this.routineId.value);
     if (!option || this.busy()) return;
@@ -75,7 +89,7 @@ export class RoomCreateComponent {
     this.error.set(null);
     try {
       if (this.name.value.trim()) await this.identity.rename(this.name.value);
-      const code = await this.rooms.create(await this.roomRoutines.build(option.routine));
+      const code = await this.rooms.create(await this.roomRoutines.build(option.routine, { intensity: this.intensity() }));
       // Keep query params (dev builds accept ?seed= for reproducible e2e deals).
       await this.router.navigate(['/room', code], { queryParamsHandling: 'preserve' });
     } catch (err) {

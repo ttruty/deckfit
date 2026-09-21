@@ -3,6 +3,7 @@ import { GameSettingsSchema, SuitSchema, type GameSettings } from '../../models/
 
 /** Core defaults for any game; a game's `defaults` and then a routine's overrides win. */
 export const BASE_SETTINGS = {
+  intensity: 'moderate',
   repMultiplier: 1,
   faceCardValue: 10,
   aceValue: 11,

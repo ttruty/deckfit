@@ -9,7 +9,9 @@ import { Router, RouterLink } from '@angular/router';
 import { DeckRepository, GameRepository, RoutineRepository } from '../../core/db/repositories';
 import { normalizeRoomCode } from '../../core/sync/room-code';
 import { REALTIME_CONFIGURED } from '../../core/sync/realtime-config';
-import type { Routine } from '../../domain/models/schemas';
+import { INTENSITIES, type Intensity, type Routine } from '../../domain/models/schemas';
+import { INTENSITY_HELP, INTENSITY_LABEL } from '../../shared/labels';
+import { PreferencesService } from '../../core/settings/preferences.service';
 import { LaunchError, QUICK_START, SessionLauncher } from '../play/session-launcher.service';
 import { InstallBannerComponent } from './install-banner.component';
 
@@ -29,6 +31,13 @@ export class HomeComponent {
   private readonly snack = inject(MatSnackBar);
   /** False when no realtime backend is configured: rooms then live in this browser only. */
   protected readonly realtime = inject(REALTIME_CONFIGURED);
+  private readonly prefs = inject(PreferencesService);
+
+  /** Quick Start has no routine, so it works at the device's intensity (§6.1). */
+  protected readonly intensity = this.prefs.intensity;
+  protected readonly intensities = INTENSITIES;
+  protected readonly intensityLabel = INTENSITY_LABEL;
+  protected readonly intensityHelp = INTENSITY_HELP;
 
   protected readonly data = resource({
     loader: async () => {
@@ -37,7 +46,12 @@ export class HomeComponent {
       const gameName = new Map(games.map((g) => [g.id, g.name]));
       const view = (r: Routine) => ({
         routine: r,
-        subtitle: `${deckName.get(r.deckId) ?? 'Missing deck'} · ${gameName.get(r.gameId) ?? 'Missing game'}${r.settings.repMultiplier === 1 ? '' : ` · ×${r.settings.repMultiplier}`}`,
+        subtitle: [
+          deckName.get(r.deckId) ?? 'Missing deck',
+          gameName.get(r.gameId) ?? 'Missing game',
+          ...(r.settings.intensity && r.settings.intensity !== 'moderate' ? [`${INTENSITY_LABEL[r.settings.intensity]} intensity`] : []),
+          ...(r.settings.repMultiplier === 1 ? [] : [`×${r.settings.repMultiplier}`]),
+        ].join(' · '),
         playable: deckName.has(r.deckId) && gameName.has(r.gameId),
       });
       return {
@@ -62,8 +76,12 @@ export class HomeComponent {
   /** A FormGroup so (ngSubmit) fires and the native submit is prevented. */
   protected readonly joinForm = new FormGroup({ code: this.roomCode });
 
+  protected setIntensity(intensity: Intensity): void {
+    this.prefs.intensity.set(intensity);
+  }
+
   protected quickStart(): Promise<void> {
-    return this.launch('quick', () => this.launcher.start(QUICK_START));
+    return this.launch('quick', () => this.launcher.start({ ...QUICK_START, settings: { intensity: this.intensity() } }));
   }
 
   protected startRoutine(routine: Routine): Promise<void> {

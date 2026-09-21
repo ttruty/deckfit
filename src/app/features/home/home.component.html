@@ -4,6 +4,13 @@
     <div>
       <h1 id="quick-title">Quick start</h1>
       <p>{{ data.value()?.quickStart ?? 'Bodyweight deck · Solo Deal' }} — flip a card, do the work.</p>
+      <div class="intensity" role="group" aria-label="Intensity">
+        @for (level of intensities; track level) {
+          <button type="button" class="level" [class.on]="intensity() === level" [attr.aria-pressed]="intensity() === level"
+                  [title]="intensityHelp[level]" (click)="setIntensity(level)">{{ intensityLabel[level] }}</button>
+        }
+      </div>
+      <p class="intensity-help">{{ intensityHelp[intensity()] }}</p>
     </div>
     <button mat-flat-button class="big" (click)="quickStart()" [disabled]="starting() !== null">
       <mat-icon>play_arrow</mat-icon>{{ starting() === 'quick' ? 'Starting…' : 'Start' }}

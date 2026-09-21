@@ -1,5 +1,5 @@
 import { loadContent } from '../../../testing/db';
-import type { Routine } from '../../domain/models/schemas';
+import { SUITS, type Routine } from '../../domain/models/schemas';
 import { toDeckFilters, toFormValue, toRoutine, gameSettingValues } from './routine-form.model';
 
 const { games } = loadContent().games;
@@ -11,7 +11,7 @@ describe('routine form model', () => {
     const v = toFormValue(undefined, endMatch, 'deck-bodyweight');
     expect(v).toEqual({
       name: '', deckId: 'deck-bodyweight', gameId: 'end-match', favorite: false,
-      core: { repMultiplier: 1, faceCardValue: 10, aceValue: 11, jokerRule: 'rest', maxRepCap: null },
+      core: { intensity: 'moderate', repMultiplier: 1, faceCardValue: 10, aceValue: 11, jokerRule: 'rest', maxRepCap: null },
       game: { matchOn: 'suit' },
       filters: { suits: ['hearts', 'diamonds', 'clubs', 'spades', 'joker'], maxDifficulty: null, limitEquipment: false, equipment: [] },
     });
@@ -22,17 +22,25 @@ describe('routine form model', () => {
     const routine: Routine = {
       id: 'r1', name: 'Legs day', deckId: 'deck-dumbbell', gameId: 'solo-deal', favorite: true, updatedAt: 1,
       settings: {
-        repMultiplier: 1.5, faceCardValue: 12, aceValue: 15, jokerRule: 'bonus-cardio', maxRepCap: 30,
+        intensity: 'high', repMultiplier: 1.5, faceCardValue: 12, aceValue: 15, jokerRule: 'bonus-cardio', maxRepCap: 30,
         players: { min: 1, max: 1 }, suits: ['hearts', 'joker'], timeLimitSec: 600,
       },
       deckFilters: { maxDifficulty: 2, equipment: ['dumbbell'] },
     };
     const value = toFormValue(routine, soloDeal, 'ignored');
-    expect(value.core).toEqual({ repMultiplier: 1.5, faceCardValue: 12, aceValue: 15, jokerRule: 'bonus-cardio', maxRepCap: 30 });
+    expect(value.core).toEqual({ intensity: 'high', repMultiplier: 1.5, faceCardValue: 12, aceValue: 15, jokerRule: 'bonus-cardio', maxRepCap: 30 });
     expect(value.game).toEqual({ suits: ['hearts', 'joker'], timeLimitSec: 600 });
     expect(value.filters).toMatchObject({ maxDifficulty: 2, limitEquipment: true, equipment: ['dumbbell'] });
     const back = toRoutine(value, soloDeal, 'r1');
     expect({ ...back, updatedAt: 1 }).toEqual(routine);
+  });
+
+  it('a routine saved before intensity existed reads as moderate', () => {
+    const old: Routine = {
+      id: 'r0', name: 'Old', deckId: 'deck-bodyweight', gameId: 'solo-deal', favorite: false, updatedAt: 1,
+      settings: { repMultiplier: 1, faceCardValue: 10, aceValue: 11, jokerRule: 'rest', players: { min: 1, max: 1 }, suits: [...SUITS] },
+    };
+    expect(toFormValue(old, soloDeal, 'ignored').core.intensity).toBe('moderate');
   });
 
   it('switching games keeps valid shared values and defaults the rest', () => {

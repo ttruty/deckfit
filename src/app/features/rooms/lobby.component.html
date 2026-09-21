@@ -90,6 +90,17 @@
             <mat-hint>Changing the game asks everyone to get ready again.</mat-hint>
           </mat-form-field>
           @if (swapError()) { <p class="error" role="alert">{{ swapError() }}</p> }
+          <div class="intensity">
+            <p class="intensity-label" id="lobby-intensity">Intensity</p>
+            <div class="levels" role="group" aria-labelledby="lobby-intensity">
+              @for (level of intensities; track level) {
+                @let current = (v.routine?.routine?.settings?.intensity ?? 'moderate') === level;
+                <button type="button" class="level" [class.on]="current" [attr.aria-pressed]="current"
+                        (click)="setIntensity(level)">{{ intensityLabel[level] }}</button>
+              }
+            </div>
+            <p class="hint">{{ intensityHelp[v.routine?.routine?.settings?.intensity ?? 'moderate'] }}</p>
+          </div>
         }
         @if (v.routine; as r) {
           <div class="routine-card">
@@ -105,7 +116,8 @@
             <ul class="facts">
               <li>{{ r.preview.cardCount }} cards</li>
               <li>{{ r.preview.players.min === r.preview.players.max ? r.preview.players.min : r.preview.players.min + '–' + r.preview.players.max }} players</li>
-              <li>×{{ r.routine.settings.repMultiplier }} reps</li>
+              <li>{{ intensityLabel[r.routine.settings.intensity ?? 'moderate'] }} intensity</li>
+              @if (r.routine.settings.repMultiplier !== 1) { <li>×{{ r.routine.settings.repMultiplier }} reps</li> }
             </ul>
             <ul class="suits">
               @for (s of r.preview.suits; track s.suit) {

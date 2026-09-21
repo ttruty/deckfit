@@ -22,7 +22,8 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { BundleImportError, BundleService } from '../../core/db/bundle.service';
 import { GameRepository, RoutineRepository } from '../../core/db/repositories';
 import { RoomRoutineService } from './room-routine.service';
-import { SUIT_SYMBOL } from '../../shared/labels';
+import { INTENSITY_HELP, INTENSITY_LABEL, SUIT_SYMBOL } from '../../shared/labels';
+import { INTENSITIES, type Intensity } from '../../domain/models/schemas';
 import { QrCodeComponent } from '../../shared/ui/qr-code/qr-code.component';
 import { RoomTableComponent } from './room-table.component';
 import { RoomService } from './room.service';
@@ -65,6 +66,9 @@ export class LobbyComponent implements OnDestroy {
   protected readonly saved = signal(false);
   protected readonly saveError = signal<string | null>(null);
   protected readonly suitSymbol = SUIT_SYMBOL;
+  protected readonly intensities = INTENSITIES;
+  protected readonly intensityLabel = INTENSITY_LABEL;
+  protected readonly intensityHelp = INTENSITY_HELP;
   protected readonly canShare = typeof navigator !== 'undefined' && 'share' in navigator;
 
   protected readonly nameForm = new FormGroup({
@@ -147,6 +151,11 @@ export class LobbyComponent implements OnDestroy {
     } finally {
       this.swapping.set(false);
     }
+  }
+
+  /** Host: change how hard the room works; everyone re-readies (§6.1). */
+  protected setIntensity(intensity: Intensity): void {
+    this.rooms.setIntensity(intensity);
   }
 
   protected toggleReady(): void {

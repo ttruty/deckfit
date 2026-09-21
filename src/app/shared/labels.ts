@@ -1,4 +1,4 @@
-import type { Equipment, ExerciseCategory, Measure, MuscleGroup, Suit } from '../domain/models/schemas';
+import type { Equipment, ExerciseCategory, Intensity, Measure, MuscleGroup, Suit } from '../domain/models/schemas';
 
 /** Display labels for domain enums. Keep keys exhaustive (Record<Union, string>). */
 
@@ -26,5 +26,13 @@ export const SUIT_SYMBOL: Record<Suit, string> = {
 export const SUIT_NAME: Record<Suit, string> = { hearts: 'Hearts', diamonds: 'Diamonds', clubs: 'Clubs', spades: 'Spades', joker: 'Joker' };
 
 export const DIFFICULTY_LABEL = ['', 'Easy', 'Moderate', 'Challenging', 'Hard', 'Expert'] as const;
+
+/** Intensity as people read it; the numbers behind it live in engine/amounts (INTENSITY_FACTOR). */
+export const INTENSITY_LABEL: Record<Intensity, string> = { low: 'Low', moderate: 'Moderate', high: 'High' };
+export const INTENSITY_HELP: Record<Intensity, string> = {
+  low: 'Easier: about 30% fewer reps and shorter holds',
+  moderate: 'The card says what it says',
+  high: 'Harder: about 40% more reps and longer holds',
+};
 
 export const keysOf = <K extends string>(record: Record<K, string>) => Object.keys(record) as K[];

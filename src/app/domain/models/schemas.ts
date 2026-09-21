@@ -139,6 +139,11 @@ export type Deck = z.infer<typeof DeckSchema>;
 export const JokerRuleSchema = z.enum(['skip', 'wild', 'rest', 'bonus-cardio']);
 export type JokerRule = z.infer<typeof JokerRuleSchema>;
 
+/** How hard the workout is: scales every task's reps and held seconds (§6.1). */
+export const INTENSITIES = ['low', 'moderate', 'high'] as const;
+export const IntensitySchema = z.enum(INTENSITIES);
+export type Intensity = z.infer<typeof IntensitySchema>;
+
 export const PlayerRangeSchema = z
   .object({ min: z.number().int().min(1), max: z.number().int().min(1) })
   .refine((p) => p.min <= p.max, { message: 'min must not exceed max', path: ['max'] });
@@ -146,6 +151,7 @@ export type PlayerRange = z.infer<typeof PlayerRangeSchema>;
 
 /** Known settings are typed; game-specific keys pass through and are checked by the game's settingsSchema. */
 export const GameSettingsSchema = z.looseObject({
+  intensity: IntensitySchema.optional(), // absent on records saved before intensity: read as 'moderate'
   repMultiplier: z.number().min(0.5).max(3),
   faceCardValue: z.number().int().nonnegative(),
   aceValue: z.number().int().nonnegative(),

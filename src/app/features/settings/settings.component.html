@@ -24,6 +24,18 @@
     </mat-radio-group>
   </section>
 
+  <section class="card" aria-labelledby="effort">
+    <h2 id="effort">Workout intensity</h2>
+    <p class="hint">How hard Quick Start and new rooms work you. A saved routine keeps its own setting.</p>
+    <mat-radio-group class="themes" [value]="prefs.intensity()" (change)="prefs.intensity.set($event.value)" aria-labelledby="effort">
+      @for (level of intensities; track level) {
+        <mat-radio-button [value]="level">
+          {{ intensityLabel[level] }} <span class="hint">{{ intensityHelp[level] }}</span>
+        </mat-radio-button>
+      }
+    </mat-radio-group>
+  </section>
+
   <section class="card" aria-labelledby="sound">
     <h2 id="sound">Sound</h2>
     <mat-slide-toggle [checked]="audio.beeps()" (change)="audio.beeps.set($event.checked)">Beeps for flips, countdowns and finishes</mat-slide-toggle>

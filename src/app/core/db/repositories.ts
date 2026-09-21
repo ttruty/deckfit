@@ -4,7 +4,7 @@ import type { ZodType } from 'zod';
 import { GameDefinitionSchema, type GameDefinition } from '../../domain/models/game.schema';
 import {
   DeckSchema, ExerciseSchema, RoutineSchema, SessionSchema,
-  type Deck, type Exercise, type Routine, type Session,
+  type Deck, type Exercise, type Intensity, type Routine, type Session,
 } from '../../domain/models/schemas';
 import { DECKFIT_DB, newId } from './deckfit-db';
 
@@ -187,6 +187,8 @@ export interface MetaValues {
   theme: 'system' | 'light' | 'dark';
   beeps: boolean;
   speech: boolean;
+  /** Default workout intensity for quick starts and new rooms (§6.1). */
+  intensity: Intensity;
   /** When the install banner was waved away (0 = offer it again). */
   installDismissedAt: number;
 }

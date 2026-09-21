@@ -1,4 +1,4 @@
-import type { Card, GameSettings, Measure } from '../models/schemas';
+import type { Card, GameSettings, Intensity, Measure } from '../models/schemas';
 import type { TaskKind } from './state';
 
 /** Timed exercises use 5 seconds per card point (§9b). */
@@ -8,8 +8,16 @@ export const REST_SECONDS_PER_JOKER = 30;
 /** jokerRule 'bonus-cardio': seconds of cardio per joker, before multiplier and cap. */
 export const BONUS_CARDIO_SECONDS_PER_JOKER = 60;
 
+/**
+ * How much work each intensity asks for. It scales every task amount — reps and held seconds
+ * alike — alongside `repMultiplier`, so a 10-rep card is 7 / 10 / 14 and a 30-second hold is
+ * 21 / 30 / 42. Rest is never scaled, and neither is a game's fixed work window (interval-deck
+ * still works 20 seconds; the rep targets inside it scale).
+ */
+export const INTENSITY_FACTOR: Record<Intensity, number> = { low: 0.7, moderate: 1, high: 1.4 };
+
 export interface AmountSource {
-  settings: Pick<GameSettings, 'repMultiplier' | 'faceCardValue' | 'aceValue' | 'jokerRule' | 'maxRepCap'>;
+  settings: Pick<GameSettings, 'intensity' | 'repMultiplier' | 'faceCardValue' | 'aceValue' | 'jokerRule' | 'maxRepCap'>;
   measureOf(exerciseId: string): Measure | undefined;
 }
 
@@ -42,9 +50,14 @@ export function cardAmount(card: Card, measure: Measure, settings: AmountSource[
   }
 }
 
-/** × repMultiplier, round half up, then cap (maxRepCap reps, or maxRepCap × 5 seconds). */
+/** What the settings do to a card's amount: intensity × repMultiplier. */
+export function workScale(settings: Pick<AmountSource['settings'], 'intensity' | 'repMultiplier'>): number {
+  return INTENSITY_FACTOR[settings.intensity ?? 'moderate'] * settings.repMultiplier;
+}
+
+/** × intensity × repMultiplier, round half up, then cap (maxRepCap reps, or ×5 in seconds). */
 export function scaleAmount(raw: number, measure: Measure, settings: AmountSource['settings']): number {
-  const scaled = Math.round(raw * settings.repMultiplier);
+  const scaled = Math.round(raw * workScale(settings));
   if (settings.maxRepCap === undefined) return scaled;
   const cap = settings.maxRepCap * (measure === 'seconds' ? SECONDS_PER_POINT : 1);
   return Math.min(scaled, cap);

@@ -15,6 +15,9 @@ import { IdentityService } from '../../core/identity/identity.service';
 import { InstallService } from '../../core/pwa/install.service';
 import { DisclaimerService } from '../../core/safety/disclaimer.service';
 import { ThemeService, type ThemeMode } from '../../core/theme/theme.service';
+import { PreferencesService } from '../../core/settings/preferences.service';
+import { INTENSITIES } from '../../domain/models/schemas';
+import { INTENSITY_HELP, INTENSITY_LABEL } from '../../shared/labels';
 
 /** /settings (§8): identity, look, sound, data export/import, and the safety notice. */
 @Component({
@@ -35,6 +38,10 @@ export class SettingsComponent {
   protected readonly install = inject(InstallService);
   protected readonly theme = inject(ThemeService);
   protected readonly audio = inject(AudioCueService);
+  protected readonly prefs = inject(PreferencesService);
+  protected readonly intensities = INTENSITIES;
+  protected readonly intensityLabel = INTENSITY_LABEL;
+  protected readonly intensityHelp = INTENSITY_HELP;
 
   protected readonly name = new FormControl('', { nonNullable: true, validators: [Validators.maxLength(30)] });
   protected readonly busy = signal<'export' | 'import' | null>(null);

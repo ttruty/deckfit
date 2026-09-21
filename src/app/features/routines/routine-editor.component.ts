@@ -16,8 +16,9 @@ import { newId } from '../../core/db/deckfit-db';
 import { DeckRepository, ExerciseRepository, GameRepository, RoutineRepository } from '../../core/db/repositories';
 import { applyDeckFilters } from '../../domain/models/deck-rules';
 import type { GameDefinition, SettingDef } from '../../domain/models/game.schema';
-import { SUITS, type Difficulty, type Equipment, type JokerRule, type Suit } from '../../domain/models/schemas';
-import { DIFFICULTY_LABEL, EQUIPMENT_LABEL, SUIT_NAME, SUIT_SYMBOL, keysOf } from '../../shared/labels';
+import { INTENSITIES, SUITS, type Difficulty, type Equipment, type Intensity, type JokerRule, type Suit } from '../../domain/models/schemas';
+import { workScale } from '../../domain/engine/amounts';
+import { DIFFICULTY_LABEL, EQUIPMENT_LABEL, INTENSITY_HELP, INTENSITY_LABEL, SUIT_NAME, SUIT_SYMBOL, keysOf } from '../../shared/labels';
 import { LaunchError, SessionLauncher } from '../play/session-launcher.service';
 import { REP_MULTIPLIERS, gameSettingValues, toDeckFilters, toFormValue, toRoutine, type RoutineFormValue, type SettingValue } from './routine-form.model';
 
@@ -80,6 +81,7 @@ export class RoutineEditorComponent {
     gameId: this.fb.control('', Validators.required),
     favorite: this.fb.control(false),
     core: this.fb.group({
+      intensity: this.fb.control<Intensity>('moderate'),
       repMultiplier: this.fb.control(1),
       faceCardValue: this.fb.control(10, [Validators.required, Validators.min(0), Validators.max(50)]),
       aceValue: this.fb.control(11, [Validators.required, Validators.min(0), Validators.max(50)]),
@@ -119,6 +121,15 @@ export class RoutineEditorComponent {
 
   protected readonly multipliers = REP_MULTIPLIERS;
   protected readonly jokerRules = JOKER_RULES;
+  protected readonly intensities = INTENSITIES;
+  protected readonly intensityLabel = INTENSITY_LABEL;
+  protected readonly intensityHelp = INTENSITY_HELP;
+  /** What the settings do to a card's amount, in words: "a 10-rep card asks for 14". */
+  protected readonly workExample = computed(() => {
+    const core = this.value().core;
+    const scale = workScale({ intensity: core.intensity, repMultiplier: core.repMultiplier });
+    return `A 10-rep card asks for ${Math.round(10 * scale)}, a 30-second hold lasts ${Math.round(30 * scale)}s.`;
+  });
   protected readonly suits = SUITS;
   protected readonly suitSymbol = SUIT_SYMBOL;
   protected readonly suitName = SUIT_NAME;

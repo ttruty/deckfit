@@ -8,6 +8,7 @@ import type { EngineEvent } from '../../domain/engine/events';
 import type { IntentInput } from '../../domain/engine/intents';
 import type { GameState } from '../../domain/engine/state';
 import type { GameStart, RoomRoutine } from '../../core/sync/net-message';
+import type { Intensity } from '../../domain/models/schemas';
 import { RoomGame, type RoomGameProblem } from '../../core/sync/room-game';
 import { RoomSession, type LobbyView } from '../../core/sync/room-session';
 import { SYNC_TRANSPORT_FACTORY } from '../../core/sync/sync.providers';
@@ -78,6 +79,13 @@ export class RoomService {
 
   setRoutine(routine: RoomRoutine): void {
     this.session?.setRoutine(routine);
+  }
+
+  /** Host: how hard this room works (§6.1). Everyone re-readies, since the workload changed. */
+  setIntensity(intensity: Intensity): void {
+    const room = this.view()?.routine;
+    if (!room) return;
+    this.setRoutine({ ...room, routine: { ...room.routine, settings: { ...room.routine.settings, intensity } } });
   }
 
   async rename(name: string): Promise<void> {

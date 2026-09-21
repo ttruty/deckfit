@@ -1,7 +1,7 @@
 import { resolveSettings } from '../../domain/engine/dsl/settings';
 import type { DeckFilters } from '../../domain/models/deck-rules';
 import type { GameDefinition, SettingDef } from '../../domain/models/game.schema';
-import { SUITS, type Difficulty, type Equipment, type JokerRule, type Routine, type Suit } from '../../domain/models/schemas';
+import { SUITS, type Difficulty, type Equipment, type Intensity, type JokerRule, type Routine, type Suit } from '../../domain/models/schemas';
 
 export type SettingValue = string | number | boolean | Suit[] | null;
 
@@ -10,7 +10,7 @@ export interface RoutineFormValue {
   deckId: string;
   gameId: string;
   favorite: boolean;
-  core: { repMultiplier: number; faceCardValue: number; aceValue: number; jokerRule: JokerRule; maxRepCap: number | null };
+  core: { intensity: Intensity; repMultiplier: number; faceCardValue: number; aceValue: number; jokerRule: JokerRule; maxRepCap: number | null };
   game: Record<string, SettingValue>;
   filters: { suits: Suit[]; maxDifficulty: Difficulty | null; limitEquipment: boolean; equipment: Equipment[] };
 }
@@ -27,6 +27,7 @@ export function toFormValue(routine: Routine | undefined, game: GameDefinition, 
     gameId: game.id,
     favorite: routine?.favorite ?? false,
     core: {
+      intensity: settings.intensity ?? 'moderate',
       repMultiplier: settings.repMultiplier,
       faceCardValue: settings.faceCardValue,
       aceValue: settings.aceValue,
@@ -75,6 +76,7 @@ export function toDeckFilters(f: RoutineFormValue['filters']): DeckFilters | und
 /** Builds a validated Routine. Throws (via resolveSettings) if game settings are invalid. */
 export function toRoutine(value: RoutineFormValue, game: GameDefinition, id: string): Routine {
   const settings = resolveSettings(game, {
+    intensity: value.core.intensity,
     repMultiplier: value.core.repMultiplier,
     faceCardValue: value.core.faceCardValue,
     aceValue: value.core.aceValue,

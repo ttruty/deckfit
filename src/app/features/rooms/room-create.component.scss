@@ -11,3 +11,14 @@ h1 { font: var(--mat-sys-headline-medium); margin: 4px 0 8px; }
   background: var(--mat-sys-tertiary-container); color: var(--mat-sys-on-tertiary-container); font: var(--mat-sys-body-small);
   code { font-family: monospace; white-space: nowrap; }
 }
+
+/* Intensity for the room (§6.1): everyone plays at the host's level. */
+.intensity { display: grid; gap: 6px; }
+.intensity-label { margin: 0; font: var(--mat-sys-title-small); }
+.levels { display: flex; gap: 6px; flex-wrap: wrap; }
+.level {
+  min-height: 44px; padding: 6px 16px; border-radius: 999px; cursor: pointer; font: var(--mat-sys-label-large);
+  border: 1px solid var(--mat-sys-outline-variant); background: transparent; color: inherit;
+  &.on { background: var(--mat-sys-primary); color: var(--mat-sys-on-primary); border-color: transparent; }
+}
+.intensity .hint { margin: 0; font: var(--mat-sys-body-small); color: var(--mat-sys-on-surface-variant); }

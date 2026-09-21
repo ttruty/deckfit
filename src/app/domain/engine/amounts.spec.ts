@@ -1,5 +1,5 @@
 import type { Card, GameSettings, Measure } from '../models/schemas';
-import { BONUS_CARDIO_SECONDS_PER_JOKER, REST_SECONDS_PER_JOKER, cardAmount, planTasks, scaleAmount, type AmountSource } from './amounts';
+import { BONUS_CARDIO_SECONDS_PER_JOKER, REST_SECONDS_PER_JOKER, cardAmount, planTasks, scaleAmount, workScale, type AmountSource } from './amounts';
 
 const settings = (over: Partial<GameSettings> = {}): AmountSource['settings'] => ({
   repMultiplier: 1, faceCardValue: 10, aceValue: 11, jokerRule: 'skip', ...over,
@@ -46,6 +46,21 @@ describe('scaleAmount', () => {
     expect(scaleAmount(raw, 'reps', settings({ repMultiplier }))).toBe(expected);
   });
 
+  it('scales reps and seconds by intensity, and reads a missing one as moderate', () => {
+    expect([10, 30].map((raw) => scaleAmount(raw, 'reps', settings({ intensity: 'low' })))).toEqual([7, 21]);
+    expect([10, 30].map((raw) => scaleAmount(raw, 'reps', settings({ intensity: 'moderate' })))).toEqual([10, 30]);
+    expect([10, 30].map((raw) => scaleAmount(raw, 'reps', settings({ intensity: 'high' })))).toEqual([14, 42]);
+    expect(scaleAmount(30, 'seconds', settings({ intensity: 'high' }))).toBe(42);
+    expect(scaleAmount(10, 'reps', settings())).toBe(10); // no intensity saved = moderate
+  });
+
+  it('multiplies intensity by the rep multiplier, and caps after both', () => {
+    expect(workScale({ intensity: 'high', repMultiplier: 1.5 })).toBeCloseTo(2.1);
+    expect(scaleAmount(10, 'reps', settings({ intensity: 'high', repMultiplier: 1.5 }))).toBe(21);
+    expect(scaleAmount(10, 'reps', settings({ intensity: 'high', repMultiplier: 1.5, maxRepCap: 15 }))).toBe(15);
+    expect(scaleAmount(10, 'reps', settings({ intensity: 'low', repMultiplier: 0.5 }))).toBe(4); // 3.5 rounds half up
+  });
+
   it('caps reps at maxRepCap and seconds at maxRepCap × 5', () => {
     const s = settings({ repMultiplier: 3, maxRepCap: 25 });
     expect(scaleAmount(10, 'reps', s)).toBe(25);
@@ -69,6 +84,15 @@ describe('planTasks', () => {
     // (5 + 6) × 1.5 = 16.5 → 17, capped at 15
     expect(planTasks([card('5'), card('6')], src({ repMultiplier: 1.5 }))[0].amount).toBe(17);
     expect(planTasks([card('5'), card('6')], src({ repMultiplier: 1.5, maxRepCap: 15 }))[0].amount).toBe(15);
+  });
+
+  it('a high-intensity task asks for more of the same exercise; rest never changes', () => {
+    const cards = [card('5'), card('6'), card('JOKER', null)];
+    expect(planTasks(cards, src({ intensity: 'high', jokerRule: 'rest' }))).toEqual([
+      { cardIds: ['squat-5', 'squat-6'], kind: 'exercise', exerciseId: 'squat', measure: 'reps', amount: 15 },
+      { cardIds: ['null-JOKER'], kind: 'rest', exerciseId: null, measure: 'seconds', amount: REST_SECONDS_PER_JOKER },
+    ]);
+    expect(planTasks(cards, src({ intensity: 'low', jokerRule: 'rest' }))[0].amount).toBe(8); // 11 × 0.7 = 7.7
   });
 
   it('drops zero-amount tasks (e.g. aceValue 0)', () => {

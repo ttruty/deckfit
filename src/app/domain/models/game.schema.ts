@@ -5,7 +5,7 @@
  * games fail loudly instead of being silently ignored.
  */
 import { z } from 'zod';
-import { JokerRuleSchema, PlayerRangeSchema, SuitSchema } from './schemas';
+import { IntensitySchema, JokerRuleSchema, PlayerRangeSchema, SuitSchema } from './schemas';
 
 // ── References ──────────────────────────────────────────────────────────────
 
@@ -235,7 +235,7 @@ export type Scoring = z.infer<typeof ScoringSchema>;
  * and may not redeclare them in settingsSchema. The optional core keys `timeLimitSec`
  * and `rounds` are the exception: a game opts in by declaring them in settingsSchema.
  */
-export const CORE_SETTING_KEYS = ['repMultiplier', 'faceCardValue', 'aceValue', 'jokerRule', 'maxRepCap', 'players'] as const;
+export const CORE_SETTING_KEYS = ['intensity', 'repMultiplier', 'faceCardValue', 'aceValue', 'jokerRule', 'maxRepCap', 'players'] as const;
 const OPTIONAL_CORE_KEYS = ['timeLimitSec', 'rounds'] as const;
 
 export const GameDefinitionSchema = z
@@ -295,6 +295,7 @@ export const GameDefinitionSchema = z
     /** Defaults for core settings; anything omitted falls back to BASE_SETTINGS. */
     defaults: z
       .strictObject({
+        intensity: IntensitySchema.optional(),
         repMultiplier: z.number().min(0.5).max(3).optional(),
         faceCardValue: z.number().int().nonnegative().optional(),
         aceValue: z.number().int().nonnegative().optional(),

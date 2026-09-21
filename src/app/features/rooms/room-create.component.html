@@ -34,6 +34,17 @@
         <mat-hint>Only games for 2 or more players can be played in a room.</mat-hint>
       </mat-form-field>
 
+      <div class="intensity">
+        <p class="intensity-label" id="room-intensity">Intensity</p>
+        <div class="levels" role="group" aria-labelledby="room-intensity">
+          @for (level of intensities; track level) {
+            <button type="button" class="level" [class.on]="intensity() === level" [attr.aria-pressed]="intensity() === level"
+                    (click)="setIntensity(level)">{{ intensityLabel[level] }}</button>
+          }
+        </div>
+        <p class="hint">{{ intensityHelp[intensity()] }} — the same for everyone in the room.</p>
+      </div>
+
       @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
 
       <button mat-flat-button class="big" type="submit" [disabled]="busy() || !routineId.value">
