@@ -1,0 +1,105 @@
+<div class="df-page">
+  <h1>Challenges</h1>
+
+  @if (!challenges.shared) {
+    <p class="notice" role="note">
+      <mat-icon>wifi_off</mat-icon>
+      <span>No backend is configured, so a challenge stays in this tab and reaches nobody — and a
+        reload loses it. Add your Supabase URL and publishable key to <code>environment.local.ts</code>
+        and serve with <code>npm run start:local</code>.</span>
+    </p>
+  }
+  @if (challenges.setupNeeded()) {
+    <p class="notice" role="alert">
+      <mat-icon>storage</mat-icon>
+      <span>The challenge tables aren't in your Supabase project yet — run
+        <code>supabase/migrations/0001_challenges.sql</code> once.</span>
+    </p>
+  }
+
+  <section class="df-section" aria-labelledby="mine-title">
+    <h2 id="mine-title">Yours</h2>
+    @if (mine.isLoading() && !mine.hasValue()) {
+      <p role="status">Loading…</p>
+    } @else if (mine.error()) {
+      <p class="error" role="alert">{{ mine.error()?.message }}</p>
+    } @else {
+      <ul class="list">
+        @for (item of mine.value() ?? []; track item.challenge.id) {
+          <li>
+            <a [routerLink]="['/challenges', item.challenge.code]">
+              <span class="name">{{ item.challenge.name }}</span>
+              <span class="meta">
+                {{ goalText(item.challenge.goal) }} · {{ item.challenge.ante }} reps a day on the line
+              </span>
+              <span class="meta">
+                @if (item.over) { Finished {{ item.challenge.endsOn | date: 'd MMM' }} }
+                @else if (item.soon) { Starts {{ item.challenge.startsOn | date: 'd MMM' }} }
+                @else { Ends {{ item.challenge.endsOn | date: 'd MMM' }} }
+              </span>
+            </a>
+          </li>
+        } @empty {
+          <li class="empty">Nothing on the line yet. Start one below, or join with a friend's code.</li>
+        }
+      </ul>
+    }
+  </section>
+
+  <section class="df-section" aria-labelledby="new-title">
+    <h2 id="new-title">Start a challenge</h2>
+    <p class="df-hint">
+      Everyone puts reps on the line for each day. Miss a day and yours drop into the pot; when it's
+      over, whoever missed shares the pot as work to do.
+    </p>
+    <form class="form" [formGroup]="form" (ngSubmit)="create()">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" maxlength="60" placeholder="Week of pain" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>The deal</mat-label>
+        <mat-select formControlName="kind">
+          @for (g of goals; track g.kind) { <mat-option [value]="g.kind">{{ g.label }}</mat-option> }
+        </mat-select>
+      </mat-form-field>
+
+      @if (form.controls.kind.value !== 'streak') {
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>{{ form.controls.kind.value === 'daily' ? 'Points a day' : 'Points in total' }}</mat-label>
+          <input matInput type="number" inputmode="numeric" formControlName="points" min="1" max="10000" />
+          <mat-hint>1 point per rep, 1 per 5 seconds held</mat-hint>
+        </mat-form-field>
+      }
+
+      <div class="pair">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Days</mat-label>
+          <input matInput type="number" inputmode="numeric" formControlName="days" min="1" max="90" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Reps on the line, per day</mat-label>
+          <input matInput type="number" inputmode="numeric" formControlName="ante" min="1" max="500" />
+        </mat-form-field>
+      </div>
+      <p class="df-hint">Miss every day and you'd owe {{ worst() }} reps — that's the most this can cost you.</p>
+
+      @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
+      <button mat-flat-button class="big" type="submit" [disabled]="busy() || form.invalid">
+        <mat-icon>flag</mat-icon>{{ busy() ? 'Starting…' : 'Start it' }}
+      </button>
+    </form>
+  </section>
+
+  <section class="df-section" aria-labelledby="join-title">
+    <h2 id="join-title">Join with a code</h2>
+    <form class="join" [formGroup]="joinForm" (ngSubmit)="join()">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Challenge code</mat-label>
+        <input matInput formControlName="code" maxlength="6" autocapitalize="characters" autocomplete="off" spellcheck="false" />
+      </mat-form-field>
+      <button mat-stroked-button type="submit" [disabled]="joinForm.invalid"><mat-icon>group_add</mat-icon>Find it</button>
+    </form>
+  </section>
+</div>

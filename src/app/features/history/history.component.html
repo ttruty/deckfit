@@ -1,4 +1,4 @@
-<div class="page">
+<div class="df-page">
   <h1>History</h1>
 
   @if (data.isLoading() && !data.hasValue()) {
@@ -7,11 +7,22 @@
     <p role="alert">Couldn't load your history.</p>
   } @else if (stats(); as s) {
     @if (!s.workouts) {
-      <div class="empty">
+      <div class="df-section empty">
         <p>No workouts yet. Finished and in-progress workouts show up here.</p>
         <a mat-flat-button routerLink="/"><mat-icon>play_arrow</mat-icon>Start one</a>
       </div>
     } @else {
+      @if (grid(); as g) {
+        <section class="df-section" aria-labelledby="activity-title">
+          <h2 id="activity-title">Your streak</h2>
+          <df-activity-grid [grid]="g" [(selected)]="selectedDay" />
+
+          @if (day(); as d) {
+            <df-day-detail [day]="d" (closed)="selectedDay.set(null)" />
+          }
+        </section>
+      }
+
       <dl class="tiles">
         <div><dt>Workouts</dt><dd>{{ s.workouts }}</dd></div>
         <div><dt>Reps</dt><dd>{{ s.reps | number }}</dd></div>
@@ -19,7 +30,7 @@
         <div><dt>Minutes</dt><dd>{{ s.minutes | number }}</dd></div>
       </dl>
 
-      <section aria-labelledby="groups-title">
+      <section class="df-section" aria-labelledby="groups-title">
         <h2 id="groups-title">By suit group</h2>
         <div class="bar-lists">
           @for (list of [{ title: 'Reps', unit: 'reps', rows: groupBars().reps }, { title: 'Timed', unit: 'sec', rows: groupBars().seconds }]; track list.title) {
@@ -41,7 +52,7 @@
         </div>
       </section>
 
-      <section aria-labelledby="exercise-title">
+      <section class="df-section" aria-labelledby="exercise-title">
         <h2 id="exercise-title">By exercise</h2>
         <div class="table-wrap">
           <table class="exercises">
@@ -65,7 +76,7 @@
         </div>
       </section>
 
-      <section aria-labelledby="sessions-title">
+      <section class="df-section" aria-labelledby="sessions-title">
         <h2 id="sessions-title">Workouts</h2>
         <ul class="sessions">
           @for (r of s.sessions; track r.session.id) {

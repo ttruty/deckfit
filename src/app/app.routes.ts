@@ -87,6 +87,17 @@ export const routes: Routes = [
     canActivate: [roomCodeGuard],
     loadComponent: () => import('./features/rooms/lobby.component').then((m) => m.LobbyComponent),
   },
+  // 'challenges' must precede 'challenges/:code'.
+  {
+    path: 'challenges',
+    title: 'Challenges · DeckFit',
+    loadComponent: () => import('./features/challenges/challenge-list.component').then((m) => m.ChallengeListComponent),
+  },
+  {
+    path: 'challenges/:code',
+    title: 'Challenge · DeckFit',
+    loadComponent: () => import('./features/challenges/challenge-detail.component').then((m) => m.ChallengeDetailComponent),
+  },
   {
     path: 'history',
     title: 'History · DeckFit',

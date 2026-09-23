@@ -17,6 +17,9 @@ $mobile: '(max-width: 599.98px)';
   position: sticky;
   top: 0;
   z-index: 2;
+  // Chrome sits on the card tier, so the tinted page reads as the thing being scrolled.
+  background: var(--df-card-bg);
+  border-bottom: 1px solid var(--df-edge);
   gap: 4px;
   padding-top: env(safe-area-inset-top);
   padding-inline: max(8px, env(safe-area-inset-left)) max(8px, env(safe-area-inset-right));
@@ -63,8 +66,8 @@ $mobile: '(max-width: 599.98px)';
     inset: auto 0 0;
     z-index: 2;
     padding-bottom: env(safe-area-inset-bottom);
-    background: var(--mat-sys-surface-container);
-    border-top: 1px solid var(--mat-sys-outline-variant);
+    background: var(--df-card-bg);
+    border-top: 1px solid var(--df-edge);
   }
 
   a {

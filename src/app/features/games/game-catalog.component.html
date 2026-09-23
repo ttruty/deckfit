@@ -1,5 +1,5 @@
-<div class="page">
-  <header class="head">
+<div class="df-page">
+  <header class="df-head">
     <h1>Games</h1>
     <a mat-flat-button routerLink="/games/new"><mat-icon>add</mat-icon>New game</a>
   </header>
@@ -11,7 +11,7 @@
   }
 
   @for (section of sections(); track section.id) {
-    <section [attr.aria-labelledby]="'games-' + section.id">
+    <section class="df-section" [attr.aria-labelledby]="'games-' + section.id">
       <h2 [id]="'games-' + section.id">{{ section.title }}</h2>
       <ul class="games">
         @for (item of section.games; track item.game.id) {

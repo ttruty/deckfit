@@ -63,8 +63,13 @@ export class App {
       load.then((module) => (alive ? use(module) : undefined)).catch((err: unknown) => console.warn('Startup task failed', err));
     };
     whenAlive(import('./core/pwa/app-update.service'), ({ AppUpdateService }) => injector.get(AppUpdateService).start());
-    // §12: the safety notice, once per device.
-    whenAlive(import('./core/safety/disclaimer.service'), ({ DisclaimerService }) => void injector.get(DisclaimerService).ensureAccepted());
+    // §12: the safety notice, once per device, and then (§12a) the welcome guide — in that
+    // order, so the notice is never buried behind the guide.
+    whenAlive(import('./core/safety/disclaimer.service'), ({ DisclaimerService }) => {
+      void injector.get(DisclaimerService).ensureAccepted().then(() => {
+        whenAlive(import('./core/tour/tour.service'), ({ TourService }) => void injector.get(TourService).maybeOpenOnFirstRun());
+      });
+    });
 
     // iOS only allows audio to start inside a user gesture: unlock on the first tap anywhere.
     const audio = inject(AudioCueService);

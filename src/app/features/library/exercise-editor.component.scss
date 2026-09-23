@@ -9,7 +9,10 @@ h1 { font: var(--mat-sys-headline-medium); margin: 4px 0 12px; }
   .preview { position: sticky; top: 8px; }
 }
 .fields { display: grid; gap: 16px; min-width: 0; }
-.card { display: grid; gap: 8px; padding: 16px; border-radius: 20px; background: var(--mat-sys-surface-container-low); }
+.card {
+  display: grid; gap: 8px; padding: 16px; border-radius: 20px;
+  background: var(--df-card-bg); border: 1px solid var(--df-edge); box-shadow: var(--df-shadow);
+}
 h2 { margin: 0; font: var(--mat-sys-title-large); }
 h3 { margin: 0; font: var(--mat-sys-title-small); }
 .hint { margin: 0; font: var(--mat-sys-body-small); color: var(--mat-sys-on-surface-variant); }
@@ -20,7 +23,7 @@ mat-radio-group { display: flex; gap: 16px; flex-wrap: wrap; }
 .cues { gap: 4px; justify-items: start; }
 .cue { display: flex; gap: 4px; align-items: center; mat-form-field { flex: 1; } }
 .poses { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-.pose-slot { display: grid; gap: 4px; justify-items: center; flex: 1 1 140px; padding: 8px; border-radius: 16px; background: var(--mat-sys-surface-container); }
+.pose-slot { display: grid; gap: 4px; justify-items: center; flex: 1 1 140px; padding: 8px; border-radius: 16px; background: var(--df-row-bg); }
 .thumb { width: 100%; max-width: 120px; }
 .pose-name { margin: 0; font: var(--mat-sys-body-medium); }
 .swap { order: 1; }

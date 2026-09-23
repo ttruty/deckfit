@@ -1,10 +1,6 @@
 :host { display: block; }
-.page { max-width: 1100px; margin: 0 auto; padding: 16px; }
-.head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
-h1 { font: var(--mat-sys-headline-medium); margin: 0; }
-h2 { font: var(--mat-sys-title-large); margin: 24px 0 12px; }
 .games { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
-.game { display: grid; gap: 6px; align-content: start; padding: 16px; border-radius: 20px; background: var(--mat-sys-surface-container-low); }
+.game { display: grid; gap: 6px; align-content: start; padding: 16px; border-radius: 16px; background: var(--df-row-bg); }
 h3 { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 1.6rem; line-height: 1.1; }
 .meta { margin: 0; font: var(--mat-sys-label-medium); color: var(--mat-sys-on-surface-variant); }
 .summary { margin: 0; font: var(--mat-sys-body-medium); }

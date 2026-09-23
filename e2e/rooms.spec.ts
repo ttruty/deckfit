@@ -140,7 +140,7 @@ test.describe('what the table shows between rounds', () => {
     await ann.getByLabel('Routine').click();
     await ann.getByRole('option', { name: /^High Card Duel/ }).click();
     const code = await createRoom(ann, 'Ann', { keepCurrentPage: true });
-    await joinRoom(bo, code, 'Bo');
+    await joinRoom(bo, code, 'Bo', { seenBy: ann });
     await bo.getByRole('button', { name: "I'm ready" }).click();
     await ann.getByRole('button', { name: "I'm ready" }).click();
     await ann.getByRole('button', { name: 'Start game' }).click();
@@ -166,7 +166,7 @@ test.describe('what the table shows between rounds', () => {
     for (let i = 0; i < 6 && !(await ann.getByRole('button', { name: 'Flip', exact: true }).count()); i++) {
       for (const page of [ann, bo]) {
         const done = page.getByRole('button', { name: 'Done', exact: true });
-        if (await done.count()) await done.first().click().catch(() => undefined);
+        if (await done.count()) await done.first().click({ timeout: 1500 }).catch(() => undefined);
       }
       await ann.waitForTimeout(250);
     }
@@ -191,7 +191,7 @@ test.describe('understanding the game', () => {
     await ann.getByLabel('Routine').click();
     await ann.getByRole('option', { name: /^High Card Duel/ }).click();
     const code = await createRoom(ann, 'Ann', { keepCurrentPage: true });
-    await joinRoom(bo, code, 'Bo');
+    await joinRoom(bo, code, 'Bo', { seenBy: ann });
     // The rules travel with the room, so a joiner can read them before it starts.
     await expect(bo.getByText('How to play')).toBeVisible();
     await bo.getByText('How to play').click();
@@ -220,7 +220,8 @@ test.describe('understanding the game', () => {
       for (const page of [ann, bo]) {
         for (const label of ['Flip', 'Done']) {
           const button = page.getByRole('button', { name: label, exact: true });
-          if (await button.count()) await button.first().click().catch(() => undefined);
+          // Short timeout: a toast can cover a button, and the default 30s wait would eat the budget.
+          if (await button.count()) await button.first().click({ timeout: 1500 }).catch(() => undefined);
         }
       }
       await ann.waitForTimeout(150);
@@ -289,7 +290,7 @@ test.describe('what happens after a game', () => {
     const bo = await newDevice(browser);
 
     const code = await createRoom(ann, 'Ann');
-    await joinRoom(bo, code, 'Bo');
+    await joinRoom(bo, code, 'Bo', { seenBy: ann });
     await bo.getByRole('button', { name: "I'm ready" }).click();
     await ann.getByRole('button', { name: "I'm ready" }).click();
     await expect(bo.locator('.blocker')).toContainText("Everyone's ready");
@@ -323,7 +324,7 @@ test.describe('what happens after a game', () => {
     await ann.getByLabel('Routine').click();
     await ann.getByRole('option', { name: /^High Card Duel/ }).click();
     const code = await createRoom(ann, 'Ann', { keepCurrentPage: true });
-    await joinRoom(bo, code, 'Bo');
+    await joinRoom(bo, code, 'Bo', { seenBy: ann });
     await bo.getByRole('button', { name: "I'm ready" }).click();
     await ann.getByRole('button', { name: "I'm ready" }).click();
     await ann.getByRole('button', { name: 'Start game' }).click();

@@ -191,6 +191,9 @@ export interface MetaValues {
   intensity: Intensity;
   /** When the install banner was waved away (0 = offer it again). */
   installDismissedAt: number;
+  /** §12a welcome guide: when it was last closed (0 = show it again) and whether it may open at all. */
+  tourSeenAt: number;
+  tourEnabled: boolean;
 }
 
 @Injectable({ providedIn: 'root' })

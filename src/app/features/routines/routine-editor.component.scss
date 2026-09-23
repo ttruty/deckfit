@@ -5,7 +5,7 @@ h1 { font: var(--mat-sys-headline-medium); margin: 4px 0 16px; }
 .form { display: grid; gap: 16px; }
 .step {
   display: grid; gap: 12px; padding: 16px; border-radius: 16px;
-  background: var(--mat-sys-surface-container-low); border: 1px solid var(--mat-sys-outline-variant);
+  background: var(--df-card-bg); border: 1px solid var(--df-edge); box-shadow: var(--df-shadow);
 }
 h2 { display: flex; align-items: center; gap: 10px; font: var(--mat-sys-title-large); margin: 0; }
 h3 { font: var(--mat-sys-title-medium); margin: 8px 0 0; }

@@ -10,7 +10,9 @@
   --suit: var(--mat-sys-primary);
   aspect-ratio: 1; max-width: 420px; width: 100%; justify-self: center;
   padding: 12px; box-sizing: border-box; border-radius: 16px;
-  background: var(--mat-sys-surface-container-low);
+  background: var(--df-card-bg);
+  border: 1px solid var(--df-edge);
+  box-shadow: var(--df-shadow);
   @media (min-width: 720px) { position: sticky; top: 80px; }
 }
 

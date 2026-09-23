@@ -36,6 +36,8 @@ test.describe('offline solo play (production build + service worker)', () => {
     const page = await context.newPage();
     page.on('pageerror', (e) => console.error(`[pageerror] ${e.message}`));
     await page.addLocatorHandler(page.getByRole('button', { name: 'I understand' }), async (button) => button.click());
+    // §12a: the welcome guide opens behind the notice on a fresh device; this spec is about offline play.
+    await page.addLocatorHandler(page.locator('df-tour').getByRole('button', { name: 'Skip' }), async (button) => button.click());
 
     // First visit: the service worker installs and prefetches the shell and content.
     await page.goto(PWA_URL);

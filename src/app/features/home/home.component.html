@@ -1,6 +1,6 @@
-<div class="page">
+<div class="df-page">
   <df-install-banner />
-  <section class="hero" aria-labelledby="quick-title">
+  <section class="hero df-section" aria-labelledby="quick-title">
     <div>
       <h1 id="quick-title">Quick start</h1>
       <p>{{ data.value()?.quickStart ?? 'Bodyweight deck · Solo Deal' }} — flip a card, do the work.</p>
@@ -11,8 +11,8 @@
     </button>
   </section>
 
-  <section aria-labelledby="fav-title">
-    <div class="section-head">
+  <section class="df-section" aria-labelledby="fav-title">
+    <div class="df-head">
       <h2 id="fav-title">Favorites</h2>
       <a mat-button routerLink="/routines/new"><mat-icon>add</mat-icon>New routine</a>
     </div>
@@ -48,7 +48,7 @@
   </section>
 
   @if (data.value()?.others?.length) {
-    <section aria-labelledby="other-title">
+    <section class="df-section" aria-labelledby="other-title">
       <h2 id="other-title">Your routines</h2>
       <ul class="routines">
         @for (item of data.value()!.others; track item.routine.id) {
@@ -70,9 +70,35 @@
     </section>
   }
 
-  <section class="join" aria-labelledby="join-title">
+  @if (challenges.value()?.length) {
+    <section class="df-section" aria-labelledby="challenge-title">
+      <div class="df-head">
+        <h2 id="challenge-title">Challenges</h2>
+        <a mat-button routerLink="/challenges">All challenges</a>
+      </div>
+      <ul class="challenges">
+        @for (item of challenges.value() ?? []; track item.challenge.id) {
+          <li [class.done]="item.status.todayDone" [class.over]="item.status.over">
+            <a [routerLink]="['/challenges', item.challenge.code]">
+              <mat-icon class="mark" aria-hidden="true">
+                {{ item.status.over ? 'flag' : item.status.todayDone ? 'check_circle' : 'radio_button_unchecked' }}
+              </mat-icon>
+              <span class="text">
+                <span class="name">{{ item.challenge.name }}</span>
+                <span class="sub">{{ line(item) }}</span>
+              </span>
+            </a>
+          </li>
+        }
+      </ul>
+    </section>
+  }
+
+  <section class="join df-section" aria-labelledby="join-title">
     <h2 id="join-title">Play with friends</h2>
-    <p class="lede">Everyone plays on their own phone. Start a room and share the code, or join one.</p>
+    <p class="lede">
+      Play live in a room, or put reps on the line in a challenge that runs for days.
+    </p>
     @if (!realtime) {
       <p class="offline-note" role="note">
         <mat-icon>wifi_off</mat-icon>
@@ -82,6 +108,7 @@
     }
     <div class="room-actions">
       <a mat-flat-button routerLink="/room/new"><mat-icon>group_add</mat-icon>Start a room</a>
+      <a mat-stroked-button routerLink="/challenges"><mat-icon>flag</mat-icon>Challenges</a>
       <form [formGroup]="joinForm" (ngSubmit)="joinRoom()" class="join-form">
         <mat-form-field appearance="outline" subscriptSizing="dynamic">
           <mat-label>Room code</mat-label>

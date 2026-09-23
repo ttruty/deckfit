@@ -1,0 +1,105 @@
+<div class="df-page">
+  <a mat-button routerLink="/challenges" class="back"><mat-icon>arrow_back</mat-icon>Challenges</a>
+
+  @if (status() === 'loading') {
+    <p role="status">Loading challenge {{ code() }}…</p>
+  } @else if (status() === 'missing') {
+    <section class="df-section" role="alert">
+      <h1>No challenge {{ code() }}</h1>
+      <p class="df-hint">Check the code with whoever started it. Codes are six letters and numbers.</p>
+      <a mat-flat-button routerLink="/challenges">Back to challenges</a>
+    </section>
+  } @else if (status() === 'error') {
+    <section class="df-section" role="alert">
+      <h1>Couldn't open it</h1>
+      <p class="df-hint">{{ error() }}</p>
+      <button mat-stroked-button type="button" (click)="refresh()">Try again</button>
+    </section>
+  } @else if (view(); as v) {
+    <h1>{{ v.state.challenge.name }}</h1>
+
+    <section class="df-section" aria-labelledby="terms-title">
+      <div class="df-head">
+        <h2 id="terms-title">The deal</h2>
+        <button mat-stroked-button type="button" (click)="copyCode()">
+          <mat-icon>{{ copied() ? 'done' : 'content_copy' }}</mat-icon>{{ copied() ? 'Copied' : 'Copy code' }}
+        </button>
+      </div>
+      <p class="code" [attr.aria-label]="'Challenge code ' + code().split('').join(' ')">{{ code() }}</p>
+      <ul class="terms">
+        <li>{{ goalText(v.state.challenge.goal) }}</li>
+        <li>{{ v.state.challenge.ante }} reps a day on the line</li>
+        <li>{{ v.state.challenge.startsOn | date: 'd MMM' }} – {{ v.state.challenge.endsOn | date: 'd MMM' }}</li>
+        <li>{{ v.standings.days.length }} days · {{ v.state.members.length }} in</li>
+      </ul>
+      <p class="pot">
+        <span>Pot</span> <strong>{{ v.standings.pot | number }}</strong>
+        <span>reps{{ v.standings.over ? ' — shared by whoever missed' : ' so far' }}</span>
+      </p>
+
+      @if (!v.joined) {
+        <p class="df-hint">You're looking at this one from the outside. Join to put your days on the board.</p>
+        <button mat-flat-button type="button" [disabled]="busy()" (click)="join()"><mat-icon>group_add</mat-icon>Join</button>
+      }
+      @if (v.myDebt) {
+        <p class="debt" role="status">
+          <strong>You owe {{ v.myDebt | number }} reps.</strong>
+          <span>Work counts against it as soon as you log it — start any workout and it comes down.</span>
+        </p>
+      }
+      @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
+    </section>
+
+    <section class="df-section" aria-labelledby="standings-title">
+      <div class="df-head">
+        <h2 id="standings-title">Where everyone stands</h2>
+        <button mat-button type="button" (click)="refresh()" [disabled]="busy()"><mat-icon>refresh</mat-icon>Refresh</button>
+      </div>
+      <ul class="players">
+        @for (p of v.standings.players; track p.playerId) {
+          <li class="player" [class.me]="p.playerId === v.me">
+            <div class="who">
+              <span class="name">{{ p.name }}@if (p.playerId === v.me) { (you) }</span>
+              <span class="stat">
+                {{ p.made }} made · {{ p.missed }} missed · {{ p.points | number }} points
+              </span>
+              @if (v.standings.over && p.owed) {
+                <span class="owed">owes {{ p.owed | number }} reps</span>
+              } @else if (p.clean) {
+                <span class="clean">clean</span>
+              } @else {
+                <span class="owed">{{ p.staked | number }} in the pot</span>
+              }
+            </div>
+            <ol class="days" [attr.aria-label]="p.name + ': day by day'">
+              @for (state of v.standings.grid[p.playerId]; track $index) {
+                <li [attr.data-state]="state"
+                    [attr.aria-label]="(v.standings.days[$index] | date: 'd MMM') + ': ' + state"
+                    [title]="(v.standings.days[$index] | date: 'd MMM') + ' — ' + state"></li>
+              }
+            </ol>
+          </li>
+        }
+      </ul>
+      <p class="legend">
+        <span><i class="swatch made"></i> made it</span>
+        <span><i class="swatch missed"></i> missed — ante in the pot</span>
+        <span><i class="swatch open"></i> still to come</span>
+      </p>
+    </section>
+
+    @if (v.joined) {
+      <section class="df-section" aria-labelledby="yours-title">
+        <h2 id="yours-title">Your part</h2>
+        <p class="df-hint">
+          Your days come from the workouts saved on this device — finish one and it lands here.
+          @if (!v.standings.over) { Today is still open: it only counts against you once the day is over. }
+        </p>
+        <div class="actions">
+          <a mat-flat-button routerLink="/"><mat-icon>play_arrow</mat-icon>Start a workout</a>
+          <button mat-button type="button" (click)="leave()" [disabled]="busy()"><mat-icon>logout</mat-icon>Leave</button>
+        </div>
+      </section>
+    }
+  }
+</div>

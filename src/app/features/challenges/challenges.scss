@@ -1,0 +1,72 @@
+:host { display: block; }
+
+.notice {
+  display: flex; gap: 8px; align-items: flex-start; margin: 0; padding: 10px 12px; border-radius: 14px;
+  background: var(--mat-sys-tertiary-container); color: var(--mat-sys-on-tertiary-container); font: var(--mat-sys-body-small);
+  code { font-family: monospace; overflow-wrap: anywhere; }
+}
+.error { margin: 0; color: var(--mat-sys-error); font: var(--mat-sys-body-medium); }
+
+.form, .join { display: grid; gap: 12px; }
+.join { grid-template-columns: 1fr auto; align-items: center; }
+.pair { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+.big { min-height: 56px; justify-self: start; padding-inline: 24px; }
+
+.list {
+  list-style: none; margin: 0; padding: 0; display: grid; gap: 8px;
+  a {
+    display: grid; gap: 2px; padding: 12px 14px; border-radius: 16px; text-decoration: none;
+    background: var(--df-row-bg); color: inherit;
+    &:hover { background: var(--df-row-hover); }
+    &:focus-visible { outline: 3px solid var(--mat-sys-primary); outline-offset: 2px; }
+  }
+  .name { font: var(--mat-sys-title-medium); }
+  .meta { font: var(--mat-sys-body-small); color: var(--mat-sys-on-surface-variant); }
+  .empty { font: var(--mat-sys-body-medium); color: var(--mat-sys-on-surface-variant); }
+}
+
+/* ── Detail ─────────────────────────────────────────────────────────────── */
+
+.terms { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 0; padding: 0; list-style: none; font: var(--mat-sys-body-medium); }
+.code {
+  font-family: var(--font-display); font-weight: 800; font-size: 2.2rem; letter-spacing: 0.12em; margin: 0; line-height: 1;
+}
+.pot {
+  display: flex; align-items: baseline; gap: 8px; margin: 0;
+  strong { font-family: var(--font-display); font-weight: 800; font-size: 2.6rem; line-height: 1; }
+}
+.debt {
+  display: grid; gap: 6px; padding: 12px 14px; border-radius: 16px;
+  background: var(--mat-sys-error-container); color: var(--mat-sys-on-error-container);
+  strong { font-family: var(--font-display); font-weight: 800; font-size: 1.6rem; }
+}
+
+.players { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.player {
+  display: grid; gap: 6px; padding: 12px 14px; border-radius: 16px; background: var(--df-row-bg);
+  &.me { outline: 2px solid var(--mat-sys-primary); }
+}
+.who { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; }
+.who .name { font: var(--mat-sys-title-medium); }
+.who .stat { font: var(--mat-sys-body-small); color: var(--mat-sys-on-surface-variant); }
+.owed { font: var(--mat-sys-label-large); color: var(--mat-sys-error); }
+.clean { font: var(--mat-sys-label-large); color: var(--mat-sys-primary); }
+
+/* One square per day of the challenge, same language as the streak grid (§9e). */
+.days {
+  list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 3px;
+  li {
+    width: 16px; height: 16px; border-radius: 4px; background: var(--mat-sys-surface-container-highest);
+    &[data-state='made'] { background: var(--mat-sys-primary); }
+    &[data-state='missed'] { background: var(--mat-sys-error); }
+    &[data-state='open'] { box-shadow: inset 0 0 0 1px var(--mat-sys-outline-variant); background: none; }
+  }
+}
+.legend { display: flex; flex-wrap: wrap; gap: 12px; margin: 0; font: var(--mat-sys-label-small); color: var(--mat-sys-on-surface-variant); }
+.legend span { display: inline-flex; align-items: center; gap: 4px; }
+.swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.swatch.made { background: var(--mat-sys-primary); }
+.swatch.missed { background: var(--mat-sys-error); }
+.swatch.open { box-shadow: inset 0 0 0 1px var(--mat-sys-outline-variant); }
+
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }

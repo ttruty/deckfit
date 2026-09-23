@@ -14,10 +14,23 @@ test('first-run safety notice, saved preferences, and an export/import round tri
   await notice.getByRole('button', { name: 'I understand' }).click();
   await expect(notice).toHaveCount(0);
 
-  // It doesn't come back.
+  // §12a: the welcome guide follows it, steps through, and closes for good.
+  const guide = page.locator('df-tour');
+  await expect(guide).toBeVisible();
+  await expect(guide.locator('.count')).toHaveText('Step 1 of 5');
+  await guide.getByRole('button', { name: 'Next' }).click();
+  await expect(guide.locator('.count')).toHaveText('Step 2 of 5');
+  await guide.getByRole('button', { name: 'Back' }).click();
+  await expect(guide.locator('.count')).toHaveText('Step 1 of 5');
+  await guide.getByRole('button', { name: 'Skip' }).click();
+  await expect(guide).toHaveCount(0);
+
+  // Neither comes back.
   await page.reload();
   await expect(page.getByRole('region', { name: 'Quick start' })).toBeVisible();
   await expect(page.getByRole('dialog', { name: 'Before you start' })).toHaveCount(0);
+  await page.waitForTimeout(500);
+  await expect(page.locator('df-tour')).toHaveCount(0);
 
   // Preferences are stored on the device (Dexie), so they survive a reload.
   await page.goto('/settings');
@@ -34,6 +47,18 @@ test('first-run safety notice, saved preferences, and an export/import round tri
   await expect(page.getByRole('textbox', { name: 'Display name' })).toHaveValue('Robin');
   await expect(page.getByRole('switch', { name: /Beeps/ })).not.toBeChecked();
   await expect(page.getByText(/You accepted the safety notice on/)).toBeVisible();
+
+  // §12a: Settings can replay the guide, and turn the first-run offer off for good.
+  await page.getByRole('button', { name: 'Show the guide' }).click();
+  await expect(page.locator('df-tour')).toBeVisible();
+  await page.locator('df-tour').getByRole('button', { name: 'Skip' }).click();
+  await expect(page.locator('df-tour')).toHaveCount(0);
+  const onLaunch = page.getByRole('switch', { name: /fresh install/ });
+  await expect(onLaunch).toBeChecked();
+  await onLaunch.click();
+  await expect(onLaunch).not.toBeChecked();
+  await page.reload();
+  await expect(page.getByRole('switch', { name: /fresh install/ })).not.toBeChecked();
 
   // Make something worth exporting, then export it.
   await page.goto('/decks');
@@ -54,6 +79,7 @@ test('first-run safety notice, saved preferences, and an export/import round tri
   const other = await newDevice(browser, { keepDisclaimer: true });
   await other.goto('/');
   await other.getByRole('button', { name: 'I understand' }).click();
+  await other.locator('df-tour').getByRole('button', { name: 'Skip' }).click();
   await other.goto('/settings');
   await other.locator('input[type="file"]').setInputFiles(file);
   await expect(other.getByText(/Imported \d+ new/)).toBeVisible();

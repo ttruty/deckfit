@@ -1,7 +1,7 @@
 @let f = store.filters();
-<div class="page">
-  <header class="head">
-    <h1>Library</h1>
+<div class="df-page">
+  <h1>Library</h1>
+  <header class="head df-section">
     <mat-form-field class="search" appearance="outline" subscriptSizing="dynamic">
       <mat-icon matPrefix>search</mat-icon>
       <mat-label>Search exercises</mat-label>
@@ -67,7 +67,7 @@
     }
   </section>
 
-  <p class="count" role="status" aria-live="polite">
+  <p class="count df-hint" role="status" aria-live="polite">
     @if (store.loading() && !store.total()) {
       Loading exercises…
     } @else if (store.error()) {

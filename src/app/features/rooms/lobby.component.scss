@@ -12,7 +12,10 @@ h2 { font: var(--mat-sys-title-large); margin: 0 0 12px; display: flex; align-it
   grid-template-areas: 'invite' 'players' 'routine';
   @media (min-width: 840px) { grid-template-columns: 280px 1fr; grid-template-areas: 'invite players' 'invite routine'; align-items: start; }
 }
-section { padding: 16px; border-radius: 20px; background: var(--mat-sys-surface-container-low); }
+section {
+  padding: 16px; border-radius: 20px;
+  background: var(--df-card-bg); border: 1px solid var(--df-edge); box-shadow: var(--df-shadow);
+}
 
 .invite {
   grid-area: invite; display: grid; justify-items: center; gap: 8px; text-align: center;
@@ -26,7 +29,7 @@ section { padding: 16px; border-radius: 20px; background: var(--mat-sys-surface-
   grid-area: players;
   .count { font: var(--mat-sys-label-large); padding: 2px 8px; border-radius: 10px; background: var(--mat-sys-secondary-container); }
   ul { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 6px; }
-  li { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 6px 12px; border-radius: 14px; background: var(--mat-sys-surface); }
+  li { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 6px 12px; border-radius: 14px; background: var(--df-row-bg); }
   li.me { outline: 2px solid var(--mat-sys-primary); }
   .avatar { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; font: var(--mat-sys-title-medium); background: var(--mat-sys-tertiary-container); color: var(--mat-sys-on-tertiary-container); }
   .who { flex: 1; display: grid; }

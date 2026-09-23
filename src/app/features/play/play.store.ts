@@ -16,6 +16,7 @@ import type { Card, Exercise, Session } from '../../domain/models/schemas';
 import { SUIT_NAME } from '../../shared/labels';
 import type { CardFaceModel } from '../../shared/ui/card-face/card-face.component';
 import { toCardFaceModel } from '../../shared/ui/card-face/card-face-model';
+import { ChallengeService } from '../../core/challenges/challenge.service';
 
 
 const JOKER_TASK_NAME: Record<Exclude<Task['kind'], 'exercise'>, string> = {
@@ -49,6 +50,7 @@ export class PlayStore implements OnDestroy {
   private readonly clock = inject(Clock);
   private readonly audio = inject(AudioCueService);
   private readonly wakeLock = inject(WakeLockService);
+  private readonly challenges = inject(ChallengeService);
 
   readonly status = signal<'loading' | 'ready' | 'error'>('loading');
   readonly error = signal<string | null>(null);
@@ -385,6 +387,8 @@ export class PlayStore implements OnDestroy {
     this.taskTimer.set(null);
     void this.wakeLock.release();
     await this.persist({ endedAt: this.clock.epoch(), outcome });
+    // §7b: a finished workout is a day on the board — send it to any challenge this device is in.
+    void this.challenges.syncAll();
   }
 
   private cardFace(card: Card, byId: ReadonlyMap<string, Exercise>, session: Session): CardFaceModel {

@@ -12,6 +12,8 @@ import { REALTIME_CONFIGURED } from '../../core/sync/realtime-config';
 import type { Routine } from '../../domain/models/schemas';
 import { INTENSITY_LABEL } from '../../shared/labels';
 import { PreferencesService } from '../../core/settings/preferences.service';
+import { ChallengeService, type MyChallenge } from '../../core/challenges/challenge.service';
+import { goalText } from '../../domain/models/challenge.schema';
 import { IntensityPickerComponent } from '../../shared/ui/intensity-picker/intensity-picker.component';
 import { LaunchError, QUICK_START, SessionLauncher } from '../play/session-launcher.service';
 import { InstallBannerComponent } from './install-banner.component';
@@ -33,6 +35,31 @@ export class HomeComponent {
   /** False when no realtime backend is configured: rooms then live in this browser only. */
   protected readonly realtime = inject(REALTIME_CONFIGURED);
   private readonly prefs = inject(PreferencesService);
+  private readonly challengeService = inject(ChallengeService);
+
+  /**
+   * Challenges you're in (§7b), in their own resource: they need the network, and Home must not
+   * wait on it — if it fails there's simply nothing to show here.
+   */
+  protected readonly challenges = resource({
+    loader: async () => {
+      try {
+        return await this.challengeService.myChallenges();
+      } catch {
+        return [] as MyChallenge[];
+      }
+    },
+  });
+
+  /** One line per challenge: what it wants of you today, or what it cost you. */
+  protected line(item: MyChallenge): string {
+    const { status, challenge } = item;
+    if (status.upcoming) return `Starts ${challenge.startsOn.slice(8)} ${monthOf(challenge.startsOn)} · ${goalText(challenge.goal)}`;
+    if (status.over) return status.staked ? `Finished · ${status.staked} reps of yours in the pot` : 'Finished · you stayed clean';
+    if (status.todayDone) return `Today's done · ${status.daysLeft} ${status.daysLeft === 1 ? 'day' : 'days'} to go`;
+    if (status.todayShort) return `${status.todayShort} points to go today · ${challenge.ante} reps on the line`;
+    return `Today still open · ${challenge.ante} reps on the line`;
+  }
 
   /** Quick Start has no routine, so it works at the device's intensity (§6.1). */
   protected readonly intensity = this.prefs.intensity;
@@ -103,4 +130,10 @@ export class HomeComponent {
       this.starting.set(null);
     }
   }
+}
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+/** "03" → "Mar", for the one date Home shows. */
+function monthOf(day: string): string {
+  return MONTHS[Number(day.slice(5, 7)) - 1] ?? '';
 }

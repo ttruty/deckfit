@@ -25,6 +25,16 @@ test.describe('accessibility (axe, WCAG 2.1 AA)', () => {
       // Accept the §12 notice first; it's scanned on its own below, once it has settled.
       await page.goto('/');
       await page.getByRole('button', { name: 'I understand' }).click();
+
+      // §12a: the welcome guide follows it on a fresh device — scan it where it appears, then skip.
+      const guide = page.locator('df-tour');
+      await guide.waitFor();
+      await page.waitForTimeout(500); // after the open animation
+      await setTheme(page, theme);
+      const guideProblems = await scan(page);
+      if (guideProblems.length) problems['guide'] = guideProblems;
+      await guide.getByRole('button', { name: 'Skip' }).click();
+
       await expect(page.getByRole('dialog')).toHaveCount(0);
       await page.waitForTimeout(300); // let the acceptance reach Dexie before navigating
 

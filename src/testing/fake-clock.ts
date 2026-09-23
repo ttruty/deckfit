@@ -5,6 +5,7 @@ import { Clock } from '../app/core/time/clock.service';
 export class FakeClock extends Clock {
   private t = 1_000;
   private wall = Date.UTC(2026, 8, 16, 12, 0, 0);
+
   private readonly intervals = new Set<{ ms: number; next: number; fn: () => void }>();
 
   override now(): number {
@@ -19,6 +20,11 @@ export class FakeClock extends Clock {
     const entry = { ms, next: this.t + ms, fn };
     this.intervals.add(entry);
     return () => this.intervals.delete(entry);
+  }
+
+  /** Pins wall-clock time (what `epoch()` returns), for anything counted in calendar days. */
+  setEpoch(at: number): void {
+    this.wall = at;
   }
 
   /** Moves time forward, firing intervals in order. */
@@ -37,8 +43,9 @@ export class FakeClock extends Clock {
   }
 }
 
-export function provideFakeClock(): FakeClock {
+export function provideFakeClock(epoch?: number): FakeClock {
   const clock = new FakeClock();
-  TestBed.configureTestingModule({ providers: [{ provide: Clock, useValue: clock }] });
+  if (epoch !== undefined) clock.setEpoch(epoch);
+  TestBed.configureTestingModule({ providers: [{ provide: Clock, useValue: clock }, { provide: FakeClock, useExisting: Clock }] });
   return clock;
 }

@@ -57,7 +57,7 @@ body {
   // Set a default background, font and text colors for the application using
   // Angular Material's system-level CSS variables. Learn more about these
   // variables at https://material.angular.dev/guide/system-variables
-  background-color: var(--mat-sys-surface);
+  background-color: var(--df-page-bg);
   color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
 
@@ -66,3 +66,102 @@ body {
   height: 100%;
 }
 /* You can add global styles to this file, and also import other style files */
+
+/* ── Surface tiers (§9d) ──────────────────────────────────────────────────
+   Three steps, so a card reads as a card: the page is tinted, a section sits
+   on it as a crisp panel with a hairline and a soft shadow, and rows inside a
+   section step back down. Light theme lifts with white; dark theme lifts with
+   lighter greys, the way M3 elevation works. Components use these, never the
+   raw surface tokens, so the tiers stay in one place. */
+:root {
+  --df-page-bg: var(--mat-sys-surface-container);
+  --df-card-bg: var(--mat-sys-surface-container-lowest);
+  --df-row-bg: var(--mat-sys-surface-container-low);
+  --df-row-raised: var(--mat-sys-surface-container);
+  --df-row-hover: var(--mat-sys-surface-container-high);
+  --df-edge: color-mix(in srgb, var(--mat-sys-outline-variant) 70%, transparent);
+  --df-shadow: 0 1px 2px rgb(0 0 0 / 0.05), 0 8px 20px -14px rgb(0 0 0 / 0.35);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --df-page-bg: var(--mat-sys-surface);
+    --df-card-bg: var(--mat-sys-surface-container-low);
+    --df-row-bg: var(--mat-sys-surface-container);
+    --df-row-raised: var(--mat-sys-surface-container-high);
+    --df-row-hover: var(--mat-sys-surface-container-highest);
+    --df-edge: color-mix(in srgb, var(--mat-sys-outline-variant) 45%, transparent);
+    --df-shadow: 0 1px 2px rgb(0 0 0 / 0.4);
+  }
+}
+:root[data-theme='dark'] {
+  --df-page-bg: var(--mat-sys-surface);
+  --df-card-bg: var(--mat-sys-surface-container-low);
+  --df-row-bg: var(--mat-sys-surface-container);
+  --df-row-raised: var(--mat-sys-surface-container-high);
+  --df-row-hover: var(--mat-sys-surface-container-highest);
+  --df-edge: color-mix(in srgb, var(--mat-sys-outline-variant) 45%, transparent);
+  --df-shadow: 0 1px 2px rgb(0 0 0 / 0.4);
+}
+
+/* ── Screen furniture (§9c) ───────────────────────────────────────────────
+   One way to draw a screen, shared by every feature so the app reads as one
+   thing: a `df-page` column of `df-section` containers, each with a heading
+   row and, where it helps, a one-line `df-hint`. Components add their own
+   layout inside a section; they don't re-invent the container. */
+.df-page {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 12px 16px 32px;
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+/* Headings borrow the deck's voice (§9a): the display face, as on a card. */
+.df-page > h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2.15rem;
+  line-height: 1.05;
+}
+
+.df-section {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  padding: 16px;
+  border-radius: 20px;
+  background: var(--df-card-bg);
+  border: 1px solid var(--df-edge);
+  box-shadow: var(--df-shadow);
+}
+.df-section > h2,
+.df-head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.4rem;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+}
+
+/** An item inside a section: a deck, a routine, a player. One step back from the card. */
+.df-row {
+  border-radius: 16px;
+  background: var(--df-row-bg);
+}
+
+/* Heading plus the action that belongs to it, wrapping on narrow screens. */
+.df-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  flex-wrap: wrap;
+}
+
+.df-hint {
+  margin: 0;
+  font: var(--mat-sys-body-medium);
+  color: var(--mat-sys-on-surface-variant);
+}

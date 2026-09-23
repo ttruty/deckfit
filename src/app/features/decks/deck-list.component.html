@@ -1,4 +1,4 @@
-<div class="page">
+<div class="df-page">
   <h1>Decks</h1>
 
   @if (data.isLoading() && !data.hasValue()) {
@@ -8,7 +8,7 @@
   }
 
   @for (section of sections(); track section.id) {
-    <section [attr.aria-labelledby]="'decks-' + section.id">
+    <section class="df-section" [attr.aria-labelledby]="'decks-' + section.id">
       <h2 [id]="'decks-' + section.id">{{ section.title }}</h2>
       <ul class="decks">
         @for (item of section.decks; track item.deck.id) {

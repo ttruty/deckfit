@@ -1,11 +1,14 @@
-.page { max-width: 880px; margin: 0 auto; padding: 16px 16px 32px; }
-h1 { font: var(--mat-sys-headline-medium); margin: 0 0 16px; }
-h2 { font: var(--mat-sys-title-large); margin: 28px 0 12px; }
-.empty { display: grid; gap: 12px; justify-items: start; font: var(--mat-sys-body-large); }
+.df-page { max-width: 880px; }
+.empty { justify-items: start; font: var(--mat-sys-body-large); }
 
 .tiles {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 0;
-  div { padding: 12px 16px; border-radius: 16px; background: var(--mat-sys-surface-container-low); }
+  /* The tiles sit on the page, not inside a section, so they are cards in their own right. */
+  div {
+    padding: 12px 16px; border-radius: 16px;
+    background: var(--df-card-bg); border: 1px solid var(--df-edge); box-shadow: var(--df-shadow);
+  }
+  /* The tiles are the page's own containers, so they keep the section background. */
   dt { font: var(--mat-sys-label-large); color: var(--mat-sys-on-surface-variant); }
   dd { margin: 4px 0 0; font-family: var(--font-display); font-weight: 800; font-size: 2.2rem; line-height: 1; font-variant-numeric: tabular-nums; }
 }
@@ -42,7 +45,7 @@ h2 { font: var(--mat-sys-title-large); margin: 28px 0 12px; }
   list-style: none; margin: 0; padding: 0; display: grid; gap: 8px;
   li {
     display: flex; align-items: center; gap: 16px; padding: 10px 12px; border-radius: 16px;
-    background: var(--mat-sys-surface-container-low);
+    background: var(--df-row-bg);
   }
   .when { display: grid; min-width: 5.5rem; }
   .date { font: var(--mat-sys-title-small); }
@@ -55,3 +58,4 @@ h2 { font: var(--mat-sys-title-large); margin: 28px 0 12px; }
 }
 
 .room { margin-left: 6px; padding: 0 6px; border-radius: 8px; background: var(--mat-sys-secondary-container); color: var(--mat-sys-on-secondary-container); font: var(--mat-sys-label-small); }
+

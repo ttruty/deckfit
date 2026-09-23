@@ -18,6 +18,7 @@ import { ThemeService, type ThemeMode } from '../../core/theme/theme.service';
 import { PreferencesService } from '../../core/settings/preferences.service';
 import { INTENSITIES } from '../../domain/models/schemas';
 import { INTENSITY_HELP, INTENSITY_LABEL } from '../../shared/labels';
+import { TourService } from '../../core/tour/tour.service';
 
 /** /settings (§8): identity, look, sound, data export/import, and the safety notice. */
 @Component({
@@ -34,6 +35,7 @@ export class SettingsComponent {
   private readonly bundles = inject(BundleService);
   private readonly meta = inject(MetaRepository);
   private readonly disclaimer = inject(DisclaimerService);
+  private readonly tour = inject(TourService);
   private readonly snack = inject(MatSnackBar);
   protected readonly install = inject(InstallService);
   protected readonly theme = inject(ThemeService);
@@ -54,13 +56,16 @@ export class SettingsComponent {
 
   protected readonly info = resource({
     loader: async () => {
-      const [me, contentVersion, acceptedAt] = await Promise.all([
-        this.identity.me(), this.meta.get('contentVersion'), this.disclaimer.acceptedAt(),
+      const [me, contentVersion, acceptedAt, tourEnabled] = await Promise.all([
+        this.identity.me(), this.meta.get('contentVersion'), this.disclaimer.acceptedAt(), this.tour.enabled(),
       ]);
       this.name.setValue(me.name === 'You' ? '' : me.name);
+      this.tourEnabled.set(tourEnabled);
       return { me, contentVersion, acceptedAt };
     },
   });
+  /** Mirrors `tourEnabled` in `meta` so the toggle reflects what's stored. */
+  protected readonly tourEnabled = signal(true);
 
   /** Only offered where the share sheet can actually take a file (phones, mostly). */
   protected readonly shareSupported = typeof navigator !== 'undefined' && !!navigator.canShare?.({
@@ -118,5 +123,16 @@ export class SettingsComponent {
 
   protected showDisclaimer(): void {
     void this.disclaimer.open(false);
+  }
+
+  /** §12a: replay the welcome guide, or stop it offering itself on a fresh launch. */
+  protected async showGuide(): Promise<void> {
+    await this.tour.open();
+    this.tourEnabled.set(await this.tour.enabled());
+  }
+
+  protected async setGuideOnLaunch(enabled: boolean): Promise<void> {
+    this.tourEnabled.set(enabled);
+    await this.tour.setEnabled(enabled);
   }
 }

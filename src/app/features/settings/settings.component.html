@@ -1,7 +1,7 @@
-<div class="page">
+<div class="df-page">
   <h1>Settings</h1>
 
-  <section class="card" aria-labelledby="you">
+  <section class="card df-section" aria-labelledby="you">
     <h2 id="you">You</h2>
     <p class="hint">The name other players see in a room. Nothing leaves this device until you join one.</p>
     <div class="row">
@@ -13,7 +13,7 @@
     </div>
   </section>
 
-  <section class="card" aria-labelledby="look">
+  <section class="card df-section" aria-labelledby="look">
     <h2 id="look">Look</h2>
     <mat-radio-group class="themes" [value]="theme.mode()" (change)="theme.set($event.value)" aria-labelledby="look">
       @for (t of themes; track t.mode) {
@@ -24,7 +24,7 @@
     </mat-radio-group>
   </section>
 
-  <section class="card" aria-labelledby="effort">
+  <section class="card df-section" aria-labelledby="effort">
     <h2 id="effort">Workout intensity</h2>
     <p class="hint">How hard Quick Start and new rooms work you. A saved routine keeps its own setting.</p>
     <mat-radio-group class="themes" [value]="prefs.intensity()" (change)="prefs.intensity.set($event.value)" aria-labelledby="effort">
@@ -36,7 +36,7 @@
     </mat-radio-group>
   </section>
 
-  <section class="card" aria-labelledby="sound">
+  <section class="card df-section" aria-labelledby="sound">
     <h2 id="sound">Sound</h2>
     <mat-slide-toggle [checked]="audio.beeps()" (change)="audio.beeps.set($event.checked)">Beeps for flips, countdowns and finishes</mat-slide-toggle>
     <mat-slide-toggle [checked]="audio.speech()" (change)="audio.speech.set($event.checked)" [disabled]="!speechSupported()">
@@ -45,7 +45,7 @@
     @if (!speechSupported()) { <p class="hint">This browser has no speech synthesis.</p> }
   </section>
 
-  <section class="card" aria-labelledby="data">
+  <section class="card df-section" aria-labelledby="data">
     <h2 id="data">Your data</h2>
     <p class="hint">
       Decks, games, exercises and routines you made, as one JSON file. Built-in content isn't included — it's already in the app.
@@ -70,7 +70,16 @@
     }
   </section>
 
-  <section class="card" aria-labelledby="safety">
+  <section class="card df-section" aria-labelledby="guide">
+    <h2 id="guide">Guide</h2>
+    <p class="hint">A quick walk through how DeckFit works — cards, decks, games and rooms.</p>
+    <button mat-stroked-button type="button" (click)="showGuide()"><mat-icon>school</mat-icon>Show the guide</button>
+    <mat-slide-toggle [checked]="tourEnabled()" (change)="setGuideOnLaunch($event.checked)">
+      Show it on a fresh install
+    </mat-slide-toggle>
+  </section>
+
+  <section class="card df-section" aria-labelledby="safety">
     <h2 id="safety">Safety</h2>
     <p class="hint">
       @if (info.value()?.acceptedAt; as at) { You accepted the safety notice on {{ at | date: 'longDate' }}. }
@@ -79,7 +88,7 @@
     <button mat-stroked-button type="button" (click)="showDisclaimer()"><mat-icon>health_and_safety</mat-icon>Read the safety notice</button>
   </section>
 
-  <section class="card" aria-labelledby="install">
+  <section class="card df-section" aria-labelledby="install">
     <h2 id="install">Install</h2>
     @switch (install.state()) {
       @case ('installed') { <p class="hint">DeckFit is installed on this device. </p> }
@@ -97,7 +106,7 @@
     }
   </section>
 
-  <section class="card" aria-labelledby="about">
+  <section class="card df-section" aria-labelledby="about">
     <h2 id="about">About</h2>
     <dl class="about">
       <div><dt>Content version</dt><dd>{{ info.value()?.contentVersion ?? '—' }}</dd></div>
