@@ -170,6 +170,14 @@ describe('ownStatus (what this device can work out on its own)', () => {
     expect(short).toMatchObject({ over: true, staked: 100 });
   });
 
+  it('says which day of the challenge today is', () => {
+    const goal = { kind: 'streak' } as const;
+    expect(ownStatus(challenge(goal), new Map(), '2026-03-18')).toMatchObject({ dayIndex: 3, totalDays: 5 });
+    // Before it starts and after it ends, the index stays inside the challenge.
+    expect(ownStatus(challenge(goal), new Map(), '2026-03-10')).toMatchObject({ dayIndex: 1, totalDays: 5 });
+    expect(ownStatus(challenge(goal), new Map(), '2026-03-25')).toMatchObject({ dayIndex: 5, totalDays: 5 });
+  });
+
   it('knows a challenge that has not started, and one that is over', () => {
     expect(ownStatus(challenge({ kind: 'streak' }), new Map(), '2026-03-10')).toMatchObject({ upcoming: true, missed: 0, daysLeft: 5 });
     expect(ownStatus(challenge({ kind: 'streak' }), new Map(), '2026-03-25')).toMatchObject({ over: true, daysLeft: 0, missed: 5 });

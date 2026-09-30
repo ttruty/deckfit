@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { InstallService } from '../../core/pwa/install.service';
+import { DfIconComponent } from '../../shared/ui/icon/df-icon.component';
 
 /**
  * §11: offers "add to home screen" where the browser supports it, and the manual steps on iOS,
@@ -10,36 +9,35 @@ import { InstallService } from '../../core/pwa/install.service';
 @Component({
   selector: 'df-install-banner',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatButtonModule, MatIconModule],
+  imports: [DfIconComponent],
   template: `
     @if (install.offer()) {
-      <aside class="banner" data-install-banner>
-        <mat-icon aria-hidden="true">install_mobile</mat-icon>
-        <div class="text">
+      <section class="df-section df-install" aria-label="Install DeckFit" data-install-banner>
+        <df-icon name="install" />
+        <p class="df-install__text">
           <strong>Install DeckFit</strong>
           @if (install.state() === 'ios') {
-            <span>Tap <mat-icon inline>ios_share</mat-icon> Share, then “Add to Home Screen” — it then works offline, full screen.</span>
+            <span class="df-hint">In Safari, tap Share, then “Add to Home Screen”.</span>
           } @else {
-            <span>Add it to your home screen: full screen, and your workouts keep working offline.</span>
+            <span class="df-hint">Full screen, and workouts keep working offline.</span>
           }
-        </div>
-        <div class="actions">
+        </p>
+        <div class="df-install__actions">
+          <button type="button" class="df-btn df-btn--text" (click)="install.dismiss()">Not now</button>
           @if (install.state() === 'prompt') {
-            <button mat-flat-button (click)="install.install()">Install</button>
+            <button type="button" class="df-btn df-btn--outline" (click)="install.install()">Install</button>
           }
-          <button mat-button (click)="install.dismiss()">Not now</button>
         </div>
-      </aside>
+      </section>
     }
   `,
   styles: `
-    .banner {
-      display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; margin-bottom: 16px;
-      padding: 12px 16px; border-radius: 20px;
-      background: var(--mat-sys-secondary-container); color: var(--mat-sys-on-secondary-container);
-    }
-    .text { flex: 1 1 260px; display: grid; gap: 2px; font: var(--mat-sys-body-medium); }
-    .actions { display: flex; gap: 8px; align-items: center; }
+    :host { display: contents; }
+    .df-install { flex-direction: row; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .df-install > df-icon { color: var(--df-text-muted); }
+    .df-install__text { flex: 1 1 200px; display: flex; flex-direction: column; margin: 0; }
+    .df-install__text strong { font-weight: 500; }
+    .df-install__actions { display: flex; gap: 4px; margin-left: auto; }
   `,
 })
 export class InstallBannerComponent {

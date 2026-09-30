@@ -1,0 +1,77 @@
+@let t = totals();
+<df-segmented legend="Period" [hideLegend]="true" [options]="periods" [value]="period()"
+              (valueChange)="period.set($event)" class="df-totals__period" />
+
+<dl class="df-tiles">
+  <div class="df-row df-tile"><dt>Workouts</dt><dd>{{ t.workouts | number }}</dd></div>
+  <div class="df-row df-tile"><dt>Reps</dt><dd>{{ t.reps | number }}</dd></div>
+  <div class="df-row df-tile">
+    <dt>Timed work</dt>
+    <dd>
+      @if (time(t.seconds); as v) {
+        {{ v.value }}<small>{{ v.unit }}</small> {{ v.rest }}<small>{{ v.restUnit }}</small>
+      } @else { 0<small>s</small> }
+    </dd>
+  </div>
+  <div class="df-row df-tile">
+    <dt>Active time</dt>
+    <dd>
+      @if (time(t.minutes * 60); as v) {
+        {{ v.value }}<small>{{ v.unit }}</small> {{ v.rest }}<small>{{ v.restUnit }}</small>
+      } @else { 0<small>m</small> }
+    </dd>
+  </div>
+</dl>
+
+<div class="df-sub">
+  <div class="df-head"><h3>Reps by suit group</h3></div>
+  <ul class="df-bars">
+    @for (bar of bars(); track bar.suit) {
+      <li class="df-bar" [class.df-bar--zero]="bar.reps === 0">
+        <span class="df-suit">
+          <span class="df-suit__g" [attr.data-suit]="bar.suit" aria-hidden="true">{{ symbol[bar.suit] }}</span>{{ bar.label }}
+        </span>
+        <span class="df-bar__track" [title]="bar.label + ': ' + bar.reps + ' reps'">
+          <span class="df-bar__fill" [style.width.%]="bar.percent"></span>
+        </span>
+        <span class="df-bar__val">{{ bar.reps | number }}<span class="df-vh"> reps, {{ suitName[bar.suit] }}</span></span>
+      </li>
+    }
+  </ul>
+  @if (anyZero()) {
+    <p class="df-hint">A group at zero just hasn’t been dealt to you yet this {{ windowLabel() }}.</p>
+  }
+</div>
+
+<div class="df-sub">
+  <div class="df-head"><h3>Top exercises</h3></div>
+  @if (t.exercises.length) {
+    <table class="df-table">
+      <caption class="df-vh">Top exercises for the last {{ windowLabel() }}</caption>
+      <thead>
+        <tr><th scope="col">Exercise</th><th scope="col" class="num">Done</th><th scope="col" class="num">Workouts</th></tr>
+      </thead>
+      <tbody>
+        @for (e of exercises(); track e.key) {
+          <tr>
+            <td>
+              <span class="df-suit">
+                <span class="df-suit__g" [attr.data-suit]="e.suit" aria-hidden="true">{{ symbol[e.suit] }}</span>{{ e.name }}
+                <span class="df-vh"> ({{ suitName[e.suit] }})</span>
+              </span>
+            </td>
+            <td class="num">{{ amount(e.measure, e.amount) }}</td>
+            <td class="num">{{ e.sessions }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+    @if (hidden()) {
+      <button type="button" class="df-btn df-btn--text df-more" (click)="showAll.set(!showAll())">
+        {{ showAll() ? 'Show fewer' : 'See all ' + t.exercises.length + ' exercises' }}
+      </button>
+    }
+  } @else {
+    <p class="df-hint">No exercises logged in this window yet.</p>
+  }
+</div>

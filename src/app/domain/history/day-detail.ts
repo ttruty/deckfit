@@ -1,5 +1,5 @@
-import { dayKey } from '../../domain/challenges/progress';
-import type { Exercise, Measure } from '../../domain/models/schemas';
+import { dayKey } from '../challenges/progress';
+import type { Exercise, Measure } from '../models/schemas';
 import type { SessionRow } from './history-stats';
 
 export interface DayWorkout {

@@ -1,5 +1,11 @@
-<div class="df-page">
-  <h1>History</h1>
+<div class="df-page df-history">
+  <div class="df-intro">
+    <h1>History</h1>
+    <p class="df-hint">
+      @if (stats()?.workouts) { Every workout you finish, from the last 26 weeks. }
+      @else { Every workout you finish lands here. }
+    </p>
+  </div>
 
   @if (data.isLoading() && !data.hasValue()) {
     <p role="status">Loading…</p>
@@ -7,101 +13,29 @@
     <p role="alert">Couldn't load your history.</p>
   } @else if (stats(); as s) {
     @if (!s.workouts) {
-      <div class="df-section empty">
-        <p>No workouts yet. Finished and in-progress workouts show up here.</p>
-        <a mat-flat-button routerLink="/"><mat-icon>play_arrow</mat-icon>Start one</a>
-      </div>
+      <section class="df-section" aria-labelledby="empty-title">
+        <h2 id="empty-title">Nothing here yet</h2>
+        <p class="df-hint">Finish your first workout and you’ll see your streak, totals and every session here.</p>
+        <a class="df-btn df-btn--primary df-btn--main" routerLink="/"><df-icon name="play" />Start a workout</a>
+      </section>
     } @else {
-      @if (grid(); as g) {
-        <section class="df-section" aria-labelledby="activity-title">
-          <h2 id="activity-title">Your streak</h2>
-          <df-activity-grid [grid]="g" [(selected)]="selectedDay" />
+      <section class="df-section df-streak" aria-labelledby="streak-title">
+        <div class="df-head"><h2 id="streak-title">Streak</h2></div>
+        @if (grid(); as g) { <df-heatmap [grid]="g" [(selected)]="selectedDay" /> }
+      </section>
 
-          @if (day(); as d) {
-            <df-day-detail [day]="d" (closed)="selectedDay.set(null)" />
-          }
-        </section>
+      @if (day(); as d) {
+        <df-day-detail [day]="d" (closed)="selectedDay.set(null)" />
       }
 
-      <dl class="tiles">
-        <div><dt>Workouts</dt><dd>{{ s.workouts }}</dd></div>
-        <div><dt>Reps</dt><dd>{{ s.reps | number }}</dd></div>
-        <div><dt>Timed work</dt><dd>{{ formatSeconds(s.seconds) }}</dd></div>
-        <div><dt>Minutes</dt><dd>{{ s.minutes | number }}</dd></div>
-      </dl>
-
-      <section class="df-section" aria-labelledby="groups-title">
-        <h2 id="groups-title">By suit group</h2>
-        <div class="bar-lists">
-          @for (list of [{ title: 'Reps', unit: 'reps', rows: groupBars().reps }, { title: 'Timed', unit: 'sec', rows: groupBars().seconds }]; track list.title) {
-            @if (list.rows.length) {
-              <figure class="bars">
-                <figcaption>{{ list.title }}</figcaption>
-                <ul>
-                  @for (g of list.rows; track g.label) {
-                    <li [attr.aria-label]="g.label + ' (' + g.suitName + '): ' + g.value + ' ' + list.unit" [title]="g.label + ': ' + g.value + ' ' + list.unit">
-                      <span class="label"><span class="pip" [attr.data-suit]="g.suit" aria-hidden="true">{{ g.symbol }}</span>{{ g.label }}</span>
-                      <span class="track" aria-hidden="true"><span class="fill" [style.width.%]="g.pct"></span></span>
-                      <span class="value" aria-hidden="true">{{ g.value | number }}</span>
-                    </li>
-                  }
-                </ul>
-              </figure>
-            }
-          }
-        </div>
+      <section class="df-section df-totals" aria-labelledby="totals-title">
+        <div class="df-head"><h2 id="totals-title">Totals</h2></div>
+        @if (totals(); as t) { <df-period-totals [totals]="t" [(period)]="period" /> }
       </section>
 
-      <section class="df-section" aria-labelledby="exercise-title">
-        <h2 id="exercise-title">By exercise</h2>
-        <div class="table-wrap">
-          <table class="exercises">
-            <thead><tr><th scope="col">Exercise</th><th scope="col" class="num">Total</th><th scope="col" class="num">Workouts</th></tr></thead>
-            <tbody>
-              @for (e of s.byExercise; track e.key) {
-                <tr>
-                  <th scope="row">
-                    @if (e.key.startsWith('wild') || e.key === 'bonus-cardio' || e.name === 'Removed exercise') {
-                      {{ e.name }}
-                    } @else {
-                      <a [routerLink]="['/library', e.key]">{{ e.name }}</a>
-                    }
-                  </th>
-                  <td class="num">{{ e.measure === 'seconds' ? formatSeconds(e.amount) : (e.amount | number) + ' reps' }}</td>
-                  <td class="num">{{ e.sessions }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section class="df-section" aria-labelledby="sessions-title">
-        <h2 id="sessions-title">Workouts</h2>
-        <ul class="sessions">
-          @for (r of s.sessions; track r.session.id) {
-            <li>
-              <div class="when">
-                <span class="date">{{ r.session.startedAt | date: 'EEE d MMM' }}</span>
-                <span class="time">{{ r.session.startedAt | date: 'shortTime' }}</span>
-              </div>
-              <div class="what">
-                <span class="name">
-                  {{ r.session.game.name }}
-                  @if (r.session.roomId) { <span class="room" [attr.title]="'Room ' + r.session.roomId">with {{ r.session.players.length - 1 }} others</span> }
-                </span>
-                <span class="sub">{{ r.session.deck.name }} · {{ r.tasks }} tasks · {{ r.reps | number }} reps@if (r.seconds) { · {{ formatSeconds(r.seconds) }} }</span>
-              </div>
-              @if (r.inProgress) {
-                <a mat-stroked-button [routerLink]="['/play', r.session.id]"><mat-icon>play_arrow</mat-icon>Resume</a>
-              } @else {
-                <span class="badge" [class.abandoned]="r.session.outcome === 'abandoned'">
-                  {{ r.session.outcome === 'abandoned' ? 'Ended early' : r.minutes + ' min' }}
-                </span>
-              }
-            </li>
-          }
-        </ul>
+      <section class="df-section df-workouts" aria-labelledby="workouts-title">
+        <div class="df-head"><h2 id="workouts-title">Workouts</h2></div>
+        <df-workout-log [rows]="s.sessions" [today]="now" (opened)="selectedDay.set($event)" />
       </section>
     }
   }

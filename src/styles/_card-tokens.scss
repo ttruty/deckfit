@@ -29,6 +29,7 @@
   --on-spades: #ffffff;
   --on-joker: #ffffff;
 
+  // TODO(design): confirm — the mockups' family name was cut off; this is the face we ship.
   --font-display: 'Big Shoulders Display', 'Arial Narrow', sans-serif;
   --font-text: 'Atkinson Hyperlegible', system-ui, sans-serif;
 
@@ -43,6 +44,7 @@
     --ink-far: #6b7690;
 
     --suit-text-hearts: #e5707f;
+    // TODO(design): confirm — the mockups fell back to body text for these three in dark.
     --suit-text-diamonds: #e89a00;
     --suit-text-clubs: #49a197;
     --suit-text-spades: #7d8fde;
@@ -56,6 +58,7 @@
   --ink-far: #6b7690;
 
   --suit-text-hearts: #e5707f;
+  // TODO(design): confirm — the mockups fell back to body text for these three in dark.
   --suit-text-diamonds: #e89a00;
   --suit-text-clubs: #49a197;
   --suit-text-spades: #7d8fde;

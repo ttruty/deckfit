@@ -38,7 +38,7 @@ async function createChallenge(page: Page, name: string, days = 5, ante = 20): P
  */
 async function doAWorkout(page: Page): Promise<void> {
   await page.getByRole('link', { name: 'Home', exact: true }).first().click();
-  await page.getByRole('region', { name: 'Quick start' }).getByRole('button', { name: 'Start' }).click();
+  await page.getByRole('region', { name: 'Quick start' }).getByRole('button', { name: /^Start / }).click();
   await page.waitForURL(/\/play\//);
   await page.locator('button.flip').click(); // Deal
   await expect(page.locator('df-card-face').first()).toBeVisible();
@@ -77,17 +77,17 @@ test.describe('challenges', () => {
 
     // Home picks it up straight away, saying what today needs.
     await page.getByRole('link', { name: 'Home', exact: true }).first().click();
-    await expect(page.locator('.challenges li')).toContainText('Five day streak');
-    await expect(page.locator('.challenges li')).toContainText('Today still open');
-    await expect(page.locator('.challenges li.done')).toHaveCount(0);
+    await expect(page.locator('.df-item', { hasText: 'Five day streak' })).toContainText('Five day streak');
+    await expect(page.locator('.df-item', { hasText: 'Five day streak' })).toContainText('Day 1 of 5');
+    await expect(page.locator('.df-item .df-status--done')).toHaveCount(0);
 
     await doAWorkout(page);
 
     // …and marks it off once it's done.
-    await expect(page.locator('.challenges li')).toHaveCount(1);
-    await expect(page.locator('.challenges li')).toContainText('Five day streak');
-    await expect(page.locator('.challenges li.done')).toHaveCount(1);
-    await expect(page.locator('.challenges li')).toContainText("Today's done");
+    await expect(page.locator('.df-item', { hasText: 'Five day streak' })).toHaveCount(1);
+    await expect(page.locator('.df-item', { hasText: 'Five day streak' })).toContainText('Five day streak');
+    await expect(page.locator('.df-item .df-status--done')).toHaveCount(1);
+    await expect(page.locator('.df-item', { hasText: 'Five day streak' })).toContainText('Done today');
 
     // Back to it the way a person would — all in-app, since with no backend the challenge is
     // only in this tab (a reload would lose it, which is what the notice says).

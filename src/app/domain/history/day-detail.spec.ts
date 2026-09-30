@@ -1,4 +1,4 @@
-import type { Exercise, Session } from '../../domain/models/schemas';
+import type { Exercise, Session } from '../models/schemas';
 import { dayDetail } from './day-detail';
 import type { SessionRow } from './history-stats';
 
@@ -25,6 +25,8 @@ function row(
     tasks: 1,
     minutes: inProgress ? null : 12,
     inProgress,
+    exercises: [],
+    groups: [],
   };
 }
 

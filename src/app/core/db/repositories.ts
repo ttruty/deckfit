@@ -189,6 +189,9 @@ export interface MetaValues {
   speech: boolean;
   /** Default workout intensity for quick starts and new rooms (§6.1). */
   intensity: Intensity;
+  /** What Quick start is set to (§9f); absent until someone changes it. */
+  quickStartDeckId: string;
+  quickStartGameId: string;
   /** When the install banner was waved away (0 = offer it again). */
   installDismissedAt: number;
   /** §12a welcome guide: when it was last closed (0 = show it again) and whether it may open at all. */

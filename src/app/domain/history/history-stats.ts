@@ -1,6 +1,6 @@
-import { EngineEventSchema } from '../../domain/engine/events';
-import type { Task } from '../../domain/engine/state';
-import type { Exercise, Measure, Session, Suit } from '../../domain/models/schemas';
+import { EngineEventSchema } from '../engine/events';
+import type { Task } from '../engine/state';
+import type { Exercise, Measure, Session, Suit } from '../models/schemas';
 
 export interface ExerciseTotal {
   key: string;
@@ -18,6 +18,16 @@ export interface GroupTotal {
   seconds: number;
 }
 
+/** What one workout did, per exercise — kept per session so any period can be summed from rows. */
+export interface SessionExercise {
+  key: string;
+  name: string;
+  measure: Measure;
+  amount: number;
+  /** The suit its cards came from, for the group colour and glyph; 'joker' when unknown. */
+  suit: Suit;
+}
+
 export interface SessionRow {
   session: Session;
   reps: number;
@@ -25,6 +35,10 @@ export interface SessionRow {
   tasks: number;
   minutes: number | null;
   inProgress: boolean;
+  /** This device's work in that session, by exercise. */
+  exercises: SessionExercise[];
+  /** The same work by suit group, with the label the deck used. */
+  groups: GroupTotal[];
 }
 
 export interface HistoryStats {
@@ -53,6 +67,8 @@ export function historyStats(sessions: readonly Session[], exercisesById: Readon
     const suitOf = new Map(session.deck.cards.map((c) => [c.id, c.suit]));
     const labelOf = new Map(session.deck.suits.map((s) => [s.suit, s.label]));
     const tasks = new Map<string, Task>();
+    const rowGroups = new Map<string, GroupTotal>();
+    const suitOfExercise = new Map<string, Suit>();
     let reps = 0;
     let seconds = 0;
     let done = 0;
@@ -73,12 +89,19 @@ export function historyStats(sessions: readonly Session[], exercisesById: Readon
 
       const suit = suitOf.get(task.cardIds[0]) ?? 'joker';
       const label = labelOf.get(suit) ?? suit;
+      if (task.exerciseId) suitOfExercise.set(task.exerciseId, suit);
       const g = byGroup.get(label) ?? { label, suit, reps: 0, seconds: 0 };
       if (task.measure === 'seconds') g.seconds += amount;
       else g.reps += amount;
       byGroup.set(label, g);
+
+      const r = rowGroups.get(label) ?? { label, suit, reps: 0, seconds: 0 };
+      if (task.measure === 'seconds') r.seconds += amount;
+      else r.reps += amount;
+      rowGroups.set(label, r);
     }
 
+    const rowExercises: SessionExercise[] = [];
     for (const [key, amount] of Object.entries(session.totals[me] ?? {})) {
       const ex = exercisesById.get(key);
       const measure: Measure = ex?.measure ?? (key === 'bonus-cardio' ? 'seconds' : 'reps');
@@ -87,6 +110,7 @@ export function historyStats(sessions: readonly Session[], exercisesById: Readon
       t.amount += amount;
       t.sessions++;
       byExercise.set(key, t);
+      rowExercises.push({ key, name, measure, amount, suit: suitOfExercise.get(key) ?? 'joker' });
     }
 
     rows.push({
@@ -96,6 +120,8 @@ export function historyStats(sessions: readonly Session[], exercisesById: Readon
       tasks: done,
       minutes: session.endedAt ? Math.max(1, Math.round((session.endedAt - session.startedAt) / 60000)) : null,
       inProgress: !session.endedAt,
+      exercises: rowExercises,
+      groups: [...rowGroups.values()],
     });
   }
 

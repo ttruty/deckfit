@@ -1,31 +1,31 @@
 <a class="skip-link" href="#main">Skip to content</a>
 
 @if (!immersive()) {
-<mat-toolbar class="top-bar">
-  <a class="brand" routerLink="/">DeckFit</a>
+  <header class="df-topbar">
+    <a class="df-wordmark" routerLink="/">DeckFit</a>
 
-  <nav class="top-nav" aria-label="Main">
-    @for (item of nav; track item.path) {
-      <a mat-button [routerLink]="item.path" routerLinkActive="active" ariaCurrentWhenActive="page"
-         [routerLinkActiveOptions]="{ exact: item.exact }">
-        <mat-icon>{{ item.icon }}</mat-icon>{{ item.label }}
-      </a>
-    }
-  </nav>
+    <nav class="df-topnav" aria-label="Main">
+      @for (item of nav; track item.path) {
+        <a [routerLink]="item.path" routerLinkActive="active" ariaCurrentWhenActive="page"
+           [routerLinkActiveOptions]="{ exact: item.exact }">
+          <df-icon [name]="item.icon" />
+          <span>{{ item.label }}</span>
+        </a>
+      }
+    </nav>
 
-  <span class="spacer"></span>
+    <!-- Cycles System → Light → Dark. A plain button keeps menu/overlay code out of the initial bundle. -->
+    @let current = currentTheme();
+    <button type="button" class="df-icon-btn" (click)="cycleTheme()"
+            [attr.aria-label]="'Theme: ' + current.label + '. Change theme'" [title]="'Theme: ' + current.label">
+      <df-icon name="theme" />
+    </button>
 
-  <!-- Cycles System → Light → Dark. A plain button keeps menu/overlay code out of the initial bundle. -->
-  @let current = currentTheme();
-  <button mat-icon-button (click)="cycleTheme()" [attr.aria-label]="'Theme: ' + current.label + '. Change theme'" [title]="'Theme: ' + current.label">
-    <mat-icon>{{ current.icon }}</mat-icon>
-  </button>
-
-  <a mat-icon-button routerLink="/settings" routerLinkActive="active" ariaCurrentWhenActive="page"
-     aria-label="Settings" title="Settings">
-    <mat-icon>settings</mat-icon>
-  </a>
-</mat-toolbar>
+    <a class="df-icon-btn" routerLink="/settings" routerLinkActive="active" ariaCurrentWhenActive="page"
+       aria-label="Settings" title="Settings">
+      <df-icon name="settings" />
+    </a>
+  </header>
 }
 
 <main id="main" class="content" [class.immersive]="immersive()">
@@ -33,13 +33,13 @@
 </main>
 
 @if (!immersive()) {
-<nav class="bottom-nav" aria-label="Main">
-  @for (item of nav; track item.path) {
-    <a [routerLink]="item.path" routerLinkActive="active" ariaCurrentWhenActive="page"
-       [routerLinkActiveOptions]="{ exact: item.exact }">
-      <mat-icon aria-hidden="true">{{ item.icon }}</mat-icon>
-      <span>{{ item.label }}</span>
-    </a>
-  }
-</nav>
+  <nav class="df-bottomnav" aria-label="Main">
+    @for (item of nav; track item.path) {
+      <a class="df-tab" [routerLink]="item.path" routerLinkActive="active" ariaCurrentWhenActive="page"
+         [routerLinkActiveOptions]="{ exact: item.exact }">
+        <span class="df-tab__ind"><df-icon [name]="item.icon" /></span>
+        <span>{{ item.label }}</span>
+      </a>
+    }
+  </nav>
 }

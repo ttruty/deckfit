@@ -1,4 +1,4 @@
-import { dayKey } from '../../domain/challenges/progress';
+import { dayKey } from '../challenges/progress';
 import type { SessionRow } from './history-stats';
 
 export interface ActivityDay {
@@ -7,12 +7,32 @@ export interface ActivityDay {
   /** Local midnight, for date formatting in the UI. */
   at: number;
   workouts: number;
+  /** Reps logged that day — what the shading bands are counted in. */
+  reps: number;
+  /** Seconds of timed work that day, named alongside the reps where there are any. */
+  seconds: number;
   /** Work done that day on the card-value scale: 1 per rep, 1 per 5 seconds (§6.1). */
   points: number;
-  /** Shading step, 0 (nothing) to 4 (your busiest day in view). */
+  /** Shading step: 0 none, 1: 1–30 reps, 2: 31–60, 3: 61–90, 4: 91+ (REP_BANDS). */
   level: 0 | 1 | 2 | 3 | 4;
   /** Days in the last column that haven't happened yet. */
   future: boolean;
+  today: boolean;
+}
+
+/**
+ * Fixed rep bands, so a square means the same thing every time you look — shading relative to
+ * your busiest day made a quiet week look like a heavy one. Timed-only work scores no reps, so
+ * the tooltip names the seconds too.
+ */
+export const REP_BANDS = [30, 60, 90] as const;
+
+export function repLevel(reps: number): ActivityDay['level'] {
+  if (reps <= 0) return 0;
+  if (reps <= REP_BANDS[0]) return 1;
+  if (reps <= REP_BANDS[1]) return 2;
+  if (reps <= REP_BANDS[2]) return 3;
+  return 4;
 }
 
 export interface ActivityGrid {
@@ -27,6 +47,8 @@ export interface ActivityGrid {
   bestStreak: number;
   /** Points in the window. */
   points: number;
+  /** Days drawn (weeks × 7), for "52 of 182 days worked". */
+  days: number;
 }
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -58,11 +80,13 @@ function pointsOf(row: SessionRow): number {
  * that crosses midnight mid-session) are deterministic.
  */
 export function activityGrid(rows: readonly SessionRow[], today: number, weeks = 26): ActivityGrid {
-  const byDay = new Map<string, { workouts: number; points: number }>();
+  const byDay = new Map<string, { workouts: number; reps: number; seconds: number; points: number }>();
   for (const row of rows) {
     const key = dayKey(row.session.startedAt);
-    const day = byDay.get(key) ?? { workouts: 0, points: 0 };
+    const day = byDay.get(key) ?? { workouts: 0, reps: 0, seconds: 0, points: 0 };
     day.workouts++;
+    day.reps += row.reps;
+    day.seconds += row.seconds;
     day.points += pointsOf(row);
     byDay.set(key, day);
   }
@@ -75,7 +99,6 @@ export function activityGrid(rows: readonly SessionRow[], today: number, weeks =
   const columns: ActivityDay[][] = [];
   let points = 0;
   let activeDays = 0;
-  let max = 0;
 
   for (let w = 0; w < weeks; w++) {
     const column: ActivityDay[] = [];
@@ -86,7 +109,6 @@ export function activityGrid(rows: readonly SessionRow[], today: number, weeks =
       const at = date.getTime();
       const key = dayKey(at);
       const found = byDay.get(key);
-      max = Math.max(max, found?.points ?? 0);
       if (found) {
         points += found.points;
         activeDays++;
@@ -95,9 +117,12 @@ export function activityGrid(rows: readonly SessionRow[], today: number, weeks =
         date: key,
         at,
         workouts: found?.workouts ?? 0,
+        reps: found?.reps ?? 0,
+        seconds: found?.seconds ?? 0,
         points: Math.round(found?.points ?? 0),
-        level: 0,
+        level: repLevel(found?.reps ?? 0),
         future: at > startOfDay(today),
+        today: key === todayKey,
       });
     }
     columns.push(column);
@@ -105,18 +130,12 @@ export function activityGrid(rows: readonly SessionRow[], today: number, weeks =
 
   const months = monthLabels(columns);
 
-  // Shading is relative to the busiest day in view, so a light week still reads as something.
-  for (const column of columns) {
-    for (const day of column) {
-      day.level = day.points > 0 ? (Math.min(4, Math.ceil((day.points / Math.max(max, 1)) * 4)) as 1 | 2 | 3 | 4) : 0;
-    }
-  }
-
   return {
     weeks: columns,
     months,
     activeDays,
     points: Math.round(points),
+    days: weeks * 7,
     currentStreak: streakTo(byDay, todayKey, today),
     bestStreak: bestStreak(byDay),
   };

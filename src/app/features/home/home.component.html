@@ -1,122 +1,150 @@
-<div class="df-page">
-  <df-install-banner />
-  <section class="hero df-section" aria-labelledby="quick-title">
-    <div>
-      <h1 id="quick-title">Quick start</h1>
-      <p>{{ data.value()?.quickStart ?? 'Bodyweight deck · Solo Deal' }} — flip a card, do the work.</p>
-      <df-intensity-picker class="intensity" [(value)]="intensity" />
-    </div>
-    <button mat-flat-button class="big" (click)="quickStart()" [disabled]="starting() !== null">
-      <mat-icon>play_arrow</mat-icon>{{ starting() === 'quick' ? 'Starting…' : 'Start' }}
-    </button>
+<div class="df-page df-home">
+  <div class="df-intro">
+    <h1>Today</h1>
+    <p class="df-hint">
+      @if (headline(); as h) {
+        @if (h.workouts) {
+          {{ h.streak }}-day streak · {{ h.repsThisWeek | number }} reps this week ·
+          <a routerLink="/history">History</a>
+        } @else {
+          No workouts yet. Quick start is ready to go.
+        }
+      }
+    </p>
+  </div>
+
+  <section class="df-section df-quick" aria-labelledby="quick-start-title">
+    <df-quick-start />
   </section>
 
-  <section class="df-section" aria-labelledby="fav-title">
+  <section class="df-section" aria-labelledby="challenges-title">
     <div class="df-head">
-      <h2 id="fav-title">Favorites</h2>
-      <a mat-button routerLink="/routines/new"><mat-icon>add</mat-icon>New routine</a>
+      <h2 id="challenges-title">Challenges</h2>
+      @if (challenges.value()?.length) {
+        <a class="df-btn df-btn--text" routerLink="/challenges">All challenges</a>
+      }
     </div>
+
+    @if (challenges.value(); as list) {
+      @if (list.length) {
+        <ul class="df-list">
+          @for (item of list; track item.challenge.id) {
+            <li class="df-row df-item">
+              <span class="df-status" [class.df-status--done]="item.status.todayDone"
+                    [class.df-status--todo]="!item.status.todayDone">
+                <df-icon [name]="item.status.todayDone ? 'check' : 'clock'" />
+              </span>
+              <div class="df-item__text">
+                <a class="df-item__name" [routerLink]="['/challenges', item.challenge.code]">{{ item.challenge.name }}</a>
+                <span class="df-item__meta">{{ line(item) }}</span>
+                @if (!item.status.over && !item.status.upcoming) {
+                  <div class="df-meter" role="progressbar" [attr.aria-label]="item.challenge.name + ' progress'"
+                       aria-valuemin="0" [attr.aria-valuemax]="item.status.totalDays"
+                       [attr.aria-valuenow]="item.status.dayIndex - 1"
+                       [attr.aria-valuetext]="(item.status.dayIndex - 1) + ' of ' + item.status.totalDays + ' days done'">
+                    <span [style.width.%]="progress(item)"></span>
+                  </div>
+                }
+              </div>
+              @if (!item.status.todayDone && !item.status.over && !item.status.upcoming) {
+                <a class="df-btn df-btn--primary" [routerLink]="['/challenges', item.challenge.code]">Do today</a>
+              }
+            </li>
+          }
+        </ul>
+      } @else {
+        <div class="df-empty">
+          <p class="df-hint">Join a multi-day challenge and put reps on the line with friends.</p>
+          <a class="df-btn df-btn--outline" routerLink="/challenges">Browse challenges</a>
+        </div>
+      }
+    }
+  </section>
+
+  <section class="df-section" aria-labelledby="favorites-title">
+    <div class="df-head">
+      <h2 id="favorites-title">Favorites</h2>
+      <a class="df-btn df-btn--text" routerLink="/routines/new"><df-icon name="plus" />New routine</a>
+    </div>
+
     @if (data.isLoading() && !data.hasValue()) {
       <p role="status">Loading…</p>
-    } @else {
-      <ul class="routines">
-        @for (item of data.value()?.favorites ?? []; track item.routine.id) {
-          <li class="routine favorite">
-            <button class="start" (click)="startRoutine(item.routine)" [disabled]="starting() !== null || !item.playable"
-                    [attr.aria-label]="'Start ' + item.routine.name">
-              <mat-icon class="play" aria-hidden="true">{{ starting() === item.routine.id ? 'hourglass_top' : 'play_circle' }}</mat-icon>
-              <span class="text">
-                <span class="name">{{ item.routine.name }}</span>
-                <span class="sub">{{ item.subtitle }}</span>
-              </span>
-            </button>
-            <a mat-icon-button [routerLink]="['/routines', item.routine.id, 'edit']" [attr.aria-label]="'Edit ' + item.routine.name">
-              <mat-icon>edit</mat-icon>
-            </a>
-          </li>
-        } @empty {
-          <li class="empty">
-            @if (hasRoutines()) {
-              Mark a routine as a favorite to start it here with one tap.
+    } @else if (data.value()?.favorites?.length) {
+      <ul class="df-list">
+        @for (item of data.value()!.favorites; track item.routine.id) {
+          <li class="df-row df-item">
+            <div class="df-item__text">
+              <span class="df-item__name">{{ item.routine.name }}</span>
+              <span class="df-item__meta">{{ item.subtitle }}</span>
+            </div>
+            @if (item.multiplayer) {
+              <a class="df-icon-btn df-icon-btn--filled" [routerLink]="['/room/new']"
+                 [queryParams]="{ routine: item.routine.id }"
+                 [attr.aria-label]="'Start a room: ' + item.routine.name">
+                <df-icon name="room" />
+              </a>
             } @else {
-              Save a routine (deck + game + settings) and mark it favorite to start it here with one tap.
+              <button type="button" class="df-icon-btn df-icon-btn--filled" [disabled]="!item.playable || starting() !== null"
+                      (click)="startRoutine(item.routine)" [attr.aria-label]="'Start ' + item.routine.name">
+                <df-icon name="play" />
+              </button>
             }
           </li>
         }
       </ul>
+    } @else {
+      <p class="df-hint">
+        Save a deck, game and intensity as a routine and it shows up here, one tap to start.
+      </p>
     }
   </section>
 
   @if (data.value()?.others?.length) {
-    <section class="df-section" aria-labelledby="other-title">
-      <h2 id="other-title">Your routines</h2>
-      <ul class="routines">
+    <section class="df-section" aria-labelledby="routines-title">
+      <div class="df-head"><h2 id="routines-title">Your routines</h2></div>
+      <ul class="df-list">
         @for (item of data.value()!.others; track item.routine.id) {
-          <li class="routine">
-            <button class="start" (click)="startRoutine(item.routine)" [disabled]="starting() !== null || !item.playable"
-                    [attr.aria-label]="'Start ' + item.routine.name">
-              <mat-icon class="play" aria-hidden="true">{{ starting() === item.routine.id ? 'hourglass_top' : 'play_circle_outline' }}</mat-icon>
-              <span class="text">
-                <span class="name">{{ item.routine.name }}</span>
-                <span class="sub">{{ item.subtitle }}</span>
-              </span>
-            </button>
-            <a mat-icon-button [routerLink]="['/routines', item.routine.id, 'edit']" [attr.aria-label]="'Edit ' + item.routine.name">
-              <mat-icon>edit</mat-icon>
-            </a>
+          <li class="df-row df-item">
+            <div class="df-item__text">
+              <span class="df-item__name">{{ item.routine.name }}</span>
+              <span class="df-item__meta">{{ item.subtitle }}</span>
+            </div>
+            @if (item.multiplayer) {
+              <a class="df-icon-btn df-icon-btn--filled" [routerLink]="['/room/new']"
+                 [queryParams]="{ routine: item.routine.id }"
+                 [attr.aria-label]="'Start a room: ' + item.routine.name">
+                <df-icon name="room" />
+              </a>
+            } @else {
+              <button type="button" class="df-icon-btn df-icon-btn--filled" [disabled]="!item.playable || starting() !== null"
+                      (click)="startRoutine(item.routine)" [attr.aria-label]="'Start ' + item.routine.name">
+                <df-icon name="play" />
+              </button>
+            }
           </li>
         }
       </ul>
     </section>
   }
 
-  @if (challenges.value()?.length) {
-    <section class="df-section" aria-labelledby="challenge-title">
-      <div class="df-head">
-        <h2 id="challenge-title">Challenges</h2>
-        <a mat-button routerLink="/challenges">All challenges</a>
-      </div>
-      <ul class="challenges">
-        @for (item of challenges.value() ?? []; track item.challenge.id) {
-          <li [class.done]="item.status.todayDone" [class.over]="item.status.over">
-            <a [routerLink]="['/challenges', item.challenge.code]">
-              <mat-icon class="mark" aria-hidden="true">
-                {{ item.status.over ? 'flag' : item.status.todayDone ? 'check_circle' : 'radio_button_unchecked' }}
-              </mat-icon>
-              <span class="text">
-                <span class="name">{{ item.challenge.name }}</span>
-                <span class="sub">{{ line(item) }}</span>
-              </span>
-            </a>
-          </li>
-        }
-      </ul>
-    </section>
-  }
-
-  <section class="join df-section" aria-labelledby="join-title">
-    <h2 id="join-title">Play with friends</h2>
-    <p class="lede">
-      Play live in a room, or put reps on the line in a challenge that runs for days.
-    </p>
+  <section class="df-section df-join" aria-labelledby="join-title">
+    <div class="df-head"><h2 id="join-title">Play with friends</h2></div>
     @if (!realtime) {
-      <p class="offline-note" role="note">
-        <mat-icon>wifi_off</mat-icon>
-        No realtime server configured, so rooms stay in this browser — another device or browser will get “Room not found”.
-        Run <code>npm run start:local</code> with keys in <code>environment.local.ts</code> (check them with <code>npm run check:realtime</code>).
+      <p class="df-hint" role="note">
+        No realtime server configured, so rooms stay in this browser — another device gets “Room not found”.
       </p>
     }
-    <div class="room-actions">
-      <a mat-flat-button routerLink="/room/new"><mat-icon>group_add</mat-icon>Start a room</a>
-      <a mat-stroked-button routerLink="/challenges"><mat-icon>flag</mat-icon>Challenges</a>
-      <form [formGroup]="joinForm" (ngSubmit)="joinRoom()" class="join-form">
-        <mat-form-field appearance="outline" subscriptSizing="dynamic">
-          <mat-label>Room code</mat-label>
-          <input matInput [formControl]="roomCode" maxlength="6" autocapitalize="characters" autocomplete="off" spellcheck="false" />
-          @if (roomCode.touched && roomCode.invalid) { <mat-error>6 letters or digits</mat-error> }
-        </mat-form-field>
-        <button mat-stroked-button type="submit"><mat-icon>group</mat-icon>Join</button>
-      </form>
-    </div>
+    <form class="df-join__form" [formGroup]="joinForm" (ngSubmit)="joinRoom()">
+      <label class="df-vh" for="room-code">Room code</label>
+      <input id="room-code" class="df-join__code" [formControl]="roomCode" maxlength="6" placeholder="Room code"
+             autocapitalize="characters" autocomplete="off" spellcheck="false" />
+      <button type="submit" class="df-btn df-btn--outline"><df-icon name="group" />Join</button>
+      <a class="df-btn df-btn--text" routerLink="/room/new"><df-icon name="room" />Start a room</a>
+    </form>
+    @if (roomCode.touched && roomCode.invalid) {
+      <p class="df-hint" role="alert">A room code is six letters or digits.</p>
+    }
   </section>
+
+  <df-install-banner />
 </div>

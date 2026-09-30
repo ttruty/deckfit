@@ -1,0 +1,332 @@
+// Screen furniture (§9d): the tokens and classes every screen is drawn with.
+// Ported from docs/design/deckfit-*.html — keep the class names and values in step with those
+// mockups. Screen-specific pieces (.df-quick, .df-heat, .df-deck …) live with their components.
+
+// Dark lifts with lighter greys, the way M3 elevation works.
+@mixin df-dark-surfaces {
+  --df-page-bg: var(--mat-sys-surface);
+  --df-card-bg: var(--mat-sys-surface-container);
+  // TODO(design): confirm — the mockup's dark row value was cut off; this sits between
+  // surface-container and surface-container-high.
+  --df-row-bg: #26262a;
+  --df-row-raised: var(--mat-sys-surface-container-high);
+  --df-row-hover: var(--mat-sys-surface-container-high);
+  --df-edge: color-mix(in srgb, var(--mat-sys-outline-variant) 45%, transparent);
+  // TODO(design): confirm — the mockup assumed this dark shadow.
+  --df-shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 20px -14px rgb(0 0 0 / 0.8);
+}
+
+:root {
+  // Surface tiers. These map onto Angular Material's system colours so the `.df-*` markup and
+  // any Material component (dialogs, snackbars, form fields) stay the same colour.
+  --df-page-bg: var(--mat-sys-surface-container);
+  --df-card-bg: var(--mat-sys-surface-container-lowest);
+  --df-row-bg: var(--mat-sys-surface-container-low);
+  --df-row-raised: var(--mat-sys-surface-container);
+  --df-row-hover: var(--mat-sys-surface-container-high);
+  --df-edge: color-mix(in srgb, var(--mat-sys-outline-variant) 70%, transparent);
+  --df-shadow: 0 1px 2px rgb(0 0 0 / 0.05), 0 8px 20px -14px rgb(0 0 0 / 0.35);
+
+  --df-primary: var(--mat-sys-primary);
+  // TODO(design): confirm — the mockup assumed M3's on-primary (#ffffff light / #062e6f dark).
+  --df-on-primary: var(--mat-sys-on-primary);
+  --df-text: var(--mat-sys-on-surface);
+  // TODO(design): confirm — the mockup assumed M3's on-surface-variant for muted text.
+  --df-text-muted: var(--mat-sys-on-surface-variant);
+
+  // The UI face, beside the card system's display and text faces (§9a).
+  --font-ui: Roboto, system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    @include df-dark-surfaces;
+  }
+}
+:root[data-theme='dark'] {
+  @include df-dark-surfaces;
+}
+
+// ── Base ──────────────────────────────────────────────────────────────────
+.df-ico {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.df-ico--filled {
+  fill: currentColor;
+  stroke: none;
+}
+
+/** Visible to a screen reader only. */
+.df-vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+// ── Page structure ────────────────────────────────────────────────────────
+.df-page {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  > h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 2.15rem;
+    line-height: 1.05;
+  }
+}
+
+.df-section {
+  background: var(--df-card-bg);
+  border: 1px solid var(--df-edge);
+  box-shadow: var(--df-shadow);
+  border-radius: 20px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  > h2,
+  .df-head h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.4rem;
+    line-height: 1.15;
+  }
+}
+
+/** An item inside a section: a routine, a deck, a player. */
+.df-row {
+  background: var(--df-row-bg);
+  border-radius: 16px;
+}
+
+/** A heading with the action that belongs to it. */
+.df-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0 8px;
+  min-height: 48px;
+}
+
+.df-hint {
+  margin: 0;
+  color: var(--df-text-muted);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+
+.df-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/** The page's own heading block, above the first section. */
+.df-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px 0 0;
+
+  a {
+    font-weight: 500;
+    text-underline-offset: 3px;
+  }
+}
+.df-intro.df-head {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+/** A heading-sized name that is also a link (deck and game rows). */
+.df-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.6rem;
+  line-height: 1.05;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    &:hover { text-decoration: underline; text-underline-offset: 3px; }
+  }
+}
+
+/** A block under a section heading, split off by a rule. */
+.df-sub {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid var(--df-edge);
+
+  .df-head { min-height: 0; }
+  h3 {
+    margin: 0;
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+}
+
+.df-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.df-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+// ── Buttons ───────────────────────────────────────────────────────────────
+.df-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 20px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  text-decoration: none;
+  font: 500 1rem/1.2 var(--font-ui);
+  color: var(--df-primary);
+  white-space: nowrap;
+
+  .df-ico { width: 20px; height: 20px; }
+  &:disabled { opacity: 0.5; cursor: default; }
+}
+.df-btn--primary {
+  background: var(--df-primary);
+  color: var(--df-on-primary);
+  &:hover:not(:disabled) { filter: brightness(1.08); }
+}
+.df-btn--outline {
+  border-color: var(--df-text-muted);
+  &:hover:not(:disabled) { background: var(--df-row-hover); }
+}
+.df-btn--text {
+  padding: 0 12px;
+  &:hover:not(:disabled) { background: var(--df-row-hover); }
+}
+/** The one main action on a screen. */
+.df-btn--main {
+  width: 100%;
+  min-height: 56px;
+  font-size: 1.125rem;
+}
+
+.df-icon-btn {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  flex: none;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--df-text);
+  cursor: pointer;
+  text-decoration: none;
+
+  &:hover { background: var(--df-row-hover); }
+}
+.df-icon-btn--filled {
+  background: var(--df-primary);
+  color: var(--df-on-primary);
+  &:hover { background: var(--df-primary); filter: brightness(1.08); }
+}
+
+// ── Rows shared by Home and History ───────────────────────────────────────
+.df-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 72px;
+  padding: 12px 8px 12px 12px;
+}
+.df-item__text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.df-item__name {
+  font-size: 1.0625rem;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--df-text);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+a.df-item__name:hover { text-decoration: underline; }
+.df-item__meta {
+  font-size: 0.875rem;
+  color: var(--df-text-muted);
+}
+
+// ── Suit label: the glyph never stands alone (§9 a11y) ────────────────────
+.df-suit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+.df-suit__g {
+  font-family: var(--font-text);
+  font-size: 1.1rem;
+  line-height: 1;
+  width: 1em;
+  text-align: center;
+
+  &[data-suit='hearts'] { color: var(--suit-text-hearts); }
+  &[data-suit='diamonds'] { color: var(--suit-text-diamonds); }
+  &[data-suit='clubs'] { color: var(--suit-text-clubs); }
+  &[data-suit='spades'] { color: var(--suit-text-spades); }
+  &[data-suit='joker'] { color: var(--suit-text-joker); }
+}
+
+// ── Motion ────────────────────────────────────────────────────────────────
+@media (prefers-reduced-motion: no-preference) {
+  .df-btn,
+  .df-icon-btn,
+  .df-chip,
+  .df-seg__opt,
+  .df-tab__ind {
+    transition: background-color 0.15s ease, filter 0.15s ease;
+  }
+}

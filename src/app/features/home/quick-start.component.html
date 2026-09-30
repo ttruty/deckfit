@@ -1,0 +1,44 @@
+@if (data.value(); as d) {
+  <div class="df-quick__top">
+    <div class="df-quick__title">
+      <h2 id="quick-start-title">Quick start</h2>
+      <p class="df-hint">Flip a card, do the work. Change the deck or game first if you like.</p>
+    </div>
+    @if (d.sample) { <df-card-face-mini class="tilted" [card]="d.sample" /> }
+  </div>
+
+  <ul class="df-list">
+    <li>
+      <button type="button" class="df-row df-choice" (click)="pickDeck()">
+        <span class="df-choice__text">
+          <span class="df-choice__label">Deck</span>
+          <span class="df-choice__value">{{ d.deck.name }}</span>
+          <span class="df-choice__meta">{{ d.deckMeta }}</span>
+        </span>
+        <df-icon name="chevron" />
+        <span class="df-vh">Change deck</span>
+      </button>
+    </li>
+    <li>
+      <button type="button" class="df-row df-choice" (click)="pickGame()">
+        <span class="df-choice__text">
+          <span class="df-choice__label">Game</span>
+          <span class="df-choice__value">{{ d.game.name }}</span>
+          <span class="df-choice__meta" [title]="d.gameMeta">{{ d.gameMeta }}</span>
+        </span>
+        <df-icon name="chevron" />
+        <span class="df-vh">Change game</span>
+      </button>
+    </li>
+  </ul>
+
+  <df-segmented legend="Intensity" [options]="intensityOptions" [value]="intensity()"
+                (valueChange)="setIntensity($event)" />
+  <p class="df-hint">{{ intensityHelp() }}</p>
+
+  <button type="button" class="df-btn df-btn--primary df-btn--main" [disabled]="starting()" (click)="start()">
+    <df-icon name="play" />{{ starting() ? 'Starting…' : 'Start ' + d.game.name }}
+  </button>
+} @else if (data.isLoading()) {
+  <p role="status">Loading…</p>
+}

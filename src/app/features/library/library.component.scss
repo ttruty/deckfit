@@ -1,8 +1,15 @@
 .df-page { max-width: 1200px; }
 
-/* Search and the two actions share one container, so the page starts with a clear "find" step. */
+/* Search and the two actions share one container, so the page starts with a clear "find" step.
+   `flex-direction` is explicit: this header is also a `.df-section`, which stacks its children,
+   and a column would read `flex: 1 1 240px` as a 240px-tall search field. */
 .head {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+
   .search { flex: 1 1 240px; }
   .filters-toggle, .new-exercise { min-height: 48px; }
 }

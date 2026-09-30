@@ -1,27 +1,26 @@
-import { ChangeDetectionStrategy, Component, computed, inject, resource, signal } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, resource, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterLink } from '@angular/router';
+import { ChallengeService, type MyChallenge } from '../../core/challenges/challenge.service';
 import { DeckRepository, GameRepository, RoutineRepository } from '../../core/db/repositories';
+import { HistoryService } from '../../core/history/history.service';
 import { normalizeRoomCode } from '../../core/sync/room-code';
 import { REALTIME_CONFIGURED } from '../../core/sync/realtime-config';
+import { goalText } from '../../domain/models/challenge.schema';
 import type { Routine } from '../../domain/models/schemas';
 import { INTENSITY_LABEL } from '../../shared/labels';
-import { PreferencesService } from '../../core/settings/preferences.service';
-import { ChallengeService, type MyChallenge } from '../../core/challenges/challenge.service';
-import { goalText } from '../../domain/models/challenge.schema';
-import { IntensityPickerComponent } from '../../shared/ui/intensity-picker/intensity-picker.component';
-import { LaunchError, QUICK_START, SessionLauncher } from '../play/session-launcher.service';
+import { DfIconComponent } from '../../shared/ui/icon/df-icon.component';
+import { LaunchError, SessionLauncher } from '../play/session-launcher.service';
 import { InstallBannerComponent } from './install-banner.component';
+import { QuickStartComponent } from './quick-start.component';
 
+/** Home (§9f): today's line, Quick start, challenges, routines, rooms, install. */
 @Component({
   selector: 'df-home',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, RouterLink, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, InstallBannerComponent, IntensityPickerComponent],
+  imports: [DecimalPipe, ReactiveFormsModule, RouterLink, DfIconComponent, InstallBannerComponent, QuickStartComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -32,10 +31,41 @@ export class HomeComponent {
   private readonly launcher = inject(SessionLauncher);
   private readonly router = inject(Router);
   private readonly snack = inject(MatSnackBar);
+  private readonly history = inject(HistoryService);
+  private readonly challengeService = inject(ChallengeService);
   /** False when no realtime backend is configured: rooms then live in this browser only. */
   protected readonly realtime = inject(REALTIME_CONFIGURED);
-  private readonly prefs = inject(PreferencesService);
-  private readonly challengeService = inject(ChallengeService);
+
+  /** The one line under "Today": streak and the week's reps (§9e). */
+  protected readonly headline = resource({
+    loader: () => this.history.headline().catch(() => ({ streak: 0, repsThisWeek: 0, workouts: 0 })),
+  }).value;
+
+  protected readonly data = resource({
+    loader: async () => {
+      const [routines, decks, games] = await Promise.all([this.routinesRepo.list(), this.decks.list(), this.games.list()]);
+      const deckName = new Map(decks.map((d) => [d.id, d.name]));
+      const gameById = new Map(games.map((g) => [g.id, g]));
+      const view = (r: Routine) => {
+        const game = gameById.get(r.gameId);
+        return {
+          routine: r,
+          subtitle: [
+            deckName.get(r.deckId) ?? 'Missing deck',
+            game?.name ?? 'Missing game',
+            INTENSITY_LABEL[r.settings.intensity ?? 'moderate'],
+            ...(game && game.players.max >= 2 ? [`room for ${game.players.min}–${game.players.max}`] : []),
+          ].join(' · '),
+          playable: deckName.has(r.deckId) && !!game,
+          multiplayer: !!game && game.players.max >= 2,
+        };
+      };
+      return {
+        favorites: routines.filter((r) => r.favorite).map(view),
+        others: routines.filter((r) => !r.favorite).map(view),
+      };
+    },
+  });
 
   /**
    * Challenges you're in (§7b), in their own resource: they need the network, and Home must not
@@ -51,48 +81,8 @@ export class HomeComponent {
     },
   });
 
-  /** One line per challenge: what it wants of you today, or what it cost you. */
-  protected line(item: MyChallenge): string {
-    const { status, challenge } = item;
-    if (status.upcoming) return `Starts ${challenge.startsOn.slice(8)} ${monthOf(challenge.startsOn)} · ${goalText(challenge.goal)}`;
-    if (status.over) return status.staked ? `Finished · ${status.staked} reps of yours in the pot` : 'Finished · you stayed clean';
-    if (status.todayDone) return `Today's done · ${status.daysLeft} ${status.daysLeft === 1 ? 'day' : 'days'} to go`;
-    if (status.todayShort) return `${status.todayShort} points to go today · ${challenge.ante} reps on the line`;
-    return `Today still open · ${challenge.ante} reps on the line`;
-  }
-
-  /** Quick Start has no routine, so it works at the device's intensity (§6.1). */
-  protected readonly intensity = this.prefs.intensity;
-
-  protected readonly data = resource({
-    loader: async () => {
-      const [routines, decks, games] = await Promise.all([this.routinesRepo.list(), this.decks.list(), this.games.list()]);
-      const deckName = new Map(decks.map((d) => [d.id, d.name]));
-      const gameName = new Map(games.map((g) => [g.id, g.name]));
-      const view = (r: Routine) => ({
-        routine: r,
-        subtitle: [
-          deckName.get(r.deckId) ?? 'Missing deck',
-          gameName.get(r.gameId) ?? 'Missing game',
-          ...(r.settings.intensity && r.settings.intensity !== 'moderate' ? [`${INTENSITY_LABEL[r.settings.intensity]} intensity`] : []),
-          ...(r.settings.repMultiplier === 1 ? [] : [`×${r.settings.repMultiplier}`]),
-        ].join(' · '),
-        playable: deckName.has(r.deckId) && gameName.has(r.gameId),
-      });
-      return {
-        favorites: routines.filter((r) => r.favorite).map(view),
-        others: routines.filter((r) => !r.favorite).map(view),
-        quickStart: `${deckName.get(QUICK_START.deckId) ?? 'Bodyweight deck'} · ${gameName.get(QUICK_START.gameId) ?? 'Solo Deal'}`,
-      };
-    },
-  });
-
   /** Id of whatever is being launched, to disable its button and show progress. */
   protected readonly starting = signal<string | null>(null);
-  protected readonly hasRoutines = computed(() => {
-    const d = this.data.value();
-    return !!d && d.favorites.length + d.others.length > 0;
-  });
 
   protected readonly roomCode = new FormControl('', {
     nonNullable: true,
@@ -101,8 +91,22 @@ export class HomeComponent {
   /** A FormGroup so (ngSubmit) fires and the native submit is prevented. */
   protected readonly joinForm = new FormGroup({ code: this.roomCode });
 
-  protected quickStart(): Promise<void> {
-    return this.launch('quick', () => this.launcher.start({ ...QUICK_START, settings: { intensity: this.intensity() } }));
+  /** One line per challenge: what it wants of you today, or what it cost you. */
+  protected line(item: MyChallenge): string {
+    const { status, challenge } = item;
+    if (status.upcoming) return `Starts ${challenge.startsOn.slice(8)} ${monthOf(challenge.startsOn)} · ${goalText(challenge.goal)}`;
+    if (status.over) return status.staked ? `Finished · ${status.staked} reps of yours in the pot` : 'Finished · you stayed clean';
+    const day = `Day ${status.dayIndex} of ${status.totalDays}`;
+    if (status.todayDone) {
+      return `Done today · ${status.daysLeft - 1} ${status.daysLeft - 1 === 1 ? 'day' : 'days'} to go`;
+    }
+    return status.todayShort ? `${day} · ${status.todayShort} points to go today` : `${day} · ${challenge.ante} reps on the line`;
+  }
+
+  /** How much of the challenge is behind you, for the bar. */
+  protected progress(item: MyChallenge): number {
+    const { dayIndex, totalDays } = item.status;
+    return totalDays ? Math.round(((dayIndex - 1) / totalDays) * 100) : 0;
   }
 
   protected startRoutine(routine: Routine): Promise<void> {

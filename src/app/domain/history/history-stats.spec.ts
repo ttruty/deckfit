@@ -1,7 +1,7 @@
 import { loadContent } from '../../../testing/db';
 import { resolveSettings } from '../../domain/engine/dsl/settings';
 import { simulate } from '../../domain/engine/dsl/simulate';
-import type { Session } from '../../domain/models/schemas';
+import type { Session } from '../models/schemas';
 import { historyStats } from './history-stats';
 
 const content = loadContent();
