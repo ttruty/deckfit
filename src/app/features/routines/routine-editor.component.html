@@ -59,6 +59,17 @@
             </mat-select>
           </mat-form-field>
 
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="narrow">
+            <mat-label>Deck length</mat-label>
+            <mat-select formControlName="cardCount">
+              <mat-option [value]="null">Whole deck</mat-option>
+              @for (n of deckLengths(); track n) {
+                <mat-option [value]="n">{{ n }} cards</mat-option>
+              }
+            </mat-select>
+            <mat-hint>Fewer cards is a shorter workout; every suit keeps its share.</mat-hint>
+          </mat-form-field>
+
           <mat-slide-toggle formControlName="limitEquipment">Only equipment I have</mat-slide-toggle>
           @if (form.controls.filters.controls.limitEquipment.value) {
             <mat-chip-listbox multiple formControlName="equipment" aria-label="Equipment I have">

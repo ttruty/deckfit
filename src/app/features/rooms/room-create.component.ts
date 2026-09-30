@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, resource, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, resource, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -6,18 +7,19 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Router, RouterLink } from '@angular/router';
-import { GameRepository, RoutineRepository } from '../../core/db/repositories';
+import { DeckRepository, GameRepository, RoutineRepository } from '../../core/db/repositories';
 import { IdentityService } from '../../core/identity/identity.service';
 import { RoomRoutineService, ROOM_DEFAULT_PREFIX, ROOM_DEFAULT_ROUTINE_ID } from './room-routine.service';
 import { REALTIME_CONFIGURED } from '../../core/sync/realtime-config';
 import { RoomService } from './room.service';
 import { PreferencesService } from '../../core/settings/preferences.service';
+import { DeckLengthPickerComponent } from '../../shared/ui/deck-length/deck-length-picker.component';
 import { IntensityPickerComponent } from '../../shared/ui/intensity-picker/intensity-picker.component';
 
 @Component({
   selector: 'df-room-create',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, RouterLink, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSelectModule, IntensityPickerComponent],
+  imports: [ReactiveFormsModule, RouterLink, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSelectModule, DeckLengthPickerComponent, IntensityPickerComponent],
   templateUrl: './room-create.component.html',
   styleUrl: './room-create.component.scss',
 })
@@ -27,6 +29,7 @@ export class RoomCreateComponent {
 
   private readonly routines = inject(RoutineRepository);
   private readonly games = inject(GameRepository);
+  private readonly decks = inject(DeckRepository);
   private readonly roomRoutines = inject(RoomRoutineService);
   private readonly rooms = inject(RoomService);
   private readonly identity = inject(IdentityService);
@@ -37,6 +40,8 @@ export class RoomCreateComponent {
 
   /** The room's intensity (§6.1); starts from this device's default and is remembered. */
   protected readonly intensity = this.prefs.intensity;
+  /** The room's deck length in cards (§9g); the host picks it for everyone. */
+  protected readonly deckLength = this.prefs.deckLength;
 
   protected readonly name = new FormControl('', { nonNullable: true, validators: [Validators.maxLength(30)] });
   protected readonly routineId = new FormControl('', { nonNullable: true, validators: [Validators.required] });
@@ -48,14 +53,20 @@ export class RoomCreateComponent {
   /** Saved routines plus the built-in group default; only multi-player games are selectable. */
   protected readonly options = resource({
     loader: async () => {
-      const [saved, games, defaults, me] = await Promise.all([
-        this.routines.list(), this.games.list(), this.roomRoutines.defaultRoutines(), this.identity.me(),
+      const [saved, games, decks, defaults, me] = await Promise.all([
+        this.routines.list(), this.games.list(), this.decks.list(), this.roomRoutines.defaultRoutines(), this.identity.me(),
       ]);
       const gameById = new Map(games.map((g) => [g.id, g]));
+      const deckSizes = new Map(decks.map((d) => [d.id, d.cards.length]));
       this.name.setValue(me.name === 'You' ? '' : me.name);
       return [...defaults, ...saved].map((routine) => {
         const game = gameById.get(routine.gameId);
-        return { routine, gameName: game?.name ?? 'Missing game', fitsGroup: !!game && game.players.max >= 2 };
+        return {
+          routine,
+          gameName: game?.name ?? 'Missing game',
+          fitsGroup: !!game && game.players.max >= 2,
+          deckSize: deckSizes.get(routine.deckId) ?? 54,
+        };
       });
     },
   });
@@ -74,6 +85,13 @@ export class RoomCreateComponent {
     });
   }
 
+  private readonly routineIdValue = toSignal(this.routineId.valueChanges, { initialValue: this.routineId.value });
+
+  /** The deck behind the selected routine, so the length picker only offers shorter lengths. */
+  protected readonly selectedDeckSize = computed(
+    () => this.options.value()?.find((o) => o.routine.id === this.routineIdValue())?.deckSize ?? 54,
+  );
+
   protected async create(): Promise<void> {
     const option = this.options.value()?.find((o) => o.routine.id === this.routineId.value);
     if (!option || this.busy()) return;
@@ -81,7 +99,8 @@ export class RoomCreateComponent {
     this.error.set(null);
     try {
       if (this.name.value.trim()) await this.identity.rename(this.name.value);
-      const code = await this.rooms.create(await this.roomRoutines.build(option.routine, { intensity: this.intensity() }));
+      const room = await this.roomRoutines.build(option.routine, { intensity: this.intensity(), cardCount: this.deckLength() });
+      const code = await this.rooms.create(room);
       // Keep query params (dev builds accept ?seed= for reproducible e2e deals).
       await this.router.navigate(['/room', code], { queryParamsHandling: 'preserve' });
     } catch (err) {

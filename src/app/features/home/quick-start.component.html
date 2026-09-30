@@ -13,7 +13,7 @@
         <span class="df-choice__text">
           <span class="df-choice__label">Deck</span>
           <span class="df-choice__value">{{ d.deck.name }}</span>
-          <span class="df-choice__meta">{{ d.deckMeta }}</span>
+          <span class="df-choice__meta">{{ deckMeta() }}</span>
         </span>
         <df-icon name="chevron" />
         <span class="df-vh">Change deck</span>
@@ -35,6 +35,8 @@
   <df-segmented legend="Intensity" [options]="intensityOptions" [value]="intensity()"
                 (valueChange)="setIntensity($event)" />
   <p class="df-hint">{{ intensityHelp() }}</p>
+
+  <df-deck-length [(value)]="deckLength" [deckSize]="d.deck.cards.length" label="Cards" />
 
   <button type="button" class="df-btn df-btn--primary df-btn--main" [disabled]="starting()" (click)="start()">
     <df-icon name="play" />{{ starting() ? 'Starting…' : 'Start ' + d.game.name }}

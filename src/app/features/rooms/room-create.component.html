@@ -36,6 +36,8 @@
 
       <df-intensity-picker [(value)]="intensity" label="Intensity for everyone" />
 
+      <df-deck-length [(value)]="deckLength" [deckSize]="selectedDeckSize()" label="Cards in the deck" />
+
       @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
 
       <button mat-flat-button class="big" type="submit" [disabled]="busy() || !routineId.value">

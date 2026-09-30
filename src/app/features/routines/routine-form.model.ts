@@ -12,7 +12,7 @@ export interface RoutineFormValue {
   favorite: boolean;
   core: { intensity: Intensity; repMultiplier: number; faceCardValue: number; aceValue: number; jokerRule: JokerRule; maxRepCap: number | null };
   game: Record<string, SettingValue>;
-  filters: { suits: Suit[]; maxDifficulty: Difficulty | null; limitEquipment: boolean; equipment: Equipment[] };
+  filters: { suits: Suit[]; maxDifficulty: Difficulty | null; limitEquipment: boolean; equipment: Equipment[]; cardCount: number | null };
 }
 
 export const REP_MULTIPLIERS = [0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3] as const;
@@ -40,6 +40,7 @@ export function toFormValue(routine: Routine | undefined, game: GameDefinition, 
       maxDifficulty: (filters?.maxDifficulty as Difficulty | undefined) ?? null,
       limitEquipment: filters?.equipment !== undefined,
       equipment: filters?.equipment ?? [],
+      cardCount: filters?.cardCount ?? null,
     },
   };
 }
@@ -70,6 +71,7 @@ export function toDeckFilters(f: RoutineFormValue['filters']): DeckFilters | und
   if (f.suits.length < SUITS.length) out.suits = [...f.suits];
   if (f.maxDifficulty !== null) out.maxDifficulty = f.maxDifficulty;
   if (f.limitEquipment) out.equipment = [...f.equipment];
+  if (f.cardCount !== null) out.cardCount = f.cardCount;
   return Object.keys(out).length ? out : undefined;
 }
 

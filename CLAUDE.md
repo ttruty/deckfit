@@ -211,7 +211,7 @@ interface Routine {
   deckId: string;
   gameId: string;
   settings: GameSettings;       // overrides of game defaults
-  deckFilters?: { suits?: Suit[]; maxDifficulty?: number; equipment?: Equipment[] };
+  deckFilters?: { suits?: Suit[]; maxDifficulty?: number; equipment?: Equipment[]; cardCount?: number };
   favorite: boolean;
   updatedAt: number;
 }
@@ -910,7 +910,7 @@ board.
 | `/room/new`, `/room/:code` | Lobby, then play |
 | `/challenges`, `/challenges/:code` | Async challenges: yours, start or join; then the board (§7b) |
 | `/history` | Past sessions, totals per exercise/muscle group |
-| `/settings` | Display name, theme, default intensity, sound, data export/import, safety notice, about (no units: nothing records weights) |
+| `/settings` | Display name, theme, default intensity, default deck length, sound, data export/import, safety notice, about (no units: nothing records weights) |
 
 Lazy-load every feature route. Guard `/play` against a missing session and
 `/room/:code` against an invalid code.
@@ -1091,7 +1091,8 @@ Light lifts with white, dark lifts with lighter greys, the way M3 elevation work
 
 Shared pieces: `shared/ui/icon` (`df-icon`, the mockups' 24px stroke set — Material Icons is a
 ligature font of filled glyphs and can't match it), `shared/ui/segmented` (native radios with a
-check mark: intensity on Home, the period on History) and `shared/ui/card-face/card-face-mini`
+check mark: intensity on Home, the period on History, deck length everywhere),
+`shared/ui/deck-length` (`df-deck-length`, §9g) and `shared/ui/card-face/card-face-mini`
 (the small brand card beside Quick start).
 
 **The shell** (`app.html`/`app.scss`): below 600px a fixed five-tab bottom bar; from 600px the
@@ -1143,16 +1144,42 @@ Play with friends → the install offer (`docs/design/deckfit-home.html`). At 84
 takes the left column and the rest stack on the right.
 
 - **Quick start** is a section like any other, not a saturated panel: the sample card, a Deck row
-  and a Game row that open a picker (`quick-picker.dialog`), the intensity control, then one
-  56px "Start <game>". The deck and game are remembered per device
+  and a Game row that open a picker (`quick-picker.dialog`), the intensity control, the deck length
+  (§9g), then one 56px "Start <game>". The deck and game are remembered per device
   (`meta.quickStartDeckId` / `quickStartGameId`), so the fastest path is the one you last used
-  rather than a constant.
+  rather than a constant; the Deck row's second line says how much of the deck the chosen length
+  actually deals ("20 of 54 cards").
 - **Challenges** (§7b): a status pip plus either "Done today · N days to go" or "Day X of Y"
   with a progress bar and a "Do today" button.
 - **Favorites** and **Your routines**: a 48px play button, or a start-a-room button for a game
   that takes 2+ players.
 - **Play with friends** keeps the join-by-code field the mockup dropped; nothing else in the app
   lets you join a room by code.
+
+### 9g. Deck length (implemented)
+
+A workout ends when the deck does, so the shortest way to a shorter workout is fewer cards.
+`deckFilters.cardCount` says how many, and `trimToCount` (`domain/models/deck-rules.ts`, pure)
+does the trimming — last, after the suit, difficulty and equipment filters, over whatever they
+left.
+
+- **What it keeps**: every suit keeps its share of the deck (largest remainder), and each share is
+  spread evenly over that suit's ranks, so the easy, middle and hard cards (§9b) all survive. The
+  two jokers only earn a place once the count is big enough to pay for them — at 12 or 20 cards
+  they don't. A short deck is a smaller workout, never an easier or a narrower one.
+- **No RNG**: the same deck and count always give the same cards, so `Session.seed` stays the only
+  source of randomness (§6.1) and a host can still resync a client by replaying the log.
+- `DECK_LENGTHS` = 12 / 20 / 32; the control only offers lengths shorter than the deck in hand, and
+  "All" means the whole deck (`cardCount` absent, not 54, so a deck edit doesn't strand it).
+- Picked with one shared control, `shared/ui/deck-length` (`df-deck-length`, built on
+  `df-segmented` with the length spelled out underneath):
+  - Quick start and /room/new use the **device default** (`PreferencesService.deckLength`, stored in
+    `meta`), which /settings also sets; a saved routine carries its own `deckFilters.cardCount`.
+  - The routine form has it in the deck-filters fieldset, and its "N cards in play" line already
+    tells the truth about every filter together.
+  - In a room the host owns it, the same way they own the intensity: `RoomRoutineService.build`
+    takes `cardCount` (`null` = the whole deck) and overrides the routine's, so it travels with the
+    room and shows in the lobby's routine facts.
 
 Workflow for content changes: edit `tools/build_content.py` → run it →
 `node tools/build_preview.mjs` → `node tools/shot.cjs` → look at every
@@ -1170,7 +1197,7 @@ exercises and every pose id exists.
   downloaded from /settings (and shareable via the share sheet where it takes
   files — a separate button, since desktop Chrome would otherwise swallow the
   download).
-- Device preferences (theme, beeps, speech, default intensity, and Quick start's deck and game)
+- Device preferences (theme, beeps, speech, default intensity, default deck length, and Quick start's deck and game)
   live in `meta` too, loaded by
   `PreferencesService` from the lazy app initializer and written on change; no
   localStorage (§2).

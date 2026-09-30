@@ -168,6 +168,8 @@ export const DeckFiltersSchema = z.object({
   suits: z.array(SuitSchema).optional(),
   maxDifficulty: DifficultySchema.optional(),
   equipment: z.array(EquipmentSchema).optional(),
+  /** How many cards to deal with: a shorter deck is a shorter workout (§9g). */
+  cardCount: z.number().int().min(2).optional(),
 });
 export type DeckFilters = z.infer<typeof DeckFiltersSchema>;
 

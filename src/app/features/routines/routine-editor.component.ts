@@ -14,7 +14,7 @@ import { Router, RouterLink } from '@angular/router';
 import { firstValueFrom, map, startWith } from 'rxjs';
 import { newId } from '../../core/db/deckfit-db';
 import { DeckRepository, ExerciseRepository, GameRepository, RoutineRepository } from '../../core/db/repositories';
-import { applyDeckFilters } from '../../domain/models/deck-rules';
+import { DECK_LENGTHS, applyDeckFilters } from '../../domain/models/deck-rules';
 import type { GameDefinition, SettingDef } from '../../domain/models/game.schema';
 import { INTENSITIES, SUITS, type Difficulty, type Equipment, type Intensity, type JokerRule, type Suit } from '../../domain/models/schemas';
 import { workScale } from '../../domain/engine/amounts';
@@ -94,6 +94,7 @@ export class RoutineEditorComponent {
       maxDifficulty: new FormControl<Difficulty | null>(null),
       limitEquipment: this.fb.control(false),
       equipment: this.fb.control<Equipment[]>([]),
+      cardCount: new FormControl<number | null>(null),
     }),
   });
 
@@ -117,6 +118,12 @@ export class RoutineEditorComponent {
   protected readonly gameSettings = computed(() => {
     const game = this.selectedGame();
     return game ? Object.entries(game.settingsSchema).map(([key, def]) => ({ key, def, label: def.label ?? key })) : [];
+  });
+
+  /** Lengths worth offering for the selected deck: only the ones that actually shorten it (§9g). */
+  protected readonly deckLengths = computed(() => {
+    const size = this.selectedDeck()?.cards.length ?? 54;
+    return DECK_LENGTHS.filter((n) => n < size);
   });
 
   protected readonly multipliers = REP_MULTIPLIERS;

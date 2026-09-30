@@ -34,11 +34,18 @@ export class RoomRoutineService {
     }));
   }
 
-  /** `intensity` overrides the routine's own (how /room/new offers low / moderate / high). */
-  async build(source: Routine, opts: { intensity?: Intensity } = {}): Promise<RoomRoutine> {
-    const routine: Routine = opts.intensity
-      ? { ...source, settings: { ...source.settings, intensity: opts.intensity } }
-      : source;
+  /**
+   * `intensity` and `cardCount` override the routine's own — how /room/new offers low / moderate /
+   * high and a shorter deck for everyone (§6.1, §9g). `cardCount: null` means the whole deck.
+   */
+  async build(source: Routine, opts: { intensity?: Intensity; cardCount?: number | null } = {}): Promise<RoomRoutine> {
+    let routine: Routine = opts.intensity ? { ...source, settings: { ...source.settings, intensity: opts.intensity } } : source;
+    if (opts.cardCount !== undefined) {
+      const { cardCount: _replaced, ...keptFilters } = routine.deckFilters ?? {};
+      const { deckFilters: _old, ...bare } = routine;
+      const deckFilters = { ...keptFilters, ...(opts.cardCount === null ? {} : { cardCount: opts.cardCount }) };
+      routine = Object.keys(deckFilters).length ? { ...bare, deckFilters } : bare;
+    }
     const [deck, game] = await Promise.all([this.decks.get(routine.deckId), this.games.get(routine.gameId)]);
     if (!deck || !game) throw new Error('This routine’s deck or game is missing.');
     const saved = !routine.id.startsWith(ROOM_DEFAULT_PREFIX);

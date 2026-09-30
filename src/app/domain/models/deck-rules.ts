@@ -30,7 +30,8 @@ export function rankTier(rank: Rank): 0 | 1 | 2 {
  * Applies a routine's deck filters at play time. Suits: keep listed suits (include 'joker' to
  * keep jokers). maxDifficulty: keep cards whose exercise is at most that hard (jokers pass).
  * equipment = "what I have": keep cards whose exercise needs only listed equipment; 'none'
- * is always available (jokers pass). Card order is preserved.
+ * is always available (jokers pass). cardCount trims what is left (see `trimToCount`), last, so
+ * a short deck is still a fair sample of the deck the other filters left. Card order is preserved.
  */
 export function applyDeckFilters(
   cards: readonly Card[],
@@ -39,7 +40,7 @@ export function applyDeckFilters(
 ): Card[] {
   if (!filters) return [...cards];
   const have = filters.equipment ? new Set<Equipment>([...filters.equipment, 'none']) : null;
-  return cards.filter((card) => {
+  const kept = cards.filter((card) => {
     if (filters.suits && !filters.suits.includes(card.suit)) return false;
     if (card.exerciseId === null) return true;
     const ex = exercisesById.get(card.exerciseId);
@@ -48,6 +49,52 @@ export function applyDeckFilters(
     if (have && !ex.equipment.every((e) => have.has(e))) return false;
     return true;
   });
+  return filters.cardCount === undefined ? kept : trimToCount(kept, filters.cardCount);
+}
+
+/** Deck lengths the app offers (§9g); anything at or above the deck's size means the whole deck. */
+export const DECK_LENGTHS = [12, 20, 32] as const;
+
+/**
+ * Trims a deck to `count` cards so a workout ends sooner, without narrowing what it asks of you:
+ * every suit keeps its share (largest remainder, so a suit that is 1/4 of the deck stays 1/4 of
+ * the short one) and each share is spread evenly over that suit's ranks, so the easy, middle and
+ * hard cards (§9b) all survive. The two jokers only earn a place once the count is big enough to
+ * pay for them. No RNG: the same deck and count always give the same cards, and `Session.seed`
+ * stays the only source of randomness (§6.1). Card order is preserved.
+ */
+export function trimToCount(cards: readonly Card[], count: number): Card[] {
+  if (count >= cards.length || count <= 0) return [...cards];
+
+  // Groups in the order the deck lists them, so the result is deck order too.
+  const groups = new Map<Suit, Card[]>();
+  for (const card of cards) {
+    const group = groups.get(card.suit);
+    if (group) group.push(card);
+    else groups.set(card.suit, [card]);
+  }
+  const bySuit = [...groups.values()];
+  const shares = share(bySuit.map((g) => g.length), count);
+
+  const keep = new Set<string>();
+  bySuit.forEach((group, i) => {
+    const take = shares[i];
+    // Evenly spaced picks, biased to the middle of each step: 5 of 13 → ranks 3, 5, 8, J, K.
+    for (let j = 0; j < take; j++) keep.add(group[Math.floor(((j + 0.5) * group.length) / take)].id);
+  });
+  return cards.filter((c) => keep.has(c.id));
+}
+
+/** Splits `count` across `sizes` in proportion, largest remainder first (ties → the bigger group). */
+function share(sizes: readonly number[], count: number): number[] {
+  const total = sizes.reduce((a, b) => a + b, 0);
+  const exact = sizes.map((size) => (count * size) / total);
+  const out = exact.map(Math.floor);
+  const order = sizes
+    .map((size, i) => ({ i, size, rest: exact[i] - out[i] }))
+    .sort((a, b) => b.rest - a.rest || b.size - a.size || a.i - b.i);
+  for (let left = count - out.reduce((a, b) => a + b, 0), k = 0; left > 0; left--, k++) out[order[k % order.length].i]++;
+  return out;
 }
 
 export type AutoFillResult = { ok: true; cards: Card[]; picked: [Exercise, Exercise, Exercise] } | { ok: false; reason: string };

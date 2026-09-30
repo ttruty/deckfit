@@ -13,7 +13,7 @@ describe('routine form model', () => {
       name: '', deckId: 'deck-bodyweight', gameId: 'end-match', favorite: false,
       core: { intensity: 'moderate', repMultiplier: 1, faceCardValue: 10, aceValue: 11, jokerRule: 'rest', maxRepCap: null },
       game: { matchOn: 'suit' },
-      filters: { suits: ['hearts', 'diamonds', 'clubs', 'spades', 'joker'], maxDifficulty: null, limitEquipment: false, equipment: [] },
+      filters: { suits: ['hearts', 'diamonds', 'clubs', 'spades', 'joker'], maxDifficulty: null, limitEquipment: false, equipment: [], cardCount: null },
     });
     expect(toDeckFilters(v.filters)).toBeUndefined();
   });
@@ -59,10 +59,14 @@ describe('routine form model', () => {
   });
 
   it('keeps only narrowing deck filters', () => {
-    const base = { suits: ['hearts', 'diamonds', 'clubs', 'spades', 'joker'] as const, maxDifficulty: null, limitEquipment: false, equipment: [] };
+    const base = {
+      suits: ['hearts', 'diamonds', 'clubs', 'spades', 'joker'] as const,
+      maxDifficulty: null, limitEquipment: false, equipment: [], cardCount: null,
+    };
     expect(toDeckFilters({ ...base, suits: ['hearts'] })).toEqual({ suits: ['hearts'] });
     expect(toDeckFilters({ ...base, suits: [...base.suits], limitEquipment: true })).toEqual({ equipment: [] });
     expect(toDeckFilters({ ...base, suits: [...base.suits], maxDifficulty: 3 })).toEqual({ maxDifficulty: 3 });
+    expect(toDeckFilters({ ...base, suits: [...base.suits], cardCount: 20 })).toEqual({ cardCount: 20 });
   });
 
   it('rejects invalid game settings', () => {

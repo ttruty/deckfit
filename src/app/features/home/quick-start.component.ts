@@ -8,6 +8,7 @@ import { PreferencesService } from '../../core/settings/preferences.service';
 import { INTENSITIES, type Intensity } from '../../domain/models/schemas';
 import { INTENSITY_HELP, INTENSITY_LABEL, EQUIPMENT_LABEL } from '../../shared/labels';
 import { CardFaceMiniComponent } from '../../shared/ui/card-face/card-face-mini.component';
+import { DeckLengthPickerComponent, cardCountFilter } from '../../shared/ui/deck-length/deck-length-picker.component';
 import { toCardFaceModel } from '../../shared/ui/card-face/card-face-model';
 import { DfIconComponent } from '../../shared/ui/icon/df-icon.component';
 import { SegmentedComponent } from '../../shared/ui/segmented/segmented.component';
@@ -22,7 +23,7 @@ import { QuickPickerDialog, type QuickPickData } from './quick-picker.dialog';
 @Component({
   selector: 'df-quick-start',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CardFaceMiniComponent, DfIconComponent, SegmentedComponent],
+  imports: [CardFaceMiniComponent, DeckLengthPickerComponent, DfIconComponent, SegmentedComponent],
   templateUrl: './quick-start.component.html',
   styleUrl: './quick-start.component.scss',
 })
@@ -38,6 +39,8 @@ export class QuickStartComponent {
   private readonly prefs = inject(PreferencesService);
 
   protected readonly intensity = this.prefs.intensity;
+  /** How long the workout is, in cards (§9g); remembered on the device like the intensity. */
+  protected readonly deckLength = this.prefs.deckLength;
   protected readonly intensityOptions = INTENSITIES.map((value) => ({ value, label: INTENSITY_LABEL[value] }));
   protected readonly intensityHelp = computed(() => INTENSITY_HELP[this.intensity()]);
   protected readonly starting = signal(false);
@@ -69,10 +72,20 @@ export class QuickStartComponent {
         deck,
         game,
         sample: card ? toCardFaceModel(card, deck, byId) : null,
-        deckMeta: `${deck.cards.length} cards · ${used.size ? [...used].map((e) => EQUIPMENT_LABEL[e].toLowerCase()).join(', ') : 'no equipment'}`,
+        equipment: used.size ? [...used].map((e) => EQUIPMENT_LABEL[e].toLowerCase()).join(', ') : 'no equipment',
         gameMeta: `${min === max ? min + ' player' : min + '–' + max + ' players'} · ${lower(game.summary)}`,
       };
     },
+  });
+
+  /** The deck row's second line, which says how much of the deck the chosen length actually deals. */
+  protected readonly deckMeta = computed(() => {
+    const data = this.data.value();
+    if (!data) return '';
+    const size = data.deck.cards.length;
+    const length = this.deckLength();
+    const cards = length === null || length >= size ? `${size} cards` : `${length} of ${size} cards`;
+    return `${cards} · ${data.equipment}`;
   });
 
   protected async pickDeck(): Promise<void> {
@@ -120,6 +133,7 @@ export class QuickStartComponent {
         deckId: data.deck.id,
         gameId: data.game.id,
         settings: { intensity: this.intensity() },
+        deckFilters: cardCountFilter(this.deckLength(), data.deck.cards.length),
       });
       await this.router.navigate(['/play', id]);
     } catch (err) {

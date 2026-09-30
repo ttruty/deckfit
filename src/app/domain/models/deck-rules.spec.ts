@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { PLAYING_RANKS, applyDeckFilters, autoFillSuit, defaultBaseAmount, rankPoints, rankTier } from './deck-rules';
+import { DECK_LENGTHS, PLAYING_RANKS, applyDeckFilters, autoFillSuit, defaultBaseAmount, rankPoints, rankTier, trimToCount } from './deck-rules';
 import { DecksFileSchema, ExercisesFileSchema, type Deck, type Exercise } from './schemas';
 
 const read = (f: string): unknown => JSON.parse(readFileSync(join(process.cwd(), 'src/assets/content', f), 'utf8'));
@@ -115,5 +115,52 @@ describe('applyDeckFilters', () => {
   it('drops cards whose exercise is unknown and preserves order', () => {
     const cards = [{ ...deck.cards[0], exerciseId: 'gone' }, deck.cards[1], deck.cards[2]];
     expect(applyDeckFilters(cards, byId, {}).map((c) => c.id)).toEqual([deck.cards[1].id, deck.cards[2].id]);
+  });
+
+  it('cardCount shortens the deck, after the other filters', () => {
+    expect(count({ cardCount: 20 })).toBe(20);
+    expect(count({ suits: ['hearts'], cardCount: 20 })).toBe(13); // nothing left to trim
+    expect(count({ suits: ['hearts', 'diamonds'], cardCount: 10 })).toBe(10);
+  });
+});
+
+describe('trimToCount', () => {
+  const deck = decks.find((d) => d.id === 'deck-bodyweight')!;
+  const suitsOf = (cards: readonly { suit: string }[]) =>
+    cards.reduce<Record<string, number>>((acc, c) => ({ ...acc, [c.suit]: (acc[c.suit] ?? 0) + 1 }), {});
+
+  it('returns the whole deck when the count reaches it', () => {
+    for (const n of [54, 60]) expect(trimToCount(deck.cards, n)).toHaveLength(54);
+  });
+
+  it('gives every suit its share and spends jokers last', () => {
+    expect(suitsOf(trimToCount(deck.cards, 12))).toEqual({ hearts: 3, diamonds: 3, clubs: 3, spades: 3 });
+    expect(suitsOf(trimToCount(deck.cards, 20))).toEqual({ hearts: 5, diamonds: 5, clubs: 5, spades: 5 });
+    // 32 of 54 finally pays for a joker; the 3 left over go to the first suits in deck order.
+    expect(suitsOf(trimToCount(deck.cards, 32))).toEqual({ hearts: 8, diamonds: 8, clubs: 8, spades: 7, joker: 1 });
+  });
+
+  it('keeps easy, middle and hard cards in every suit (§9b tiers)', () => {
+    for (const n of DECK_LENGTHS) {
+      const kept = trimToCount(deck.cards, n);
+      for (const suit of ['hearts', 'diamonds', 'clubs', 'spades'] as const) {
+        const tiers = new Set(kept.filter((c) => c.suit === suit).map((c) => rankTier(c.rank)));
+        expect([...tiers].sort(), `${n} cards, ${suit}`).toEqual([0, 1, 2]);
+      }
+    }
+  });
+
+  it('is deterministic and keeps deck order', () => {
+    const once = trimToCount(deck.cards, 20);
+    expect(once.map((c) => c.id)).toEqual(trimToCount(deck.cards, 20).map((c) => c.id));
+    const order = deck.cards.map((c) => c.id);
+    expect(once.map((c) => order.indexOf(c.id))).toEqual([...once.map((c) => order.indexOf(c.id))].sort((a, b) => a - b));
+  });
+
+  it('handles counts smaller than the number of suits, and odd shapes', () => {
+    expect(trimToCount(deck.cards, 3)).toHaveLength(3);
+    expect(trimToCount(deck.cards, 1)).toHaveLength(1);
+    expect(trimToCount(deck.cards.slice(0, 5), 5)).toHaveLength(5);
+    expect(trimToCount([], 4)).toEqual([]);
   });
 });

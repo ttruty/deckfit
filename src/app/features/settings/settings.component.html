@@ -36,6 +36,18 @@
     </mat-radio-group>
   </section>
 
+  <section class="card df-section" aria-labelledby="length">
+    <h2 id="length">Workout length</h2>
+    <p class="hint">How many cards Quick start and new rooms deal. A saved routine keeps its own length.</p>
+    <mat-radio-group class="themes" [value]="prefs.deckLength()" (change)="prefs.deckLength.set($event.value)" aria-labelledby="length">
+      @for (option of deckLengths; track option.label) {
+        <mat-radio-button [value]="option.value">
+          {{ option.label }} <span class="hint">{{ option.hint }}</span>
+        </mat-radio-button>
+      }
+    </mat-radio-group>
+  </section>
+
   <section class="card df-section" aria-labelledby="sound">
     <h2 id="sound">Sound</h2>
     <mat-slide-toggle [checked]="audio.beeps()" (change)="audio.beeps.set($event.checked)">Beeps for flips, countdowns and finishes</mat-slide-toggle>

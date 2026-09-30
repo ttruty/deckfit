@@ -189,6 +189,8 @@ export interface MetaValues {
   speech: boolean;
   /** Default workout intensity for quick starts and new rooms (§6.1). */
   intensity: Intensity;
+  /** Default deck length in cards for quick starts and new rooms (§9g); null = the whole deck. */
+  deckLength: number | null;
   /** What Quick start is set to (§9f); absent until someone changes it. */
   quickStartDeckId: string;
   quickStartGameId: string;
