@@ -139,6 +139,9 @@ export interface OwnStatus {
   todayShort: number;
   /** Days of the challenge still to come, today included. */
   daysLeft: number;
+  /** Which day of the challenge today is, 1-based and clamped ("Day 12 of 30"). */
+  dayIndex: number;
+  totalDays: number;
   /** Days already gone that you missed. */
   missed: number;
   /** Reps of yours already in the pot (a `total` goal stakes nothing until the end). */
@@ -174,6 +177,8 @@ export function ownStatus(challenge: Challenge, work: ReadonlyMap<string, WorkDa
     todayPoints,
     todayShort: todayDone ? 0 : short,
     daysLeft: days.filter((day) => day >= todayKey).length,
+    dayIndex: Math.min(days.length, Math.max(1, days.filter((day) => day <= todayKey).length)),
+    totalDays: days.length,
     missed,
     staked: target !== null ? (over && points < target ? challenge.ante * days.length : 0) : missed * challenge.ante,
     points,

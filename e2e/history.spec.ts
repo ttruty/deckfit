@@ -7,12 +7,12 @@ test('a workout lands on the grid, and the day opens to show what was in it', as
 
   // Nothing yet: no grid, just the empty state.
   await page.goto('/history');
-  await expect(page.getByText(/No workouts yet/)).toBeVisible();
-  await expect(page.locator('df-activity-grid')).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Nothing here yet' })).toBeVisible();
+  await expect(page.locator('df-heatmap')).toHaveCount(0);
 
   // One real workout.
   await page.goto('/');
-  await page.getByRole('region', { name: 'Quick start' }).getByRole('button', { name: 'Start' }).click();
+  await page.getByRole('region', { name: 'Quick start' }).getByRole('button', { name: /^Start / }).click();
   await page.waitForURL(/\/play\//);
   await page.locator('button.flip').click();
   const task = page.getByRole('region').filter({ has: page.getByRole('button', { name: 'Done', exact: true }) });
@@ -25,10 +25,17 @@ test('a workout lands on the grid, and the day opens to show what was in it', as
 
   // The grid has today, and says so in words.
   await page.goto('/history');
-  await expect(page.locator('df-activity-grid')).toBeVisible();
-  await expect(page.locator('df-activity-grid .summary')).toContainText('1 day in a row');
-  const today = page.locator('df-activity-grid .day:not([data-level="0"]):not(.legend-swatch)').last();
-  await expect(today).toHaveAttribute('aria-label', /1 workout/);
+  await expect(page.locator('df-heatmap')).toBeVisible();
+  await expect(page.locator('df-heatmap .df-bignum')).toHaveAttribute('aria-label', '1 day in a row');
+  const today = page.locator('df-heatmap button.df-cell:not([data-l="0"])').last();
+  await expect(today).toHaveAttribute('aria-label', /reps/);
+  await expect(today).toHaveClass(/df-cell--today/);
+
+  // The totals read for the window the control is set to.
+  await expect(page.locator('.df-tiles')).toContainText('Workouts');
+  await page.getByRole('radio', { name: 'Week', exact: true }).check();
+  await expect(page.locator('.df-tiles')).toContainText('1');
+  await expect(page.locator('.df-bars .df-bar')).toHaveCount(4); // every group, zeros included
 
   // Opening the day shows what was in it; the same square closes it again.
   await today.click();
@@ -43,8 +50,13 @@ test('a workout lands on the grid, and the day opens to show what was in it', as
   await today.click();
   await expect(detail).toHaveCount(0);
 
+  // A workout row opens its day too.
+  await page.locator('.df-log').first().click();
+  await expect(page.locator('df-day-detail')).toContainText('Solo Deal');
+  await page.getByRole('button', { name: 'Close' }).click();
+
   // A day with nothing in it says so.
-  const empty = page.locator('df-activity-grid .day[data-level="0"]:not(.future):not(.legend-swatch)').first();
+  const empty = page.locator('df-heatmap button.df-cell[data-l="0"]').first();
   await empty.click();
   await expect(page.locator('df-day-detail')).toContainText('Nothing logged that day');
   await page.getByRole('button', { name: 'Close' }).click();

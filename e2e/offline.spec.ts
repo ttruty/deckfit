@@ -41,7 +41,7 @@ test.describe('offline solo play (production build + service worker)', () => {
 
     // First visit: the service worker installs and prefetches the shell and content.
     await page.goto(PWA_URL);
-    const quickStart = page.getByRole('region', { name: 'Quick start' }).getByRole('button', { name: 'Start' });
+    const quickStart = page.getByRole('region', { name: 'Quick start' }).getByRole('button', { name: /^Start / });
     await quickStart.waitFor();
     await serviceWorkerReady(page);
     // Load once more while online: this visit is served by the worker, which is the state a

@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DeckFit · Games</title>
+<style>
+/* ============ Tokens ============ */
+:root{
+  --font-display:'Big Shoulders Display',sans-serif;   /* ASSUMED full family name (was cut off) */
+  --font-text:'Atkinson Hyperlegible',sans-serif;
+  --font-ui:'Roboto',sans-serif;
+
+  --paper:#eef2ef; --table:#d5ddd8; --ink:#1f2a44; --ink-far:#9aa3b5;
+  --suit-hearts:#d7263d; --suit-spades:#2e4ac9; --suit-joker:#7b3fbf;
+  --suit-hearts-text:#b92134; --suit-diamonds-text:#825600; --suit-clubs-text:#126b62;
+  --suit-spades-text:#2e4ac9; --suit-joker-text:#7b3fbf;
+  --card-radius:14px;
+
+  --df-page-bg:#eeedf1; --df-card-bg:#ffffff; --df-row-bg:#f4f3f7; --df-row-hover:#e8e7ec;
+  --df-edge:rgba(0,0,0,.10);
+  --df-shadow:0 1px 2px rgb(0 0 0/.05),0 8px 20px -14px rgb(0 0 0/.35);
+  --df-primary:#0b57d0; --df-on-primary:#ffffff;          /* on-primary ASSUMED (M3) */
+  --df-text:#1b1b1f; --df-text-muted:#46464f;             /* muted ASSUMED (M3 on-surface-variant) */
+  color-scheme:light;
+}
+[data-theme="dark"]{
+  --paper:#232c40; --table:#151b28; --ink:#eef2ef; --ink-far:#6b7690;
+  --suit-hearts-text:#e5707f;
+  --df-page-bg:#131316; --df-card-bg:#1f1f23;
+  --df-row-bg:#26262a;                                   /* ASSUMED (value was cut off) */
+  --df-row-hover:#2a2a2e; --df-edge:rgba(255,255,255,.10);
+  --df-shadow:0 1px 2px rgb(0 0 0/.4),0 8px 20px -14px rgb(0 0 0/.8);  /* ASSUMED */
+  --df-primary:#a8c7fa; --df-on-primary:#062e6f;         /* on-primary ASSUMED (M3) */
+  --df-text:#e4e2e6; --df-text-muted:#c6c6d0;
+  color-scheme:dark;
+}
+
+/* ============ Base ============ */
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0}
+.df-app{min-height:100vh;background:var(--df-page-bg);color:var(--df-text);
+  font-family:var(--font-ui);font-size:16px;line-height:1.5;padding-bottom:96px}
+h1{font-family:var(--font-display);font-weight:800;font-size:2.15rem;line-height:1.05;margin:0}
+h2{font-family:var(--font-display);font-weight:700;font-size:1.4rem;line-height:1.15;margin:0}
+p{margin:0}
+a{color:var(--df-primary)}
+:focus-visible{outline:3px solid var(--df-primary);outline-offset:2px}
+.df-ico{width:24px;height:24px;flex:none;fill:none;stroke:currentColor;stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round}
+.df-vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ============ Chrome ============ */
+.df-topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:4px;height:64px;
+  padding:0 8px 0 16px;background:var(--df-card-bg);border-bottom:1px solid var(--df-edge)}
+.df-wordmark{margin-right:auto;display:flex;align-items:center;min-height:48px;
+  font-family:var(--font-display);font-weight:800;font-size:1.75rem;line-height:1;
+  color:var(--df-text);text-decoration:none}
+.df-icon-btn{width:48px;height:48px;display:grid;place-items:center;flex:none;border:0;border-radius:50%;
+  background:transparent;color:var(--df-text);cursor:pointer}
+.df-icon-btn:hover{background:var(--df-row-hover)}
+.df-icon-btn--filled{background:var(--df-primary);color:var(--df-on-primary)}
+.df-icon-btn--filled:hover{background:var(--df-primary);filter:brightness(1.08)}
+
+.df-topnav{display:none}
+.df-bottomnav{position:fixed;left:0;right:0;bottom:0;z-index:10;height:80px;display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));background:var(--df-card-bg);border-top:1px solid var(--df-edge)}
+.df-tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  color:var(--df-text-muted);text-decoration:none;font-size:.8125rem;font-weight:500}
+.df-tab__ind{display:grid;place-items:center;width:56px;height:32px;border-radius:999px}
+.df-tab[aria-current="page"]{color:var(--df-text);font-weight:700}
+.df-tab[aria-current="page"] .df-tab__ind{background:var(--df-row-hover);color:var(--df-primary)}
+
+/* ============ Page structure (existing classes) ============ */
+.df-page{max-width:1040px;margin:0 auto;padding:16px;display:flex;flex-direction:column;gap:16px}
+.df-section{background:var(--df-card-bg);border:1px solid var(--df-edge);box-shadow:var(--df-shadow);
+  border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.df-row{background:var(--df-row-bg);border-radius:16px}
+.df-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0 8px;min-height:48px}
+.df-hint{color:var(--df-text-muted);font-size:.9375rem;line-height:1.45}
+.df-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.df-intro{display:flex;flex-direction:column;gap:4px;padding:4px 0 0}
+.df-intro a{font-weight:500;text-underline-offset:3px}
+
+/* ============ Buttons ============ */
+.df-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;
+  border-radius:999px;border:1px solid transparent;background:transparent;cursor:pointer;text-decoration:none;
+  font:500 1rem/1.2 var(--font-ui);color:var(--df-primary);white-space:nowrap}
+.df-btn--primary{background:var(--df-primary);color:var(--df-on-primary)}
+.df-btn--primary:hover{filter:brightness(1.08)}
+.df-btn--outline{border-color:var(--df-text-muted)}
+.df-btn--outline:hover,.df-btn--text:hover{background:var(--df-row-hover)}
+.df-btn--text{padding:0 12px}
+.df-btn--main{width:100%;min-height:56px;font-size:1.125rem}
+.df-btn .df-ico{width:20px;height:20px}
+
+/* ============ Card face (brand) ============ */
+.df-cardface{--w:104px;width:var(--w);aspect-ratio:5/7;flex:none;display:flex;flex-direction:column;overflow:hidden;
+  border-radius:var(--card-radius);background:var(--paper);color:var(--ink);border:1px solid var(--df-edge);
+  box-shadow:var(--df-shadow);font-family:var(--font-text);transform:rotate(3deg)}
+.df-cardface__rank{flex:1;display:flex;align-items:center;justify-content:center;gap:2px;
+  font-family:var(--font-display);font-weight:800;font-size:calc(var(--w) * .44);line-height:1}
+.df-cardface__suit{font-family:var(--font-text);font-size:.5em;color:var(--suit-hearts-text)}
+.df-cardface__band{background:var(--suit-hearts);color:#ffffff;padding:6px 8px 5px;display:flex;flex-direction:column}
+.df-cardface__name{font-weight:700;font-size:calc(var(--w) * .105);line-height:1.15}
+.df-cardface__amt{display:flex;align-items:baseline;justify-content:space-between;font-size:calc(var(--w) * .085)}
+.df-cardface__amt b{font-family:var(--font-display);font-weight:800;font-size:calc(var(--w) * .17);margin-right:2px}
+
+/* ============ Quick start ============ */
+.df-quick{gap:16px}
+.df-quick__top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.df-quick__title{display:flex;flex-direction:column;gap:6px;padding-top:4px}
+.df-quick__title h2{font-size:2rem;font-weight:800}
+.df-choice{width:100%;min-height:64px;display:flex;align-items:center;gap:12px;padding:8px 8px 8px 16px;border:0;
+  text-align:left;cursor:pointer;color:var(--df-text);font:inherit}
+.df-choice:hover{background:var(--df-row-hover)}
+.df-choice__text{flex:1;display:flex;flex-direction:column;min-width:0}
+.df-choice__label{font-size:.8125rem;font-weight:500;color:var(--df-text-muted)}
+.df-choice__value{font-size:1.0625rem;font-weight:500;line-height:1.3}
+.df-choice__meta{font-size:.875rem;color:var(--df-text-muted)}
+.df-choice .df-ico{color:var(--df-text-muted)}
+
+.df-seg-field{border:0;margin:0;padding:0;min-width:0;display:flex;flex-direction:column;gap:8px}
+.df-seg-field legend{padding:0;margin-bottom:8px;font-size:.8125rem;font-weight:500;color:var(--df-text-muted)}
+.df-seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--df-text-muted);
+  border-radius:999px;overflow:hidden}
+.df-seg__opt{position:relative;display:flex;align-items:center;justify-content:center;gap:6px;min-height:48px;
+  padding:0 8px;font-weight:500;cursor:pointer;color:var(--df-text)}
+.df-seg__opt + .df-seg__opt{border-left:1px solid var(--df-text-muted)}
+.df-seg__opt input{position:absolute;inset:0;margin:0;opacity:0;cursor:pointer}
+.df-seg__opt .df-ico{display:none;width:18px;height:18px}
+.df-seg__opt:has(input:checked){background:var(--df-primary);color:var(--df-on-primary)}
+.df-seg__opt:has(input:checked) .df-ico{display:block}
+.df-seg__opt:has(input:focus-visible){outline:3px solid var(--df-primary);outline-offset:2px;z-index:1}
+.df-seg-hint{display:none}
+.df-quick:has(input[value="low"]:checked) .df-seg-hint[data-for="low"],
+.df-quick:has(input[value="moderate"]:checked) .df-seg-hint[data-for="moderate"],
+.df-quick:has(input[value="high"]:checked) .df-seg-hint[data-for="high"]{display:block}
+
+/* ============ Challenge + favourite rows ============ */
+.df-item{display:flex;align-items:center;gap:12px;min-height:72px;padding:12px 8px 12px 12px}
+.df-item__text{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.df-item__name{font-size:1.0625rem;font-weight:500;line-height:1.3;color:var(--df-text);text-decoration:none;
+  overflow-wrap:anywhere}
+a.df-item__name:hover{text-decoration:underline}
+.df-item__meta{font-size:.875rem;color:var(--df-text-muted)}
+.df-status{width:40px;height:40px;flex:none;display:grid;place-items:center;border-radius:50%}
+.df-status--done{background:var(--df-primary);color:var(--df-on-primary)}
+.df-status--todo{border:2px solid var(--df-text-muted);color:var(--df-text-muted)}
+.df-status .df-ico{width:22px;height:22px}
+.df-done-tag{display:inline-flex;align-items:center;gap:4px;padding:0 8px;font-size:.875rem;font-weight:500;
+  color:var(--df-text-muted)}
+.df-done-tag .df-ico{width:18px;height:18px}
+.df-meter{height:6px;border-radius:999px;background:var(--df-row-hover);overflow:hidden;margin-top:6px}
+.df-meter > span{display:block;height:100%;border-radius:inherit;background:var(--df-primary)}
+
+.df-empty{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+
+/* ============ Install prompt (moved to the bottom) ============ */
+.df-install{flex-direction:row;align-items:center;flex-wrap:wrap;gap:12px}
+.df-install > .df-ico{color:var(--df-text-muted)}
+.df-install__text{flex:1 1 200px;display:flex;flex-direction:column}
+.df-install__text strong{font-weight:500}
+.df-install__actions{display:flex;gap:4px;margin-left:auto}
+
+/* ============ Motion ============ */
+@media (prefers-reduced-motion: no-preference){
+  .df-btn,.df-icon-btn,.df-choice,.df-seg__opt,.df-tab__ind{transition:background-color .15s ease,filter .15s ease}
+}
+
+/* ============ ≥600: nav moves to the top bar ============ */
+@media (min-width:600px){
+  .df-bottomnav{display:none}
+  .df-app{padding-bottom:32px}
+  .df-topnav{display:flex;gap:2px;margin-right:8px}
+  .df-topnav a{display:flex;align-items:center;gap:8px;min-height:48px;padding:0 14px;border-radius:999px;
+    color:var(--df-text-muted);text-decoration:none;font-weight:500}
+  .df-topnav a:hover{background:var(--df-row-hover)}
+  .df-topnav a[aria-current="page"]{background:var(--df-row-hover);color:var(--df-text);font-weight:700}
+  .df-topnav a[aria-current="page"] .df-ico{color:var(--df-primary)}
+  .df-topnav .df-ico{display:none}
+}
+@media (min-width:1000px){ .df-topnav .df-ico{display:block} }
+
+/* ============ ≥840: two columns ============ */
+@media (min-width:840px){
+  .df-page{padding:24px 16px}
+  .df-home{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);grid-template-rows:auto auto 1fr;gap:16px;align-items:start}
+  .df-home > .df-intro{grid-column:1/-1}
+  .df-home > .df-quick{grid-row:2 / span 2}
+  .df-home > .df-install{grid-column:2}
+  .df-quick{padding:24px}
+  .df-quick .df-cardface{--w:136px}
+  .df-quick__title h2{font-size:2.6rem}
+  h1{font-size:2.6rem}
+}
+
+/* ============ History ============ */
+/* Suit glyph text colours. Dark values for diamonds/clubs/spades were cut off in the brief:
+   they fall back to body text until you supply them. */
+[data-theme="dark"]{--suit-diamonds-text:var(--df-text);--suit-clubs-text:var(--df-text);
+  --suit-spades-text:var(--df-text)}   /* ASSUMED fallback */
+h3{font-family:var(--font-ui);font-weight:700;font-size:1rem;line-height:1.3;margin:0}
+.df-sub{display:flex;flex-direction:column;gap:10px;padding-top:12px;border-top:1px solid var(--df-edge)}
+.df-sub .df-head{min-height:0}
+
+/* headline numbers */
+.df-streak-nums{display:flex;flex-wrap:wrap;align-items:flex-end;gap:4px 24px}
+.df-bignum{display:flex;align-items:baseline;gap:6px}
+.df-bignum b{font-family:var(--font-display);font-weight:800;font-size:3rem;line-height:.95}
+.df-bignum span{font-weight:500}
+.df-kv{display:flex;flex-direction:column;font-size:.875rem;color:var(--df-text-muted)}
+.df-kv strong{font-size:1rem;color:var(--df-text);font-weight:500}
+
+.df-totals .df-seg__opt{white-space:nowrap;padding:0 4px}
+/* calendar heatmap */
+.df-heat{display:grid;grid-template-columns:32px repeat(26,minmax(0,1fr));gap:2px;font-size:.75rem;
+  color:var(--df-text-muted)}
+.df-heat__month{grid-row:1;white-space:nowrap;line-height:1.6}
+.df-heat__day{grid-column:1;align-self:center;line-height:1}
+.df-cell{aspect-ratio:1;border-radius:3px;background:var(--df-row-hover)}
+.df-cell[data-l="1"]{background:color-mix(in srgb,var(--df-primary) 30%,var(--df-card-bg))}
+.df-cell[data-l="2"]{background:color-mix(in srgb,var(--df-primary) 55%,var(--df-card-bg))}
+.df-cell[data-l="3"]{background:color-mix(in srgb,var(--df-primary) 78%,var(--df-card-bg))}
+.df-cell[data-l="4"]{background:var(--df-primary)}
+.df-cell--future{background:transparent}
+.df-cell--today{outline:2px solid var(--df-text);outline-offset:1px}
+.df-heat-legend{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;
+  font-size:.8125rem;color:var(--df-text-muted)}
+.df-heat-legend ol{list-style:none;margin:0;padding:0;display:flex;align-items:center;gap:6px}
+.df-heat-legend li{display:flex;align-items:center;gap:4px}
+.df-heat-legend .df-cell{width:12px}
+.df-today-key{display:inline-flex;align-items:center;gap:6px}
+.df-today-key .df-cell{width:12px;background:transparent}
+
+/* stat tiles */
+.df-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0}
+.df-tile{padding:12px 14px;display:flex;flex-direction:column;gap:2px;margin:0}
+.df-tile dt{font-size:.875rem;color:var(--df-text-muted);font-weight:500}
+.df-tile dd{margin:0;font-family:var(--font-display);font-weight:800;font-size:2.1rem;line-height:1}
+.df-tile dd small{font-size:1.1rem;font-weight:700;margin-left:2px}
+
+/* suit bars */
+.df-bars{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.df-bar{display:grid;grid-template-columns:88px minmax(0,1fr) 56px;align-items:center;gap:12px;min-height:32px}
+.df-suit{display:inline-flex;align-items:center;gap:6px;font-weight:500}
+.df-suit__g{font-family:var(--font-text);font-size:1.1rem;line-height:1;width:1em;text-align:center}
+.df-suit__g[data-suit="hearts"]{color:var(--suit-hearts-text)}
+.df-suit__g[data-suit="diamonds"]{color:var(--suit-diamonds-text)}
+.df-suit__g[data-suit="clubs"]{color:var(--suit-clubs-text)}
+.df-suit__g[data-suit="spades"]{color:var(--suit-spades-text)}
+.df-bar__track{height:12px;border-radius:4px;background:var(--df-row-hover);overflow:hidden}
+.df-bar__fill{display:block;height:100%;border-radius:4px;background:var(--df-primary);min-width:0}
+.df-bar__val{text-align:right;font-variant-numeric:tabular-nums;font-weight:500}
+.df-bar--zero .df-bar__val{color:var(--df-text-muted)}
+
+/* exercise table */
+.df-table{width:100%;border-collapse:separate;border-spacing:0 4px;font-size:.9375rem}
+.df-table th{font-size:.8125rem;font-weight:500;color:var(--df-text-muted);text-align:left;padding:0 12px 2px}
+.df-table td{background:var(--df-row-bg);padding:10px 12px;height:52px}
+.df-table td:first-child{border-radius:12px 0 0 12px}
+.df-table td:last-child{border-radius:0 12px 12px 0}
+.df-table .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.df-table td .df-suit{font-weight:500}
+
+/* workout log */
+.df-log{display:flex;align-items:center;gap:12px;min-height:72px;padding:8px 8px 8px 8px;color:var(--df-text);
+  text-decoration:none}
+.df-log:hover{background:var(--df-row-hover)}
+.df-date{width:52px;flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:4px 0;border-radius:12px;background:var(--df-card-bg);border:1px solid var(--df-edge)}
+.df-date b{font-family:var(--font-display);font-weight:800;font-size:1.5rem;line-height:1}
+.df-date span{font-size:.75rem;font-weight:500;color:var(--df-text-muted);text-transform:uppercase;letter-spacing:.04em}
+.df-log .df-ico{color:var(--df-text-muted)}
+.df-more{align-self:center}
+
+@media (min-width:840px){
+  .df-history{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:16px;align-items:start}
+  .df-history > .df-intro,.df-history > .df-streak{grid-column:1/-1}
+  .df-heat{grid-template-columns:40px repeat(26,minmax(0,22px));gap:4px;font-size:.8125rem}
+  .df-cell{border-radius:4px}
+  .df-streak{display:grid;grid-template-columns:200px max-content;column-gap:40px;row-gap:12px;justify-content:start}
+  .df-streak > .df-head{grid-column:1/-1}
+  .df-streak > .df-streak-nums{grid-column:1;grid-row:2 / span 2;flex-direction:column;align-items:flex-start;gap:16px}
+  .df-streak > .df-heat,.df-streak > .df-heat-legend{grid-column:2}
+  .df-bignum b{font-size:3.6rem}
+}
+
+/* ============ Shared: search, chips, tags ============ */
+.df-search{position:relative;display:flex;align-items:center}
+.df-search .df-ico{position:absolute;left:16px;color:var(--df-text-muted);pointer-events:none}
+.df-search input{width:100%;min-height:56px;padding:0 20px 0 52px;border-radius:999px;border:1px solid var(--df-edge);
+  background:var(--df-row-bg);color:var(--df-text);font:400 1rem var(--font-ui)}
+.df-search input::placeholder{color:var(--df-text-muted);opacity:1}
+.df-search input:focus-visible{outline:3px solid var(--df-primary);outline-offset:1px}
+.df-chips{display:flex;gap:8px;overflow-x:auto;margin:0 -16px;padding:2px 16px 4px;scrollbar-width:none;border:0;min-width:0}
+.df-chips legend{float:left;flex:none;align-self:center;font-size:.8125rem;font-weight:500;color:var(--df-text-muted);
+  margin-right:4px;padding:0}
+.df-chip{position:relative;flex:none;display:inline-flex;align-items:center;gap:6px;min-height:48px;padding:0 16px;
+  border-radius:999px;border:1px solid var(--df-text-muted);color:var(--df-text);font-weight:500;cursor:pointer;
+  white-space:nowrap;background:transparent}
+.df-chip input{position:absolute;inset:0;margin:0;opacity:0;cursor:pointer}
+.df-chip > .df-ico{width:18px;height:18px}
+.df-chip .df-ico--check{display:none}
+.df-chip:has(input:checked){background:var(--df-primary);border-color:var(--df-primary);color:var(--df-on-primary)}
+.df-chip:has(input:checked) .df-ico--check{display:block}
+.df-chip:has(input:focus-visible){outline:3px solid var(--df-primary);outline-offset:2px}
+.df-chip:hover{background:var(--df-row-hover)}
+.df-chip:has(input:checked):hover{background:var(--df-primary);filter:brightness(1.08)}
+.df-tags{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.875rem;color:var(--df-text-muted)}
+.df-tags li{display:inline-flex;align-items:center;gap:5px}
+.df-tags .df-ico{width:18px;height:18px}
+.df-count{font-size:.9375rem;color:var(--df-text-muted)}
+.df-count strong{color:var(--df-text);font-weight:500}
+.df-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.df-intro.df-head{flex-direction:row;justify-content:space-between;align-items:center;gap:8px 12px}
+.df-title{font-family:var(--font-display);font-weight:800;font-size:1.6rem;line-height:1.05;margin:0}
+.df-title a{color:inherit;text-decoration:none}
+.df-title a:hover{text-decoration:underline;text-underline-offset:3px}
+
+/* ============ Library ============ */
+.df-exgrid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.df-ex{display:flex;flex-direction:column;overflow:hidden;color:var(--df-text);text-decoration:none;height:100%}
+.df-ex:hover{background:var(--df-row-hover)}
+.df-ex__art{aspect-ratio:4/3;display:grid;place-items:center;background:var(--df-card-bg);margin:6px 6px 0;border-radius:12px;
+  color:var(--df-text-muted);border:1px solid var(--df-edge)}
+.df-ex__art svg{width:56%;height:auto;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.df-ex__body{padding:10px 12px 12px;display:flex;flex-direction:column;gap:6px;flex:1}
+.df-ex__name{font-weight:500;font-size:1rem;line-height:1.25}
+.df-ex__meta{display:flex;flex-direction:column;gap:2px;font-size:.8125rem;color:var(--df-text-muted);margin-top:auto}
+.df-ex__row{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.df-level{display:inline-flex;align-items:center;gap:6px}
+.df-dots{display:inline-flex;gap:3px}
+.df-dots i{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--df-text-muted)}
+.df-dots i.on{background:var(--df-primary);border-color:var(--df-primary)}
+.df-ex .df-suit{font-size:.875rem;color:var(--df-text)}
+.df-ex .df-suit__g{font-size:1rem}
+.df-swap{display:inline-flex;align-items:center;gap:3px}
+.df-swap .df-ico{width:16px;height:16px}
+.df-filterbar{display:flex;flex-direction:column;gap:10px}
+.df-active-filters{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.df-noresults{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:8px 4px}
+
+/* ============ Decks ============ */
+.df-legend-row{padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.df-legend-row ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,max-content);gap:4px 16px}
+.df-deck{display:flex;gap:16px;padding:14px;align-items:flex-start}
+.df-deck .df-cardface{--w:84px;transform:none}
+.df-deck__body{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.df-deck__body .df-title{font-size:1.45rem}
+.df-deck .df-actions{margin-top:4px}
+
+/* ============ Games ============ */
+.df-game{padding:16px;display:flex;flex-direction:column;gap:10px}
+.df-game p{max-width:60ch}
+.df-howto{border-radius:12px}
+.df-howto summary{list-style:none;display:flex;align-items:center;gap:6px;min-height:48px;cursor:pointer;font-weight:500;
+  color:var(--df-primary);width:max-content;padding:0 12px 0 4px;border-radius:999px}
+.df-howto summary::-webkit-details-marker{display:none}
+.df-howto summary:hover{background:var(--df-row-hover)}
+.df-howto summary .df-ico{width:20px;height:20px}
+.df-howto[open] summary .df-ico{transform:rotate(180deg)}
+.df-howto ol{margin:4px 0 4px;padding-left:22px;display:flex;flex-direction:column;gap:4px}
+
+@media (min-width:840px){
+  .df-exgrid{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+  .df-chips{flex-wrap:wrap;overflow:visible;margin:0;padding:2px 0}
+  .df-filterbar{display:grid;grid-template-columns:minmax(0,360px) minmax(0,1fr);align-items:center;column-gap:16px}
+  .df-filterbar > .df-active-filters{grid-column:1/-1}
+  .df-filterbar > fieldset + fieldset{grid-column:1/-1}
+  .df-decklist,.df-gamelist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .df-deck .df-cardface{--w:96px}
+}
+
+/* spec-only controls: not part of the app */
+.spec-ctl{position:fixed;left:12px;bottom:92px;z-index:20;display:flex;gap:6px;padding:6px;border-radius:999px;
+  background:var(--df-card-bg);border:1px dashed var(--df-text-muted);box-shadow:var(--df-shadow);font-family:var(--font-ui)}
+.spec-ctl button{min-height:48px;padding:0 14px;border-radius:999px;border:0;background:var(--df-row-bg);
+  color:var(--df-text);font:500 .875rem var(--font-ui);cursor:pointer}
+@media (min-width:600px){.spec-ctl{bottom:16px}}
+</style>
+</head>
+<body>
+<div class="df-app">
+<header class="df-topbar">
+  <a class="df-wordmark" href="#">DeckFit</a>
+  <nav class="df-topnav" aria-label="Main"><a href="#"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z"/></svg><span>Home</span></a><a href="#"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7v10M3 9.5v5M18 7v10M21 9.5v5M6 12h12"/></svg><span>Library</span></a><a href="#"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="11" height="15" rx="2"/><path d="M5.5 7v11a2 2 0 0 0 2 2H16"/></svg><span>Decks</span></a><a href="#" aria-current="page"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="9" r="1.2" fill="currentColor"/><circle cx="15" cy="15" r="1.2" fill="currentColor"/><circle cx="15" cy="9" r="1.2" fill="currentColor"/><circle cx="9" cy="15" r="1.2" fill="currentColor"/></svg><span>Games</span></a><a href="#"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6L3.5 8.5"/><path d="M3.5 3.5v5h5"/><path d="M12 7.5V12l3 2"/></svg><span>History</span></a></nav>
+  <button type="button" class="df-icon-btn" aria-label="Theme: automatic"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor"/></svg></button>
+  <button type="button" class="df-icon-btn" aria-label="Settings"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+</header>
+<main class="df-page">
+<div class="df-intro df-head"><h1>Games</h1><a class="df-btn df-btn--primary" href="#"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>New game</a></div>
+<section class="df-section" aria-labelledby="yg-s0">
+  <div class="df-head"><h2 id="yg-s0">Your games</h2></div>
+  <ul class="df-list df-gamelist"><li class="df-row df-game">
+  <h3 class="df-title">Friday Ladder</h3>
+  <ul class="df-tags"><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 19.5a6 6 0 0 1 12 0"/><path d="M15.5 4.8a3.2 3.2 0 0 1 0 6.4M17 13.6a6 6 0 0 1 4 5.9"/></svg>2–8 players</li><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4"/></svg>Most reps wins</li></ul>
+  <p>Your copy of Bluff Pile with a rising amount each round.</p>
+  <details class="df-howto"><summary><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>How to play</summary></details>
+  <div class="df-actions"><button type="button" class="df-btn df-btn--primary"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M19 8v6M16 11h6"/></svg>Start a room</button><a class="df-btn df-btn--text" href="#"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg>Edit</a></div>
+</li></ul>
+</section>
+<section class="df-section" aria-labelledby="bg-s0">
+  <div class="df-head"><h2 id="bg-s0">Built-in games</h2></div>
+  <fieldset class="df-chips"><legend class="df-vh">Show</legend><label class="df-chip"><input type="radio" name="r-g-s0" value="all" checked="checked"/><svg class="df-ico df-ico--check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>All</span></label><label class="df-chip"><input type="radio" name="r-g-s0" value="solo"/><svg class="df-ico df-ico--check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg><span>Solo</span></label><label class="df-chip"><input type="radio" name="r-g-s0" value="room"/><svg class="df-ico df-ico--check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 19.5a6 6 0 0 1 12 0"/><path d="M15.5 4.8a3.2 3.2 0 0 1 0 6.4M17 13.6a6 6 0 0 1 4 5.9"/></svg><span>With friends</span></label></fieldset>
+  <ul class="df-list df-gamelist"><li class="df-row df-game">
+  <h3 class="df-title">Solo Deal</h3>
+  <ul class="df-tags"><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>1 player</li><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4"/></svg>No winner, just the work</li></ul>
+  <p>Flip a card, do the work. Keep going until the deck runs out or you stop.</p>
+  <details class="df-howto"><summary><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>How to play</summary><ol><li>Shuffle the deck and flip the top card.</li><li>Do the exercise and amount on it.</li><li>Flip the next card.</li></ol></details>
+  <div class="df-actions"><button type="button" class="df-btn df-btn--primary"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg>Play</button><button type="button" class="df-btn df-btn--text"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>Duplicate to edit</button></div>
+</li><li class="df-row df-game">
+  <h3 class="df-title">End Match</h3>
+  <ul class="df-tags"><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>1 player</li><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4"/></svg>Most work wins</li><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4v16M12 4v16M19 4v16"/><circle cx="5" cy="14" r="2" fill="currentColor"/><circle cx="12" cy="8" r="2" fill="currentColor"/><circle cx="19" cy="16" r="2" fill="currentColor"/></svg>1 setting to tune</li></ul>
+  <p>Lay out a row of four. When the two ends match, work both ends and clear the row; otherwise work the middle pair.</p>
+  <details class="df-howto"><summary><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>How to play</summary></details>
+  <div class="df-actions"><button type="button" class="df-btn df-btn--primary"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg>Play</button><button type="button" class="df-btn df-btn--text"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>Duplicate to edit</button></div>
+</li><li class="df-row df-game">
+  <h3 class="df-title">Bluff Pile</h3>
+  <ul class="df-tags"><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 19.5a6 6 0 0 1 12 0"/><path d="M15.5 4.8a3.2 3.2 0 0 1 0 6.4M17 13.6a6 6 0 0 1 4 5.9"/></svg>3–6 players</li><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4"/></svg>Most rounds wins</li><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8.5 10.5V7.5a3.5 3.5 0 0 1 7 0v3"/></svg>Your cards stay private</li><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4v16M12 4v16M19 4v16"/><circle cx="5" cy="14" r="2" fill="currentColor"/><circle cx="12" cy="8" r="2" fill="currentColor"/><circle cx="19" cy="16" r="2" fill="currentColor"/></svg>1 setting to tune</li></ul>
+  <p>Lay cards face down and name the rank — truthfully or not. Get caught bluffing, or call wrong, and you work the whole pile.</p>
+  <details class="df-howto"><summary><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>How to play</summary></details>
+  <div class="df-actions"><button type="button" class="df-btn df-btn--primary"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M19 8v6M16 11h6"/></svg>Start a room</button><button type="button" class="df-btn df-btn--text"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>Duplicate to edit</button></div>
+</li></ul>
+</section>
+</main>
+<nav class="df-bottomnav" aria-label="Main"><a class="df-tab" href="#"><span class="df-tab__ind"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z"/></svg></span><span>Home</span></a><a class="df-tab" href="#"><span class="df-tab__ind"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7v10M3 9.5v5M18 7v10M21 9.5v5M6 12h12"/></svg></span><span>Library</span></a><a class="df-tab" href="#"><span class="df-tab__ind"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="11" height="15" rx="2"/><path d="M5.5 7v11a2 2 0 0 0 2 2H16"/></svg></span><span>Decks</span></a><a class="df-tab" href="#" aria-current="page"><span class="df-tab__ind"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="9" r="1.2" fill="currentColor"/><circle cx="15" cy="15" r="1.2" fill="currentColor"/><circle cx="15" cy="9" r="1.2" fill="currentColor"/><circle cx="9" cy="15" r="1.2" fill="currentColor"/></svg></span><span>Games</span></a><a class="df-tab" href="#"><span class="df-tab__ind"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6L3.5 8.5"/><path d="M3.5 3.5v5h5"/><path d="M12 7.5V12l3 2"/></svg></span><span>History</span></a></nav>
+</div>
+<template id="t-regular"><main class="df-page">
+<div class="df-intro df-head"><h1>Games</h1><a class="df-btn df-btn--primary" href="#"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>New game</a></div>
+<section class="df-section" aria-labelledby="yg-s0">
+  <div class="df-head"><h2 id="yg-s0">Your games</h2></div>
+  <ul class="df-list df-gamelist"><li class="df-row df-game">
+  <h3 class="df-title">Friday Ladder</h3>
+  <ul class="df-tags"><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 19.5a6 6 0 0 1 12 0"/><path d="M15.5 4.8a3.2 3.2 0 0 1 0 6.4M17 13.6a6 6 0 0 1 4 5.9"/></svg>2–8 players</li><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4"/></svg>Most reps wins</li></ul>
+  <p>Your copy of Bluff Pile with a rising amount each round.</p>
+  <details class="df-howto"><summary><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>How to play</summary></details>
+  <div class="df-actions"><button type="button" class="df-btn df-btn--primary"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M19 8v6M16 11h6"/></svg>Start a room</button><a class="df-btn df-btn--text" href="#"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg>Edit</a></div>
+</li></ul>
+</section>
+<section class="df-section" aria-labelledby="bg-s0">
+  <div class="df-head"><h2 id="bg-s0">Built-in games</h2></div>
+  <fieldset class="df-chips"><legend class="df-vh">Show</legend><label class="df-chip"><input type="radio" name="r-g-s0" value="all" checked="checked"/><svg class="df-ico df-ico--check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>All</span></label><label class="df-chip"><input type="radio" name="r-g-s0" value="solo"/><svg class="df-ico df-ico--check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg><span>Solo</span></label><label class="df-chip"><input type="radio" name="r-g-s0" value="room"/><svg class="df-ico df-ico--check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 19.5a6 6 0 0 1 12 0"/><path d="M15.5 4.8a3.2 3.2 0 0 1 0 6.4M17 13.6a6 6 0 0 1 4 5.9"/></svg><span>With friends</span></label></fieldset>
+  <ul class="df-list df-gamelist"><li class="df-row df-game">
+  <h3 class="df-title">Solo Deal</h3>
+  <ul class="df-tags"><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>1 player</li><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4"/></svg>No winner, just the work</li></ul>
+  <p>Flip a card, do the work. Keep going until the deck runs out or you stop.</p>
+  <details class="df-howto"><summary><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>How to play</summary><ol><li>Shuffle the deck and flip the top card.</li><li>Do the exercise and amount on it.</li><li>Flip the next card.</li></ol></details>
+  <div class="df-actions"><button type="button" class="df-btn df-btn--primary"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg>Play</button><button type="button" class="df-btn df-btn--text"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>Duplicate to edit</button></div>
+</li><li class="df-row df-game">
+  <h3 class="df-title">End Match</h3>
+  <ul class="df-tags"><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>1 player</li><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4"/></svg>Most work wins</li><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4v16M12 4v16M19 4v16"/><circle cx="5" cy="14" r="2" fill="currentColor"/><circle cx="12" cy="8" r="2" fill="currentColor"/><circle cx="19" cy="16" r="2" fill="currentColor"/></svg>1 setting to tune</li></ul>
+  <p>Lay out a row of four. When the two ends match, work both ends and clear the row; otherwise work the middle pair.</p>
+  <details class="df-howto"><summary><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>How to play</summary></details>
+  <div class="df-actions"><button type="button" class="df-btn df-btn--primary"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg>Play</button><button type="button" class="df-btn df-btn--text"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>Duplicate to edit</button></div>
+</li><li class="df-row df-game">
+  <h3 class="df-title">Bluff Pile</h3>
+  <ul class="df-tags"><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 19.5a6 6 0 0 1 12 0"/><path d="M15.5 4.8a3.2 3.2 0 0 1 0 6.4M17 13.6a6 6 0 0 1 4 5.9"/></svg>3–6 players</li><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4"/></svg>Most rounds wins</li><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8.5 10.5V7.5a3.5 3.5 0 0 1 7 0v3"/></svg>Your cards stay private</li><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4v16M12 4v16M19 4v16"/><circle cx="5" cy="14" r="2" fill="currentColor"/><circle cx="12" cy="8" r="2" fill="currentColor"/><circle cx="19" cy="16" r="2" fill="currentColor"/></svg>1 setting to tune</li></ul>
+  <p>Lay cards face down and name the rank — truthfully or not. Get caught bluffing, or call wrong, and you work the whole pile.</p>
+  <details class="df-howto"><summary><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>How to play</summary></details>
+  <div class="df-actions"><button type="button" class="df-btn df-btn--primary"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M19 8v6M16 11h6"/></svg>Start a room</button><button type="button" class="df-btn df-btn--text"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>Duplicate to edit</button></div>
+</li></ul>
+</section>
+</main></template><template id="t-first"><main class="df-page">
+<div class="df-intro df-head"><h1>Games</h1><a class="df-btn df-btn--primary" href="#"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>New game</a></div>
+<section class="df-section" aria-labelledby="yg-s1">
+  <div class="df-head"><h2 id="yg-s1">Your games</h2></div>
+  <p class="df-hint">Build a game from rule blocks, or duplicate a built-in one and change it.</p>
+</section>
+<section class="df-section" aria-labelledby="bg-s1">
+  <div class="df-head"><h2 id="bg-s1">Built-in games</h2></div>
+  <fieldset class="df-chips"><legend class="df-vh">Show</legend><label class="df-chip"><input type="radio" name="r-g-s1" value="all" checked="checked"/><svg class="df-ico df-ico--check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>All</span></label><label class="df-chip"><input type="radio" name="r-g-s1" value="solo"/><svg class="df-ico df-ico--check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg><span>Solo</span></label><label class="df-chip"><input type="radio" name="r-g-s1" value="room"/><svg class="df-ico df-ico--check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 19.5a6 6 0 0 1 12 0"/><path d="M15.5 4.8a3.2 3.2 0 0 1 0 6.4M17 13.6a6 6 0 0 1 4 5.9"/></svg><span>With friends</span></label></fieldset>
+  <ul class="df-list df-gamelist"><li class="df-row df-game">
+  <h3 class="df-title">Solo Deal</h3>
+  <ul class="df-tags"><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>1 player</li><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4"/></svg>No winner, just the work</li></ul>
+  <p>Flip a card, do the work. Keep going until the deck runs out or you stop.</p>
+  <details class="df-howto"><summary><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>How to play</summary><ol><li>Shuffle the deck and flip the top card.</li><li>Do the exercise and amount on it.</li><li>Flip the next card.</li></ol></details>
+  <div class="df-actions"><button type="button" class="df-btn df-btn--primary"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg>Play</button><button type="button" class="df-btn df-btn--text"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>Duplicate to edit</button></div>
+</li><li class="df-row df-game">
+  <h3 class="df-title">End Match</h3>
+  <ul class="df-tags"><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>1 player</li><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4"/></svg>Most work wins</li><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4v16M12 4v16M19 4v16"/><circle cx="5" cy="14" r="2" fill="currentColor"/><circle cx="12" cy="8" r="2" fill="currentColor"/><circle cx="19" cy="16" r="2" fill="currentColor"/></svg>1 setting to tune</li></ul>
+  <p>Lay out a row of four. When the two ends match, work both ends and clear the row; otherwise work the middle pair.</p>
+  <details class="df-howto"><summary><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>How to play</summary></details>
+  <div class="df-actions"><button type="button" class="df-btn df-btn--primary"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg>Play</button><button type="button" class="df-btn df-btn--text"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>Duplicate to edit</button></div>
+</li><li class="df-row df-game">
+  <h3 class="df-title">Bluff Pile</h3>
+  <ul class="df-tags"><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 19.5a6 6 0 0 1 12 0"/><path d="M15.5 4.8a3.2 3.2 0 0 1 0 6.4M17 13.6a6 6 0 0 1 4 5.9"/></svg>3–6 players</li><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4"/></svg>Most rounds wins</li><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8.5 10.5V7.5a3.5 3.5 0 0 1 7 0v3"/></svg>Your cards stay private</li><li><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4v16M12 4v16M19 4v16"/><circle cx="5" cy="14" r="2" fill="currentColor"/><circle cx="12" cy="8" r="2" fill="currentColor"/><circle cx="19" cy="16" r="2" fill="currentColor"/></svg>1 setting to tune</li></ul>
+  <p>Lay cards face down and name the rank — truthfully or not. Get caught bluffing, or call wrong, and you work the whole pile.</p>
+  <details class="df-howto"><summary><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>How to play</summary></details>
+  <div class="df-actions"><button type="button" class="df-btn df-btn--primary"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M19 8v6M16 11h6"/></svg>Start a room</button><button type="button" class="df-btn df-btn--text"><svg class="df-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>Duplicate to edit</button></div>
+</li></ul>
+</section>
+</main></template>
+<div class="spec-ctl" role="group" aria-label="Mockup controls">
+  <button type="button" id="spec-theme" aria-pressed="false">Dark theme</button>
+  <button type="button" id="spec-state">State: regular</button>
+</div>
+<script>
+(function(){
+  var root=document.documentElement, t=document.getElementById('spec-theme'), s=document.getElementById('spec-state');
+  var states=[["regular", "regular"], ["first", "no games of your own"]], i=0;
+  t.onclick=function(){var d=root.getAttribute('data-theme')!=='dark';
+    if(d)root.setAttribute('data-theme','dark');else root.removeAttribute('data-theme');
+    t.setAttribute('aria-pressed',String(d));};
+  s.onclick=function(){i=(i+1)%states.length;
+    document.querySelector('.df-page').replaceWith(document.getElementById('t-'+states[i][0]).content.cloneNode(true));
+    s.textContent='State: '+states[i][1];};
+})();
+</script>
+</body>
+</html>

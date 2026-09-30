@@ -1,61 +1,36 @@
-.df-page { max-width: 880px; }
-.empty { justify-items: start; font: var(--mat-sys-body-large); }
+:host { display: block; }
 
-.tiles {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 0;
-  /* The tiles sit on the page, not inside a section, so they are cards in their own right. */
-  div {
-    padding: 12px 16px; border-radius: 16px;
-    background: var(--df-card-bg); border: 1px solid var(--df-edge); box-shadow: var(--df-shadow);
+.df-page { max-width: 1040px; }
+
+@media (min-width: 840px) {
+  .df-page { padding: 24px 16px; }
+  .df-history {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: start;
   }
-  /* The tiles are the page's own containers, so they keep the section background. */
-  dt { font: var(--mat-sys-label-large); color: var(--mat-sys-on-surface-variant); }
-  dd { margin: 4px 0 0; font-family: var(--font-display); font-weight: 800; font-size: 2.2rem; line-height: 1; font-variant-numeric: tabular-nums; }
-}
+  // The streak, the day panel and the page heading run the full width; totals and the log share.
+  .df-history > .df-intro,
+  .df-history > .df-streak,
+  .df-history > df-day-detail,
+  .df-history > p { grid-column: 1 / -1; }
 
-.bar-lists { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
-.bars {
-  margin: 0;
-  figcaption { font: var(--mat-sys-title-small); margin-bottom: 8px; }
-  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
-  li { display: grid; grid-template-columns: minmax(7rem, auto) 1fr 4.5ch; align-items: center; gap: 10px; min-height: 28px; }
-  .label { font: var(--mat-sys-body-medium); white-space: nowrap; }
-  .pip { display: inline-block; width: 1.3em; }
-  .track { height: 12px; }
-  .fill { display: block; height: 100%; min-width: 2px; border-radius: 0 4px 4px 0; background: var(--mat-sys-primary); }
-  .value { font: var(--mat-sys-body-medium); text-align: right; font-variant-numeric: tabular-nums; color: var(--mat-sys-on-surface); }
-}
-.pip[data-suit='hearts'] { color: var(--suit-text-hearts); }
-.pip[data-suit='diamonds'] { color: var(--suit-text-diamonds); }
-.pip[data-suit='clubs'] { color: var(--suit-text-clubs); }
-.pip[data-suit='spades'] { color: var(--suit-text-spades); }
-.pip[data-suit='joker'] { color: var(--suit-text-joker); }
-
-.table-wrap { overflow-x: auto; }
-.exercises {
-  width: 100%; border-collapse: collapse; font: var(--mat-sys-body-medium);
-  th, td { padding: 8px 8px 8px 0; text-align: left; border-bottom: 1px solid var(--mat-sys-outline-variant); }
-  thead th { font: var(--mat-sys-label-large); color: var(--mat-sys-on-surface-variant); }
-  tbody th { font-weight: 400; }
-  .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
-  a { color: var(--mat-sys-primary); }
-}
-
-.sessions {
-  list-style: none; margin: 0; padding: 0; display: grid; gap: 8px;
-  li {
-    display: flex; align-items: center; gap: 16px; padding: 10px 12px; border-radius: 16px;
-    background: var(--df-row-bg);
+  .df-streak {
+    display: grid;
+    grid-template-columns: 200px max-content;
+    column-gap: 40px;
+    row-gap: 12px;
+    justify-content: start;
   }
-  .when { display: grid; min-width: 5.5rem; }
-  .date { font: var(--mat-sys-title-small); }
-  .time { font: var(--mat-sys-body-small); color: var(--mat-sys-on-surface-variant); }
-  .what { flex: 1; display: grid; min-width: 0; }
-  .name { font: var(--mat-sys-title-medium); }
-  .sub { font: var(--mat-sys-body-small); color: var(--mat-sys-on-surface-variant); }
-  .badge { font: var(--mat-sys-label-medium); padding: 2px 8px; border-radius: 8px; background: var(--mat-sys-secondary-container); white-space: nowrap; }
-  .badge.abandoned { background: var(--mat-sys-surface-container-highest); }
+  .df-streak > .df-head { grid-column: 1 / -1; }
+  .df-streak ::ng-deep .df-streak-nums {
+    grid-column: 1;
+    grid-row: 2 / span 2;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .df-streak ::ng-deep .df-heat,
+  .df-streak ::ng-deep .df-heat-legend { grid-column: 2; }
+  .df-page > h1 { font-size: 2.6rem; }
 }
-
-.room { margin-left: 6px; padding: 0 6px; border-radius: 8px; background: var(--mat-sys-secondary-container); color: var(--mat-sys-on-secondary-container); font: var(--mat-sys-label-small); }
-

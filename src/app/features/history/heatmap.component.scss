@@ -1,0 +1,73 @@
+:host { display: contents; }
+
+.df-streak-nums { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 4px 24px; }
+.df-bignum {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 0;
+  b { font-family: var(--font-display); font-weight: 800; font-size: 3rem; line-height: 0.95; }
+  span { font-weight: 500; }
+}
+.df-kv {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--df-text-muted);
+  strong { font-size: 1rem; color: var(--df-text); font-weight: 500; }
+}
+
+.df-heat {
+  display: grid;
+  grid-template-columns: 32px repeat(26, minmax(0, 1fr));
+  gap: 2px;
+  font-size: 0.75rem;
+  color: var(--df-text-muted);
+}
+.df-heat__month { grid-row: 1; white-space: nowrap; line-height: 1.6; }
+.df-heat__day { grid-column: 1; align-self: center; line-height: 1; }
+
+.df-cell {
+  aspect-ratio: 1;
+  border-radius: 3px;
+  padding: 0;
+  border: 0;
+  background: var(--df-row-hover);
+
+  &[data-l='1'] { background: color-mix(in srgb, var(--df-primary) 30%, var(--df-card-bg)); }
+  &[data-l='2'] { background: color-mix(in srgb, var(--df-primary) 55%, var(--df-card-bg)); }
+  &[data-l='3'] { background: color-mix(in srgb, var(--df-primary) 78%, var(--df-card-bg)); }
+  &[data-l='4'] { background: var(--df-primary); }
+}
+button.df-cell { cursor: pointer; }
+button.df-cell:focus-visible { outline: 2px solid var(--df-primary); outline-offset: 2px; }
+button.df-cell.on { box-shadow: 0 0 0 2px var(--df-card-bg), 0 0 0 4px var(--df-primary); }
+.df-cell--future { background: transparent; }
+.df-cell--today { outline: 2px solid var(--df-text); outline-offset: 1px; }
+
+.df-heat-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.8125rem;
+  color: var(--df-text-muted);
+
+  ol { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 6px; }
+  li { display: flex; align-items: center; gap: 4px; }
+  .df-cell { width: 12px; }
+}
+.df-today-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  .df-cell { width: 12px; background: transparent; }
+}
+
+@media (min-width: 840px) {
+  .df-heat { grid-template-columns: 40px repeat(26, minmax(0, 22px)); gap: 4px; font-size: 0.8125rem; }
+  .df-cell { border-radius: 4px; }
+  .df-bignum b { font-size: 3.6rem; }
+}

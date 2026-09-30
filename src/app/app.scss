@@ -1,5 +1,6 @@
-// Mobile (< 600px): bottom nav; wider: nav links in the toolbar.
-$mobile: '(max-width: 599.98px)';
+// The shell: top bar, tabs, and where they swap over (docs/design/deckfit-*.html).
+// Below 600px the five tabs are a fixed bottom bar; from 600px they move into the top bar as
+// text, and pick up their icons again from 1000px.
 
 :host {
   display: flex;
@@ -10,83 +11,117 @@ $mobile: '(max-width: 599.98px)';
 .skip-link {
   position: absolute;
   left: -9999px;
-  &:focus { left: 8px; top: 8px; z-index: 10; padding: 8px 12px; background: var(--mat-sys-surface); }
+  &:focus { left: 8px; top: 8px; z-index: 11; padding: 8px 12px; background: var(--df-card-bg); }
 }
 
-.top-bar {
+.df-topbar {
   position: sticky;
   top: 0;
-  z-index: 2;
-  // Chrome sits on the card tier, so the tinted page reads as the thing being scrolled.
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 64px;
+  padding: env(safe-area-inset-top) max(8px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left));
   background: var(--df-card-bg);
   border-bottom: 1px solid var(--df-edge);
-  gap: 4px;
-  padding-top: env(safe-area-inset-top);
-  padding-inline: max(8px, env(safe-area-inset-left)) max(8px, env(safe-area-inset-right));
-  height: auto;
-  min-height: 64px;
 }
 
-.brand {
+.df-wordmark {
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  min-height: 48px;
   font-family: var(--font-display);
   font-weight: 800;
   font-size: 1.75rem;
-  color: inherit;
+  line-height: 1;
+  color: var(--df-text);
   text-decoration: none;
-  margin-inline-end: 16px;
 }
 
-.top-nav {
-  display: flex;
-  gap: 4px;
-  @media #{$mobile} { display: none; }
-  a.active { background: var(--mat-sys-secondary-container); color: var(--mat-sys-on-secondary-container); }
-}
+.df-topnav {
+  display: none;
 
-.spacer { flex: 1; }
+  @media (min-width: 600px) {
+    display: flex;
+    gap: 2px;
+    margin-right: 8px;
+
+    a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 48px;
+      padding: 0 14px;
+      border-radius: 999px;
+      color: var(--df-text-muted);
+      text-decoration: none;
+      font-weight: 500;
+
+      &:hover { background: var(--df-row-hover); }
+      &.active { background: var(--df-row-hover); color: var(--df-text); font-weight: 700; }
+      &.active df-icon { color: var(--df-primary); }
+    }
+
+    df-icon { display: none; }
+  }
+
+  @media (min-width: 1000px) {
+    df-icon { display: contents; }
+  }
+}
 
 .content {
   flex: 1;
-  // Landscape notches: keep content out of the cutout on every screen.
   padding-inline: env(safe-area-inset-left) env(safe-area-inset-right);
-  @media #{$mobile} { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
-  // Immersive screens have no toolbar or nav, so they carry the insets themselves.
+  padding-bottom: calc(96px + env(safe-area-inset-bottom));
+
+  @media (min-width: 600px) { padding-bottom: 32px; }
+
+  // Immersive screens have no bar or tabs, so they carry the insets themselves.
   &.immersive {
     padding-top: env(safe-area-inset-top);
     padding-bottom: env(safe-area-inset-bottom);
   }
 }
 
-.bottom-nav {
-  display: none;
-  @media #{$mobile} {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    position: fixed;
-    inset: auto 0 0;
-    z-index: 2;
-    padding-bottom: env(safe-area-inset-bottom);
-    background: var(--df-card-bg);
-    border-top: 1px solid var(--df-edge);
-  }
+.df-bottomnav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  padding-bottom: env(safe-area-inset-bottom);
+  background: var(--df-card-bg);
+  border-top: 1px solid var(--df-edge);
 
-  a {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
-    min-height: 64px;
-    color: var(--mat-sys-on-surface-variant);
-    font: var(--mat-sys-label-medium);
-    text-decoration: none;
+  @media (min-width: 600px) { display: none; }
+}
 
-    mat-icon { padding: 2px 16px; border-radius: 16px; }
-    &.active {
-      color: var(--mat-sys-on-surface);
-      font-weight: 700;
-      mat-icon { background: var(--mat-sys-secondary-container); color: var(--mat-sys-on-secondary-container); }
-    }
-    &:focus-visible { outline: 2px solid var(--mat-sys-primary); outline-offset: -4px; }
-  }
+.df-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 80px;
+  color: var(--df-text-muted);
+  text-decoration: none;
+  font-size: 0.8125rem;
+  font-weight: 500;
+
+  &.active { color: var(--df-text); font-weight: 700; }
+  &.active .df-tab__ind { background: var(--df-row-hover); color: var(--df-primary); }
+  &:focus-visible { outline: 3px solid var(--df-primary); outline-offset: -4px; }
+}
+
+.df-tab__ind {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 32px;
+  border-radius: 999px;
 }

@@ -1,4 +1,4 @@
-import type { Session } from '../../domain/models/schemas';
+import type { Session } from '../models/schemas';
 import { activityGrid, dayKey } from './activity-grid';
 import type { SessionRow } from './history-stats';
 
@@ -15,6 +15,8 @@ function row(date: string, reps = 10, seconds = 0): SessionRow {
     tasks: 1,
     minutes: 5,
     inProgress: false,
+    exercises: [],
+    groups: [],
   };
 }
 
@@ -43,13 +45,24 @@ describe('activityGrid', () => {
     expect(grid.points).toBe(35);
   });
 
-  it('shades relative to the busiest day in view', () => {
-    const grid = activityGrid([row('2026-03-16', 100), row('2026-03-17', 25), row('2026-03-12', 1)], TODAY, 4);
+  it('shades by fixed rep bands, so a square means the same thing every time', () => {
+    const days = ['2026-03-09', '2026-03-10', '2026-03-11', '2026-03-12', '2026-03-13', '2026-03-14', '2026-03-16'];
+    const reps = [0, 1, 30, 31, 60, 90, 91];
+    const grid = activityGrid(days.map((d, i) => row(d, reps[i])), TODAY, 4);
     const level = (date: string) => grid.weeks.flat().find((d) => d.date === date)!.level;
-    expect(level('2026-03-16')).toBe(4);
-    expect(level('2026-03-17')).toBe(1);
-    expect(level('2026-03-12')).toBe(1);
-    expect(level('2026-03-15')).toBe(0);
+    expect(days.map(level)).toEqual([0, 1, 1, 2, 2, 3, 4]);
+  });
+
+  it('bands on reps only, but keeps the timed work for the label', () => {
+    const grid = activityGrid([row('2026-03-16', 0, 300)], TODAY, 4);
+    const day = grid.weeks.flat().find((d) => d.date === '2026-03-16')!;
+    expect(day).toMatchObject({ level: 0, reps: 0, seconds: 300, workouts: 1, points: 60 });
+  });
+
+  it('marks today and counts the days drawn', () => {
+    const grid = activityGrid([], TODAY, 4);
+    expect(grid.days).toBe(28);
+    expect(grid.weeks.flat().filter((d) => d.today).map((d) => d.date)).toEqual(['2026-03-18']);
   });
 
   it('a late-night workout belongs to the day it started, not to UTC', () => {

@@ -2,7 +2,7 @@ import { DatePipe, DecimalPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import type { DayDetail } from './day-detail';
+import type { DayDetail } from '../../domain/history/day-detail';
 
 /** One day of history, opened from the activity grid (§9e): what was in it, and what it came to. */
 @Component({

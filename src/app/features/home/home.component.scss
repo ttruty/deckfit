@@ -1,60 +1,59 @@
-.df-page { max-width: 760px; }
+:host { display: block; }
 
-/* The one section that isn't a plain surface: Quick Start leads the screen. */
-.hero {
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;
-  padding: 20px;
-  background: var(--mat-sys-primary-container); color: var(--mat-sys-on-primary-container);
-  h1 { font-family: var(--font-display); font-weight: 800; font-size: 2.4rem; line-height: 1; margin: 0 0 6px; }
-  p { margin: 0; font: var(--mat-sys-body-large); }
+.df-page { max-width: 1040px; }
+
+.df-quick { gap: 16px; }
+
+// Status pip on a challenge row: done, or still to do today.
+.df-status {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+
+  .df-ico { width: 22px; height: 22px; }
 }
-.big { min-height: 56px; padding-inline: 28px; font-size: 1.1rem; }
+.df-status--done { background: var(--df-primary); color: var(--df-on-primary); }
+.df-status--todo { border: 2px solid var(--df-text-muted); color: var(--df-text-muted); }
 
+.df-meter {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--df-row-hover);
+  overflow: hidden;
+  margin-top: 6px;
 
-.routines { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-.routine {
-  display: flex; align-items: center; gap: 4px; padding-right: 4px; border-radius: 16px;
+  > span { display: block; height: 100%; border-radius: inherit; background: var(--df-primary); }
+}
+
+.df-join__form { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.df-join__code {
+  width: 10ch;
+  min-height: 48px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid var(--df-edge);
   background: var(--df-row-bg);
-  &.favorite { background: var(--df-row-raised); }
-}
-.start {
-  flex: 1; display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 8px 12px;
-  border: 0; border-radius: 16px; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer;
-  &:hover:not(:disabled) { background: var(--df-row-hover); }
-  &:focus-visible { outline: 3px solid var(--mat-sys-primary); outline-offset: -3px; }
-  &:disabled { opacity: 0.6; cursor: default; }
-}
-.play { font-size: 36px; width: 36px; height: 36px; color: var(--mat-sys-primary); }
-.text { display: grid; }
-.name { font: var(--mat-sys-title-medium); }
-.sub { font: var(--mat-sys-body-small); color: var(--mat-sys-on-surface-variant); }
-.empty { font: var(--mat-sys-body-medium); color: var(--mat-sys-on-surface-variant); }
+  color: var(--df-text);
+  font: 500 1rem var(--font-ui);
+  text-transform: uppercase;
 
-.join-form { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; mat-form-field { width: 180px; } button { min-height: 48px; } }
-
-.room-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: start; }
-
-.offline-note {
-  display: flex; gap: 8px; align-items: flex-start; margin: 0; padding: 8px 12px; border-radius: 12px;
-  background: var(--mat-sys-tertiary-container); color: var(--mat-sys-on-tertiary-container); font: var(--mat-sys-body-small);
-  code { font-family: monospace; white-space: nowrap; }
+  &::placeholder { color: var(--df-text-muted); text-transform: none; }
+  &:focus-visible { outline: 3px solid var(--df-primary); outline-offset: 1px; }
 }
 
-.hero .intensity { margin-top: 10px; }
-
-/* Challenges you're in (§7b): what each one wants of you today, at a glance. */
-.challenges {
-  list-style: none; margin: 0; padding: 0; display: grid; gap: 8px;
-  a {
-    display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 8px 12px;
-    border-radius: 16px; background: var(--df-row-bg); color: inherit; text-decoration: none;
-    &:hover { background: var(--df-row-hover); }
-    &:focus-visible { outline: 3px solid var(--mat-sys-primary); outline-offset: 2px; }
+// ≥840: Quick start leads on the left, everything else stacks beside it.
+@media (min-width: 840px) {
+  .df-page { padding: 24px 16px; }
+  .df-home {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: start;
   }
-  .mark { color: var(--mat-sys-primary); }
-  li.done .mark { color: var(--mat-sys-tertiary); }
-  li.over .mark { color: var(--mat-sys-on-surface-variant); }
-  .text { display: grid; min-width: 0; }
-  .name { font: var(--mat-sys-title-medium); }
-  .sub { font: var(--mat-sys-body-small); color: var(--mat-sys-on-surface-variant); }
+  .df-home > .df-intro { grid-column: 1 / -1; }
+  .df-home > .df-quick { grid-row: 2 / span 4; padding: 24px; }
+  .df-home > .df-quick df-card-face-mini { --w: 136px; }
+  .df-page > h1 { font-size: 2.6rem; }
 }

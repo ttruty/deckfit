@@ -1,23 +1,18 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, EnvironmentInjector, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { DfIconComponent, type DfIconName } from './shared/ui/icon/df-icon.component';
 import { ActivatedRouteSnapshot, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { filter, map } from 'rxjs';
 import { AudioCueService } from './core/audio/audio-cue.service';
 import { ShellService } from './core/shell/shell.service';
 import { ThemeMode, ThemeService } from './core/theme/theme.service';
 
-interface NavItem { path: string; label: string; icon: string; exact: boolean }
+interface NavItem { path: string; label: string; icon: DfIconName; exact: boolean }
 
 @Component({
   selector: 'app-root',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    RouterOutlet, RouterLink, RouterLinkActive,
-    MatToolbarModule, MatButtonModule, MatIconModule,
-  ],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, DfIconComponent],
   styleUrl: './app.scss',
   templateUrl: './app.html',
 })
@@ -39,16 +34,18 @@ export class App {
 
   protected readonly nav: NavItem[] = [
     { path: '/', label: 'Home', icon: 'home', exact: true },
-    { path: '/library', label: 'Library', icon: 'fitness_center', exact: false },
-    { path: '/decks', label: 'Decks', icon: 'style', exact: false },
-    { path: '/games', label: 'Games', icon: 'casino', exact: false },
+    { path: '/library', label: 'Library', icon: 'library', exact: false },
+    { path: '/decks', label: 'Decks', icon: 'decks', exact: false },
+    { path: '/games', label: 'Games', icon: 'games', exact: false },
     { path: '/history', label: 'History', icon: 'history', exact: false },
   ];
 
-  protected readonly themes: { mode: ThemeMode; label: string; icon: string }[] = [
-    { mode: 'system', label: 'System', icon: 'brightness_auto' },
-    { mode: 'light', label: 'Light', icon: 'light_mode' },
-    { mode: 'dark', label: 'Dark', icon: 'dark_mode' },
+  // One icon for all three: the label says which mode is on, and the half-filled disc reads as
+  // "theme" rather than as the current scheme (the mockup's top bar).
+  protected readonly themes: { mode: ThemeMode; label: string }[] = [
+    { mode: 'system', label: 'System' },
+    { mode: 'light', label: 'Light' },
+    { mode: 'dark', label: 'Dark' },
   ];
 
   constructor() {

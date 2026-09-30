@@ -10,9 +10,14 @@ async function scan(page: Page) {
   return violations.map((v) => `${v.id} (${v.impact}) — ${v.nodes.length}× e.g. ${v.nodes[0]?.target.join(' ')}`);
 }
 
-/** Pins the theme the way the toolbar's theme button does. */
+/**
+ * Pins the theme the way the toolbar's theme button does, then lets the colour transition finish:
+ * axe samples computed colours, and mid-flip a dark-theme text colour can sit on a light-theme
+ * background for a frame.
+ */
 async function setTheme(page: Page, theme: 'light' | 'dark') {
   await page.evaluate((t) => document.documentElement.setAttribute('data-theme', t), theme);
+  await page.waitForTimeout(250);
 }
 
 test.describe('accessibility (axe, WCAG 2.1 AA)', () => {
@@ -59,7 +64,7 @@ test.describe('accessibility (axe, WCAG 2.1 AA)', () => {
       if (deckEditor.length) problems['deck editor'] = deckEditor;
 
       await page.goto('/');
-      await page.getByRole('region', { name: 'Quick start' }).getByRole('button', { name: 'Start' }).click();
+      await page.getByRole('region', { name: 'Quick start' }).getByRole('button', { name: /^Start / }).click();
       await page.waitForURL(/\/play\//);
       await page.locator('button.flip').click();
       await page.locator('df-card-face').first().waitFor();
