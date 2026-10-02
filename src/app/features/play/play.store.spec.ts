@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { AudioCueService } from '../../core/audio/audio-cue.service';
 import { SessionRepository } from '../../core/db/repositories';
+import { HabitsService } from '../../core/habits/habits.service';
 import { seedContent } from '../../core/db/seed-content';
 import { simulate } from '../../domain/engine/dsl/simulate';
 import { hashState } from '../../domain/engine/hash';
@@ -148,6 +149,15 @@ describe('PlayStore', () => {
     await settle(store);
     expect(store.finished()).toBe(true);
     expect(store.summary()?.outcome).toBe('finished');
+  });
+
+  it('reports the ended workout to Habits (§16), once', async () => {
+    const report = vi.spyOn(TestBed.inject(HabitsService), 'reportSession');
+    const { id, store } = await startQuick();
+    await playToEnd(store);
+    expect(report).toHaveBeenCalledTimes(1);
+    expect(report.mock.calls[0][0]).toMatchObject({ id, outcome: 'finished' });
+    expect(report.mock.calls[0][0].endedAt).toBeDefined();
   });
 
   it('abandoning saves progress with outcome "abandoned" and blocks further intents', async () => {

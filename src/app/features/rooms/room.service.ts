@@ -2,6 +2,7 @@ import { Injectable, computed, inject, signal } from '@angular/core';
 import type { Subscription } from 'rxjs';
 import { newId } from '../../core/db/deckfit-db';
 import { SessionRepository } from '../../core/db/repositories';
+import { HabitsService } from '../../core/habits/habits.service';
 import { IdentityService } from '../../core/identity/identity.service';
 import { Clock } from '../../core/time/clock.service';
 import type { EngineEvent } from '../../domain/engine/events';
@@ -31,6 +32,7 @@ export class RoomService {
   private readonly identity = inject(IdentityService);
   private readonly starter = inject(RoomStartService);
   private readonly sessions = inject(SessionRepository);
+  private readonly habits = inject(HabitsService);
   private readonly clock = inject(Clock);
   /** Events seen this game, for the saved Session log. */
   private log: EngineEvent[] = [];
@@ -182,6 +184,7 @@ export class RoomService {
     });
     try {
       await this.sessions.save(session);
+      this.habits.reportSession(session); // §16
     } catch (err) {
       this.savedSessionId = null;
       console.warn('Could not save the room session', err);

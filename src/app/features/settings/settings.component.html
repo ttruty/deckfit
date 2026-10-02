@@ -82,6 +82,31 @@
     }
   </section>
 
+  <section class="card df-section" aria-labelledby="habits">
+    <h2 id="habits">Habits</h2>
+    <mat-slide-toggle [checked]="habits.settings().enabled" (change)="habits.update({ enabled: $event.checked })">
+      Report workouts to Habits
+    </mat-slide-toggle>
+    <p class="hint">
+      Off by default. When on, DeckFit sends each workout you end (its length, game, deck, and whether you finished it)
+      to your Habits scorecard at the address below. Nothing else leaves this device, and nothing is sent while this is off.
+    </p>
+    @if (habits.settings().enabled) {
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Ingest URL</mat-label>
+        <input matInput type="url" inputmode="url" placeholder="https://…/functions/v1/ingest"
+          [value]="habits.settings().url" (change)="habits.update({ url: $any($event.target).value })" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Token</mat-label>
+        <input matInput type="password" autocomplete="off" placeholder="hab_…"
+          [value]="habits.settings().token" (change)="habits.update({ token: $any($event.target).value })" />
+      </mat-form-field>
+      <p class="hint">From Habits → Sources → Connect an app → DeckFit.</p>
+      @if (habitsStatus(); as status) { <p class="hint" role="status">{{ status }}</p> }
+    }
+  </section>
+
   <section class="card df-section" aria-labelledby="guide">
     <h2 id="guide">Guide</h2>
     <p class="hint">A quick walk through how DeckFit works — cards, decks, games and rooms.</p>

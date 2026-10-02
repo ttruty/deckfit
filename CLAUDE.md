@@ -1381,3 +1381,25 @@ app export.
   and would benefit from the same auth: it would turn the device header into proof.)
 - Exercise media: local illustrations vs. links only.
 - Final app name and branding.
+
+---
+
+## 16. Habits reporting (opt-in)
+
+DeckFit can report ended workouts to the owner's **Habits** scorecard (`../../Habits`, served at
+`timtruty.com/Habits/`). It is **off by default**: nothing is queued or sent until it's switched on in
+Settings → Habits with the ingest URL and token from Habits → Sources → Connect an app → DeckFit.
+
+- `core/habits/habits-reporter.ts` is a **copy** of `Habits/clients/habits-reporter.ts`. Change the
+  master copy there first, then copy it here again. Don't edit it in place.
+- `core/habits/habits.service.ts` keeps settings (`meta.habitsReporting`, Zod-validated) and the send
+  queue (`meta.habitsQueue`) in Dexie, per §2: no localStorage.
+- `toHabitsEvent(session)` turns an ended `Session` into `workout.completed`: `externalId` = session
+  id, value = duration in seconds, `localDate` = the local day it ended, meta =
+  `{ game, deck, outcome, room? }`. Abandoned workouts are reported too, with `outcome: 'abandoned'`;
+  whether they count is the habit's rule in Habits (its preset counts `finished` only).
+- Hook points: `PlayStore.finalize()` (solo) and `RoomService.saveSession()` (rooms). Each session
+  reports once; resends are harmless (Habits ignores a known externalId).
+- What leaves the device when on: each ended workout's length, game name, deck name, outcome and time.
+  The Settings text says so next to the toggle; keep it accurate if the event changes.
+

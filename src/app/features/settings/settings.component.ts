@@ -11,6 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AudioCueService } from '../../core/audio/audio-cue.service';
 import { BundleImportError, BundleService } from '../../core/db/bundle.service';
 import { MetaRepository } from '../../core/db/repositories';
+import { HabitsService } from '../../core/habits/habits.service';
 import { IdentityService } from '../../core/identity/identity.service';
 import { InstallService } from '../../core/pwa/install.service';
 import { DisclaimerService } from '../../core/safety/disclaimer.service';
@@ -42,6 +43,7 @@ export class SettingsComponent {
   protected readonly theme = inject(ThemeService);
   protected readonly audio = inject(AudioCueService);
   protected readonly prefs = inject(PreferencesService);
+  protected readonly habits = inject(HabitsService);
   protected readonly intensities = INTENSITIES;
   protected readonly intensityLabel = INTENSITY_LABEL;
   protected readonly intensityHelp = INTENSITY_HELP;
@@ -66,12 +68,24 @@ export class SettingsComponent {
     loader: async () => {
       const [me, contentVersion, acceptedAt, tourEnabled] = await Promise.all([
         this.identity.me(), this.meta.get('contentVersion'), this.disclaimer.acceptedAt(), this.tour.enabled(),
+        this.habits.load(),
       ]);
       this.name.setValue(me.name === 'You' ? '' : me.name);
       this.tourEnabled.set(tourEnabled);
       return { me, contentVersion, acceptedAt };
     },
   });
+  /** §16: one line on how reporting to Habits is going; empty when there's nothing to say. */
+  protected habitsStatus(): string {
+    switch (this.habits.status()) {
+      case 'token': return 'Habits didn’t accept the token. Make a new one in Habits → Sources and paste it here.';
+      case 'retrying': return 'Couldn’t reach Habits. Workouts wait here and are sent when it’s back.';
+      case 'sending': return 'Sending…';
+      case 'idle': return 'Up to date.';
+      default: return '';
+    }
+  }
+
   /** Mirrors `tourEnabled` in `meta` so the toggle reflects what's stored. */
   protected readonly tourEnabled = signal(true);
 

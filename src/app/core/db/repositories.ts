@@ -199,6 +199,10 @@ export interface MetaValues {
   /** §12a welcome guide: when it was last closed (0 = show it again) and whether it may open at all. */
   tourSeenAt: number;
   tourEnabled: boolean;
+  /** §16 reporting to Habits: off until enabled with a URL and token (core/habits). */
+  habitsReporting: { enabled: boolean; url: string; token: string };
+  /** §16 events waiting to be sent to Habits. */
+  habitsQueue: unknown[];
 }
 
 @Injectable({ providedIn: 'root' })
