@@ -23,6 +23,10 @@ export const appConfig: ApplicationConfig = {
       const seeded = import('./core/content/content-seed.service')
         .then((m) => injector.get(m.ContentSeedService).ensureSeeded())
         .catch((err: unknown) => console.warn('Content seeding failed; using stored content', err));
+      // §16: resend recent workouts to Habits in case a send was lost. Doesn't hold up the app.
+      void import('./core/habits/habits.service')
+        .then((m) => injector.get(m.HabitsService).catchUp())
+        .catch((err: unknown) => console.warn('Could not start Habits reporting', err));
       return Promise.all([prefs, seeded]);
     }),
     provideServiceWorker('ngsw-worker.js', {

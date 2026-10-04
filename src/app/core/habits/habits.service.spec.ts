@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { MetaRepository } from '../db/repositories';
+import type { DeckfitDb } from '../db/deckfit-db';
 import type { Session } from '../../domain/models/schemas';
 import { provideTestDb } from '../../../testing/db';
 import { HabitsService, toHabitsEvent } from './habits.service';
@@ -49,9 +50,10 @@ describe('toHabitsEvent', () => {
 
 describe('HabitsService', () => {
   let meta: MetaRepository;
+  let db: DeckfitDb;
 
   beforeEach(() => {
-    provideTestDb();
+    db = provideTestDb();
     TestBed.configureTestingModule({});
     meta = TestBed.inject(MetaRepository);
   });
@@ -81,6 +83,26 @@ describe('HabitsService', () => {
     habits.reportSession(session);
     await settle();
     expect(await meta.get('habitsQueue')).toEqual([toHabitsEvent(session)]);
+  });
+
+  it('catches up: re-sends workouts that ended in the last week, only when on', async () => {
+    const fetch = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response('{}'));
+    const now = Date.now();
+    const recent = { ...session, id: 'session-recent', startedAt: now - 60_000, endedAt: now };
+    const old = { ...session, id: 'session-old', startedAt: now - 9e8, endedAt: now - 8.9e8 };
+    const running = { ...session, id: 'session-running', startedAt: now, endedAt: undefined };
+    await db.sessions.bulkPut([recent, old, running]); // partial sessions: skip the repo's schema
+
+    const habits = TestBed.inject(HabitsService);
+    await habits.catchUp();
+    expect(fetch).not.toHaveBeenCalled();
+
+    await habits.update({ enabled: true, url: 'https://x/ingest', token: 'hab_t' });
+    await habits.catchUp();
+    expect(fetch).toHaveBeenCalled();
+    const body = JSON.parse(fetch.mock.calls[0][1]!.body as string);
+    expect(body.events.map((e: { externalId: string }) => e.externalId)).toEqual(['session-recent']);
+    expect(await meta.get('habitsQueue')).toEqual([]);
   });
 
   it('ignores stored settings that fail validation', async () => {

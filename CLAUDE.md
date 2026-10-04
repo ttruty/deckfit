@@ -1398,8 +1398,10 @@ Settings → Habits with the ingest URL and token from Habits → Sources → Co
   id, value = duration in seconds, `localDate` = the local day it ended, meta =
   `{ game, deck, outcome, room? }`. Abandoned workouts are reported too, with `outcome: 'abandoned'`;
   whether they count is the habit's rule in Habits (its preset counts `finished` only).
-- Hook points: `PlayStore.finalize()` (solo) and `RoomService.saveSession()` (rooms). Each session
-  reports once; resends are harmless (Habits ignores a known externalId).
+- Hook points: `PlayStore.finalize()` (solo) and `RoomService.saveSession()` (rooms). Resends are
+  harmless (Habits ignores a known externalId), so `HabitsService.catchUp()` re-reports every workout
+  that ended in the last 7 days at startup (app initializer) and when reporting is switched on. A
+  send lost because the app closed or was offline until the next launch still arrives.
 - What leaves the device when on: each ended workout's length, game name, deck name, outcome and time.
   The Settings text says so next to the toggle; keep it accurate if the event changes.
 

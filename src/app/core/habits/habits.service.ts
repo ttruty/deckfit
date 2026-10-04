@@ -1,6 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { z } from 'zod';
-import { MetaRepository } from '../db/repositories';
+import { MetaRepository, SessionRepository } from '../db/repositories';
+import { Clock } from '../time/clock.service';
 import type { Session } from '../../domain/models/schemas';
 import {
   createReporter,
@@ -20,6 +21,9 @@ export type HabitsSettings = z.infer<typeof HabitsSettingsSchema>;
 
 const OFF: HabitsSettings = { enabled: false, url: '', token: '' };
 
+/** How far back `catchUp()` re-reports ended workouts. */
+const CATCH_UP_MS = 7 * 24 * 60 * 60 * 1000;
+
 /** The reporter's queue lives in Dexie `meta` too: §2 keeps app data out of localStorage. */
 const QueueSchema = z.array(z.looseObject({ externalId: z.string().min(1) }));
 
@@ -30,6 +34,8 @@ const QueueSchema = z.array(z.looseObject({ externalId: z.string().min(1) }));
 @Injectable({ providedIn: 'root' })
 export class HabitsService {
   private readonly meta = inject(MetaRepository);
+  private readonly sessions = inject(SessionRepository);
+  private readonly clock = inject(Clock);
   readonly settings = signal<HabitsSettings>(OFF);
   readonly status = signal<ReporterStatus['state']>('off');
   private reporter: Reporter | undefined;
@@ -47,7 +53,28 @@ export class HabitsService {
     await this.load();
     this.settings.update((s) => ({ ...s, ...patch }));
     await this.meta.set('habitsReporting', this.settings());
-    if (this.settings().enabled) void this.ensureReporter().flush();
+    if (this.settings().enabled) void this.catchUp();
+  }
+
+  /**
+   * Re-reports every workout that ended in the last week, then sends the queue. Runs at startup and
+   * when reporting is switched on, so a workout whose send was lost (app closed or killed before it
+   * went out, offline until the next launch) still arrives. Habits ignores ones it already has.
+   */
+  async catchUp(): Promise<void> {
+    try {
+      await this.load();
+      if (!this.settings().enabled) return;
+      const reporter = this.ensureReporter();
+      const since = this.clock.epoch() - CATCH_UP_MS;
+      for (const session of await this.sessions.list(100)) {
+        const event = session.endedAt && session.endedAt >= since ? toHabitsEvent(session) : null;
+        if (event) await reporter.report(event);
+      }
+      await reporter.flush();
+    } catch (err) {
+      console.warn('Could not catch up with Habits', err);
+    }
   }
 
   /** An ended session (finished or abandoned) as a `workout.completed` event. */
