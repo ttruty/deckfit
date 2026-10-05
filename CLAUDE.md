@@ -72,7 +72,8 @@ npm run icons           # regenerate the app icon set from tools/build_icons.mjs
 npm run check:realtime  # is the Supabase Realtime backend working? (subscribe, broadcast, presence, two clients)
 npm run serve:pwa       # production build served on :4311 (service worker; used by the offline e2e)
 BASE_HREF=/<repo>/ npm run build:pages   # GitHub Pages build (base href, 404.html fallback, .nojekyll)
-supabase db push        # or paste supabase/migrations/*.sql into the SQL editor — needed once for §7b challenges
+supabase db push        # or paste supabase/migrations/*.sql into the SQL editor — needed once for §7b
+                        # challenges (0001) and for an erase reaching the server (0002, §10)
 npx http-server dist/deckfit/browser -p 8080   # test SW/offline locally
 ```
 
@@ -868,7 +869,12 @@ board.
   per project; until it is, every screen says so (PostgREST reports a missing table through its
   schema cache, not `42P01`). Behind `ChallengeGateway`, so it is Supabase when keys are
   configured and an in-memory stand-in otherwise (the screens say the challenge then stays in
-  that tab).
+  that tab). `0002_erase_my_data.sql` adds the one policy 0001 is missing — deleting the day rows
+  you wrote — so §10's erase can take this device's numbers with it; until it is run the seats go
+  and the days stay, and the screen says so.
+- **Leaving for good**: `gateway.forget(playerId)` gives up every seat and deletes every day this
+  device reported, in one go. The challenge itself is never deleted — other people are in it, and
+  their work is theirs.
 - **Trust model**: the same as §7, and no stronger. The device id travels in an `x-device-id`
   header the policies check, which stops a client writing someone else's row by accident — it is
   not proof, because a client can send any header, and the numbers a device reports are its own
@@ -886,7 +892,8 @@ board.
   a friend's workout lands live while you're looking at it.
 - **Tests**: `standings.spec.ts` and `progress.spec.ts` cover the rules (pot, ties, the three
   goals, the local-day rule, what gets uploaded); `challenge.service.spec.ts` drives two devices
-  (two TestBeds, two Dexies) against one gateway and checks that each writes only its own days.
+  (two TestBeds, two Dexies) against one gateway and checks that each writes only its own days,
+  and that `forget()` takes one device's seats and days without touching the other's.
   `e2e/challenges.spec.ts` plays a real Quick Start workout and watches the day land on the
   board — against the keyless production build, so it runs anywhere; the two-device tests skip
   until a project has the migration.
@@ -910,7 +917,7 @@ board.
 | `/room/new`, `/room/:code` | Lobby, then play |
 | `/challenges`, `/challenges/:code` | Async challenges: yours, start or join; then the board (§7b) |
 | `/history` | Past sessions, totals per exercise/muscle group |
-| `/settings` | Display name, theme, default intensity, default deck length, sound, data export/import, safety notice, about (no units: nothing records weights) |
+| `/settings` | Display name, theme, default intensity, default deck length, sound, data export/import, clear this device (§10), safety notice, about (no units: nothing records weights) |
 
 Lazy-load every feature route. Guard `/play` against a missing session and
 `/room/:code` against an invalid code.
@@ -1193,6 +1200,21 @@ exercises and every pose id exists.
 - Dexie tables: `exercises`, `decks`, `games`, `routines`, `sessions`, `meta`.
 - Built-in content seeded from `assets/content/*.json` on first run and on
   content version bump (never overwrite user copies).
+- **Clearing this device** (`core/db/erase.service.ts`, `DataEraseService`), from /settings. Two
+  sizes, both irreversible and both confirmed first (`erase-data.dialog`, which names the counts;
+  the full erase takes a second, deliberate tap rather than a typed phrase):
+  - `clearHistory()` — the `sessions` table only. What you made stays.
+  - `eraseEverything()` — a factory reset: every table cleared in one transaction, then the
+    built-in content seeded straight back, so the app is usable without a reload. The shared rows
+    go **first** (`ChallengeService.forget()` — every seat and every day this device reported;
+    the challenges themselves stay, other people are still in them), because once the device id
+    is gone nothing can say which rows were ours. A backend that refuses — offline, no keys, or
+    migration 0002 not run — never blocks the local wipe; the result says `challenges: 'kept'`
+    and the screen tells the truth. Afterwards the in-memory copies are dropped too
+    (`IdentityService.forget()` mints a new device id, `PreferencesService.reset()`,
+    `HabitsService.reset()` — the Habits URL and token are credentials), or they would write the
+    old values straight back into the fresh `meta` table. The safety notice and the welcome guide
+    therefore come back on the next launch, which is what "fresh install" means.
 - Export/import: single JSON bundle (decks/games/routines), Zod-validated,
   downloaded from /settings (and shareable via the share sheet where it takes
   files — a separate button, since desktop Chrome would otherwise swallow the
@@ -1226,6 +1248,10 @@ Implementation (`core/db`):
   records are replaced.
 - Dexie wraps errors thrown inside `transaction()` callbacks (breaks
   `instanceof`): return a result from the transaction and throw after it.
+- The erase is covered by `core/db/erase.service.spec.ts` (counts, history-only, the full wipe and
+  reseed, a fresh device id and default settings, the Habits credentials) and
+  `e2e/erase-data.spec.ts`, which plays a real workout and then clicks both buttons through their
+  confirmations. `e2e/a11y.spec.ts` scans the dialog in both themes.
 - Tests use `core/db/testing.ts` (`provideTestDb()` = fresh fake-indexeddb
   factory per test). Don't use fake timers with Dexie; stub `Date.now`.
 

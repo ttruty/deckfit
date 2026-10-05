@@ -74,6 +74,13 @@ export class ChallengeService {
     await this.guard(() => gateway.leave(challengeId, me.id));
   }
 
+  /** Leaves everything and deletes every day this device reported (§10 erase). */
+  async forget(): Promise<void> {
+    const gateway = await this.gateway();
+    const me = await this.identity.me();
+    await this.guard(() => gateway.forget(me.id));
+  }
+
   /** Challenges this device is in. */
   async mine(): Promise<Challenge[]> {
     const gateway = await this.gateway();

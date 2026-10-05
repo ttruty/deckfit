@@ -116,6 +116,18 @@ export class SupabaseChallengeGateway implements ChallengeGateway {
     if (error) throw new ChallengeError(error.message);
   }
 
+  /**
+   * Deletes every row this device wrote, across every challenge. The day rows need the
+   * `days_erase` policy (migration 0002); without it RLS quietly matches nothing, so the seats
+   * still go and the numbers stay — which is what the screen reports.
+   */
+  async forget(playerId: string): Promise<void> {
+    const days = await this.client.from('challenge_days').delete().eq('player_id', playerId);
+    if (days.error) throw isMissingTable(days.error) ? notSetUp() : new ChallengeError(days.error.message);
+    const members = await this.client.from('challenge_members').delete().eq('player_id', playerId);
+    if (members.error) throw isMissingTable(members.error) ? notSetUp() : new ChallengeError(members.error.message);
+  }
+
   async reportDays(challengeId: string, days: readonly ChallengeDay[]): Promise<void> {
     if (!days.length) return;
     const { error } = await this.client.from('challenge_days').upsert(

@@ -30,6 +30,11 @@ export interface ChallengeGateway {
   /** Idempotent: joining twice keeps one seat, and updates the name. */
   join(challengeId: string, me: ChallengeMember): Promise<void>;
   leave(challengeId: string, playerId: string): Promise<void>;
+  /**
+   * Removes this device from everywhere at once: every seat it holds and every day it reported
+   * (§10 erase). Challenges themselves stay — other people are still in them.
+   */
+  forget(playerId: string): Promise<void>;
   /** Upserts this device's own day rows. */
   reportDays(challengeId: string, days: readonly ChallengeDay[]): Promise<void>;
   /** Challenges this device has joined, newest first. */
@@ -97,6 +102,14 @@ export class MemoryChallengeGateway implements ChallengeGateway {
   async leave(challengeId: string, playerId: string): Promise<void> {
     this.members.set(challengeId, (this.members.get(challengeId) ?? []).filter((m) => m.playerId !== playerId));
     this.changed(challengeId);
+  }
+
+  async forget(playerId: string): Promise<void> {
+    for (const id of [...this.members.keys()]) {
+      this.members.set(id, (this.members.get(id) ?? []).filter((m) => m.playerId !== playerId));
+      this.days.set(id, (this.days.get(id) ?? []).filter((d) => d.playerId !== playerId));
+      this.changed(id);
+    }
   }
 
   async reportDays(challengeId: string, days: readonly ChallengeDay[]): Promise<void> {

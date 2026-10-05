@@ -40,6 +40,18 @@ export class PreferencesService {
     });
   }
 
+  /**
+   * Back to the out-of-the-box settings (§10 erase). The effect above writes them to `meta`, so
+   * this is also what re-stamps the wiped table — nothing is left from the old device.
+   */
+  reset(): void {
+    this.theme.set('system');
+    this.audio.beeps.set(true);
+    this.audio.speech.set(false);
+    this.intensity.set('moderate');
+    this.deckLength.set(null);
+  }
+
   async load(): Promise<void> {
     const [theme, beeps, speech, intensity, deckLength] = await Promise.all([
       this.meta.get('theme'), this.meta.get('beeps'), this.meta.get('speech'), this.meta.get('intensity'),

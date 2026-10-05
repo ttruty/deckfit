@@ -186,4 +186,32 @@ describe('ChallengeService (two devices, one backend)', () => {
     expect((await gateway.byCode(challenge.code))!.members).toHaveLength(1);
     expect(await bo.challenges.mine()).toEqual([]);
   });
+
+  it('forgetting takes every seat and every reported day, and leaves other players alone (§10)', async () => {
+    const gateway = new MemoryChallengeGateway();
+    const ann = device(gateway, at('2026-03-18'));
+    const annId = (await ann.identity.me()).id;
+    await ann.sessions.save(workout('s1', '2026-03-16', 40, annId));
+    const first = await ann.challenges.create(CHALLENGE);
+    const second = await ann.challenges.create({ ...CHALLENGE, name: 'Another' });
+
+    const bo = device(gateway, at('2026-03-18'));
+    const boId = (await bo.identity.me()).id;
+    await bo.sessions.save(workout('s2', '2026-03-16', 30, boId));
+    await bo.challenges.join(first.code);
+    expect((await gateway.byCode(first.code))!.days.some((d) => d.playerId === boId)).toBe(true);
+
+    await bo.challenges.forget();
+
+    // Bo is gone from everywhere, days and all; the challenge and Ann's work are untouched.
+    for (const code of [first.code, second.code]) {
+      const state = (await gateway.byCode(code))!;
+      expect(state.members.some((m) => m.playerId === boId)).toBe(false);
+      expect(state.days.some((d) => d.playerId === boId)).toBe(false);
+    }
+    expect(await bo.challenges.mine()).toEqual([]);
+    const after = (await gateway.byCode(first.code))!;
+    expect(after.members.map((m) => m.playerId)).toEqual([annId]);
+    expect(after.days.filter((d) => d.playerId === annId)).toHaveLength(1);
+  });
 });

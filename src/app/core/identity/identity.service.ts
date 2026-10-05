@@ -14,6 +14,11 @@ export class IdentityService {
     return (this.cached ??= this.load());
   }
 
+  /** Drops the cached identity so the next `me()` mints a fresh device id (§10 erase). */
+  forget(): void {
+    this.cached = null;
+  }
+
   async rename(name: string): Promise<void> {
     const trimmed = name.trim().slice(0, 30) || DEFAULT_NAME;
     await this.meta.set('displayName', trimmed);

@@ -81,6 +81,19 @@ test.describe('accessibility (axe, WCAG 2.1 AA)', () => {
       const dialog = await scan(page);
       if (dialog.length) problems['safety notice'] = dialog;
 
+      // §10: the erase confirmation, in both of its states (the second button only appears armed).
+      await page.keyboard.press('Escape');
+      await expect(page.getByRole('dialog')).toHaveCount(0);
+      await page.getByRole('button', { name: 'Erase everything' }).click();
+      const erase = page.getByRole('dialog');
+      await erase.waitFor();
+      await erase.getByRole('button', { name: 'Erase everything' }).click();
+      await page.waitForTimeout(500);
+      await setTheme(page, theme);
+      const eraseProblems = await scan(page);
+      if (eraseProblems.length) problems['erase data'] = eraseProblems;
+      await erase.getByRole('button', { name: 'Cancel' }).click();
+
       expect(problems).toEqual({});
       await page.context().close();
     });

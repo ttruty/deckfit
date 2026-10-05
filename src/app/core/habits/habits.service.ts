@@ -84,6 +84,18 @@ export class HabitsService {
     void this.load().then(() => this.ensureReporter().report(event));
   }
 
+  /**
+   * Forgets the connection and anything still queued (§10 erase): the URL and token are the
+   * owner's credentials, so an erase has to take them with it. The queue itself lives in the
+   * wiped `meta` table; this drops the copy held in memory.
+   */
+  reset(): void {
+    this.settings.set(OFF);
+    this.status.set('off');
+    this.reporter = undefined;
+    this.loaded = Promise.resolve();
+  }
+
   private ensureReporter(): Reporter {
     return (this.reporter ??= createReporter({
       config: async () => {

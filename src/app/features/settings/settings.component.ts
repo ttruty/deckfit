@@ -7,9 +7,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { firstValueFrom } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AudioCueService } from '../../core/audio/audio-cue.service';
 import { BundleImportError, BundleService } from '../../core/db/bundle.service';
+import { DataEraseService } from '../../core/db/erase.service';
 import { MetaRepository } from '../../core/db/repositories';
 import { HabitsService } from '../../core/habits/habits.service';
 import { IdentityService } from '../../core/identity/identity.service';
@@ -21,6 +24,8 @@ import { DECK_LENGTHS } from '../../domain/models/deck-rules';
 import { INTENSITIES } from '../../domain/models/schemas';
 import { INTENSITY_HELP, INTENSITY_LABEL } from '../../shared/labels';
 import { TourService } from '../../core/tour/tour.service';
+import { REALTIME_CONFIGURED } from '../../core/sync/realtime-config';
+import { EraseDataDialog, type EraseData } from './erase-data.dialog';
 
 /** /settings (§8): identity, look, sound, data export/import, and the safety notice. */
 @Component({
@@ -39,6 +44,10 @@ export class SettingsComponent {
   private readonly disclaimer = inject(DisclaimerService);
   private readonly tour = inject(TourService);
   private readonly snack = inject(MatSnackBar);
+  private readonly dialog = inject(MatDialog);
+  private readonly erase = inject(DataEraseService);
+  /** False with no backend: a challenge then never left this browser, so an erase can't either. */
+  private readonly shared = inject(REALTIME_CONFIGURED);
   protected readonly install = inject(InstallService);
   protected readonly theme = inject(ThemeService);
   protected readonly audio = inject(AudioCueService);
@@ -56,7 +65,7 @@ export class SettingsComponent {
   ];
 
   protected readonly name = new FormControl('', { nonNullable: true, validators: [Validators.maxLength(30)] });
-  protected readonly busy = signal<'export' | 'import' | null>(null);
+  protected readonly busy = signal<'export' | 'import' | 'erase' | null>(null);
   protected readonly importProblems = signal<string[]>([]);
   protected readonly themes: { mode: ThemeMode; label: string; hint: string }[] = [
     { mode: 'system', label: 'Match my device', hint: 'Follows your light/dark setting' },
@@ -141,6 +150,47 @@ export class SettingsComponent {
     } finally {
       this.busy.set(null);
     }
+  }
+
+  /** §10: the workout log only. Decks, games and routines stay. */
+  protected async clearHistory(): Promise<void> {
+    if (!(await this.confirm('history'))) return;
+    this.busy.set('erase');
+    try {
+      const gone = await this.erase.clearHistory();
+      this.snack.open(gone ? `Cleared ${gone} workout${gone === 1 ? '' : 's'}` : 'There was no history to clear', undefined, { duration: 4000 });
+    } finally {
+      this.busy.set(null);
+    }
+  }
+
+  /** §10: a factory reset — every table, the device's identity, its settings and its shared rows. */
+  protected async eraseEverything(): Promise<void> {
+    if (!(await this.confirm('all'))) return;
+    this.busy.set('erase');
+    try {
+      const result = await this.erase.eraseEverything();
+      this.info.reload();
+      this.name.setValue('');
+      this.tourEnabled.set(true);
+      this.snack.open(
+        result.challenges === 'kept'
+          ? 'This device is erased. Your challenge rows couldn’t be reached — open a challenge while online to clear them.'
+          : 'This device is erased. The built-in decks and games are back.',
+        'OK',
+        { duration: result.challenges === 'kept' ? 10000 : 5000 },
+      );
+    } catch {
+      this.snack.open('Could not erase your data.', 'OK', { duration: 6000 });
+    } finally {
+      this.busy.set(null);
+    }
+  }
+
+  private async confirm(scope: EraseData['scope']): Promise<boolean> {
+    const data: EraseData = { scope, summary: await this.erase.summary(), shared: this.shared };
+    const ref = this.dialog.open(EraseDataDialog, { data, maxWidth: '520px', width: '92vw' });
+    return (await firstValueFrom(ref.afterClosed())) === true;
   }
 
   protected showDisclaimer(): void {

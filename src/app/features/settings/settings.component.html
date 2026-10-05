@@ -107,6 +107,27 @@
     }
   </section>
 
+  <section class="card df-section danger-zone" aria-labelledby="erase">
+    <h2 id="erase">Clear this device</h2>
+    <p class="hint">
+      Nothing here can be undone, and nothing is backed up anywhere — export your data first if you
+      want to keep it.
+    </p>
+    <div class="row">
+      <button mat-stroked-button type="button" (click)="clearHistory()" [disabled]="busy() !== null">
+        <mat-icon>history_toggle_off</mat-icon>Clear workout history
+      </button>
+      <button mat-stroked-button type="button" class="danger" (click)="eraseEverything()" [disabled]="busy() !== null">
+        <mat-icon>delete_forever</mat-icon>{{ busy() === 'erase' ? 'Erasing…' : 'Erase everything' }}
+      </button>
+    </div>
+    <p class="hint">
+      Clearing the history leaves what you made. Erasing everything puts this device back to a fresh
+      install: your decks, games, routines, name and settings go, and so does your place in any
+      challenge you joined.
+    </p>
+  </section>
+
   <section class="card df-section" aria-labelledby="guide">
     <h2 id="guide">Guide</h2>
     <p class="hint">A quick walk through how DeckFit works — cards, decks, games and rooms.</p>
