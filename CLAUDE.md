@@ -1453,11 +1453,15 @@ Settings → Habits with the ingest URL and token from Habits → Sources → Co
   master copy there first, then copy it here again. Don't edit it in place.
 - `core/habits/habits.service.ts` keeps settings (`meta.habitsReporting`, Zod-validated) and the send
   queue (`meta.habitsQueue`) in Dexie, per §2: no localStorage.
-- `toHabitsEvent(session)` turns an ended `Session` into `workout.completed`: `externalId` = session
-  id, value = duration in seconds, `localDate` = the local day it ended, meta =
-  `{ game, deck, outcome, room? }`. Abandoned workouts are reported too, with `outcome: 'abandoned'`;
-  whether they count is the habit's rule in Habits (its preset counts `finished` only).
-- Hook points: `PlayStore.finalize()` (solo) and `RoomService.saveSession()` (rooms). Resends are
+- `toHabitsEvent(session)` turns a `Session` into `workout.completed`: `externalId` = session id,
+  value = duration in seconds, `localDate` = the local day it ended (or was last active), meta =
+  `{ game, deck, outcome, room? }`. A workout is reported as soon as a card is done, with
+  `outcome: 'in_progress'` and its length so far (`Session.lastActiveAt`, saved with every step),
+  then again as `finished` or `abandoned` when it ends; the same externalId means the last report
+  wins in Habits. A workout left part-way still counts. Whether each outcome counts is the
+  habit's rule in Habits ("Workouts that count").
+- Hook points: `PlayStore`'s step handler (a solo card done), `PlayStore.finalize()` (solo end) and
+  `RoomService.saveSession()` (rooms). Resends are
   harmless (Habits ignores a known externalId), so `HabitsService.catchUp()` re-reports every workout
   that ended in the last 7 days at startup (app initializer) and when reporting is switched on. A
   send lost because the app closed or was offline until the next launch still arrives.

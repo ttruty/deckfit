@@ -57,7 +57,7 @@ export class HabitsService {
   }
 
   /**
-   * Re-reports every workout that ended in the last week, then sends the queue. Runs at startup and
+   * Re-reports every workout from the last week (ended, or left part-way with a card done), then sends the queue. Runs at startup and
    * when reporting is switched on, so a workout whose send was lost (app closed or killed before it
    * went out, offline until the next launch) still arrives. Habits ignores ones it already has.
    */
@@ -68,7 +68,7 @@ export class HabitsService {
       const reporter = this.ensureReporter();
       const since = this.clock.epoch() - CATCH_UP_MS;
       for (const session of await this.sessions.list(100)) {
-        const event = session.endedAt && session.endedAt >= since ? toHabitsEvent(session) : null;
+        const event = (session.endedAt ?? session.lastActiveAt ?? 0) >= since ? toHabitsEvent(session) : null;
         if (event) await reporter.report(event);
       }
       await reporter.flush();
@@ -77,7 +77,10 @@ export class HabitsService {
     }
   }
 
-  /** An ended session (finished or abandoned) as a `workout.completed` event. */
+  /**
+   * A session as a `workout.completed` event: once a card is done (outcome `in_progress`), then
+   * again when it ends. Same externalId, so the last report replaces the earlier ones in Habits.
+   */
   reportSession(session: Session): void {
     const event = toHabitsEvent(session);
     if (!event) return;
@@ -117,22 +120,31 @@ export class HabitsService {
   }
 }
 
-/** Null for a session that hasn't ended. */
+/**
+ * A session as a fact for Habits. Unfinished ones report once a card is done, with outcome
+ * `in_progress` and their length so far; null before that. Whether they count is Habits' rule.
+ */
 export function toHabitsEvent(session: Session): HabitsEvent | null {
-  if (!session.endedAt) return null;
-  const ended = new Date(session.endedAt);
+  const at = session.endedAt ?? (didAnything(session) ? (session.lastActiveAt ?? session.startedAt) : undefined);
+  if (at === undefined) return null;
+  const when = new Date(at);
   return {
     externalId: session.id,
     type: 'workout.completed',
-    occurredAt: ended.toISOString(),
-    localDate: localDateKey(ended),
-    value: Math.max(0, Math.round((session.endedAt - session.startedAt) / 1000)),
+    occurredAt: when.toISOString(),
+    localDate: localDateKey(when),
+    value: Math.max(0, Math.round((at - session.startedAt) / 1000)),
     unit: 'seconds',
     meta: {
       game: session.game.name,
       deck: session.deck.name,
-      outcome: session.outcome ?? 'finished',
+      outcome: session.endedAt ? (session.outcome ?? 'finished') : 'in_progress',
       ...(session.roomId ? { room: true } : {}),
     },
   };
+}
+
+/** At least one card done by anyone: an amount logged in the session's totals. */
+function didAnything(session: Session): boolean {
+  return Object.values(session.totals ?? {}).some((byExercise) => Object.values(byExercise).some((n) => n > 0));
 }

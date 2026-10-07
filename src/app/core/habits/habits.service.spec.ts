@@ -46,6 +46,19 @@ describe('toHabitsEvent', () => {
     });
     expect(toHabitsEvent({ ...session, endedAt: undefined })).toBeNull();
   });
+
+  it('reports an unfinished workout once a card is done, as in progress', () => {
+    const lastActiveAt = session.startedAt + 90_000;
+    const started = { ...session, endedAt: undefined, outcome: undefined, lastActiveAt };
+    expect(toHabitsEvent({ ...started, totals: { me: { squat: 0 } } })).toBeNull();
+    expect(toHabitsEvent({ ...started, totals: { me: { squat: 10 } } })).toMatchObject({
+      externalId: 'session-1',
+      occurredAt: new Date(lastActiveAt).toISOString(),
+      localDate: '2026-10-01',
+      value: 90,
+      meta: { outcome: 'in_progress' },
+    });
+  });
 });
 
 describe('HabitsService', () => {
@@ -91,7 +104,15 @@ describe('HabitsService', () => {
     const recent = { ...session, id: 'session-recent', startedAt: now - 60_000, endedAt: now };
     const old = { ...session, id: 'session-old', startedAt: now - 9e8, endedAt: now - 8.9e8 };
     const running = { ...session, id: 'session-running', startedAt: now, endedAt: undefined };
-    await db.sessions.bulkPut([recent, old, running]); // partial sessions: skip the repo's schema
+    const left = {
+      ...session,
+      id: 'session-left',
+      startedAt: now - 120_000,
+      endedAt: undefined,
+      lastActiveAt: now - 60_000,
+      totals: { me: { squat: 5 } },
+    };
+    await db.sessions.bulkPut([recent, old, running, left]); // partial sessions: skip the repo's schema
 
     const habits = TestBed.inject(HabitsService);
     await habits.catchUp();
@@ -101,7 +122,10 @@ describe('HabitsService', () => {
     await habits.catchUp();
     expect(fetch).toHaveBeenCalled();
     const body = JSON.parse(fetch.mock.calls[0][1]!.body as string);
-    expect(body.events.map((e: { externalId: string }) => e.externalId)).toEqual(['session-recent']);
+    expect(body.events.map((e: { externalId: string }) => e.externalId).sort()).toEqual([
+      'session-left',
+      'session-recent',
+    ]);
     expect(await meta.get('habitsQueue')).toEqual([]);
   });
 

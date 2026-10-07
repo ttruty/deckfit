@@ -151,13 +151,21 @@ describe('PlayStore', () => {
     expect(store.summary()?.outcome).toBe('finished');
   });
 
-  it('reports the ended workout to Habits (§16), once', async () => {
+  it('reports to Habits (§16) once a card is done, and again when the workout ends', async () => {
     const report = vi.spyOn(TestBed.inject(HabitsService), 'reportSession');
     const { id, store } = await startQuick();
-    await playToEnd(store);
+    store.flip();
+    await settle();
+    expect(report).not.toHaveBeenCalled(); // nothing done yet
+    store.complete();
+    await settle();
     expect(report).toHaveBeenCalledTimes(1);
-    expect(report.mock.calls[0][0]).toMatchObject({ id, outcome: 'finished' });
-    expect(report.mock.calls[0][0].endedAt).toBeDefined();
+    expect(report.mock.calls[0][0]).toMatchObject({ id });
+    expect(report.mock.calls[0][0].endedAt).toBeUndefined();
+    expect(report.mock.calls[0][0].lastActiveAt).toBeDefined();
+    await playToEnd(store);
+    expect(report.mock.lastCall![0]).toMatchObject({ id, outcome: 'finished' });
+    expect(report.mock.lastCall![0].endedAt).toBeDefined();
   });
 
   it('abandoning saves progress with outcome "abandoned" and blocks further intents', async () => {

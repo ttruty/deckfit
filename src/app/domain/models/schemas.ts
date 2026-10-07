@@ -229,6 +229,8 @@ export const SessionSchema = z.object({
   seed: z.number().int().nonnegative(),
   startedAt: Timestamp,
   endedAt: Timestamp.optional(),
+  /** Last time the game moved on (saved with every step); what an unfinished workout reports to Habits (§16). */
+  lastActiveAt: Timestamp.optional(),
   /** finished = GameOver reached; abandoned = ended early by the player. Absent while in progress. */
   outcome: z.enum(['finished', 'abandoned']).optional(),
   game: z.object({ id: Id, name: z.string().min(1) }),

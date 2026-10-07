@@ -191,7 +191,12 @@ export class PlayStore implements OnDestroy {
     this.host.onStep((step) => {
       this.intents.push(step.intent);
       this.log.push(...step.events);
-      this.persist();
+      void this.persist({ lastActiveAt: this.clock.epoch() });
+      // §16: a card done counts as a workout in Habits, even if the game is never finished.
+      const session = this.session();
+      if (session && !session.endedAt && step.events.some((e) => e.type === 'TaskCompleted')) {
+        this.habits.reportSession(session);
+      }
     });
     this.host.start();
     this.sub = this.transport.messages$.subscribe((msg) => {
