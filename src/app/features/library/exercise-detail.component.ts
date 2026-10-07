@@ -31,21 +31,15 @@ export class ExerciseDetailComponent {
 
   protected readonly exercise = computed(() => this.data.value()?.exercise);
 
-  /** "Used in decks": each deck with the suit/ranks that carry this exercise. */
+  /** "Used in decks": each deck with the group it can be dealt from. */
   protected readonly usage = computed(() => {
     const id = this.exerciseId();
-    return (this.data.value()?.decks ?? []).map((deck) => {
-      const cards = deck.cards.filter((c) => c.exerciseId === id);
-      const suits = [...new Set(cards.map((c) => c.suit))];
-      return {
-        deck,
-        where: suits.map((suit) => {
-          const label = deck.suits.find((s) => s.suit === suit)?.label ?? SUIT_NAME[suit];
-          const ranks = cards.filter((c) => c.suit === suit).map((c) => c.rank);
-          return { symbol: SUIT_SYMBOL[suit], name: SUIT_NAME[suit], label, ranks: ranks.join(' ') };
-        }),
-      };
-    });
+    return (this.data.value()?.decks ?? []).map((deck) => ({
+      deck,
+      where: deck.suits
+        .filter((s) => s.exerciseIds.includes(id))
+        .map((s) => ({ symbol: SUIT_SYMBOL[s.suit], name: SUIT_NAME[s.suit], label: s.label })),
+    }));
   });
 
   protected readonly labels = { CATEGORY_LABEL, DIFFICULTY_LABEL, EQUIPMENT_LABEL, MEASURE_LABEL, MUSCLE_LABEL };

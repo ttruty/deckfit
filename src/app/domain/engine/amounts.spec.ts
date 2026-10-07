@@ -22,12 +22,13 @@ describe('cardAmount', () => {
     expect(cardAmount({ ...card('7'), baseAmount: 12 }, 'reps', settings())).toBe(12); // deck-edited amount wins
   });
 
-  it('uses faceCardValue for J/Q/K and aceValue for A, ×5 when timed', () => {
+  it('reads the card for face cards and aces too — faceCardValue / aceValue are spent at deal time', () => {
+    // §9b: the deal draws J/Q/K and A from a band those settings centre; by the time a card
+    // exists the number on it is the answer, so the settings no longer override it here.
     const s = settings({ faceCardValue: 8, aceValue: 15 });
-    expect(['J', 'Q', 'K'].map((r) => cardAmount(card(r as Card['rank']), 'reps', s))).toEqual([8, 8, 8]);
-    expect(cardAmount(card('A'), 'reps', s)).toBe(15);
-    expect(cardAmount(card('K', 'plank'), 'seconds', s)).toBe(40);
-    expect(cardAmount(card('A', 'plank'), 'seconds', s)).toBe(75);
+    expect(['J', 'Q', 'K'].map((r) => cardAmount(card(r as Card['rank']), 'reps', s))).toEqual([10, 10, 10]);
+    expect(cardAmount({ ...card('K'), baseAmount: 8 }, 'reps', s)).toBe(8);
+    expect(cardAmount(card('A', 'plank'), 'seconds', s)).toBe(55);
   });
 
   it('refuses jokers', () => {
@@ -95,8 +96,8 @@ describe('planTasks', () => {
     expect(planTasks(cards, src({ intensity: 'low', jokerRule: 'rest' }))[0].amount).toBe(8); // 11 × 0.7 = 7.7
   });
 
-  it('drops zero-amount tasks (e.g. aceValue 0)', () => {
-    expect(planTasks([card('A')], src({ aceValue: 0 }))).toEqual([]);
+  it('drops zero-amount tasks (a card the deal gave nothing to)', () => {
+    expect(planTasks([{ ...card('A'), baseAmount: 0 }], src())).toEqual([]);
   });
 
   it('throws for a card whose exercise is unknown', () => {

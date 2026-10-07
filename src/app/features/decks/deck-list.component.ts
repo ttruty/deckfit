@@ -8,6 +8,7 @@ import { DeckRepository, ExerciseRepository } from '../../core/db/repositories';
 import type { Deck } from '../../domain/models/schemas';
 import { CATEGORY_LABEL, SUIT_NAME, SUIT_SYMBOL } from '../../shared/labels';
 import { CardFaceComponent } from '../../shared/ui/card-face/card-face.component';
+import { buildDeck } from '../../domain/models/deck-rules';
 import { toCardFaceModel } from '../../shared/ui/card-face/card-face-model';
 
 @Component({
@@ -34,14 +35,18 @@ export class DeckListComponent {
     const data = this.data.value();
     if (!data) return [];
     const view = (deck: Deck) => {
-      // Preview: the ace of hearts (the hardest legs-style card), or the first card with an exercise.
-      const card = deck.cards.find((c) => c.suit === 'hearts' && c.rank === 'A') ?? deck.cards.find((c) => c.exerciseId);
+      // One card the deck could deal, as a taste of it. The seed is the deck's own id, so the
+      // list doesn't reshuffle itself every time you look at it.
+      const cards = buildDeck(deck, data.exercisesById, sampleSeed(deck.id));
+      const card = cards.find((c) => c.suit === 'hearts') ?? cards.find((c) => c.exerciseId);
+      const pool = deck.suits.reduce((n, s) => n + s.exerciseIds.length, 0);
       return {
         deck,
         preview: card ? toCardFaceModel(card, deck, data.exercisesById) : null,
         category: deck.category ? CATEGORY_LABEL[deck.category] : null,
-        suits: deck.suits.filter((s) => s.suit !== 'joker').map((s) => ({ symbol: SUIT_SYMBOL[s.suit], name: SUIT_NAME[s.suit], label: s.label, suit: s.suit })),
-        cardCount: deck.cards.length,
+        suits: deck.suits.filter((s) => s.suit !== 'joker').map((s) => ({ symbol: SUIT_SYMBOL[s.suit], name: SUIT_NAME[s.suit], label: s.label, suit: s.suit, count: s.exerciseIds.length })),
+        exerciseCount: pool,
+        cardCount: cards.length,
       };
     };
     const byName = (a: Deck, b: Deck) => a.name.localeCompare(b.name);
@@ -68,4 +73,11 @@ export class DeckListComponent {
       this.data.reload();
     }
   }
+}
+
+/** A stable seed per deck, so a deck's sample card is the same card every time it is listed. */
+function sampleSeed(deckId: string): number {
+  let hash = 2166136261;
+  for (let i = 0; i < deckId.length; i++) hash = Math.imul(hash ^ deckId.charCodeAt(i), 16777619);
+  return hash >>> 0;
 }

@@ -2,6 +2,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { ZodType } from 'zod';
 import { GamesFileSchema } from './game.schema';
+import { amountBand, buildDeck } from './deck-rules';
 import { CardSchema, DecksFileSchema, ExercisesFileSchema, PoseLibrarySchema, RANKS, type Deck, type Exercise } from './schemas';
 
 const CONTENT_DIR = join(process.cwd(), 'src/assets/content');
@@ -56,41 +57,45 @@ describe('built-in content invariants (§9b)', () => {
   });
 
   describe.each(decks.map((d): [string, Deck] => [d.id, d]))('%s', (_id, deck) => {
-    const cardsOf = (suit: string) => deck.cards.filter((c) => c.suit === suit);
+    const poolOf = (suit: string) => deck.suits.find((s) => s.suit === suit)?.exerciseIds ?? [];
 
-    it('maps all five suits and has 13 cards per suit plus 2 jokers', () => {
+    it('maps all five suits, with exercises in the four playing ones and none on the joker', () => {
       expect(deck.suits.map((s) => s.suit).sort()).toEqual(['clubs', 'diamonds', 'hearts', 'joker', 'spades']);
-      expect(deck.cards).toHaveLength(54);
-      for (const suit of PLAYING_SUITS) expect(cardsOf(suit).map((c) => c.rank).sort()).toEqual([...PLAYING_RANKS].sort());
-      expect(cardsOf('joker').every((c) => CardSchema.parse(c).exerciseId === null && c.baseAmount === 0)).toBe(true);
-      expect(cardsOf('joker')).toHaveLength(2);
+      expect(poolOf('joker')).toEqual([]);
+      for (const suit of PLAYING_SUITS) expect(poolOf(suit).length, suit).toBeGreaterThan(0);
     });
 
-    it.each(PLAYING_SUITS)('%s: three exercises of the deck category, rising in difficulty by rank tier', (suit) => {
-      const byTier: Exercise[][] = [[], [], []];
-      for (const c of cardsOf(suit)) {
-        const ex = exById.get(c.exerciseId ?? '');
-        expect(ex, `${c.id} → ${c.exerciseId}`).toBeDefined();
-        byTier[tier(c.rank)].push(ex!);
-      }
-      const perTier = byTier.map((t) => [...new Set(t.map((e) => e.id))]);
-      expect(perTier.map((ids) => ids.length)).toEqual([1, 1, 1]);
-      expect(new Set(perTier.flat()).size).toBe(3);
-      const [easy, mid, hard] = byTier.map((t) => t[0]);
+    it.each(PLAYING_SUITS)('%s: three exercises of the deck category, rising in difficulty', (suit) => {
+      const pool = poolOf(suit).map((id) => exById.get(id));
+      expect(pool.every(Boolean), `${deck.id}/${suit} has an unknown exercise`).toBe(true);
+      const found = pool as Exercise[];
+      expect(found).toHaveLength(3);
+      expect(new Set(found.map((e) => e.id)).size).toBe(3);
+      const [easy, mid, hard] = found;
       expect(easy.difficulty).toBeLessThanOrEqual(mid.difficulty);
       expect(mid.difficulty).toBeLessThanOrEqual(hard.difficulty);
-      expect([easy, mid, hard].every((e) => e.category === deck.category)).toBe(true);
+      expect(found.every((e) => e.category === deck.category)).toBe(true);
     });
 
-    it('amounts are rank value, ×5 for timed exercises', () => {
-      const wrong = deck.cards
-        .filter((c) => c.exerciseId)
-        .filter((c) => {
-          const ex = exById.get(c.exerciseId!)!;
-          return c.baseAmount !== rankValue(c.rank) * (ex.measure === 'seconds' ? 5 : 1);
-        })
-        .map((c) => c.id);
-      expect(wrong).toEqual([]);
+    it('deals 54 cards: 13 per suit plus 2 jokers, every amount inside its rank band', () => {
+      const cards = buildDeck(deck, exById, 7);
+      expect(cards).toHaveLength(54);
+      for (const suit of PLAYING_SUITS) {
+        const suited = cards.filter((c) => c.suit === suit);
+        expect(suited.map((c) => c.rank).sort()).toEqual([...PLAYING_RANKS].sort());
+        // Every card comes from that group's pool, and nothing else does.
+        expect(suited.every((c) => poolOf(suit).includes(c.exerciseId ?? ''))).toBe(true);
+      }
+      const jokers = cards.filter((c) => c.suit === 'joker');
+      expect(jokers).toHaveLength(2);
+      expect(jokers.every((c) => CardSchema.parse(c).exerciseId === null && c.baseAmount === 0)).toBe(true);
+
+      const wrong = cards.filter((c) => c.exerciseId).filter((c) => {
+        const unit = exById.get(c.exerciseId!)!.measure === 'seconds' ? 5 : 1;
+        const [low, high] = amountBand(c.rank);
+        return c.baseAmount < low * unit || c.baseAmount > high * unit;
+      });
+      expect(wrong.map((c) => `${c.id}=${c.baseAmount}`)).toEqual([]);
     });
   });
 });

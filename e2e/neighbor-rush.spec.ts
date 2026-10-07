@@ -3,6 +3,7 @@ import { expect, test } from '@playwright/test';
 import { createGame } from '../src/app/core/sync/game-start';
 import { resolveSettings } from '../src/app/domain/engine/dsl/settings';
 import { reduce } from '../src/app/domain/engine/reducer';
+import { buildDeck } from '../src/app/domain/models/deck-rules';
 import { GamesFileSchema } from '../src/app/domain/models/game.schema';
 import { DecksFileSchema, ExercisesFileSchema, type Card } from '../src/app/domain/models/schemas';
 import { createRoom, expectPlayers, hasRealtimeBackend, joinRoom, newDevice } from './support';
@@ -28,12 +29,16 @@ function contestedSeed(): { seed: number; hostCard: string; guestCard: string } 
   const game = GamesFileSchema.parse(read('games.json')).games.find((g) => g.id === 'neighbor-rush')!;
   const deck = DecksFileSchema.parse(read('decks.json')).decks.find((d) => d.id === 'deck-bodyweight')!;
   const { exercises } = ExercisesFileSchema.parse(read('exercises.json'));
-  const byId = new Map(deck.cards.map((c) => [c.id, c]));
+  const exById = new Map(exercises.map((e) => [e.id, e]));
+  const settings = resolveSettings(game);
   for (let seed = 1; seed < 5000; seed++) {
+    // The deck is dealt from the seed too (§9b), so each candidate seed is a different deck.
+    const cards = buildDeck(deck, exById, seed, { faceCardValue: settings.faceCardValue, aceValue: settings.aceValue });
+    const byId = new Map(cards.map((c) => [c.id, c]));
     const { ctx, initial } = createGame({
-      seed, game, settings: resolveSettings(game), exercises,
+      seed, game, settings, exercises,
       players: [{ id: 'host', name: 'Host', seat: 0 }, { id: 'guest', name: 'Guest', seat: 1 }],
-      deck: { id: deck.id, name: deck.name, suits: deck.suits, cards: deck.cards },
+      deck: { id: deck.id, name: deck.name, suits: deck.suits, cards },
     });
     const { state } = reduce(initial, { type: 'deal', playerId: 'host' }, ctx);
     const center = byId.get(state.zones.table.at(-1)!)!;

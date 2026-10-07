@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { GamesFileSchema, type GameDefinition } from '../../models/game.schema';
 import { DecksFileSchema, ExercisesFileSchema, type GameSettings } from '../../models/schemas';
+import { buildDeck } from '../../models/deck-rules';
 import { EngineEventSchema } from '../events';
 import { resolveSettings } from './settings';
 import { simulate } from './simulate';
@@ -15,8 +16,11 @@ import { simulate } from './simulate';
 const SEED = 2026;
 const content = (f: string): unknown => JSON.parse(readFileSync(join(process.cwd(), 'src/assets/content', f), 'utf8'));
 const { games } = GamesFileSchema.parse(content('games.json'));
-const deck = DecksFileSchema.parse(content('decks.json')).decks.find((d) => d.id === 'deck-bodyweight')!;
+const source = DecksFileSchema.parse(content('decks.json')).decks.find((d) => d.id === 'deck-bodyweight')!;
 const { exercises } = ExercisesFileSchema.parse(content('exercises.json'));
+// A deck is pools of exercises now, so the golden run deals it first — from the same seed the
+// games are played with, so the deal is part of what these logs pin down (§9b).
+const deck = { cards: buildDeck(source, new Map(exercises.map((e) => [e.id, e])), SEED) };
 const gameById = (id: string): GameDefinition => {
   const g = games.find((x) => x.id === id);
   if (!g) throw new Error(`missing game ${id}`);
@@ -74,7 +78,7 @@ describe('solo-deal golden log', () => {
     const result = play('solo-deal', { suits: ['hearts'] });
     expectWellFormed(result, 13);
     expect(result.turns).toBe(13);
-    expect(result.state.tasks.every((t) => t.cardIds.every((id) => id.includes('-hearts-')))).toBe(true);
+    expect(result.state.tasks.every((t) => t.cardIds.every((id) => id.startsWith('hearts-')))).toBe(true);
     await expect(pretty(result.events)).toMatchFileSnapshot(logFile('solo-deal.hearts'));
   });
 
@@ -383,6 +387,13 @@ describe('fit-poker golden log', () => {
 
 describe('bluff-pile golden log', () => {
   const result = play('bluff-pile', {}, SEED, PLAYERS);
+  const CHALLENGED = (() => {
+    for (let seed = SEED; seed < SEED + 40; seed++) {
+      const run = play('bluff-pile', {}, seed, PLAYERS);
+      if (run.events.some((e) => e.type === 'ClaimChallenged')) return run;
+    }
+    throw new Error('no bluff-pile seed in range produces a challenge');
+  })();
 
   it('matches the recorded event log', async () => {
     expectWellFormed(result, 54, { cardsReassigned: true });
@@ -390,7 +401,9 @@ describe('bluff-pile golden log', () => {
   });
 
   it('every challenge is judged from the revealed cards, the loser works the pile, and the winner emptied their hand', () => {
-    const { events, state } = result;
+    // A seed whose deal actually provokes a challenge: with pools the cards differ per seed, and
+    // the scripted players only call a bluff when the hands make it worth doing.
+    const { events, state } = CHALLENGED;
     let pile: string[] = [];
     let lastClaim: { playerId: string; rank: string } | null = null;
     let challenges = 0;

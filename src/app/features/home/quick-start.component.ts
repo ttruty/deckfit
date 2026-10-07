@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { DeckRepository, ExerciseRepository, GameRepository, MetaRepository } from '../../core/db/repositories';
 import { PreferencesService } from '../../core/settings/preferences.service';
+import { buildDeck, deckExerciseIds } from '../../domain/models/deck-rules';
 import { INTENSITIES, type Intensity } from '../../domain/models/schemas';
 import { INTENSITY_HELP, INTENSITY_LABEL, EQUIPMENT_LABEL } from '../../shared/labels';
 import { CardFaceMiniComponent } from '../../shared/ui/card-face/card-face-mini.component';
@@ -61,9 +62,11 @@ export class QuickStartComponent {
 
       const byId = new Map(exercises.map((e) => [e.id, e]));
       const used = new Set(
-        deck.cards.flatMap((c) => (c.exerciseId ? (byId.get(c.exerciseId)?.equipment ?? []) : [])).filter((e) => e !== 'none'),
+        deckExerciseIds(deck).flatMap((id) => byId.get(id)?.equipment ?? []).filter((e) => e !== 'none'),
       );
-      const card = deck.cards.find((c) => c.suit === 'hearts' && c.rank === 'A') ?? deck.cards.find((c) => c.exerciseId);
+      // One card this deck could deal, so the hero shows the real thing rather than a constant.
+      const dealt = buildDeck(deck, byId, Date.now() >>> 0);
+      const card = dealt.find((c) => c.suit === 'hearts') ?? dealt.find((c) => c.exerciseId);
       const { min, max } = game.players;
 
       return {
@@ -71,6 +74,7 @@ export class QuickStartComponent {
         games,
         deck,
         game,
+        size: dealt.length,
         sample: card ? toCardFaceModel(card, deck, byId) : null,
         equipment: used.size ? [...used].map((e) => EQUIPMENT_LABEL[e].toLowerCase()).join(', ') : 'no equipment',
         gameMeta: `${min === max ? min + ' player' : min + '–' + max + ' players'} · ${lower(game.summary)}`,
@@ -82,7 +86,7 @@ export class QuickStartComponent {
   protected readonly deckMeta = computed(() => {
     const data = this.data.value();
     if (!data) return '';
-    const size = data.deck.cards.length;
+    const size = data.size;
     const length = this.deckLength();
     const cards = length === null || length >= size ? `${size} cards` : `${length} of ${size} cards`;
     return `${cards} · ${data.equipment}`;
@@ -97,7 +101,7 @@ export class QuickStartComponent {
       options: data.decks.map((deck) => ({
         id: deck.id,
         name: deck.name,
-        meta: `${deck.cards.length} cards${deck.builtIn ? '' : ' · yours'}`,
+        meta: `${deck.suits.reduce((n, s) => n + s.exerciseIds.length, 0)} exercises${deck.builtIn ? '' : ' · yours'}`,
       })),
     });
     if (picked) {
@@ -133,7 +137,7 @@ export class QuickStartComponent {
         deckId: data.deck.id,
         gameId: data.game.id,
         settings: { intensity: this.intensity() },
-        deckFilters: cardCountFilter(this.deckLength(), data.deck.cards.length),
+        deckFilters: cardCountFilter(this.deckLength(), data.size),
       });
       await this.router.navigate(['/play', id]);
     } catch (err) {

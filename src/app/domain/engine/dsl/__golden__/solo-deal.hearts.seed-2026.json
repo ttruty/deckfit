@@ -13,17 +13,17 @@
  {
   "type": "CardFlipped",
   "zone": "table",
-  "cardId": "bodyweight-hearts-3"
+  "cardId": "hearts-4"
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-hearts-3"
+    "hearts-4"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-air-squat",
-   "amount": 3,
+   "exerciseId": "bw-reverse-lunge",
+   "amount": 4,
    "measure": "reps",
    "id": "t1",
    "playerId": "p1",
@@ -34,31 +34,31 @@
   "type": "TaskCompleted",
   "taskId": "t1",
   "playerId": "p1",
-  "exerciseKey": "bw-air-squat",
-  "amount": 3
+  "exerciseKey": "bw-reverse-lunge",
+  "amount": 4
  },
  {
   "type": "CardsMoved",
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-hearts-3"
+   "hearts-4"
   ]
  },
  {
   "type": "CardFlipped",
   "zone": "table",
-  "cardId": "bodyweight-hearts-K"
+  "cardId": "hearts-A"
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-hearts-K"
+    "hearts-A"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-jump-squat",
-   "amount": 10,
+   "exerciseId": "bw-reverse-lunge",
+   "amount": 14,
    "measure": "reps",
    "id": "t2",
    "playerId": "p1",
@@ -69,31 +69,31 @@
   "type": "TaskCompleted",
   "taskId": "t2",
   "playerId": "p1",
-  "exerciseKey": "bw-jump-squat",
-  "amount": 10
+  "exerciseKey": "bw-reverse-lunge",
+  "amount": 14
  },
  {
   "type": "CardsMoved",
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-hearts-K"
+   "hearts-A"
   ]
  },
  {
   "type": "CardFlipped",
   "zone": "table",
-  "cardId": "bodyweight-hearts-Q"
+  "cardId": "hearts-K"
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-hearts-Q"
+    "hearts-K"
    ],
    "kind": "exercise",
    "exerciseId": "bw-jump-squat",
-   "amount": 10,
+   "amount": 9,
    "measure": "reps",
    "id": "t3",
    "playerId": "p1",
@@ -105,30 +105,30 @@
   "taskId": "t3",
   "playerId": "p1",
   "exerciseKey": "bw-jump-squat",
-  "amount": 10
+  "amount": 9
  },
  {
   "type": "CardsMoved",
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-hearts-Q"
+   "hearts-K"
   ]
  },
  {
   "type": "CardFlipped",
   "zone": "table",
-  "cardId": "bodyweight-hearts-A"
+  "cardId": "hearts-2"
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-hearts-A"
+    "hearts-2"
    ],
    "kind": "exercise",
    "exerciseId": "bw-jump-squat",
-   "amount": 11,
+   "amount": 1,
    "measure": "reps",
    "id": "t4",
    "playerId": "p1",
@@ -140,30 +140,30 @@
   "taskId": "t4",
   "playerId": "p1",
   "exerciseKey": "bw-jump-squat",
-  "amount": 11
+  "amount": 1
  },
  {
   "type": "CardsMoved",
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-hearts-A"
+   "hearts-2"
   ]
  },
  {
   "type": "CardFlipped",
   "zone": "table",
-  "cardId": "bodyweight-hearts-J"
+  "cardId": "hearts-Q"
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-hearts-J"
+    "hearts-Q"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-jump-squat",
-   "amount": 10,
+   "exerciseId": "bw-reverse-lunge",
+   "amount": 8,
    "measure": "reps",
    "id": "t5",
    "playerId": "p1",
@@ -174,31 +174,31 @@
   "type": "TaskCompleted",
   "taskId": "t5",
   "playerId": "p1",
-  "exerciseKey": "bw-jump-squat",
-  "amount": 10
+  "exerciseKey": "bw-reverse-lunge",
+  "amount": 8
  },
  {
   "type": "CardsMoved",
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-hearts-J"
+   "hearts-Q"
   ]
  },
  {
   "type": "CardFlipped",
   "zone": "table",
-  "cardId": "bodyweight-hearts-10"
+  "cardId": "hearts-J"
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-hearts-10"
+    "hearts-J"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-jump-squat",
-   "amount": 10,
+   "exerciseId": "bw-air-squat",
+   "amount": 7,
    "measure": "reps",
    "id": "t6",
    "playerId": "p1",
@@ -209,31 +209,31 @@
   "type": "TaskCompleted",
   "taskId": "t6",
   "playerId": "p1",
-  "exerciseKey": "bw-jump-squat",
-  "amount": 10
+  "exerciseKey": "bw-air-squat",
+  "amount": 7
  },
  {
   "type": "CardsMoved",
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-hearts-10"
+   "hearts-J"
   ]
  },
  {
   "type": "CardFlipped",
   "zone": "table",
-  "cardId": "bodyweight-hearts-5"
+  "cardId": "hearts-6"
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-hearts-5"
+    "hearts-6"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-air-squat",
-   "amount": 5,
+   "exerciseId": "bw-jump-squat",
+   "amount": 4,
    "measure": "reps",
    "id": "t7",
    "playerId": "p1",
@@ -244,31 +244,31 @@
   "type": "TaskCompleted",
   "taskId": "t7",
   "playerId": "p1",
-  "exerciseKey": "bw-air-squat",
-  "amount": 5
+  "exerciseKey": "bw-jump-squat",
+  "amount": 4
  },
  {
   "type": "CardsMoved",
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-hearts-5"
+   "hearts-6"
   ]
  },
  {
   "type": "CardFlipped",
   "zone": "table",
-  "cardId": "bodyweight-hearts-9"
+  "cardId": "hearts-10"
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-hearts-9"
+    "hearts-10"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-reverse-lunge",
-   "amount": 9,
+   "exerciseId": "bw-air-squat",
+   "amount": 11,
    "measure": "reps",
    "id": "t8",
    "playerId": "p1",
@@ -279,31 +279,31 @@
   "type": "TaskCompleted",
   "taskId": "t8",
   "playerId": "p1",
-  "exerciseKey": "bw-reverse-lunge",
-  "amount": 9
+  "exerciseKey": "bw-air-squat",
+  "amount": 11
  },
  {
   "type": "CardsMoved",
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-hearts-9"
+   "hearts-10"
   ]
  },
  {
   "type": "CardFlipped",
   "zone": "table",
-  "cardId": "bodyweight-hearts-2"
+  "cardId": "hearts-3"
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-hearts-2"
+    "hearts-3"
    ],
    "kind": "exercise",
    "exerciseId": "bw-air-squat",
-   "amount": 2,
+   "amount": 3,
    "measure": "reps",
    "id": "t9",
    "playerId": "p1",
@@ -315,30 +315,30 @@
   "taskId": "t9",
   "playerId": "p1",
   "exerciseKey": "bw-air-squat",
-  "amount": 2
+  "amount": 3
  },
  {
   "type": "CardsMoved",
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-hearts-2"
+   "hearts-3"
   ]
  },
  {
   "type": "CardFlipped",
   "zone": "table",
-  "cardId": "bodyweight-hearts-7"
+  "cardId": "hearts-8"
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-hearts-7"
+    "hearts-8"
    ],
    "kind": "exercise",
    "exerciseId": "bw-reverse-lunge",
-   "amount": 7,
+   "amount": 8,
    "measure": "reps",
    "id": "t10",
    "playerId": "p1",
@@ -350,30 +350,30 @@
   "taskId": "t10",
   "playerId": "p1",
   "exerciseKey": "bw-reverse-lunge",
-  "amount": 7
+  "amount": 8
  },
  {
   "type": "CardsMoved",
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-hearts-7"
+   "hearts-8"
   ]
  },
  {
   "type": "CardFlipped",
   "zone": "table",
-  "cardId": "bodyweight-hearts-8"
+  "cardId": "hearts-9"
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-hearts-8"
+    "hearts-9"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-reverse-lunge",
-   "amount": 8,
+   "exerciseId": "bw-jump-squat",
+   "amount": 13,
    "measure": "reps",
    "id": "t11",
    "playerId": "p1",
@@ -384,27 +384,27 @@
   "type": "TaskCompleted",
   "taskId": "t11",
   "playerId": "p1",
-  "exerciseKey": "bw-reverse-lunge",
-  "amount": 8
+  "exerciseKey": "bw-jump-squat",
+  "amount": 13
  },
  {
   "type": "CardsMoved",
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-hearts-8"
+   "hearts-9"
   ]
  },
  {
   "type": "CardFlipped",
   "zone": "table",
-  "cardId": "bodyweight-hearts-4"
+  "cardId": "hearts-5"
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-hearts-4"
+    "hearts-5"
    ],
    "kind": "exercise",
    "exerciseId": "bw-air-squat",
@@ -427,19 +427,19 @@
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-hearts-4"
+   "hearts-5"
   ]
  },
  {
   "type": "CardFlipped",
   "zone": "table",
-  "cardId": "bodyweight-hearts-6"
+  "cardId": "hearts-7"
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-hearts-6"
+    "hearts-7"
    ],
    "kind": "exercise",
    "exerciseId": "bw-reverse-lunge",
@@ -461,7 +461,7 @@
   "type": "GameOver",
   "reason": "end",
   "scores": {
-   "p1": 95
+   "p1": 92
   }
  }
 ]

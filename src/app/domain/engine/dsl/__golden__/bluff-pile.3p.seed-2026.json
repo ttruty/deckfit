@@ -16,13 +16,13 @@
   "type": "CardsDealt",
   "zone": "hand:p1",
   "cardIds": [
-   "bodyweight-spades-5",
-   "bodyweight-diamonds-2",
-   "bodyweight-diamonds-5",
-   "bodyweight-diamonds-6",
-   "bodyweight-hearts-9",
-   "bodyweight-hearts-Q",
-   "bodyweight-clubs-J"
+   "spades-6",
+   "diamonds-3",
+   "diamonds-6",
+   "diamonds-7",
+   "hearts-10",
+   "hearts-K",
+   "clubs-Q"
   ],
   "faceUp": false
  },
@@ -30,13 +30,13 @@
   "type": "CardsDealt",
   "zone": "hand:p2",
   "cardIds": [
-   "bodyweight-hearts-4",
-   "bodyweight-diamonds-J",
-   "bodyweight-clubs-10",
-   "bodyweight-spades-2",
-   "bodyweight-spades-3",
-   "bodyweight-spades-7",
-   "bodyweight-spades-6"
+   "hearts-5",
+   "diamonds-Q",
+   "clubs-J",
+   "spades-3",
+   "spades-4",
+   "spades-8",
+   "spades-7"
   ],
   "faceUp": false
  },
@@ -44,13 +44,13 @@
   "type": "CardsDealt",
   "zone": "hand:p3",
   "cardIds": [
-   "bodyweight-spades-9",
-   "bodyweight-diamonds-K",
-   "bodyweight-clubs-K",
-   "bodyweight-spades-Q",
-   "bodyweight-hearts-6",
-   "bodyweight-diamonds-9",
-   "bodyweight-clubs-5"
+   "spades-10",
+   "diamonds-A",
+   "clubs-A",
+   "spades-K",
+   "hearts-7",
+   "diamonds-10",
+   "clubs-6"
   ],
   "faceUp": false
  },
@@ -59,7 +59,7 @@
   "from": "hand:p1",
   "to": "table",
   "cardIds": [
-   "bodyweight-diamonds-2"
+   "diamonds-3"
   ]
  },
  {
@@ -73,7 +73,7 @@
   "from": "hand:p2",
   "to": "table",
   "cardIds": [
-   "bodyweight-spades-2"
+   "spades-3"
   ]
  },
  {
@@ -87,7 +87,7 @@
   "from": "hand:p3",
   "to": "table",
   "cardIds": [
-   "bodyweight-clubs-5"
+   "diamonds-A"
   ]
  },
  {
@@ -101,7 +101,7 @@
   "from": "hand:p1",
   "to": "table",
   "cardIds": [
-   "bodyweight-spades-5"
+   "spades-6"
   ]
  },
  {
@@ -115,7 +115,7 @@
   "from": "hand:p2",
   "to": "table",
   "cardIds": [
-   "bodyweight-spades-3"
+   "hearts-5"
   ]
  },
  {
@@ -129,7 +129,7 @@
   "from": "hand:p3",
   "to": "table",
   "cardIds": [
-   "bodyweight-hearts-6"
+   "clubs-6"
   ]
  },
  {
@@ -143,7 +143,7 @@
   "from": "hand:p1",
   "to": "table",
   "cardIds": [
-   "bodyweight-diamonds-5"
+   "diamonds-7"
   ]
  },
  {
@@ -157,7 +157,7 @@
   "from": "hand:p2",
   "to": "table",
   "cardIds": [
-   "bodyweight-hearts-4"
+   "spades-8"
   ]
  },
  {
@@ -171,210 +171,21 @@
   "from": "hand:p3",
   "to": "table",
   "cardIds": [
-   "bodyweight-spades-9",
-   "bodyweight-diamonds-9"
+   "clubs-A"
   ]
  },
  {
   "type": "ClaimMade",
   "playerId": "p3",
   "rank": "9",
-  "count": 2
- },
- {
-  "type": "CardsRevealed",
-  "cardIds": [
-   "bodyweight-spades-9",
-   "bodyweight-diamonds-9"
-  ]
- },
- {
-  "type": "ClaimChallenged",
-  "playerId": "p1",
-  "claimant": "p3",
-  "lied": false,
-  "loser": "p1"
- },
- {
-  "type": "TaskAssigned",
-  "task": {
-   "cardIds": [
-    "bodyweight-diamonds-2",
-    "bodyweight-diamonds-5"
-   ],
-   "kind": "exercise",
-   "exerciseId": "bw-push-up",
-   "amount": 7,
-   "measure": "reps",
-   "id": "t1",
-   "playerId": "p1",
-   "status": "pending"
-  }
- },
- {
-  "type": "TaskAssigned",
-  "task": {
-   "cardIds": [
-    "bodyweight-spades-2",
-    "bodyweight-spades-5",
-    "bodyweight-spades-3"
-   ],
-   "kind": "exercise",
-   "exerciseId": "bw-crunch",
-   "amount": 10,
-   "measure": "reps",
-   "id": "t2",
-   "playerId": "p1",
-   "status": "pending"
-  }
- },
- {
-  "type": "TaskAssigned",
-  "task": {
-   "cardIds": [
-    "bodyweight-clubs-5"
-   ],
-   "kind": "exercise",
-   "exerciseId": "bw-superman",
-   "amount": 5,
-   "measure": "reps",
-   "id": "t3",
-   "playerId": "p1",
-   "status": "pending"
-  }
- },
- {
-  "type": "TaskAssigned",
-  "task": {
-   "cardIds": [
-    "bodyweight-hearts-6"
-   ],
-   "kind": "exercise",
-   "exerciseId": "bw-reverse-lunge",
-   "amount": 6,
-   "measure": "reps",
-   "id": "t4",
-   "playerId": "p1",
-   "status": "pending"
-  }
- },
- {
-  "type": "TaskAssigned",
-  "task": {
-   "cardIds": [
-    "bodyweight-hearts-4"
-   ],
-   "kind": "exercise",
-   "exerciseId": "bw-air-squat",
-   "amount": 4,
-   "measure": "reps",
-   "id": "t5",
-   "playerId": "p1",
-   "status": "pending"
-  }
- },
- {
-  "type": "TaskAssigned",
-  "task": {
-   "cardIds": [
-    "bodyweight-spades-9"
-   ],
-   "kind": "exercise",
-   "exerciseId": "bw-plank",
-   "amount": 45,
-   "measure": "seconds",
-   "id": "t6",
-   "playerId": "p1",
-   "status": "pending"
-  }
- },
- {
-  "type": "TaskAssigned",
-  "task": {
-   "cardIds": [
-    "bodyweight-diamonds-9"
-   ],
-   "kind": "exercise",
-   "exerciseId": "bw-wide-push-up",
-   "amount": 9,
-   "measure": "reps",
-   "id": "t7",
-   "playerId": "p1",
-   "status": "pending"
-  }
- },
- {
-  "type": "CardsMoved",
-  "from": "table",
-  "to": "hand:p1",
-  "cardIds": [
-   "bodyweight-diamonds-2",
-   "bodyweight-spades-2",
-   "bodyweight-clubs-5",
-   "bodyweight-spades-5",
-   "bodyweight-spades-3",
-   "bodyweight-hearts-6",
-   "bodyweight-diamonds-5",
-   "bodyweight-hearts-4",
-   "bodyweight-spades-9",
-   "bodyweight-diamonds-9"
-  ]
- },
- {
-  "type": "TaskCompleted",
-  "taskId": "t1",
-  "playerId": "p1",
-  "exerciseKey": "bw-push-up",
-  "amount": 7
- },
- {
-  "type": "TaskCompleted",
-  "taskId": "t2",
-  "playerId": "p1",
-  "exerciseKey": "bw-crunch",
-  "amount": 10
- },
- {
-  "type": "TaskCompleted",
-  "taskId": "t3",
-  "playerId": "p1",
-  "exerciseKey": "bw-superman",
-  "amount": 5
- },
- {
-  "type": "TaskCompleted",
-  "taskId": "t4",
-  "playerId": "p1",
-  "exerciseKey": "bw-reverse-lunge",
-  "amount": 6
- },
- {
-  "type": "TaskCompleted",
-  "taskId": "t5",
-  "playerId": "p1",
-  "exerciseKey": "bw-air-squat",
-  "amount": 4
- },
- {
-  "type": "TaskCompleted",
-  "taskId": "t6",
-  "playerId": "p1",
-  "exerciseKey": "bw-plank",
-  "amount": 45
- },
- {
-  "type": "TaskCompleted",
-  "taskId": "t7",
-  "playerId": "p1",
-  "exerciseKey": "bw-wide-push-up",
-  "amount": 9
+  "count": 1
  },
  {
   "type": "CardsMoved",
   "from": "hand:p1",
   "to": "table",
   "cardIds": [
-   "bodyweight-diamonds-2"
+   "hearts-10"
   ]
  },
  {
@@ -388,7 +199,7 @@
   "from": "hand:p2",
   "to": "table",
   "cardIds": [
-   "bodyweight-diamonds-J"
+   "clubs-J"
   ]
  },
  {
@@ -402,7 +213,7 @@
   "from": "hand:p3",
   "to": "table",
   "cardIds": [
-   "bodyweight-spades-Q"
+   "hearts-7"
   ]
  },
  {
@@ -416,7 +227,7 @@
   "from": "hand:p1",
   "to": "table",
   "cardIds": [
-   "bodyweight-spades-2"
+   "hearts-K"
   ]
  },
  {
@@ -430,7 +241,7 @@
   "from": "hand:p2",
   "to": "table",
   "cardIds": [
-   "bodyweight-spades-6"
+   "spades-4"
   ]
  },
  {
@@ -444,7 +255,7 @@
   "from": "hand:p3",
   "to": "table",
   "cardIds": [
-   "bodyweight-diamonds-K"
+   "spades-10"
   ]
  },
  {
@@ -458,7 +269,7 @@
   "from": "hand:p1",
   "to": "table",
   "cardIds": [
-   "bodyweight-spades-3"
+   "diamonds-6"
   ]
  },
  {
@@ -472,7 +283,7 @@
   "from": "hand:p2",
   "to": "table",
   "cardIds": [
-   "bodyweight-spades-7"
+   "spades-7"
   ]
  },
  {
@@ -486,7 +297,7 @@
   "from": "hand:p3",
   "to": "table",
   "cardIds": [
-   "bodyweight-clubs-K"
+   "diamonds-10"
   ]
  },
  {
@@ -496,17 +307,31 @@
   "count": 1
  },
  {
+  "type": "CardsMoved",
+  "from": "hand:p1",
+  "to": "table",
+  "cardIds": [
+   "clubs-Q"
+  ]
+ },
+ {
+  "type": "ClaimMade",
+  "playerId": "p1",
+  "rank": "6",
+  "count": 1
+ },
+ {
   "type": "RoundWon",
-  "playerId": "p3",
+  "playerId": "p1",
   "round": 0
  },
  {
   "type": "GameOver",
   "reason": "end",
   "scores": {
-   "p1": 0,
+   "p1": 1,
    "p2": 0,
-   "p3": 1
+   "p3": 0
   }
  }
 ]

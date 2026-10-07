@@ -16,7 +16,10 @@ async function makeUserData() {
   await TestBed.inject(ExerciseRepository).save(myExercise);
   const decks = TestBed.inject(DeckRepository);
   const copy = await decks.duplicate('deck-bodyweight', 'My deck');
-  const myDeck = await decks.save({ ...copy, cards: copy.cards.map((c, i) => (i === 1 ? { ...c, exerciseId: 'ex-mine' } : c)) });
+  const myDeck = await decks.save({
+    ...copy,
+    suits: copy.suits.map((s, i) => (i === 0 ? { ...s, exerciseIds: [...s.exerciseIds, 'ex-mine'] } : s)),
+  });
   const myGame = await TestBed.inject(GameRepository).save({ ...content.games.games[0], id: 'my-deal', name: 'My Deal', builtIn: false });
   const routines = TestBed.inject(RoutineRepository);
   const r = (id: string, deckId: string, gameId: string): Routine => ({ id, name: id, deckId, gameId, settings, favorite: false, updatedAt: 0 });

@@ -43,7 +43,7 @@ export async function seedContent(db: DeckfitDb, bundle: ContentBundle, opts: { 
     const routines = await db.routines.toArray();
     const userDecks = (await db.decks.toArray()).filter((d) => !d.builtIn);
     const referenced = {
-      exercises: new Set(userDecks.flatMap((d) => d.cards.map((c) => c.exerciseId).filter((id): id is string => !!id))),
+      exercises: new Set(userDecks.flatMap((d) => d.suits.flatMap((s) => s.exerciseIds))),
       decks: new Set(routines.map((r) => r.deckId)),
       games: new Set(routines.map((r) => r.gameId)),
     };

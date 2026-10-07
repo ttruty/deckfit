@@ -219,9 +219,13 @@ test.describe('understanding the game', () => {
     for (let i = 0; i < 40 && !(await ann.locator('df-game-result').count()); i++) {
       for (const page of [ann, bo]) {
         for (const label of ['Flip', 'Done']) {
-          const button = page.getByRole('button', { name: label, exact: true });
-          // Short timeout: a toast can cover a button, and the default 30s wait would eat the budget.
-          if (await button.count()) await button.first().click({ timeout: 1500 }).catch(() => undefined);
+          // Every task, not just the first: a round's cards can be two different exercises, so
+          // the loser gets two tasks (§9b). Short timeout — a toast can cover a button, and the
+          // default 30s wait would eat the budget.
+          const buttons = page.getByRole('button', { name: label, exact: true });
+          for (let n = await buttons.count(); n > 0; n--) {
+            await buttons.first().click({ timeout: 1500 }).catch(() => undefined);
+          }
         }
       }
       await ann.waitForTimeout(150);

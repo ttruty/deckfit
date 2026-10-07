@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { DECK_LENGTHS, PLAYING_RANKS, applyDeckFilters, autoFillSuit, defaultBaseAmount, rankPoints, rankTier, trimToCount } from './deck-rules';
+import { DECK_LENGTHS, PLAYING_RANKS, PLAYING_SUITS, amountBand, buildDeck, deckSize, rankPoints, rankTier, suggestPool, trimToCount } from './deck-rules';
 import { DecksFileSchema, ExercisesFileSchema, type Deck, type Exercise } from './schemas';
 
 const read = (f: string): unknown => JSON.parse(readFileSync(join(process.cwd(), 'src/assets/content', f), 'utf8'));
@@ -13,119 +13,140 @@ describe('rank rules', () => {
     expect(rankPoints('JOKER')).toBe(0);
   });
 
-  it('default amount ×5 for timed exercises', () => {
-    expect(defaultBaseAmount('7', 'reps')).toBe(7);
-    expect(defaultBaseAmount('A', 'seconds')).toBe(55);
-  });
-
   it('tiers: 2–5, 6–9, 10–A', () => {
     expect(PLAYING_RANKS.map(rankTier)).toEqual([0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2]);
     expect(() => rankTier('JOKER')).toThrow();
   });
 });
 
-describe('autoFillSuit', () => {
+describe('suggestPool', () => {
   const bodyweight = structuredClone(decks.find((d) => d.id === 'deck-bodyweight')!);
   const ex = (over: Partial<Exercise>): Exercise => ({
     id: 'x', name: 'X', description: '', category: 'bodyweight', muscleGroups: ['legs'], equipment: ['none'],
     difficulty: 1, measure: 'reps', figure: { start: 'stand', end: 'squat', prop: null }, builtIn: false, ...over,
   });
+  const empty = (deck: Deck): Deck => ({ ...deck, suits: deck.suits.map((s) => ({ ...s, exerciseIds: [] })) });
 
-  it('on each built-in suit, picks that suit’s 3 exercises with difficulty rising by tier', () => {
-    // Exactly 3 candidates per suit, so easiest/median/hardest are the 3 in use. Order may differ
-    // from the generator's where difficulties tie (auto-fill breaks ties by name).
-    for (const deck of decks) {
-      for (const suit of ['hearts', 'diamonds', 'clubs', 'spades'] as const) {
-        const used = new Set(deck.cards.filter((c) => c.suit === suit).map((c) => c.exerciseId));
-        const pool = exercises.filter((e) => used.has(e.id));
-        const result = autoFillSuit(deck, suit, pool);
-        if (!result.ok) throw new Error(`${deck.id} ${suit}: ${result.reason}`);
-        expect(new Set(result.picked.map((e) => e.id))).toEqual(used);
-        const [a, b, c] = result.picked.map((e) => e.difficulty);
-        expect(a <= b && b <= c, `${deck.id} ${suit}`).toBe(true);
-      }
-    }
-  });
-
-  it('picks easiest, median, hardest by difficulty and assigns by tier with default amounts', () => {
+  it('picks three that span the difficulty range, from the deck’s own category', () => {
     const pool = [
       ex({ id: 'e5', name: 'E', difficulty: 5, measure: 'seconds' }),
       ex({ id: 'a1', name: 'A', difficulty: 1 }),
       ex({ id: 'c3', name: 'C', difficulty: 3 }),
       ex({ id: 'b2', name: 'B', difficulty: 2 }),
       ex({ id: 'd4', name: 'D', difficulty: 4 }),
-      ex({ id: 'core', muscleGroups: ['core'] }),
-      ex({ id: 'yoga', category: 'yoga' }),
+      ex({ id: 'core', muscleGroups: ['core'] }), // wrong muscle group
+      ex({ id: 'yoga', category: 'yoga' }), // wrong category
     ];
-    const result = autoFillSuit(bodyweight, 'hearts', pool);
+    const result = suggestPool(empty(bodyweight), 'hearts', pool);
     if (!result.ok) throw new Error(result.reason);
-    expect(result.picked.map((e) => e.id)).toEqual(['a1', 'c3', 'e5']);
-    const hearts = result.cards.filter((c) => c.suit === 'hearts');
-    const byRank = Object.fromEntries(hearts.map((c) => [c.rank, [c.exerciseId, c.baseAmount]]));
-    expect(byRank['2']).toEqual(['a1', 2]);
-    expect(byRank['9']).toEqual(['c3', 9]);
-    expect(byRank['10']).toEqual(['e5', 50]);
-    expect(byRank['A']).toEqual(['e5', 55]);
-    expect(result.cards.filter((c) => c.suit !== 'hearts')).toEqual(bodyweight.cards.filter((c) => c.suit !== 'hearts'));
+    expect(result.exercises.map((e) => e.id)).toEqual(['a1', 'c3', 'e5']);
   });
 
-  it('ignores category when the deck has none', () => {
-    const { category: _, ...uncategorized } = bodyweight;
-    const pool = [ex({ id: 'a', category: 'yoga' }), ex({ id: 'b', category: 'running', difficulty: 2 }), ex({ id: 'c', difficulty: 3 })];
-    expect(autoFillSuit(uncategorized as Deck, 'hearts', pool).ok).toBe(true);
-    expect(autoFillSuit(bodyweight, 'hearts', pool).ok).toBe(false);
+  it('never suggests what the group already holds', () => {
+    const pool = [ex({ id: 'a1', difficulty: 1 }), ex({ id: 'b2', name: 'B', difficulty: 2 })];
+    const withOne: Deck = { ...empty(bodyweight), suits: empty(bodyweight).suits.map((s) => (s.suit === 'hearts' ? { ...s, exerciseIds: ['a1'] } : s)) };
+    const result = suggestPool(withOne, 'hearts', pool);
+    if (!result.ok) throw new Error(result.reason);
+    expect(result.exercises.map((e) => e.id)).toEqual(['b2']);
   });
 
-  it('explains why it cannot fill', () => {
-    expect(autoFillSuit(bodyweight, 'joker', exercises)).toEqual({ ok: false, reason: 'Jokers have no exercise to fill.' });
-    const noGroups = { ...bodyweight, suits: bodyweight.suits.map((s) => (s.suit === 'hearts' ? { ...s, muscleGroups: [] } : s)) };
-    expect(autoFillSuit(noGroups, 'hearts', exercises)).toMatchObject({ ok: false, reason: 'Pick muscle groups for Legs first.' });
-    expect(autoFillSuit(bodyweight, 'hearts', [ex({})])).toMatchObject({ ok: false, reason: expect.stringMatching(/found 1/) });
+  it('explains itself when it cannot help', () => {
+    expect(suggestPool(bodyweight, 'joker', exercises)).toEqual({ ok: false, reason: 'Jokers have no exercises.' });
+    const noGroups: Deck = { ...bodyweight, suits: bodyweight.suits.map((s) => ({ ...s, muscleGroups: [] })) };
+    expect(suggestPool(noGroups, 'hearts', exercises)).toMatchObject({ ok: false, reason: /muscle groups/ });
+    expect(suggestPool(empty(bodyweight), 'hearts', [])).toMatchObject({ ok: false, reason: /No more exercises/ });
   });
 });
 
-describe('applyDeckFilters', () => {
-  const deck = decks.find((d) => d.id === 'deck-kettlebell')!;
+describe('buildDeck', () => {
+  const deck = decks.find((d) => d.id === 'deck-bodyweight')!;
   const byId = new Map(exercises.map((e) => [e.id, e]));
-  const count = (f: Parameters<typeof applyDeckFilters>[2]) => applyDeckFilters(deck.cards, byId, f).length;
+  const poolOf = (suit: string) => deck.suits.find((s) => s.suit === suit)!.exerciseIds;
 
-  it('passes everything through without filters', () => {
-    expect(count(undefined)).toBe(54);
-    expect(count({})).toBe(54);
+  it('deals 13 cards per group plus two jokers', () => {
+    const cards = buildDeck(deck, byId, 42);
+    expect(cards).toHaveLength(54);
+    for (const suit of PLAYING_SUITS) {
+      expect(cards.filter((c) => c.suit === suit).map((c) => c.rank).sort()).toEqual([...PLAYING_RANKS].sort());
+    }
+    expect(cards.filter((c) => c.suit === 'joker')).toHaveLength(2);
+    expect(new Set(cards.map((c) => c.id)).size).toBe(54);
   });
 
-  it('keeps only listed suits; jokers only when listed', () => {
-    expect(count({ suits: ['hearts'] })).toBe(13);
-    expect(count({ suits: ['hearts', 'joker'] })).toBe(15);
+  it('is the same deal for the same seed, and a different one otherwise', () => {
+    const body = (seed: number) => buildDeck(deck, byId, seed).map((c) => `${c.id}:${c.exerciseId}:${c.baseAmount}`);
+    expect(body(42)).toEqual(body(42));
+    expect(body(42)).not.toEqual(body(43));
   });
 
-  it('caps exercise difficulty; jokers always pass', () => {
-    const kept = applyDeckFilters(deck.cards, byId, { maxDifficulty: 1 });
-    expect(kept.filter((c) => c.exerciseId).every((c) => byId.get(c.exerciseId!)!.difficulty <= 1)).toBe(true);
-    expect(kept.filter((c) => c.suit === 'joker')).toHaveLength(2);
+  it('only ever deals exercises from that group, and spreads them evenly', () => {
+    const cards = buildDeck(deck, byId, 7);
+    for (const suit of PLAYING_SUITS) {
+      const used = cards.filter((c) => c.suit === suit).map((c) => c.exerciseId!);
+      expect(used.every((id) => poolOf(suit).includes(id))).toBe(true);
+      // 13 ranks over a pool of 3: nobody gets fewer than 4 or more than 5.
+      const counts = poolOf(suit).map((id) => used.filter((u) => u === id).length);
+      expect(Math.min(...counts), `${suit} ${counts}`).toBeGreaterThanOrEqual(4);
+      expect(Math.max(...counts), `${suit} ${counts}`).toBeLessThanOrEqual(5);
+    }
   });
 
-  it('equipment means "what I have": all needed items must be available ("none" is free)', () => {
-    expect(count({ equipment: [] })).toBe(2); // kettlebell deck needs kettlebells: only jokers remain
-    expect(count({ equipment: ['kettlebell'] })).toBe(54);
-    const bodyweight = decks.find((d) => d.id === 'deck-bodyweight')!;
-    expect(applyDeckFilters(bodyweight.cards, byId, { equipment: [] })).toHaveLength(54);
+  it('keeps every amount inside its rank’s band, ×5 for a timed exercise', () => {
+    for (const seed of [1, 2, 3, 99]) {
+      for (const card of buildDeck(deck, byId, seed)) {
+        if (!card.exerciseId) continue;
+        const unit = byId.get(card.exerciseId)!.measure === 'seconds' ? 5 : 1;
+        const [low, high] = amountBand(card.rank);
+        expect(card.baseAmount, `${card.id} seed ${seed}`).toBeGreaterThanOrEqual(low * unit);
+        expect(card.baseAmount, `${card.id} seed ${seed}`).toBeLessThanOrEqual(high * unit);
+      }
+    }
   });
 
-  it('drops cards whose exercise is unknown and preserves order', () => {
-    const cards = [{ ...deck.cards[0], exerciseId: 'gone' }, deck.cards[1], deck.cards[2]];
-    expect(applyDeckFilters(cards, byId, {}).map((c) => c.id)).toEqual([deck.cards[1].id, deck.cards[2].id]);
+  it('bands follow the rank, and faceCardValue / aceValue move the top ones', () => {
+    expect(amountBand('2')).toEqual([1, 3]);
+    expect(amountBand('7')).toEqual([5, 10]);
+    expect(amountBand('K')).toEqual([7, 14]);
+    expect(amountBand('A')).toEqual([8, 15]);
+    // A deck where face cards are worth 20 deals bigger face cards, and nothing else changes.
+    expect(amountBand('K', { faceCardValue: 20 })).toEqual([14, 28]);
+    expect(amountBand('A', { aceValue: 1 })).toEqual([1, 1]);
+    // 0 still means "free": the band doesn't round up to one, so the task is dropped as before.
+    expect(amountBand('A', { aceValue: 0 })).toEqual([0, 0]);
+    expect(amountBand('7', { faceCardValue: 20, aceValue: 1 })).toEqual([5, 10]);
   });
 
-  it('cardCount shortens the deck, after the other filters', () => {
-    expect(count({ cardCount: 20 })).toBe(20);
-    expect(count({ suits: ['hearts'], cardCount: 20 })).toBe(13); // nothing left to trim
-    expect(count({ suits: ['hearts', 'diamonds'], cardCount: 10 })).toBe(10);
+  it('filters narrow the pools, not the deal: a filtered deck is still a full deck', () => {
+    const kettlebell = decks.find((d) => d.id === 'deck-kettlebell')!;
+    expect(buildDeck(kettlebell, byId, 1, { filters: { equipment: ['kettlebell'] } })).toHaveLength(54);
+    // No kettlebell: every group empties, so only the jokers are left.
+    expect(buildDeck(kettlebell, byId, 1, { filters: { equipment: [] } })).toHaveLength(2);
+
+    const easy = buildDeck(deck, byId, 1, { filters: { maxDifficulty: 1 } });
+    expect(easy.filter((c) => c.exerciseId).every((c) => byId.get(c.exerciseId!)!.difficulty <= 1)).toBe(true);
+  });
+
+  it('suits choose which groups are dealt, jokers included', () => {
+    expect(buildDeck(deck, byId, 1, { filters: { suits: ['hearts'] } })).toHaveLength(13);
+    expect(buildDeck(deck, byId, 1, { filters: { suits: ['hearts', 'joker'] } })).toHaveLength(15);
+  });
+
+  it('cardCount trims the deal, after everything else (§9g)', () => {
+    expect(buildDeck(deck, byId, 1, { filters: { cardCount: 20 } })).toHaveLength(20);
+    expect(buildDeck(deck, byId, 1, { filters: { suits: ['hearts'], cardCount: 20 } })).toHaveLength(13);
+    expect(deckSize(deck, byId, { cardCount: 32 })).toBe(32);
+  });
+
+  it('a group whose exercises are all unknown deals nothing', () => {
+    const broken: Deck = { ...deck, suits: deck.suits.map((s) => (s.suit === 'hearts' ? { ...s, exerciseIds: ['gone'] } : s)) };
+    expect(buildDeck(broken, byId, 1).filter((c) => c.suit === 'hearts')).toEqual([]);
+    expect(buildDeck(broken, byId, 1)).toHaveLength(41);
   });
 });
 
 describe('trimToCount', () => {
-  const deck = decks.find((d) => d.id === 'deck-bodyweight')!;
+  const source = decks.find((d) => d.id === 'deck-bodyweight')!;
+  const deck = { cards: buildDeck(source, new Map(exercises.map((e) => [e.id, e])), 1) };
   const suitsOf = (cards: readonly { suit: string }[]) =>
     cards.reduce<Record<string, number>>((acc, c) => ({ ...acc, [c.suit]: (acc[c.suit] ?? 0) + 1 }), {});
 

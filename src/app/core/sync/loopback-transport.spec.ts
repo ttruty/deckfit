@@ -8,6 +8,7 @@ import { GameHost, replay } from './game-host';
 import type { NetMessage } from './net-message';
 import { normalizeRoomCode } from './room-code';
 import { LoopbackHub, LoopbackTransport } from './loopback-transport';
+import { dealtSnapshot } from '../../../testing/deck';
 
 const tick = () => new Promise((r) => setTimeout(r, 0));
 
@@ -68,7 +69,7 @@ describe('LoopbackTransport', () => {
 describe('GameHost', () => {
   const content = loadContent();
   const def = content.games.games.find((g) => g.id === 'solo-deal')!;
-  const deck = content.decks.decks.find((d) => d.id === 'deck-bodyweight')!;
+  const deck = dealtSnapshot(content.decks.decks.find((d) => d.id === 'deck-bodyweight')!, content.exercises.exercises, 2026);
   const ctx = createContext(deck, content.exercises.exercises, resolveSettings(def), createDslRules(def));
   const initial = () => createInitialState({ players: ['me'], seed: 2026, deck });
 

@@ -10,9 +10,11 @@ import {
 } from './draft';
 import { addSetting, numberSettingFor, removeSetting, settingUses, suggestSettingKey } from './settings';
 import { fieldProblems, validateDraft } from './validation';
+import { deal } from '../../../../../testing/deck';
 
 const content = loadContent();
-const deck = content.decks.decks.find((d) => d.id === 'deck-bodyweight')!;
+// A deck is pools of exercises, so the dry run gets a dealt one, like the builder gives it.
+const deck = { cards: deal(content.decks.decks.find((d) => d.id === 'deck-bodyweight')!, content.exercises.exercises, 7) };
 const exercises = content.exercises.exercises;
 
 describe('builder draft ↔ game JSON', () => {

@@ -14,7 +14,7 @@ import { Router, RouterLink } from '@angular/router';
 import { firstValueFrom, map, startWith } from 'rxjs';
 import { newId } from '../../core/db/deckfit-db';
 import { DeckRepository, ExerciseRepository, GameRepository, RoutineRepository } from '../../core/db/repositories';
-import { DECK_LENGTHS, applyDeckFilters } from '../../domain/models/deck-rules';
+import { DECK_LENGTHS, buildDeck } from '../../domain/models/deck-rules';
 import type { GameDefinition, SettingDef } from '../../domain/models/game.schema';
 import { INTENSITIES, SUITS, type Difficulty, type Equipment, type Intensity, type JokerRule, type Suit } from '../../domain/models/schemas';
 import { workScale } from '../../domain/engine/amounts';
@@ -112,8 +112,10 @@ export class RoutineEditorComponent {
     const deck = this.selectedDeck();
     const data = this.data.value();
     if (!deck || !data) return null;
-    const cards = applyDeckFilters(deck.cards, data.exercisesById, toDeckFilters(this.value().filters));
-    return { total: cards.length, exercises: cards.filter((c) => c.exerciseId).length };
+    // What this routine would deal: the count is fixed by the filters, the cards themselves are not.
+    const filters = toDeckFilters(this.value().filters);
+    const cards = buildDeck(deck, data.exercisesById, 1, { ...(filters ? { filters } : {}) });
+    return { total: cards.length, exercises: cards.filter((c) => c.exerciseId).length, pool: deck.suits.reduce((n, s) => n + s.exerciseIds.length, 0) };
   });
   protected readonly gameSettings = computed(() => {
     const game = this.selectedGame();
@@ -122,7 +124,7 @@ export class RoutineEditorComponent {
 
   /** Lengths worth offering for the selected deck: only the ones that actually shorten it (§9g). */
   protected readonly deckLengths = computed(() => {
-    const size = this.selectedDeck()?.cards.length ?? 54;
+    const size = this.cardsInPlay()?.total ?? 54;
     return DECK_LENGTHS.filter((n) => n < size);
   });
 

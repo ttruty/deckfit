@@ -20,17 +20,22 @@
             <button mat-flat-button (click)="duplicate()"><mat-icon>content_copy</mat-icon>Duplicate to edit</button>
           } @else {
             <button mat-button [disabled]="!store.dirty() || store.saving()" (click)="discard()">Discard</button>
-            <button mat-flat-button [disabled]="!store.dirty() || store.saving() || form.invalid" (click)="save()">
+            <button mat-flat-button [disabled]="!store.dirty() || store.saving() || form.invalid || store.empty()" (click)="save()">
               <mat-icon>save</mat-icon>Save
             </button>
           }
         </div>
       </header>
 
+      <p class="lede">
+        A deck is four groups of exercises. Every workout deals a fresh set of cards from them —
+        a random exercise from the group, and an amount that follows the card's rank.
+      </p>
+
       @if (deck.builtIn) {
         <p class="notice" role="note">
           <mat-icon aria-hidden="true">lock</mat-icon>
-          Built-in decks are read-only. Duplicate this deck to change suits, exercises, or amounts.
+          Built-in decks are read-only. Duplicate this deck to change its groups.
         </p>
       }
 
@@ -43,61 +48,90 @@
           </mat-form-field>
         }
 
-        <h2>Suits</h2>
-        <div class="suits" formArrayName="suits">
-          @for (group of suitControls(); track $index; let i = $index) {
-            @let mapping = deck.suits[i];
-            <fieldset class="suit" [formGroupName]="i" [attr.data-suit]="mapping.suit">
-              <legend><span class="pip" aria-hidden="true">{{ suitSymbol[mapping.suit] }}</span> {{ suitName[mapping.suit] }}</legend>
-              <mat-form-field appearance="outline" subscriptSizing="dynamic">
-                <mat-label>Label</mat-label>
-                <input matInput formControlName="label" />
-              </mat-form-field>
-              @if (mapping.suit !== 'joker') {
-                <mat-form-field appearance="outline" subscriptSizing="dynamic">
-                  <mat-label>Muscle groups</mat-label>
-                  <mat-select formControlName="muscleGroups" multiple>
-                    @for (m of muscles; track m) {
-                      <mat-option [value]="m">{{ muscleLabel[m] }}</mat-option>
-                    }
-                  </mat-select>
-                </mat-form-field>
+        <div class="groups" formArrayName="suits">
+          @for (group of store.groups(); track group.suit; let i = $index) {
+            <section class="group" [formGroupName]="i" [attr.data-suit]="group.suit"
+                     [attr.aria-label]="group.name + ': ' + group.label">
+              <h2>
+                <span class="pip" [attr.data-suit]="group.suit" aria-hidden="true">{{ group.symbol }}</span>
+                {{ group.label || group.name }}
+                <span class="count">{{ group.exercises.length }} {{ group.exercises.length === 1 ? 'exercise' : 'exercises' }}</span>
+              </h2>
+
+              @if (!deck.builtIn) {
+                <div class="fields">
+                  <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                    <mat-label>Group name</mat-label>
+                    <input matInput formControlName="label" />
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                    <mat-label>Muscle groups</mat-label>
+                    <mat-select formControlName="muscleGroups" multiple>
+                      @for (m of muscles; track m) {
+                        <mat-option [value]="m">{{ muscleLabel[m] }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                </div>
               }
-            </fieldset>
+
+              <ul class="chips">
+                @for (ex of group.exercises; track ex.id) {
+                  <li class="chip">
+                    <df-exercise-figure class="thumb" [figure]="ex.figure" aria-hidden="true" />
+                    <span class="chip-text">
+                      <span class="chip-name">{{ ex.name }}</span>
+                      <span class="chip-meta">{{ measureLabel[ex.measure] }} · {{ difficultyLabel[ex.difficulty] }}</span>
+                    </span>
+                    @if (!deck.builtIn) {
+                      <button mat-icon-button type="button" class="remove" [attr.aria-label]="'Remove ' + ex.name + ' from ' + group.label"
+                              (click)="remove(group.suit, ex.id, ex.name)">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    }
+                  </li>
+                } @empty {
+                  <li class="chip-empty">
+                    Nothing here yet — this group deals no cards.
+                  </li>
+                }
+              </ul>
+
+              @if (!deck.builtIn) {
+                <div class="group-actions">
+                  <button mat-flat-button type="button" (click)="openPicker(group.suit)">
+                    <mat-icon>add</mat-icon>Add exercises
+                  </button>
+                  @if (!group.exercises.length) {
+                    <button mat-stroked-button type="button" (click)="suggest(group.suit, group.label)">
+                      <mat-icon>auto_fix_high</mat-icon>Suggest
+                    </button>
+                  }
+                </div>
+              }
+            </section>
           }
         </div>
       </form>
 
-      <h2>Cards</h2>
-      @if (!deck.builtIn) {
-        <p class="hint">Tap a card to swap its exercise or change its amount.</p>
-      }
-      @for (row of store.rows(); track row.suit) {
-        <section class="row" [attr.aria-label]="row.name + ': ' + row.label">
-          <div class="row-head">
-            <h3><span class="pip" [attr.data-suit]="row.suit" aria-hidden="true">{{ row.symbol }}</span> {{ row.label }}</h3>
-            @if (!deck.builtIn && row.suit !== 'joker') {
-              <button mat-stroked-button (click)="autoFill(row.suit, row.label)">
-                <mat-icon>auto_fix_high</mat-icon>Auto-fill suit
-              </button>
-            }
-          </div>
+      <section class="sample" aria-labelledby="sample-head">
+        <div class="row-head">
+          <h2 id="sample-head">A sample deal</h2>
+          <button mat-stroked-button type="button" [disabled]="store.empty()" (click)="store.reshuffleSample()">
+            <mat-icon>casino</mat-icon>Deal again
+          </button>
+        </div>
+        @if (store.empty()) {
+          <p class="hint">Add exercises to a group and the cards show up here.</p>
+        } @else {
+          <p class="hint">Cards change every workout. This is one deal out of this deck.</p>
           <ul class="cards">
-            @for (item of row.cards; track item.card.id) {
-              <li>
-                @if (deck.builtIn || item.card.exerciseId === null) {
-                  <df-card-face [card]="item.face" />
-                } @else {
-                  <button type="button" class="card-button" (click)="openPicker(item.card)"
-                          [attr.aria-label]="cardLabel(item.card, row.label, item.face.exercise?.name)">
-                    <df-card-face [card]="item.face" />
-                  </button>
-                }
-              </li>
+            @for (face of store.sample(); track $index) {
+              <li><df-card-face [card]="face" /></li>
             }
           </ul>
-        </section>
-      }
+        }
+      </section>
     }
   }
 </div>

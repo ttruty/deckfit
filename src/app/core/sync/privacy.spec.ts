@@ -15,9 +15,10 @@ import { PrivateLink } from './private-link';
 import { RoomGame, type RoomGameUpdate } from './room-game';
 import { RoomSession } from './room-session';
 import { SupabaseTransport } from './supabase-transport';
+import { dealtSnapshot } from '../../../testing/deck';
 
 const content = loadContent();
-const deck = content.decks.decks.find((d) => d.id === 'deck-bodyweight')!;
+const deck = dealtSnapshot(content.decks.decks.find((d) => d.id === 'deck-bodyweight')!, content.exercises.exercises, 4242);
 const CARD_IDS = new Set(deck.cards.map((c) => c.id));
 const fast = { joinTimeoutMs: 40, createProbeMs: 10 };
 
@@ -77,7 +78,7 @@ async function playHidden(gameId: string, players: string[], policy: Policy, tur
   const start: GameStart = {
     seed: 4242, game, settings: resolveSettings(game),
     players: players.map((id, seat) => ({ id, name: id, seat })),
-    deck: { id: deck.id, name: deck.name, suits: deck.suits, cards: deck.cards },
+    deck,
     exercises: content.exercises.exercises,
   };
   const games = new Map<string, RoomGame>();

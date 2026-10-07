@@ -55,6 +55,6 @@ describe('SessionLauncher', () => {
   it('refuses unknown decks/games and filters that leave no exercises', async () => {
     await expect(launcher.start({ ...QUICK_START, deckId: 'nope' })).rejects.toThrow(LaunchError);
     await expect(launcher.start({ ...QUICK_START, gameId: 'nope' })).rejects.toThrow('That game no longer exists.');
-    await expect(launcher.start({ ...QUICK_START, deckFilters: { suits: ['joker'] } })).rejects.toThrow(/No exercise cards/);
+    await expect(launcher.start({ ...QUICK_START, deckFilters: { suits: ['joker'] } })).rejects.toThrow(/no exercises left to deal/);
   });
 });

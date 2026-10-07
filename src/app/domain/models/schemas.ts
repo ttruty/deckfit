@@ -104,33 +104,46 @@ export const CardSchema = z
   });
 export type Card = z.infer<typeof CardSchema>;
 
+/**
+ * One suit of a deck: what it's called, which muscle groups it stands for, and the pool of
+ * exercises its cards are dealt from (§9b). The joker mapping has no pool.
+ */
 export const SuitMappingSchema = z.object({
   suit: SuitSchema,
   label: z.string().min(1),
   color: z.string().min(1), // theme token, e.g. "suit-hearts"
   muscleGroups: z.array(MuscleGroupSchema),
+  exerciseIds: z.array(Id).default([]),
 });
 export type SuitMapping = z.infer<typeof SuitMappingSchema>;
 
+/**
+ * A deck is four pools of exercises, not 54 fixed cards: the cards are dealt from it at the
+ * start of every workout (`buildDeck`, deck-rules.ts), so the same deck is a different deal
+ * each time. Making one is "put exercises in a group", nothing else.
+ */
 export const DeckSchema = z
   .object({
     id: Id,
     name: z.string().min(1),
     category: ExerciseCategorySchema.optional(),
     suits: z.array(SuitMappingSchema).min(1),
-    cards: z.array(CardSchema).min(1),
     builtIn: z.boolean(),
     basedOn: Id.optional(),
     updatedAt: Timestamp,
   })
   .superRefine((d, ctx) => {
-    const ids = new Set<string>();
-    d.cards.forEach((c, i) => {
-      if (ids.has(c.id)) ctx.addIssue({ code: 'custom', path: ['cards', i, 'id'], message: `duplicate card id ${c.id}` });
-      ids.add(c.id);
-      if (!d.suits.some((s) => s.suit === c.suit))
-        ctx.addIssue({ code: 'custom', path: ['cards', i, 'suit'], message: `no suit mapping for ${c.suit}` });
+    const seen = new Set<Suit>();
+    d.suits.forEach((s, i) => {
+      if (seen.has(s.suit)) ctx.addIssue({ code: 'custom', path: ['suits', i, 'suit'], message: `duplicate suit ${s.suit}` });
+      seen.add(s.suit);
+      if (s.suit === 'joker' && s.exerciseIds.length)
+        ctx.addIssue({ code: 'custom', path: ['suits', i, 'exerciseIds'], message: 'jokers have no exercises' });
+      if (new Set(s.exerciseIds).size !== s.exerciseIds.length)
+        ctx.addIssue({ code: 'custom', path: ['suits', i, 'exerciseIds'], message: 'an exercise can only be in a group once' });
     });
+    if (!d.suits.some((s) => s.suit !== 'joker' && s.exerciseIds.length))
+      ctx.addIssue({ code: 'custom', path: ['suits'], message: 'a deck needs at least one exercise' });
   });
 export type Deck = z.infer<typeof DeckSchema>;
 
@@ -192,7 +205,10 @@ export type Routine = z.infer<typeof RoutineSchema>;
 export const LoggedEventSchema = z.looseObject({ type: z.string().min(1) });
 export type LoggedEvent = z.infer<typeof LoggedEventSchema>;
 
-/** Deck as played: filters applied, labels as they were. Keeps history and replay independent of later edits. */
+/** A deck as dealt (`buildDeck`): the cards a game plays with, and nothing else about the deck. */
+export type DealtDeck = { cards: readonly Card[] };
+
+/** Deck as played: dealt and filtered, labels as they were. Keeps history and replay independent of later edits. */
 export const DeckSnapshotSchema = z.object({
   id: Id,
   name: z.string().min(1),

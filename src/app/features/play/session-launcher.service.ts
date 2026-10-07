@@ -4,7 +4,7 @@ import { DeckRepository, ExerciseRepository, GameRepository, SessionRepository }
 import { IdentityService } from '../../core/identity/identity.service';
 import { Clock } from '../../core/time/clock.service';
 import { resolveSettings } from '../../domain/engine/dsl/settings';
-import { applyDeckFilters, type DeckFilters } from '../../domain/models/deck-rules';
+import { buildDeck, deckExerciseIds, type DeckFilters } from '../../domain/models/deck-rules';
 import type { GameSettings, Routine, Session } from '../../domain/models/schemas';
 
 export class LaunchError extends Error {
@@ -41,16 +41,22 @@ export class SessionLauncher {
     if (!game) throw new LaunchError('That game no longer exists.');
 
     const settings = resolveSettings(game, opts.settings);
-    const exerciseIds = [...new Set(deck.cards.flatMap((c) => (c.exerciseId ? [c.exerciseId] : [])))];
-    const found = await this.exercises.getMany(exerciseIds);
+    const found = await this.exercises.getMany(deckExerciseIds(deck));
     const exercisesById = new Map(found.flatMap((e) => (e ? [[e.id, e] as const] : [])));
-    const cards = applyDeckFilters(deck.cards, exercisesById, opts.deckFilters);
-    if (!cards.some((c) => c.exerciseId)) throw new LaunchError('No exercise cards left after the deck filters.');
+
+    // The deal is the deck: a fresh set of cards from this session's seed (§9b).
+    const seed = randomSeed();
+    const cards = buildDeck(deck, exercisesById, seed, {
+      ...(opts.deckFilters ? { filters: opts.deckFilters } : {}),
+      faceCardValue: settings.faceCardValue,
+      aceValue: settings.aceValue,
+    });
+    if (!cards.some((c) => c.exerciseId)) throw new LaunchError('This deck has no exercises left to deal — check its groups and the routine’s filters.');
 
     const session: Session = {
       id: newId('session'),
       ...(opts.routineId ? { routineId: opts.routineId } : {}),
-      seed: randomSeed(),
+      seed,
       startedAt: this.clock.epoch(),
       game: { id: game.id, name: game.name },
       deck: { id: deck.id, name: deck.name, suits: deck.suits, cards },

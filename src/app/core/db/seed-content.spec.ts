@@ -20,7 +20,7 @@ describe('seedContent', () => {
 
   it('seeds all built-in content on first run and stamps the version', async () => {
     const result = await seedContent(db, content);
-    expect(result).toMatchObject({ seeded: true, version: 'e1.d1.g6', written: { exercises: 120, decks: 10, games: 10 }, skipped: [], removed: [] });
+    expect(result).toMatchObject({ seeded: true, version: 'e1.d2.g6', written: { exercises: 120, decks: 10, games: 10 }, skipped: [], removed: [] });
     expect(await db.exercises.count()).toBe(120);
     expect(await db.decks.count()).toBe(10);
     expect(await db.games.count()).toBe(10);
@@ -39,7 +39,7 @@ describe('seedContent', () => {
     content.exercises.version = 2;
     content.exercises.exercises[0].name = 'Air Squat v2';
     const result = await seedContent(db, content);
-    expect(result).toMatchObject({ seeded: true, version: 'e2.d1.g6' });
+    expect(result).toMatchObject({ seeded: true, version: 'e2.d2.g6' });
     expect((await db.exercises.get('bw-air-squat'))?.name).toBe('Air Squat v2');
   });
 
@@ -55,7 +55,7 @@ describe('seedContent', () => {
     await seedContent(db, content);
     const copy: Deck = { ...content.decks.decks[0], id: 'deck-copy', basedOn: 'deck-bodyweight', builtIn: false, name: 'Copy' };
     await db.decks.put(copy);
-    content.decks.version = 2;
+    content.decks.version = 3;
     content.decks.decks[0].name = 'Bodyweight v2';
     await seedContent(db, content);
     expect(await db.decks.get('deck-copy')).toEqual(copy);
@@ -67,11 +67,11 @@ describe('seedContent', () => {
     await db.routines.put(routine({ deckId: 'deck-yoga', gameId: 'end-match' }));
     const userDeck: Deck = {
       ...content.decks.decks[0], id: 'deck-mine', builtIn: false,
-      cards: content.decks.decks[0].cards.map((c) => (c.id === 'bodyweight-hearts-2' ? { ...c, exerciseId: 'db-goblet-squat' } : c)),
+      suits: content.decks.decks[0].suits.map((s) => (s.suit === 'hearts' ? { ...s, exerciseIds: ['db-goblet-squat'] } : s)),
     };
     await db.decks.put(userDeck);
 
-    content.decks.version = 2;
+    content.decks.version = 3;
     content.decks.decks = content.decks.decks.filter((d) => d.id !== 'deck-yoga' && d.id !== 'deck-running');
     content.games.version = 2;
     content.games.games = content.games.games.filter((g) => g.id !== 'end-match');

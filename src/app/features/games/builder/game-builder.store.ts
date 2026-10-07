@@ -3,7 +3,7 @@ import { newId } from '../../../core/db/deckfit-db';
 import { DeckRepository, ExerciseRepository, GameRepository } from '../../../core/db/repositories';
 import { dryRun, type DryRunResult } from '../../../domain/engine/dsl/dry-run';
 import type { GameDefinition, SettingDef, StepKind } from '../../../domain/models/game.schema';
-import type { Deck, Exercise } from '../../../domain/models/schemas';
+import type { DealtDeck, Deck, Exercise } from '../../../domain/models/schemas';
 import { newBlock, type Block, type ChildSlot } from './model/blocks';
 import {
   SLOT_IDS, blankDraft, draftFromGame, duplicateBlock, findBlock, getList, insertBlock, isInside, listId, locate, moveBlock,
@@ -11,6 +11,7 @@ import {
 } from './model/draft';
 import { addSetting, numberSettingFor, removeSetting, settingUses, suggestSettingKey } from './model/settings';
 import { validateDraft } from './model/validation';
+import { buildDeck } from '../../../domain/models/deck-rules';
 
 export interface DryRunOptions {
   deckId: string;
@@ -70,7 +71,7 @@ export class GameBuilderStore {
   readonly dragging = signal<string | null>(null);
 
   readonly dryRunOptions = signal<DryRunOptions>({ deckId: 'deck-bodyweight', seed: 2026, players: 1 });
-  readonly dryRunResult = signal<(DryRunResult & { game: GameDefinition; deck: Deck }) | null>(null);
+  readonly dryRunResult = signal<(DryRunResult & { game: GameDefinition; deck: DealtDeck & { name: string } }) | null>(null);
 
   async load(opts: { gameId?: string; from?: string }): Promise<void> {
     try {
@@ -229,8 +230,10 @@ export class GameBuilderStore {
   runDryRun(): DryRunResult | null {
     const game = this.validation().game;
     const opts = this.dryRunOptions();
-    const deck = this.deckList().find((d) => d.id === opts.deckId);
-    if (!game || !deck) return null;
+    const source = this.deckList().find((d) => d.id === opts.deckId);
+    if (!game || !source) return null;
+    // The dry run deals the deck the same way a real workout does, from the same seed (§9b).
+    const deck = { name: source.name, cards: buildDeck(source, this.exercisesById(), opts.seed) };
     const result = dryRun({ def: game, deck, exercises: this.exercises, seed: opts.seed, players: opts.players, turns: DRY_RUN_TURNS });
     this.dryRunResult.set({ ...result, game, deck });
     return result;

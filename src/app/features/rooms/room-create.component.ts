@@ -7,7 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Router, RouterLink } from '@angular/router';
-import { DeckRepository, GameRepository, RoutineRepository } from '../../core/db/repositories';
+import { DeckRepository, ExerciseRepository, GameRepository, RoutineRepository } from '../../core/db/repositories';
+import { deckSize } from '../../domain/models/deck-rules';
 import { IdentityService } from '../../core/identity/identity.service';
 import { RoomRoutineService, ROOM_DEFAULT_PREFIX, ROOM_DEFAULT_ROUTINE_ID } from './room-routine.service';
 import { REALTIME_CONFIGURED } from '../../core/sync/realtime-config';
@@ -30,6 +31,7 @@ export class RoomCreateComponent {
   private readonly routines = inject(RoutineRepository);
   private readonly games = inject(GameRepository);
   private readonly decks = inject(DeckRepository);
+  private readonly exercises = inject(ExerciseRepository);
   private readonly roomRoutines = inject(RoomRoutineService);
   private readonly rooms = inject(RoomService);
   private readonly identity = inject(IdentityService);
@@ -53,11 +55,13 @@ export class RoomCreateComponent {
   /** Saved routines plus the built-in group default; only multi-player games are selectable. */
   protected readonly options = resource({
     loader: async () => {
-      const [saved, games, decks, defaults, me] = await Promise.all([
-        this.routines.list(), this.games.list(), this.decks.list(), this.roomRoutines.defaultRoutines(), this.identity.me(),
+      const [saved, games, decks, exercises, defaults, me] = await Promise.all([
+        this.routines.list(), this.games.list(), this.decks.list(), this.exercises.list(),
+        this.roomRoutines.defaultRoutines(), this.identity.me(),
       ]);
+      const byId = new Map(exercises.map((e) => [e.id, e]));
       const gameById = new Map(games.map((g) => [g.id, g]));
-      const deckSizes = new Map(decks.map((d) => [d.id, d.cards.length]));
+      const deckSizes = new Map(decks.map((d) => [d.id, deckSize(d, byId)]));
       this.name.setValue(me.name === 'You' ? '' : me.name);
       return [...defaults, ...saved].map((routine) => {
         const game = gameById.get(routine.gameId);

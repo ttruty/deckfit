@@ -7,10 +7,11 @@ import { createGame } from './game-start';
 import { LoopbackHub, LoopbackTransport } from './loopback-transport';
 import type { GameStart } from './net-message';
 import { ManualScheduler } from './scheduler';
+import { dealtSnapshot } from '../../../testing/deck';
 
 const content = loadContent();
 const def = content.games.games.find((g) => g.id === 'neighbor-rush')!;
-const deck = content.decks.decks.find((d) => d.id === 'deck-bodyweight')!;
+const deck = dealtSnapshot(content.decks.decks.find((d) => d.id === 'deck-bodyweight')!, content.exercises.exercises, 1);
 const card = (suit: string, rank: string) => deck.cards.find((c) => c.suit === suit && c.rank === rank)!.id;
 
 /**
@@ -21,7 +22,7 @@ async function contestedTable(windowMs = 300) {
   const hub = new LoopbackHub();
   const players = [{ id: 'ann', name: 'Ann', seat: 0 }, { id: 'bo', name: 'Bo', seat: 1 }];
   const start: GameStart = {
-    seed: 1, players, game: def, deck: { id: deck.id, name: deck.name, suits: deck.suits, cards: deck.cards },
+    seed: 1, players, game: def, deck,
     settings: { repMultiplier: 1, faceCardValue: 10, aceValue: 11, jokerRule: 'skip', players: def.players, handSize: 5 },
     exercises: content.exercises.exercises,
   };

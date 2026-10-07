@@ -1,4 +1,4 @@
-.page { max-width: 1200px; margin: 0 auto; padding: 8px 16px 32px; }
+.page { max-width: 1040px; margin: 0 auto; padding: 8px 16px 32px; }
 .back { margin-left: -8px; }
 
 .head {
@@ -17,42 +17,54 @@
   background: var(--mat-sys-surface-container); font: var(--mat-sys-body-medium);
 }
 
-h2 { font: var(--mat-sys-title-large); margin: 24px 0 8px; }
-.hint { font: var(--mat-sys-body-medium); color: var(--mat-sys-on-surface-variant); margin: 0 0 8px; }
+.lede { font: var(--mat-sys-body-medium); color: var(--mat-sys-on-surface-variant); margin: 0 0 8px; max-width: 70ch; }
+.hint { font: var(--mat-sys-body-medium); color: var(--mat-sys-on-surface-variant); margin: 0; }
 .name { width: min(100%, 420px); }
 
-.suits { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
-.suit {
-  display: grid; gap: 8px; margin: 0; padding: 8px 12px 12px; border-radius: 12px;
-  border: 1px solid var(--mat-sys-outline-variant);
-  legend { font: var(--mat-sys-title-small); padding: 0 4px; }
+.pip { font-size: 1.15em; }
+.pip[data-suit='hearts'] { color: var(--suit-text-hearts); }
+.pip[data-suit='diamonds'] { color: var(--suit-text-diamonds); }
+.pip[data-suit='clubs'] { color: var(--suit-text-clubs); }
+.pip[data-suit='spades'] { color: var(--suit-text-spades); }
+.pip[data-suit='joker'] { color: var(--suit-text-joker); }
+
+/* One card per group — the whole deck fits on a phone without a sideways scroll. */
+.groups { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); margin-top: 8px; }
+.group {
+  display: grid; align-content: start; gap: 12px; padding: 16px; border-radius: 16px;
+  border: 1px solid var(--mat-sys-outline-variant); background: var(--mat-sys-surface-container-low);
+
+  h2 {
+    display: flex; align-items: baseline; gap: 8px; margin: 0;
+    font: var(--mat-sys-title-medium);
+  }
+  .count { margin-left: auto; font: var(--mat-sys-body-small); color: var(--mat-sys-on-surface-variant); }
 }
+.fields { display: grid; gap: 10px; }
 
-.pip { font-size: 1.2em; }
-.pip[data-suit='hearts'], [data-suit='hearts'] > legend .pip { color: var(--suit-text-hearts); }
-.pip[data-suit='diamonds'], [data-suit='diamonds'] > legend .pip { color: var(--suit-text-diamonds); }
-.pip[data-suit='clubs'], [data-suit='clubs'] > legend .pip { color: var(--suit-text-clubs); }
-.pip[data-suit='spades'], [data-suit='spades'] > legend .pip { color: var(--suit-text-spades); }
-.pip[data-suit='joker'], [data-suit='joker'] > legend .pip { color: var(--suit-text-joker); }
+.chips { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.chip {
+  display: flex; align-items: center; gap: 10px; min-height: 56px; padding: 4px 4px 4px 10px;
+  border-radius: 12px; background: var(--mat-sys-surface-container-high);
+}
+.thumb { width: 40px; height: 40px; flex: none; }
+.chip-text { display: grid; flex: 1; min-width: 0; }
+.chip-name { font: var(--mat-sys-title-small); overflow-wrap: anywhere; }
+.chip-meta { font: var(--mat-sys-body-small); color: var(--mat-sys-on-surface-variant); }
+.chip-empty {
+  padding: 14px 12px; border-radius: 12px; font: var(--mat-sys-body-medium);
+  color: var(--mat-sys-on-surface-variant); border: 1px dashed var(--mat-sys-outline-variant);
+}
+.group-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 
-.row { margin-top: 16px; }
+.sample { margin-top: 28px; }
 .row-head {
-  display: flex; align-items: center; justify-content: space-between; gap: 8px;
-  h3 { font: var(--mat-sys-title-medium); margin: 0; }
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px;
+  h2 { font: var(--mat-sys-title-large); margin: 0; }
 }
-
-// A full suit is 13 cards: scroll sideways rather than shrink below legibility.
 .cards {
-  list-style: none; margin: 8px 0 0; padding: 4px 2px 12px;
-  display: grid; grid-auto-flow: column; grid-auto-columns: 132px; gap: 10px;
+  list-style: none; margin: 12px 0 0; padding: 4px 2px 12px;
+  display: grid; grid-auto-flow: column; grid-auto-columns: 150px; gap: 10px;
   overflow-x: auto; scroll-snap-type: x proximity;
   li { scroll-snap-align: start; }
-}
-
-.card-button {
-  display: block; width: 100%; padding: 0; border: 0; background: none; border-radius: var(--card-radius);
-  cursor: pointer; font: inherit; color: inherit;
-  &:hover { transform: translateY(-2px); }
-  &:focus-visible { outline: 3px solid var(--mat-sys-primary); outline-offset: 3px; }
-  @media (prefers-reduced-motion: no-preference) { transition: transform 120ms ease-out; }
 }

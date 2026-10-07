@@ -1,9 +1,9 @@
 import type { EngineEvent } from '../../../../domain/engine/events';
-import type { Deck, Exercise } from '../../../../domain/models/schemas';
+import type { DealtDeck, Exercise } from '../../../../domain/models/schemas';
 import { SUIT_SYMBOL } from '../../../../shared/labels';
 
 /** One-line, human-readable text for a dry-run event. */
-export function describeEvent(e: EngineEvent, deck: Pick<Deck, 'cards'>, exercises: ReadonlyMap<string, Pick<Exercise, 'name'>>): string {
+export function describeEvent(e: EngineEvent, deck: DealtDeck, exercises: ReadonlyMap<string, Pick<Exercise, 'name'>>): string {
   const cards = new Map(deck.cards.map((c) => [c.id, c]));
   const card = (id: string) => {
     const c = cards.get(id);

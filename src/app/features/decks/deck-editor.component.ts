@@ -10,9 +10,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import type { Card, MuscleGroup, Suit } from '../../domain/models/schemas';
-import { MUSCLE_LABEL, SUIT_NAME, SUIT_SYMBOL, keysOf } from '../../shared/labels';
+import type { MuscleGroup, Suit } from '../../domain/models/schemas';
+import { DIFFICULTY_LABEL, MEASURE_LABEL, MUSCLE_LABEL, SUIT_NAME, SUIT_SYMBOL, keysOf } from '../../shared/labels';
 import { CardFaceComponent } from '../../shared/ui/card-face/card-face.component';
+import { ExerciseFigureComponent } from '../../shared/ui/exercise-figure/exercise-figure.component';
 import { DeckEditorStore } from './deck-editor.store';
 import { ExercisePickerDialog, type ExercisePickerData, type ExercisePickerResult } from './exercise-picker.dialog';
 
@@ -24,7 +25,7 @@ type SuitForm = FormGroup<{ label: FormControl<string>; muscleGroups: FormContro
   providers: [DeckEditorStore],
   imports: [
     ReactiveFormsModule, RouterLink, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatSelectModule,
-    CardFaceComponent,
+    CardFaceComponent, ExerciseFigureComponent,
   ],
   templateUrl: './deck-editor.component.html',
   styleUrl: './deck-editor.component.scss',
@@ -43,6 +44,8 @@ export class DeckEditorComponent {
   protected readonly muscleLabel = MUSCLE_LABEL;
   protected readonly suitSymbol = SUIT_SYMBOL;
   protected readonly suitName = SUIT_NAME;
+  protected readonly measureLabel = MEASURE_LABEL;
+  protected readonly difficultyLabel = DIFFICULTY_LABEL;
 
   protected readonly form = this.fb.group({
     name: this.fb.control('', [Validators.required, Validators.maxLength(60)]),
@@ -75,27 +78,35 @@ export class DeckEditorComponent {
     return this.form.controls.suits.controls;
   }
 
-  protected async openPicker(card: Card): Promise<void> {
+  /** Opens the picker for one group; it hands back everything that group should hold. */
+  protected async openPicker(suit: Suit): Promise<void> {
     const deck = this.store.deck();
-    if (!deck || deck.builtIn || card.exerciseId === null) return;
-    const mapping = deck.suits.find((s) => s.suit === card.suit);
+    if (!deck || deck.builtIn) return;
+    const mapping = deck.suits.find((s) => s.suit === suit);
+    if (!mapping) return;
     const data: ExercisePickerData = {
-      card,
-      suitLabel: mapping?.label ?? SUIT_NAME[card.suit],
-      suitMuscleGroups: mapping?.muscleGroups ?? [],
+      suit,
+      groupLabel: mapping.label || SUIT_NAME[suit],
+      muscleGroups: mapping.muscleGroups,
       ...(deck.category ? { deckCategory: deck.category } : {}),
       exercises: this.store.exercises(),
+      selected: [...mapping.exerciseIds],
     };
     const ref = this.dialog.open<ExercisePickerDialog, ExercisePickerData, ExercisePickerResult>(ExercisePickerDialog, {
       data, width: '560px', maxWidth: '95vw', autoFocus: 'first-tabbable',
     });
     const result = await firstValueFrom(ref.afterClosed());
-    if (result) this.store.setCard(card.id, result.exerciseId, result.baseAmount);
+    if (result) this.store.setPool(suit, result);
   }
 
-  protected autoFill(suit: Suit, label: string): void {
-    const error = this.store.autoFill(suit);
-    this.snack.open(error ?? `${label} filled by difficulty`, undefined, { duration: 3000 });
+  protected remove(suit: Suit, exerciseId: string, name: string): void {
+    this.store.removeExercise(suit, exerciseId);
+    this.snack.open(`Removed ${name}`, undefined, { duration: 2000 });
+  }
+
+  protected suggest(suit: Suit, label: string): void {
+    const error = this.store.suggest(suit);
+    this.snack.open(error ?? `Added exercises to ${label}`, undefined, { duration: 3000 });
   }
 
   protected async save(): Promise<void> {
@@ -116,11 +127,6 @@ export class DeckEditorComponent {
     const id = await this.store.duplicate();
     this.snack.open('Copy created — edit away', undefined, { duration: 3000 });
     await this.router.navigate(['/decks', id, 'edit']);
-  }
-
-  protected cardLabel(card: Card, label: string, exerciseName: string | undefined): string {
-    const what = exerciseName ? `${exerciseName}, ${card.baseAmount}` : 'wild card';
-    return `${card.rank === 'JOKER' ? 'Joker' : `${card.rank} of ${SUIT_NAME[card.suit]}`} (${label}): ${what}. Change exercise`;
   }
 
   private resetForm(): void {

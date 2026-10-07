@@ -7,9 +7,14 @@
   --ink-far: #9aa3b5;
   --suit-hearts: #d7263d;
   --suit-diamonds: #e89a00;
-  --suit-clubs: #16867a;
+  --suit-clubs: #168378;
   --suit-spades: #2e4ac9;
   --suit-joker: #7b3fbf;
+  --suit-text-hearts: #b92134;
+  --suit-text-diamonds: #825600;
+  --suit-text-clubs: #126b62;
+  --suit-text-spades: #2e4ac9;
+  --suit-text-joker: #7b3fbf;
   --on-hearts: #ffffff;
   --on-diamonds: #1f2a44;
   --on-clubs: #ffffff;
@@ -26,6 +31,11 @@
     --table: #151b28;
     --ink: #eef2ef;
     --ink-far: #6b7690;
+    --suit-text-hearts: #e5707f;
+    --suit-text-diamonds: #e89a00;
+    --suit-text-clubs: #49a197;
+    --suit-text-spades: #7d8fde;
+    --suit-text-joker: #ab84d6;
   }
 }
 :root[data-theme=dark] {
@@ -33,31 +43,48 @@
   --table: #151b28;
   --ink: #eef2ef;
   --ink-far: #6b7690;
+  --suit-text-hearts: #e5707f;
+  --suit-text-diamonds: #e89a00;
+  --suit-text-clubs: #49a197;
+  --suit-text-spades: #7d8fde;
+  --suit-text-joker: #ab84d6;
+}
+
+df-card-face,
+.card-box {
+  display: block;
+  container-type: inline-size;
 }
 
 .card-face {
   --suit: var(--suit-hearts);
   --on-suit: var(--on-hearts);
+  --suit-text: var(--suit-text-hearts);
 }
 .card-face.hearts {
   --suit: var(--suit-hearts);
   --on-suit: var(--on-hearts);
+  --suit-text: var(--suit-text-hearts);
 }
 .card-face.diamonds {
   --suit: var(--suit-diamonds);
   --on-suit: var(--on-diamonds);
+  --suit-text: var(--suit-text-diamonds);
 }
 .card-face.clubs {
   --suit: var(--suit-clubs);
   --on-suit: var(--on-clubs);
+  --suit-text: var(--suit-text-clubs);
 }
 .card-face.spades {
   --suit: var(--suit-spades);
   --on-suit: var(--on-spades);
+  --suit-text: var(--suit-text-spades);
 }
 .card-face.joker {
   --suit: var(--suit-joker);
   --on-suit: var(--on-joker);
+  --suit-text: var(--suit-text-joker);
 }
 .card-face {
   position: relative;
@@ -71,6 +98,7 @@
   overflow: hidden;
   font-family: var(--font-text);
   color: var(--ink);
+  font-size: 8.5cqw;
 }
 .card-face .corner {
   position: absolute;
@@ -79,7 +107,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: var(--suit);
+  color: var(--suit-text);
   line-height: 0.82;
   z-index: 1;
 }
@@ -133,6 +161,67 @@
 }
 .card-face .group {
   font-size: 0.75em;
+}
+@container (max-width: 132px) {
+  .card-face .figure {
+    display: none;
+  }
+  .card-face .corner {
+    position: static;
+    grid-row: 1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    gap: 0.1em;
+    line-height: 1;
+  }
+  .card-face .rank {
+    font-size: 5em;
+  }
+  .card-face .pip {
+    font-size: 2.2em;
+  }
+  .card-face .plate {
+    padding: 0.4em 0.5em 0.5em;
+  }
+  .card-face .name {
+    font-size: 1.2em;
+    min-height: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .card-face .amount {
+    font-size: 2em;
+  }
+}
+@container (max-width: 74px) {
+  .card-face .rank {
+    font-size: 5.6em;
+  }
+  .card-face .pip {
+    font-size: 2.4em;
+  }
+  .card-face .name,
+  .card-face .group {
+    display: none;
+  }
+  .card-face .meta {
+    justify-content: center;
+    margin-top: 0;
+  }
+  .card-face .plate {
+    padding: 0.3em 0.25em 0.45em;
+  }
+  .card-face .amount {
+    font-size: 2.7em;
+  }
+  .card-face .amount small {
+    font-size: 0.38em;
+  }
 }
 
 .ex-figure .near, .ex-figure .far, .ex-figure .prop {
@@ -204,605 +293,605 @@ p{max-width:65ch}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;font-size:13px}
 </style></head><body><main>
 <h1>DeckFit cards</h1>
-<p>All 120 built-in exercises across 10 decks. Each suit has three exercises that step up in difficulty with the card's rank. The faint figure is the start position; the solid figure is where the movement ends.</p>
-<section><h2>Bodyweight deck</h2><div class="grid"><article class="card-face hearts" aria-label="4 of hearts: Air Squat, 4 reps">
+<p>All 120 built-in exercises across 10 decks. Each suit is a pool of three exercises; a workout deals cards from it at random. The faint figure is the start position; the solid figure is where the movement ends.</p>
+<section><h2>Bodyweight deck</h2><div class="grid"><div class="card-box"><article class="card-face hearts" aria-label="4 of hearts: Air Squat, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L49 38L48 52M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L52 52M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M55 43L67 46L79 46M37 64L57 65L50 90"/><path class="near" d="M55 43L37 64M55 43L67 46L79 46M37 64L59 66L53 90"/><circle class="head" cx="57" cy="33" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Air Squat</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Legs</span></div></div>
-  </article><article class="card-face hearts" aria-label="8 of hearts: Reverse Lunge, 8 reps">
+  </article></div><div class="card-box"><article class="card-face hearts" aria-label="8 of hearts: Reverse Lunge, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L49 38L48 52M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L52 52M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M48 35L52 48L50 60M48 61L40 87L26 89"/><path class="near" d="M48 35L48 61M48 35L44 48L50 60M48 61L65 72L66 90"/><circle class="head" cx="48" cy="25" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Reverse Lunge</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Legs</span></div></div>
-  </article><article class="card-face hearts" aria-label="Q of hearts: Jump Squat, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♥</span></div>
+  </article></div><div class="card-box"><article class="card-face hearts" aria-label="K of hearts: Jump Squat, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M55 43L67 46L79 46M37 64L57 65L50 90"/><path class="near" d="M55 43L37 64M55 43L67 46L79 46M37 64L59 66L53 90"/><circle class="head" cx="57" cy="33" r="6.5"/></g><g class="main"><path class="far" d="M50 16L42 8L38 0M50 44L46 60L44 76"/><path class="near" d="M50 16L50 44M50 16L58 8L62 0M50 44L54 60L50 76"/><circle class="head" cx="50" cy="6" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Jump Squat</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Legs</span></div></div>
-  </article><article class="card-face diamonds" aria-label="4 of diamonds: Push-Up, 4 reps">
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="4 of diamonds: Push-Up, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M72 69L72 80L72 90M46 77L30 82L14 88"/><path class="near" d="M72 69L46 77M72 69L72 80L72 90M46 77L30 82L14 88"/><circle class="head" cx="80" cy="67" r="6.5"/></g><g class="main"><path class="far" d="M72 82L62 76L72 90M46 85L30 87L14 89"/><path class="near" d="M72 82L46 85M72 82L62 76L72 90M46 85L30 87L14 89"/><circle class="head" cx="80" cy="81" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Push-Up</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Push</span></div></div>
-  </article><article class="card-face diamonds" aria-label="8 of diamonds: Wide Push-Up, 8 reps">
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="8 of diamonds: Wide Push-Up, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M72 69L72 80L72 90M46 77L30 82L14 88"/><path class="near" d="M72 69L46 77M72 69L72 80L72 90M46 77L30 82L14 88"/><circle class="head" cx="80" cy="67" r="6.5"/></g><g class="main"><path class="far" d="M72 82L62 76L72 90M46 85L30 87L14 89"/><path class="near" d="M72 82L46 85M72 82L62 76L72 90M46 85L30 87L14 89"/><circle class="head" cx="80" cy="81" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Wide Push-Up</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Push</span></div></div>
-  </article><article class="card-face diamonds" aria-label="Q of diamonds: Pike Push-Up, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♦</span></div>
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="K of diamonds: Pike Push-Up, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M68 68L74 80L80 90M46 40L36 64L26 90"/><path class="near" d="M68 68L46 40M68 68L74 80L80 90M46 40L36 64L26 90"/><circle class="head" cx="72" cy="76" r="6.5"/></g><g class="main"><path class="far" d="M68 80L60 76L80 90M46 44L36 66L26 90"/><path class="near" d="M66.34314575050762 78.34314575050762L46 44M68 80L60 76L80 90M46 44L36 66L26 90"/><circle class="head" cx="72" cy="84" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Pike Push-Up</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Push</span></div></div>
-  </article><article class="card-face clubs" aria-label="4 of clubs: Superman, 4 reps">
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="4 of clubs: Superman, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M66 86L74 90L84 90M44 88L28 89L13 89"/><path class="near" d="M66 86L44 88M66 86L74 90L84 90M44 88L28 89L13 89"/><circle class="head" cx="75" cy="84" r="6.5"/></g><g class="main"><path class="far" d="M64 84L76 80L88 76M44 90L28 88L13 84"/><path class="near" d="M64 84L44 90M64 84L76 80L88 76M44 90L28 88L13 84"/><circle class="head" cx="72" cy="80" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Superman</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Pull</span></div></div>
-  </article><article class="card-face clubs" aria-label="8 of clubs: Prone Y-Raise, 8 reps">
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="8 of clubs: Prone Y-Raise, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M66 86L74 90L84 90M44 88L28 89L13 89"/><path class="near" d="M66 86L44 88M66 86L74 90L84 90M44 88L28 89L13 89"/><circle class="head" cx="75" cy="84" r="6.5"/></g><g class="main"><path class="far" d="M64 86L72 82L82 78M44 90L28 89L13 89"/><path class="near" d="M64 86L44 90M64 86L72 82L82 78M44 90L28 89L13 89"/><circle class="head" cx="72" cy="82" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Prone Y-Raise</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Pull</span></div></div>
-  </article><article class="card-face clubs" aria-label="Q of clubs: Reverse Snow Angel, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♣</span></div>
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="K of clubs: Reverse Snow Angel, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M64 86L72 82L82 78M44 90L28 89L13 89"/><path class="near" d="M64 86L44 90M64 86L72 82L82 78M44 90L28 89L13 89"/><circle class="head" cx="72" cy="82" r="6.5"/></g><g class="main"><path class="far" d="M64 86L56 82L46 80M44 90L28 89L13 89"/><path class="near" d="M64 86L44 90M64 86L56 82L46 80M44 90L28 89L13 89"/><circle class="head" cx="72" cy="82" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Reverse Snow Angel</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Pull</span></div></div>
-  </article><article class="card-face spades" aria-label="4 of spades: Crunch, 4 reps">
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="4 of spades: Crunch, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M25 86L34 81L44 86M51 86L63 70L73 90"/><path class="near" d="M25 86L51 86M25 86L34 81L44 86M51 86L63 70L73 90"/><circle class="head" cx="16" cy="84" r="6.5"/></g><g class="main"><path class="far" d="M34 75L30 66L40 60M51 86L63 70L73 90"/><path class="near" d="M34 75L51 86M34 75L30 66L40 60M51 86L63 70L73 90"/><circle class="head" cx="30" cy="66" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Crunch</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Core</span></div></div>
-  </article><article class="card-face spades" aria-label="8 of spades: Forearm Plank, 40 sec">
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="8 of spades: Forearm Plank, 40 sec">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M70 69L70 89L84 89M44 75L28 81L12 87"/><path class="near" d="M70 69L44 75M70 69L70 89L84 89M44 75L28 81L12 87"/><circle class="head" cx="78" cy="67" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Forearm Plank</div>
       <div class="meta"><span class="amount">40<small>sec</small></span><span class="group">Core</span></div></div>
-  </article><article class="card-face spades" aria-label="Q of spades: Mountain Climber, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♠</span></div>
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="K of spades: Mountain Climber, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M72 69L72 80L72 90M46 77L30 82L14 88"/><path class="near" d="M72 69L46 77M72 69L72 80L72 90M46 77L30 82L14 88"/><circle class="head" cx="80" cy="67" r="6.5"/></g><g class="main"><path class="far" d="M72 68L72 80L72 90M46 74L30 82L14 88"/><path class="near" d="M72 68L46 74M72 68L72 80L72 90M46 74L60 80L50 86"/><circle class="head" cx="80" cy="66" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Mountain Climber</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Core</span></div></div>
-  </article></div></section><section><h2>Dumbbell deck</h2><div class="grid"><article class="card-face hearts" aria-label="4 of hearts: Goblet Squat, 4 reps">
+  </article></div></div></section><section><h2>Dumbbell deck</h2><div class="grid"><div class="card-box"><article class="card-face hearts" aria-label="4 of hearts: Goblet Squat, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L57 36L56 26M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L57 36L56 26M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M55 43L60 50L60 40M37 64L57 65L50 90"/><path class="near" d="M55 43L37 64M55 43L60 50L60 40M37 64L59 66L53 90"/><circle class="head" cx="57" cy="33" r="6.5"/></g><path class="prop far" d="M55 40L65 40M55 36.5L55 43.5M65 36.5L65 43.5"/><path class="prop ink" d="M55 40L65 40M55 36.5L55 43.5M65 36.5L65 43.5"/></svg></div>
     <div class="plate"><div class="name">Goblet Squat</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Legs</span></div></div>
-  </article><article class="card-face hearts" aria-label="8 of hearts: Dumbbell Romanian Deadlift, 8 reps">
+  </article></div><div class="card-box"><article class="card-face hearts" aria-label="8 of hearts: Dumbbell Romanian Deadlift, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L49 38L48 52M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L52 52M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M67 41L66 56L66 70M40 50L43 70L40 90"/><path class="near" d="M67 41L40 50M67 41L66 56L66 70M40 50L45 70L42 90"/><circle class="head" cx="76" cy="38" r="6.5"/></g><path class="prop far" d="M61 70L71 70M61 66.5L61 73.5M71 66.5L71 73.5"/><path class="prop ink" d="M61 70L71 70M61 66.5L61 73.5M71 66.5L71 73.5"/></svg></div>
     <div class="plate"><div class="name">Dumbbell Romanian Deadlift</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Legs</span></div></div>
-  </article><article class="card-face hearts" aria-label="Q of hearts: Dumbbell Reverse Lunge, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♥</span></div>
+  </article></div><div class="card-box"><article class="card-face hearts" aria-label="K of hearts: Dumbbell Reverse Lunge, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L49 38L48 52M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L52 52M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M48 35L48 50L48 64M48 61L40 87L26 89"/><path class="near" d="M48 35L48 61M48 35L48 50L48 64M48 61L65 72L66 90"/><circle class="head" cx="48" cy="25" r="6.5"/></g><path class="prop far" d="M43 64L53 64M43 60.5L43 67.5M53 60.5L53 67.5"/><path class="prop ink" d="M43 64L53 64M43 60.5L43 67.5M53 60.5L53 67.5"/></svg></div>
     <div class="plate"><div class="name">Dumbbell Reverse Lunge</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Legs</span></div></div>
-  </article><article class="card-face diamonds" aria-label="4 of diamonds: Floor Press, 4 reps">
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="4 of diamonds: Floor Press, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M25 86L32 90L33 76M51 86L63 70L73 90"/><path class="near" d="M25 86L51 86M25 86L32 90L33 76M51 86L63 70L73 90"/><circle class="head" cx="16" cy="84" r="6.5"/></g><g class="main"><path class="far" d="M25 86L32 76L33 62M51 86L63 70L73 90"/><path class="near" d="M25 86L51 86M25 86L32 76L33 62M51 86L63 70L73 90"/><circle class="head" cx="16" cy="84" r="6.5"/></g><path class="prop far" d="M28 62L38 62M28 58.5L28 65.5M38 58.5L38 65.5"/><path class="prop ink" d="M28 62L38 62M28 58.5L28 65.5M38 58.5L38 65.5"/></svg></div>
     <div class="plate"><div class="name">Floor Press</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Push</span></div></div>
-  </article><article class="card-face diamonds" aria-label="8 of diamonds: Front Raise, 8 reps">
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="8 of diamonds: Front Raise, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L49 38L48 52M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L52 52M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M50 23L62 25L75 25M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L62 25L75 25M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><path class="prop far" d="M70 25L80 25M70 21.5L70 28.5M80 21.5L80 28.5"/><path class="prop ink" d="M70 25L80 25M70 21.5L70 28.5M80 21.5L80 28.5"/></svg></div>
     <div class="plate"><div class="name">Front Raise</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Push</span></div></div>
-  </article><article class="card-face diamonds" aria-label="Q of diamonds: Overhead Press, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♦</span></div>
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="K of diamonds: Overhead Press, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L57 36L56 26M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L57 36L56 26M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M50 23L55 13L56 2M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L55 13L56 2M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><path class="prop far" d="M51 2L61 2M51 -1.5L51 5.5M61 -1.5L61 5.5"/><path class="prop ink" d="M51 2L61 2M51 -1.5L51 5.5M61 -1.5L61 5.5"/></svg></div>
     <div class="plate"><div class="name">Overhead Press</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Push</span></div></div>
-  </article><article class="card-face clubs" aria-label="4 of clubs: Biceps Curl, 4 reps">
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="4 of clubs: Biceps Curl, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L49 38L48 52M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L52 52M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M50 23L51 38L61 28M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L61 28M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><path class="prop far" d="M56 28L66 28M56 24.5L56 31.5M66 24.5L66 31.5"/><path class="prop ink" d="M56 28L66 28M56 24.5L56 31.5M66 24.5L66 31.5"/></svg></div>
     <div class="plate"><div class="name">Biceps Curl</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Pull</span></div></div>
-  </article><article class="card-face clubs" aria-label="8 of clubs: Bent-Over Row, 8 reps">
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="8 of clubs: Bent-Over Row, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M67 41L66 56L66 70M40 50L43 70L40 90"/><path class="near" d="M67 41L40 50M67 41L66 56L66 70M40 50L45 70L42 90"/><circle class="head" cx="76" cy="38" r="6.5"/></g><g class="main"><path class="far" d="M67 41L54 40L62 54M40 50L43 70L40 90"/><path class="near" d="M67 41L40 50M67 41L54 40L62 54M40 50L45 70L42 90"/><circle class="head" cx="76" cy="38" r="6.5"/></g><path class="prop far" d="M57 54L67 54M57 50.5L57 57.5M67 50.5L67 57.5"/><path class="prop ink" d="M57 54L67 54M57 50.5L57 57.5M67 50.5L67 57.5"/></svg></div>
     <div class="plate"><div class="name">Bent-Over Row</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Pull</span></div></div>
-  </article><article class="card-face clubs" aria-label="Q of clubs: Upright Row, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♣</span></div>
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="K of clubs: Upright Row, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L49 38L48 52M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L52 52M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M50 23L58 25L54 31M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L58 25L54 31M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><path class="prop far" d="M49 31L59 31M49 27.5L49 34.5M59 27.5L59 34.5"/><path class="prop ink" d="M49 31L59 31M49 27.5L49 34.5M59 27.5L59 34.5"/></svg></div>
     <div class="plate"><div class="name">Upright Row</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Pull</span></div></div>
-  </article><article class="card-face spades" aria-label="4 of spades: Suitcase Hold, 20 sec">
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="4 of spades: Suitcase Hold, 20 sec">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M50 23L49 38L48 52M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L52 52M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><path class="prop far" d="M43 52L53 52M43 48.5L43 55.5M53 48.5L53 55.5"/><path class="prop ink" d="M47 52L57 52M47 48.5L47 55.5M57 48.5L57 55.5"/></svg></div>
     <div class="plate"><div class="name">Suitcase Hold</div>
       <div class="meta"><span class="amount">20<small>sec</small></span><span class="group">Core</span></div></div>
-  </article><article class="card-face spades" aria-label="8 of spades: Russian Twist, 8 reps">
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="8 of spades: Russian Twist, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M58 62L64 74L72 70M40 86L56 72L70 78"/><path class="near" d="M58 62L40 86M58 62L64 74L72 70M40 86L56 72L70 78"/><circle class="head" cx="62" cy="54" r="6.5"/></g><path class="prop far" d="M67 70L77 70M67 66.5L67 73.5M77 66.5L77 73.5"/><path class="prop ink" d="M67 70L77 70M67 66.5L67 73.5M77 66.5L77 73.5"/></svg></div>
     <div class="plate"><div class="name">Russian Twist</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Core</span></div></div>
-  </article><article class="card-face spades" aria-label="Q of spades: Weighted Crunch, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♠</span></div>
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="K of spades: Weighted Crunch, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M25 86L34 81L44 86M51 86L63 70L73 90"/><path class="near" d="M25 86L51 86M25 86L34 81L44 86M51 86L63 70L73 90"/><circle class="head" cx="16" cy="84" r="6.5"/></g><g class="main"><path class="far" d="M34 75L30 66L40 60M51 86L63 70L73 90"/><path class="near" d="M34 75L51 86M34 75L30 66L40 60M51 86L63 70L73 90"/><circle class="head" cx="30" cy="66" r="6.5"/></g><path class="prop far" d="M35 60L45 60M35 56.5L35 63.5M45 56.5L45 63.5"/><path class="prop ink" d="M35 60L45 60M35 56.5L35 63.5M45 56.5L45 63.5"/></svg></div>
     <div class="plate"><div class="name">Weighted Crunch</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Core</span></div></div>
-  </article></div></section><section><h2>Kettlebell deck</h2><div class="grid"><article class="card-face hearts" aria-label="4 of hearts: Kettlebell Goblet Squat, 4 reps">
+  </article></div></div></section><section><h2>Kettlebell deck</h2><div class="grid"><div class="card-box"><article class="card-face hearts" aria-label="4 of hearts: Kettlebell Goblet Squat, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L57 36L56 26M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L57 36L56 26M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M55 43L60 50L60 40M37 64L57 65L50 90"/><path class="near" d="M55 43L37 64M55 43L60 50L60 40M37 64L59 66L53 90"/><circle class="head" cx="57" cy="33" r="6.5"/></g><circle class="prop ink none" cx="60" cy="46.5" r="4.5"/><path class="prop ink" d="M57.5 42.5Q60 38 62.5 42.5"/></svg></div>
     <div class="plate"><div class="name">Kettlebell Goblet Squat</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Legs</span></div></div>
-  </article><article class="card-face hearts" aria-label="8 of hearts: Kettlebell Reverse Lunge, 8 reps">
+  </article></div><div class="card-box"><article class="card-face hearts" aria-label="8 of hearts: Kettlebell Reverse Lunge, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L49 38L48 52M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L52 52M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M48 35L48 50L48 64M48 61L40 87L26 89"/><path class="near" d="M48 35L48 61M48 35L48 50L48 64M48 61L65 72L66 90"/><circle class="head" cx="48" cy="25" r="6.5"/></g><circle class="prop ink none" cx="48" cy="70.5" r="4.5"/><path class="prop ink" d="M45.5 66.5Q48 62 50.5 66.5"/></svg></div>
     <div class="plate"><div class="name">Kettlebell Reverse Lunge</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Legs</span></div></div>
-  </article><article class="card-face hearts" aria-label="Q of hearts: Kettlebell Swing, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♥</span></div>
+  </article></div><div class="card-box"><article class="card-face hearts" aria-label="K of hearts: Kettlebell Swing, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M67 41L66 56L66 70M40 50L43 70L40 90"/><path class="near" d="M67 41L40 50M67 41L66 56L66 70M40 50L45 70L42 90"/><circle class="head" cx="76" cy="38" r="6.5"/></g><g class="main"><path class="far" d="M50 23L62 25L75 25M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L62 25L75 25M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><circle class="prop ink none" cx="75" cy="31.5" r="4.5"/><path class="prop ink" d="M72.5 27.5Q75 23 77.5 27.5"/></svg></div>
     <div class="plate"><div class="name">Kettlebell Swing</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Legs</span></div></div>
-  </article><article class="card-face diamonds" aria-label="4 of diamonds: Kettlebell Floor Press, 4 reps">
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="4 of diamonds: Kettlebell Floor Press, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M25 86L32 90L33 76M51 86L63 70L73 90"/><path class="near" d="M25 86L51 86M25 86L32 90L33 76M51 86L63 70L73 90"/><circle class="head" cx="16" cy="84" r="6.5"/></g><g class="main"><path class="far" d="M25 86L32 76L33 62M51 86L63 70L73 90"/><path class="near" d="M25 86L51 86M25 86L32 76L33 62M51 86L63 70L73 90"/><circle class="head" cx="16" cy="84" r="6.5"/></g><circle class="prop ink none" cx="33" cy="68.5" r="4.5"/><path class="prop ink" d="M30.5 64.5Q33 60 35.5 64.5"/></svg></div>
     <div class="plate"><div class="name">Kettlebell Floor Press</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Push</span></div></div>
-  </article><article class="card-face diamonds" aria-label="8 of diamonds: Kettlebell Press, 8 reps">
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="8 of diamonds: Kettlebell Press, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L57 36L56 26M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L57 36L56 26M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M50 23L55 13L56 2M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L55 13L56 2M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><circle class="prop ink none" cx="56" cy="8.5" r="4.5"/><path class="prop ink" d="M53.5 4.5Q56 0 58.5 4.5"/></svg></div>
     <div class="plate"><div class="name">Kettlebell Press</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Push</span></div></div>
-  </article><article class="card-face diamonds" aria-label="Q of diamonds: Kettlebell Thruster, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♦</span></div>
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="K of diamonds: Kettlebell Thruster, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M55 43L60 50L60 40M37 64L57 65L50 90"/><path class="near" d="M55 43L37 64M55 43L60 50L60 40M37 64L59 66L53 90"/><circle class="head" cx="57" cy="33" r="6.5"/></g><g class="main"><path class="far" d="M50 23L55 13L56 2M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L55 13L56 2M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><circle class="prop ink none" cx="56" cy="8.5" r="4.5"/><path class="prop ink" d="M53.5 4.5Q56 0 58.5 4.5"/></svg></div>
     <div class="plate"><div class="name">Kettlebell Thruster</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Push</span></div></div>
-  </article><article class="card-face clubs" aria-label="4 of clubs: Kettlebell Deadlift, 4 reps">
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="4 of clubs: Kettlebell Deadlift, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M66 52L64 68L62 82M38 60L50 74L42 90"/><path class="near" d="M66 52L38 60M66 52L64 68L62 82M38 60L52 74L44 90"/><circle class="head" cx="74" cy="50" r="6.5"/></g><g class="main"><path class="far" d="M50 23L49 38L48 52M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L52 52M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><circle class="prop ink none" cx="52" cy="58.5" r="4.5"/><path class="prop ink" d="M49.5 54.5Q52 50 54.5 54.5"/></svg></div>
     <div class="plate"><div class="name">Kettlebell Deadlift</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Pull</span></div></div>
-  </article><article class="card-face clubs" aria-label="8 of clubs: Single-Arm Row, 8 reps">
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="8 of clubs: Single-Arm Row, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M67 41L66 56L66 70M40 50L43 70L40 90"/><path class="near" d="M67 41L40 50M67 41L66 56L66 70M40 50L45 70L42 90"/><circle class="head" cx="76" cy="38" r="6.5"/></g><g class="main"><path class="far" d="M67 41L54 40L62 54M40 50L43 70L40 90"/><path class="near" d="M67 41L40 50M67 41L54 40L62 54M40 50L45 70L42 90"/><circle class="head" cx="76" cy="38" r="6.5"/></g><circle class="prop ink none" cx="62" cy="60.5" r="4.5"/><path class="prop ink" d="M59.5 56.5Q62 52 64.5 56.5"/></svg></div>
     <div class="plate"><div class="name">Single-Arm Row</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Pull</span></div></div>
-  </article><article class="card-face clubs" aria-label="Q of clubs: High Pull, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♣</span></div>
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="K of clubs: High Pull, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M67 41L66 56L66 70M40 50L43 70L40 90"/><path class="near" d="M67 41L40 50M67 41L66 56L66 70M40 50L45 70L42 90"/><circle class="head" cx="76" cy="38" r="6.5"/></g><g class="main"><path class="far" d="M67 41L56 42L66 48M40 50L43 70L40 90"/><path class="near" d="M67 41L40 50M67 41L56 42L66 48M40 50L45 70L42 90"/><circle class="head" cx="76" cy="38" r="6.5"/></g><circle class="prop ink none" cx="66" cy="54.5" r="4.5"/><path class="prop ink" d="M63.5 50.5Q66 46 68.5 50.5"/></svg></div>
     <div class="plate"><div class="name">High Pull</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Pull</span></div></div>
-  </article><article class="card-face spades" aria-label="4 of spades: Halo, 4 reps">
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="4 of spades: Halo, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L57 36L56 26M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L57 36L56 26M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M50 23L58 20L48 10M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L58 20L48 10M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><circle class="prop ink none" cx="48" cy="16.5" r="4.5"/><path class="prop ink" d="M45.5 12.5Q48 8 50.5 12.5"/></svg></div>
     <div class="plate"><div class="name">Halo</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Core</span></div></div>
-  </article><article class="card-face spades" aria-label="8 of spades: Farmer Hold, 40 sec">
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="8 of spades: Farmer Hold, 40 sec">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M50 23L49 38L48 52M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L52 52M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><circle class="prop ink none" cx="52" cy="58.5" r="4.5"/><path class="prop ink" d="M49.5 54.5Q52 50 54.5 54.5"/></svg></div>
     <div class="plate"><div class="name">Farmer Hold</div>
       <div class="meta"><span class="amount">40<small>sec</small></span><span class="group">Core</span></div></div>
-  </article><article class="card-face spades" aria-label="Q of spades: Kettlebell Russian Twist, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♠</span></div>
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="K of spades: Kettlebell Russian Twist, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M58 62L64 74L72 70M40 86L56 72L70 78"/><path class="near" d="M58 62L40 86M58 62L64 74L72 70M40 86L56 72L70 78"/><circle class="head" cx="62" cy="54" r="6.5"/></g><circle class="prop ink none" cx="72" cy="76.5" r="4.5"/><path class="prop ink" d="M69.5 72.5Q72 68 74.5 72.5"/></svg></div>
     <div class="plate"><div class="name">Kettlebell Russian Twist</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Core</span></div></div>
-  </article></div></section><section><h2>Barbell deck</h2><div class="grid"><article class="card-face hearts" aria-label="4 of hearts: Back Squat, 4 reps">
+  </article></div></div></section><section><h2>Barbell deck</h2><div class="grid"><div class="card-box"><article class="card-face hearts" aria-label="4 of hearts: Back Squat, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L44 31L50 24M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L44 31L50 24M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M55 43L48 38L55 34M37 64L57 65L50 90"/><path class="near" d="M55 43L37 64M55 43L48 38L55 34M37 64L59 66L53 90"/><circle class="head" cx="57" cy="33" r="6.5"/></g><circle class="prop ink none" cx="55" cy="34" r="8.5"/><circle class="prop ink none" cx="55" cy="34" r="1.6"/></svg></div>
     <div class="plate"><div class="name">Back Squat</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Legs</span></div></div>
-  </article><article class="card-face hearts" aria-label="8 of hearts: Front Squat, 8 reps">
+  </article></div><div class="card-box"><article class="card-face hearts" aria-label="8 of hearts: Front Squat, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L57 36L56 26M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L57 36L56 26M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M55 43L60 50L60 40M37 64L57 65L50 90"/><path class="near" d="M55 43L37 64M55 43L60 50L60 40M37 64L59 66L53 90"/><circle class="head" cx="57" cy="33" r="6.5"/></g><circle class="prop ink none" cx="60" cy="40" r="8.5"/><circle class="prop ink none" cx="60" cy="40" r="1.6"/></svg></div>
     <div class="plate"><div class="name">Front Squat</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Legs</span></div></div>
-  </article><article class="card-face hearts" aria-label="Q of hearts: Barbell Lunge, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♥</span></div>
+  </article></div><div class="card-box"><article class="card-face hearts" aria-label="K of hearts: Barbell Lunge, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L44 31L50 24M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L44 31L50 24M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M48 35L42 33L48 27M48 61L40 87L26 89"/><path class="near" d="M48 35L48 61M48 35L42 33L48 27M48 61L65 72L66 90"/><circle class="head" cx="48" cy="25" r="6.5"/></g><circle class="prop ink none" cx="48" cy="27" r="8.5"/><circle class="prop ink none" cx="48" cy="27" r="1.6"/></svg></div>
     <div class="plate"><div class="name">Barbell Lunge</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Legs</span></div></div>
-  </article><article class="card-face diamonds" aria-label="4 of diamonds: Barbell Floor Press, 4 reps">
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="4 of diamonds: Barbell Floor Press, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M25 86L32 90L33 76M51 86L63 70L73 90"/><path class="near" d="M25 86L51 86M25 86L32 90L33 76M51 86L63 70L73 90"/><circle class="head" cx="16" cy="84" r="6.5"/></g><g class="main"><path class="far" d="M25 86L32 76L33 62M51 86L63 70L73 90"/><path class="near" d="M25 86L51 86M25 86L32 76L33 62M51 86L63 70L73 90"/><circle class="head" cx="16" cy="84" r="6.5"/></g><circle class="prop ink none" cx="33" cy="62" r="8.5"/><circle class="prop ink none" cx="33" cy="62" r="1.6"/></svg></div>
     <div class="plate"><div class="name">Barbell Floor Press</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Push</span></div></div>
-  </article><article class="card-face diamonds" aria-label="8 of diamonds: Barbell Overhead Press, 8 reps">
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="8 of diamonds: Barbell Overhead Press, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L57 36L56 26M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L57 36L56 26M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M50 23L55 13L56 2M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L55 13L56 2M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><circle class="prop ink none" cx="56" cy="2" r="8.5"/><circle class="prop ink none" cx="56" cy="2" r="1.6"/></svg></div>
     <div class="plate"><div class="name">Barbell Overhead Press</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Push</span></div></div>
-  </article><article class="card-face diamonds" aria-label="Q of diamonds: Push Press, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♦</span></div>
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="K of diamonds: Push Press, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M55 43L60 50L60 40M37 64L57 65L50 90"/><path class="near" d="M55 43L37 64M55 43L60 50L60 40M37 64L59 66L53 90"/><circle class="head" cx="57" cy="33" r="6.5"/></g><g class="main"><path class="far" d="M50 23L55 13L56 2M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L55 13L56 2M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><circle class="prop ink none" cx="56" cy="2" r="8.5"/><circle class="prop ink none" cx="56" cy="2" r="1.6"/></svg></div>
     <div class="plate"><div class="name">Push Press</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Push</span></div></div>
-  </article><article class="card-face clubs" aria-label="4 of clubs: Barbell Curl, 4 reps">
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="4 of clubs: Barbell Curl, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L49 38L48 52M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L52 52M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M50 23L51 38L61 28M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L61 28M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><circle class="prop ink none" cx="61" cy="28" r="8.5"/><circle class="prop ink none" cx="61" cy="28" r="1.6"/></svg></div>
     <div class="plate"><div class="name">Barbell Curl</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Pull</span></div></div>
-  </article><article class="card-face clubs" aria-label="8 of clubs: Barbell Row, 8 reps">
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="8 of clubs: Barbell Row, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M67 41L66 56L66 70M40 50L43 70L40 90"/><path class="near" d="M67 41L40 50M67 41L66 56L66 70M40 50L45 70L42 90"/><circle class="head" cx="76" cy="38" r="6.5"/></g><g class="main"><path class="far" d="M67 41L54 40L62 54M40 50L43 70L40 90"/><path class="near" d="M67 41L40 50M67 41L54 40L62 54M40 50L45 70L42 90"/><circle class="head" cx="76" cy="38" r="6.5"/></g><circle class="prop ink none" cx="62" cy="54" r="8.5"/><circle class="prop ink none" cx="62" cy="54" r="1.6"/></svg></div>
     <div class="plate"><div class="name">Barbell Row</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Pull</span></div></div>
-  </article><article class="card-face clubs" aria-label="Q of clubs: Deadlift, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♣</span></div>
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="K of clubs: Deadlift, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M66 52L64 68L62 82M38 60L50 74L42 90"/><path class="near" d="M66 52L38 60M66 52L64 68L62 82M38 60L52 74L44 90"/><circle class="head" cx="74" cy="50" r="6.5"/></g><g class="main"><path class="far" d="M50 23L49 38L48 52M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L52 52M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><circle class="prop ink none" cx="52" cy="52" r="8.5"/><circle class="prop ink none" cx="52" cy="52" r="1.6"/></svg></div>
     <div class="plate"><div class="name">Deadlift</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Pull</span></div></div>
-  </article><article class="card-face spades" aria-label="4 of spades: Good Morning, 4 reps">
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="4 of spades: Good Morning, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L44 31L50 24M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L44 31L50 24M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M67 41L60 36L64 42M40 50L45 70L42 90"/><path class="near" d="M66.64683975985554 41.151354388633344L40 50M67 41L60 36L64 42M40 50L45 70L42 90"/><circle class="head" cx="74" cy="38" r="6.5"/></g><circle class="prop ink none" cx="64" cy="42" r="8.5"/><circle class="prop ink none" cx="64" cy="42" r="1.6"/></svg></div>
     <div class="plate"><div class="name">Good Morning</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Core</span></div></div>
-  </article><article class="card-face spades" aria-label="8 of spades: Hip Thrust, 8 reps">
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="8 of spades: Hip Thrust, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M25 86L34 81L44 86M51 86L63 70L73 90"/><path class="near" d="M25 86L51 86M25 86L34 81L44 86M51 86L63 70L73 90"/><circle class="head" cx="16" cy="84" r="6.5"/></g><g class="main"><path class="far" d="M25 86L34 88L44 88M49 70L63 63L72 90"/><path class="near" d="M25 86L49 70M25 86L34 88L44 88M49 70L63 63L72 90"/><circle class="head" cx="16" cy="86" r="6.5"/></g><circle class="prop ink none" cx="44" cy="88" r="8.5"/><circle class="prop ink none" cx="44" cy="88" r="1.6"/></svg></div>
     <div class="plate"><div class="name">Hip Thrust</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Core</span></div></div>
-  </article><article class="card-face spades" aria-label="Q of spades: Barbell Rollout, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♠</span></div>
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="K of spades: Barbell Rollout, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 42L54 64L58 84M44 66L44 90L24 90"/><path class="near" d="M50 42L44 66M50 42L54 64L58 84M44 66L44 90L24 90"/><circle class="head" cx="52" cy="32" r="6.5"/></g><g class="main"><path class="far" d="M64 70L76 76L86 84M44 80L30 90L12 90"/><path class="near" d="M64 70L44 80M64 70L76 76L86 84M44 80L30 90L12 90"/><circle class="head" cx="72" cy="68" r="6.5"/></g><circle class="prop ink none" cx="86" cy="84" r="8.5"/><circle class="prop ink none" cx="86" cy="84" r="1.6"/></svg></div>
     <div class="plate"><div class="name">Barbell Rollout</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Core</span></div></div>
-  </article></div></section><section><h2>Resistance band deck</h2><div class="grid"><article class="card-face hearts" aria-label="4 of hearts: Banded Squat, 4 reps">
+  </article></div></div></section><section><h2>Resistance band deck</h2><div class="grid"><div class="card-box"><article class="card-face hearts" aria-label="4 of hearts: Banded Squat, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L57 36L56 26M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L57 36L56 26M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M55 43L60 50L60 40M37 64L57 65L50 90"/><path class="near" d="M55 43L37 64M55 43L60 50L60 40M37 64L59 66L53 90"/><circle class="head" cx="57" cy="33" r="6.5"/></g><path class="prop suit dashed" d="M60 40L55 90"/></svg></div>
     <div class="plate"><div class="name">Banded Squat</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Legs</span></div></div>
-  </article><article class="card-face hearts" aria-label="8 of hearts: Banded Glute Bridge, 8 reps">
+  </article></div><div class="card-box"><article class="card-face hearts" aria-label="8 of hearts: Banded Glute Bridge, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M25 86L34 81L44 86M51 86L63 70L73 90"/><path class="near" d="M25 86L51 86M25 86L34 81L44 86M51 86L63 70L73 90"/><circle class="head" cx="16" cy="84" r="6.5"/></g><g class="main"><path class="far" d="M25 86L34 88L44 88M49 70L63 63L72 90"/><path class="near" d="M25 86L49 70M25 86L34 88L44 88M49 70L63 63L72 90"/><circle class="head" cx="16" cy="86" r="6.5"/></g><path class="prop suit dashed" d="M60 66L66 66"/></svg></div>
     <div class="plate"><div class="name">Banded Glute Bridge</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Legs</span></div></div>
-  </article><article class="card-face hearts" aria-label="Q of hearts: Lateral Band Walk, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♥</span></div>
+  </article></div><div class="card-box"><article class="card-face hearts" aria-label="K of hearts: Lateral Band Walk, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M55 43L60 56L62 68M37 64L57 65L50 90"/><path class="near" d="M55 43L37 64M55 43L60 56L62 68M37 64L59 66L53 90"/><circle class="head" cx="57" cy="33" r="6.5"/></g><path class="prop suit dashed" d="M56 69L60 68"/></svg></div>
     <div class="plate"><div class="name">Lateral Band Walk</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Legs</span></div></div>
-  </article><article class="card-face diamonds" aria-label="4 of diamonds: Band Chest Press, 4 reps">
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="4 of diamonds: Band Chest Press, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L46 34L58 30M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L46 34L58 30M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M50 23L62 25L75 25M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L62 25L75 25M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><path class="prop suit dashed" d="M75 25L3 29"/></svg></div>
     <div class="plate"><div class="name">Band Chest Press</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Push</span></div></div>
-  </article><article class="card-face diamonds" aria-label="8 of diamonds: Triceps Pushdown, 8 reps">
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="8 of diamonds: Triceps Pushdown, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L46 34L58 30M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L46 34L58 30M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M50 23L47 36L57 50M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L47 36L57 50M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><path class="prop suit dashed" d="M57 50L63 1"/></svg></div>
     <div class="plate"><div class="name">Triceps Pushdown</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Push</span></div></div>
-  </article><article class="card-face diamonds" aria-label="Q of diamonds: Band Overhead Press, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♦</span></div>
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="K of diamonds: Band Overhead Press, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L57 36L56 26M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L57 36L56 26M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M50 23L55 13L56 2M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L55 13L56 2M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><path class="prop suit dashed" d="M56 2L54 90"/></svg></div>
     <div class="plate"><div class="name">Band Overhead Press</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Push</span></div></div>
-  </article><article class="card-face clubs" aria-label="4 of clubs: Band Row, 4 reps">
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="4 of clubs: Band Row, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L62 25L75 25M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L62 25L75 25M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M50 23L39 36L50 38M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L39 36L50 38M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><path class="prop suit dashed" d="M50 38L97 38"/></svg></div>
     <div class="plate"><div class="name">Band Row</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Pull</span></div></div>
-  </article><article class="card-face clubs" aria-label="8 of clubs: Band Pull-Apart, 8 reps">
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="8 of clubs: Band Pull-Apart, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L62 25L75 25M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L62 25L75 25M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M50 23L62 30L44 28M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L62 30L44 28M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><path class="prop suit dashed" d="M44 23L44 33"/></svg></div>
     <div class="plate"><div class="name">Band Pull-Apart</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Pull</span></div></div>
-  </article><article class="card-face clubs" aria-label="Q of clubs: Band Curl, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♣</span></div>
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="K of clubs: Band Curl, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L49 38L48 52M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L52 52M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M50 23L51 38L61 28M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L61 28M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><path class="prop suit dashed" d="M61 28L54 90"/></svg></div>
     <div class="plate"><div class="name">Band Curl</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Pull</span></div></div>
-  </article><article class="card-face spades" aria-label="4 of spades: Pallof Press, 4 reps">
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="4 of spades: Pallof Press, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L46 34L58 30M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L46 34L58 30M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M50 23L62 25L75 25M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L62 25L75 25M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><path class="prop suit dashed" d="M75 25L97 25"/></svg></div>
     <div class="plate"><div class="name">Pallof Press</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Core</span></div></div>
-  </article><article class="card-face spades" aria-label="8 of spades: Band Woodchop, 8 reps">
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="8 of spades: Band Woodchop, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L55 13L56 2M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L55 13L56 2M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M55 43L60 56L62 68M37 64L57 65L50 90"/><path class="near" d="M55 43L37 64M55 43L60 56L62 68M37 64L59 66L53 90"/><circle class="head" cx="57" cy="33" r="6.5"/></g><path class="prop suit dashed" d="M62 68L68 1"/></svg></div>
     <div class="plate"><div class="name">Band Woodchop</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Core</span></div></div>
-  </article><article class="card-face spades" aria-label="Q of spades: Banded Dead Bug, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♠</span></div>
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="K of spades: Banded Dead Bug, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M25 86L34 81L44 86M51 86L63 70L73 90"/><path class="near" d="M25 86L51 86M25 86L34 81L44 86M51 86L63 70L73 90"/><circle class="head" cx="16" cy="84" r="6.5"/></g><g class="main"><path class="far" d="M25 86L20 74L10 72M51 86L64 82L82 84"/><path class="near" d="M25 86L51 86M25 86L26 74L28 62M51 86L52 70L64 70"/><circle class="head" cx="16" cy="84" r="6.5"/></g><path class="prop suit dashed" d="M28 62L3 66"/></svg></div>
     <div class="plate"><div class="name">Banded Dead Bug</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Core</span></div></div>
-  </article></div></section><section><h2>Exercise ball deck</h2><div class="grid"><article class="card-face hearts" aria-label="4 of hearts: Ball Wall Squat, 4 reps">
+  </article></div></div></section><section><h2>Exercise ball deck</h2><div class="grid"><div class="card-box"><article class="card-face hearts" aria-label="4 of hearts: Ball Wall Squat, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><circle class="prop suit suit-tint" cx="28" cy="54" r="10"/><g class="ghost"><path class="far" d="M50 23L56 36L62 46M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L56 36L62 46M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M55 43L67 46L79 46M37 64L57 65L50 90"/><path class="near" d="M55 43L37 64M55 43L67 46L79 46M37 64L59 66L53 90"/><circle class="head" cx="57" cy="33" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Ball Wall Squat</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Legs</span></div></div>
-  </article><article class="card-face hearts" aria-label="8 of hearts: Ball Bridge, 8 reps">
+  </article></div><div class="card-box"><article class="card-face hearts" aria-label="8 of hearts: Ball Bridge, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><circle class="prop suit suit-tint" cx="78" cy="78" r="11"/><g class="ghost"><path class="far" d="M25 86L34 88L44 88M48 84L60 70L74 70"/><path class="near" d="M25 86L48 84M25 86L34 88L44 88M48 84L60 70L74 70"/><circle class="head" cx="16" cy="86" r="6.5"/></g><g class="main"><path class="far" d="M25 86L34 88L44 88M48 70L62 64L74 70"/><path class="near" d="M25 86L48 70M25 86L34 88L44 88M48 70L62 64L74 70"/><circle class="head" cx="16" cy="86" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Ball Bridge</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Legs</span></div></div>
-  </article><article class="card-face hearts" aria-label="Q of hearts: Ball Hamstring Curl, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♥</span></div>
+  </article></div><div class="card-box"><article class="card-face hearts" aria-label="K of hearts: Ball Hamstring Curl, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><circle class="prop suit suit-tint" cx="80" cy="78" r="11"/><g class="ghost"><path class="far" d="M25 86L34 88L44 88M50 78L64 76L78 72"/><path class="near" d="M25 86L50 78M25 86L34 88L44 88M50 78L64 76L78 72"/><circle class="head" cx="16" cy="86" r="6.5"/></g><g class="main"><path class="far" d="M25 86L34 88L44 88M48 66L62 52L66 68"/><path class="near" d="M25 86L48 66M25 86L34 88L44 88M48 66L62 52L66 68"/><circle class="head" cx="16" cy="86" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Ball Hamstring Curl</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Legs</span></div></div>
-  </article><article class="card-face diamonds" aria-label="4 of diamonds: Incline Ball Push-Up, 4 reps">
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="4 of diamonds: Incline Ball Push-Up, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><circle class="prop suit suit-tint" cx="72" cy="80" r="10"/><g class="ghost"><path class="far" d="M68 48L72 60L72 70M44 66L28 78L14 88"/><path class="near" d="M68 48L44 66M68 48L72 60L72 70M44 66L28 78L14 88"/><circle class="head" cx="76" cy="44" r="6.5"/></g><g class="main"><path class="far" d="M72 56L62 50L72 70M46 70L30 80L14 88"/><path class="near" d="M72 56L46 70M72 56L62 50L72 70M46 70L30 80L14 88"/><circle class="head" cx="80" cy="52" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Incline Ball Push-Up</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Push</span></div></div>
-  </article><article class="card-face diamonds" aria-label="8 of diamonds: Decline Ball Push-Up, 8 reps">
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="8 of diamonds: Decline Ball Push-Up, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><circle class="prop suit suit-tint" cx="22" cy="72" r="11"/><g class="ghost"><path class="far" d="M72 78L72 84L72 90M48 70L32 64L18 60"/><path class="near" d="M72 78L48 70M72 78L72 84L72 90M48 70L32 64L18 60"/><circle class="head" cx="80" cy="76" r="6.5"/></g><g class="main"><path class="far" d="M72 86L64 76L72 90M48 76L32 66L18 60"/><path class="near" d="M72 86L48 76M72 86L64 76L72 90M48 76L32 66L18 60"/><circle class="head" cx="80" cy="86" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Decline Ball Push-Up</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Push</span></div></div>
-  </article><article class="card-face diamonds" aria-label="Q of diamonds: Ball Pike, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♦</span></div>
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="K of diamonds: Ball Pike, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><circle class="prop suit suit-tint" cx="26" cy="72" r="11"/><g class="ghost"><path class="far" d="M72 78L72 84L72 90M48 70L32 64L18 60"/><path class="near" d="M72 78L48 70M72 78L72 84L72 90M48 70L32 64L18 60"/><circle class="head" cx="80" cy="76" r="6.5"/></g><g class="main"><path class="far" d="M70 76L72 84L72 90M50 48L40 56L30 60"/><path class="near" d="M69.34359764529725 75.56239843019817L50 48M70 76L72 84L72 90M50 48L40 56L30 60"/><circle class="head" cx="76" cy="80" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Ball Pike</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Push</span></div></div>
-  </article><article class="card-face clubs" aria-label="4 of clubs: Ball Back Extension, 4 reps">
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="4 of clubs: Ball Back Extension, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><circle class="prop suit suit-tint" cx="46" cy="76" r="13"/><g class="ghost"><path class="far" d="M58 70L62 76L64 88M40 52L26 70L14 90"/><path class="near" d="M58 70L40 52M58 70L62 76L64 88M40 52L26 70L14 90"/><circle class="head" cx="66" cy="78" r="6.5"/></g><g class="main"><path class="far" d="M62 52L62 46L70 40M40 52L26 70L14 90"/><path class="near" d="M62 52L40 52M62 52L62 46L70 40M40 52L26 70L14 90"/><circle class="head" cx="70" cy="46" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Ball Back Extension</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Pull</span></div></div>
-  </article><article class="card-face clubs" aria-label="8 of clubs: Ball Y-Raise, 8 reps">
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="8 of clubs: Ball Y-Raise, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><circle class="prop suit suit-tint" cx="46" cy="76" r="13"/><g class="ghost"><path class="far" d="M62 52L62 46L70 40M40 52L26 70L14 90"/><path class="near" d="M62 52L40 52M62 52L62 46L70 40M40 52L26 70L14 90"/><circle class="head" cx="70" cy="46" r="6.5"/></g><g class="main"><path class="far" d="M62 54L72 46L82 40M40 52L26 70L14 90"/><path class="near" d="M62 54L40 52M62 54L72 46L82 40M40 52L26 70L14 90"/><circle class="head" cx="70" cy="48" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Ball Y-Raise</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Pull</span></div></div>
-  </article><article class="card-face clubs" aria-label="Q of clubs: Ball Superman Hold, 50 sec">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♣</span></div>
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="K of clubs: Ball Superman Hold, 50 sec">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><circle class="prop suit suit-tint" cx="46" cy="76" r="13"/><g class="main"><path class="far" d="M62 54L72 46L82 40M40 52L26 70L14 90"/><path class="near" d="M62 54L40 52M62 54L72 46L82 40M40 52L26 70L14 90"/><circle class="head" cx="70" cy="48" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Ball Superman Hold</div>
       <div class="meta"><span class="amount">50<small>sec</small></span><span class="group">Pull</span></div></div>
-  </article><article class="card-face spades" aria-label="4 of spades: Ball Crunch, 4 reps">
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="4 of spades: Ball Crunch, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><circle class="prop suit suit-tint" cx="46" cy="76" r="13"/><g class="ghost"><path class="far" d="M30 54L34 44L36 52M50 62L64 66L66 90"/><path class="near" d="M30 54L50 62M30 54L34 44L36 52M50 62L64 66L66 90"/><circle class="head" cx="22" cy="58" r="6.5"/></g><g class="main"><path class="far" d="M36 50L34 42L42 38M50 62L64 66L66 90"/><path class="near" d="M36.437601569801835 50.65640235470275L50 62M36 50L34 42L42 38M50 62L64 66L66 90"/><circle class="head" cx="32" cy="44" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Ball Crunch</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Core</span></div></div>
-  </article><article class="card-face spades" aria-label="8 of spades: Ball Plank, 40 sec">
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="8 of spades: Ball Plank, 40 sec">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><circle class="prop suit suit-tint" cx="70" cy="78" r="11"/><g class="main"><path class="far" d="M68 60L60 68L72 68M44 72L28 80L12 88"/><path class="near" d="M68 60L44 72M68 60L60 68L72 68M44 72L28 80L12 88"/><circle class="head" cx="76" cy="58" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Ball Plank</div>
       <div class="meta"><span class="amount">40<small>sec</small></span><span class="group">Core</span></div></div>
-  </article><article class="card-face spades" aria-label="Q of spades: Ball Pass, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♠</span></div>
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="K of spades: Ball Pass, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><circle class="prop suit suit-tint" cx="56" cy="44" r="9"/><g class="ghost"><path class="far" d="M25 86L18 76L8 70M51 86L66 86L84 88"/><path class="near" d="M25 86L51 86M25 86L18 76L8 70M51 86L66 86L84 88"/><circle class="head" cx="16" cy="84" r="6.5"/></g><g class="main"><path class="far" d="M34 78L44 62L54 54M51 86L62 68L62 52"/><path class="near" d="M34 78L51 86M34 78L44 62L54 54M51 86L62 68L62 52"/><circle class="head" cx="30" cy="70" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Ball Pass</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Core</span></div></div>
-  </article></div></section><section><h2>Suspension deck</h2><div class="grid"><article class="card-face hearts" aria-label="4 of hearts: Suspension Squat, 4 reps">
+  </article></div></div></section><section><h2>Suspension deck</h2><div class="grid"><div class="card-box"><article class="card-face hearts" aria-label="4 of hearts: Suspension Squat, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L62 25L75 25M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L62 25L75 25M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M55 43L62 30L70 18M37 64L57 65L50 90"/><path class="near" d="M55 43L37 64M55 43L62 30L70 18M37 64L59 66L53 90"/><circle class="head" cx="57" cy="33" r="6.5"/></g><path class="prop ink" d="M70 18L84 2M80 1L88 1"/></svg></div>
     <div class="plate"><div class="name">Suspension Squat</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Legs</span></div></div>
-  </article><article class="card-face hearts" aria-label="8 of hearts: Suspension Lunge, 8 reps">
+  </article></div><div class="card-box"><article class="card-face hearts" aria-label="8 of hearts: Suspension Lunge, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L62 25L75 25M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L62 25L75 25M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M48 35L58 30L66 18M48 61L40 87L26 89"/><path class="near" d="M48 35L48 61M48 35L58 30L66 18M48 61L65 72L66 90"/><circle class="head" cx="48" cy="25" r="6.5"/></g><path class="prop ink" d="M66 18L80 2M76 1L84 1"/></svg></div>
     <div class="plate"><div class="name">Suspension Lunge</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Legs</span></div></div>
-  </article><article class="card-face hearts" aria-label="Q of hearts: Suspension Hamstring Curl, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♥</span></div>
+  </article></div><div class="card-box"><article class="card-face hearts" aria-label="K of hearts: Suspension Hamstring Curl, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M25 86L34 88L44 88M50 82L64 80L78 74"/><path class="near" d="M25 86L50 82M25 86L34 88L44 88M50 82L64 80L78 74"/><circle class="head" cx="16" cy="86" r="6.5"/></g><g class="main"><path class="far" d="M25 86L34 88L44 88M48 72L62 58L62 74"/><path class="near" d="M25 86L48 72M25 86L34 88L44 88M48 72L62 58L62 74"/><circle class="head" cx="16" cy="86" r="6.5"/></g><path class="prop ink" d="M62 74L62 2M58 1L66 1"/></svg></div>
     <div class="plate"><div class="name">Suspension Hamstring Curl</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Legs</span></div></div>
-  </article><article class="card-face diamonds" aria-label="4 of diamonds: Suspension Chest Press, 4 reps">
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="4 of diamonds: Suspension Chest Press, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M58 30L70 28L78 22M44 58L36 74L30 90"/><path class="near" d="M58 30L44 58M58 30L70 28L78 22M44 58L36 74L30 90"/><circle class="head" cx="62" cy="22" r="6.5"/></g><g class="main"><path class="far" d="M67 38L60 22L80 22M46 60L37 75L30 90"/><path class="near" d="M67 38L46 60M67 38L60 22L80 22M46 60L37 75L30 90"/><circle class="head" cx="72" cy="30" r="6.5"/></g><path class="prop ink" d="M80 22L36 2M32 1L40 1"/></svg></div>
     <div class="plate"><div class="name">Suspension Chest Press</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Push</span></div></div>
-  </article><article class="card-face diamonds" aria-label="8 of diamonds: Suspension Triceps Extension, 8 reps">
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="8 of diamonds: Suspension Triceps Extension, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M58 30L70 28L78 22M44 58L36 74L30 90"/><path class="near" d="M58 30L44 58M58 30L70 28L78 22M44 58L36 74L30 90"/><circle class="head" cx="62" cy="22" r="6.5"/></g><g class="main"><path class="far" d="M66 38L80 24L70 18M46 60L37 75L30 90"/><path class="near" d="M66 38L46 60M66 38L80 24L70 18M46 60L37 75L30 90"/><circle class="head" cx="70" cy="30" r="6.5"/></g><path class="prop ink" d="M70 18L36 2M32 1L40 1"/></svg></div>
     <div class="plate"><div class="name">Suspension Triceps Extension</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Push</span></div></div>
-  </article><article class="card-face diamonds" aria-label="Q of diamonds: Suspension Push-Up, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♦</span></div>
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="K of diamonds: Suspension Push-Up, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M72 72L72 81L72 90M46 66L30 62L16 58"/><path class="near" d="M72 72L46 66M72 72L72 81L72 90M46 66L30 62L16 58"/><circle class="head" cx="80" cy="70" r="6.5"/></g><g class="main"><path class="far" d="M72 78L64 70L72 90M46 76L30 70L16 66"/><path class="near" d="M72 78L46 76M72 78L64 70L72 90M46 76L30 70L16 66"/><circle class="head" cx="80" cy="76" r="6.5"/></g><path class="prop ink" d="M16 66L16 2M12 1L20 1"/></svg></div>
     <div class="plate"><div class="name">Suspension Push-Up</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Push</span></div></div>
-  </article><article class="card-face clubs" aria-label="4 of clubs: Suspension Row, 4 reps">
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="4 of clubs: Suspension Row, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M41 29L50 21L62 14M56 57L65 74L74 90"/><path class="near" d="M41 29L56 57M41 29L50 21L62 14M56 57L65 74L74 90"/><circle class="head" cx="36" cy="21" r="6.5"/></g><g class="main"><path class="far" d="M48 28L40 20L56 14M58 57L66 74L74 90"/><path class="near" d="M48 28L58 57M48 28L40 20L56 14M58 57L66 74L74 90"/><circle class="head" cx="44" cy="20" r="6.5"/></g><path class="prop ink" d="M56 14L70 2M66 1L74 1"/></svg></div>
     <div class="plate"><div class="name">Suspension Row</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Pull</span></div></div>
-  </article><article class="card-face clubs" aria-label="8 of clubs: Suspension Y-Fly, 8 reps">
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="8 of clubs: Suspension Y-Fly, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M41 29L50 21L62 14M56 57L65 74L74 90"/><path class="near" d="M41 29L56 57M41 29L50 21L62 14M56 57L65 74L74 90"/><circle class="head" cx="36" cy="21" r="6.5"/></g><g class="main"><path class="far" d="M41 29L46 16L52 4M56 57L65 74L74 90"/><path class="near" d="M41 29L56 57M41 29L46 16L52 4M56 57L65 74L74 90"/><circle class="head" cx="36" cy="21" r="6.5"/></g><path class="prop ink" d="M52 4L66 2M62 1L70 1"/></svg></div>
     <div class="plate"><div class="name">Suspension Y-Fly</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Pull</span></div></div>
-  </article><article class="card-face clubs" aria-label="Q of clubs: Suspension Biceps Curl, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♣</span></div>
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="K of clubs: Suspension Biceps Curl, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M41 29L50 21L62 14M56 57L65 74L74 90"/><path class="near" d="M41 29L56 57M41 29L50 21L62 14M56 57L65 74L74 90"/><circle class="head" cx="36" cy="21" r="6.5"/></g><g class="main"><path class="far" d="M48 28L58 22L52 16M58 57L66 74L74 90"/><path class="near" d="M48 28L58 57M48 28L58 22L52 16M58 57L66 74L74 90"/><circle class="head" cx="44" cy="20" r="6.5"/></g><path class="prop ink" d="M52 16L66 2M62 1L70 1"/></svg></div>
     <div class="plate"><div class="name">Suspension Biceps Curl</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Pull</span></div></div>
-  </article><article class="card-face spades" aria-label="4 of spades: Suspension Plank, 20 sec">
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="4 of spades: Suspension Plank, 20 sec">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M72 72L72 81L72 90M46 66L30 62L16 58"/><path class="near" d="M72 72L46 66M72 72L72 81L72 90M46 66L30 62L16 58"/><circle class="head" cx="80" cy="70" r="6.5"/></g><path class="prop ink" d="M16 58L16 2M12 1L20 1"/></svg></div>
     <div class="plate"><div class="name">Suspension Plank</div>
       <div class="meta"><span class="amount">20<small>sec</small></span><span class="group">Core</span></div></div>
-  </article><article class="card-face spades" aria-label="8 of spades: Suspension Knee Tuck, 8 reps">
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="8 of spades: Suspension Knee Tuck, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M72 72L72 81L72 90M46 66L30 62L16 58"/><path class="near" d="M72 72L46 66M72 72L72 81L72 90M46 66L30 62L16 58"/><circle class="head" cx="80" cy="70" r="6.5"/></g><g class="main"><path class="far" d="M72 66L72 78L72 90M50 60L58 72L44 62"/><path class="near" d="M72 66L50 60M72 66L72 78L72 90M50 60L58 72L44 62"/><circle class="head" cx="80" cy="64" r="6.5"/></g><path class="prop ink" d="M44 62L44 2M40 1L48 1"/></svg></div>
     <div class="plate"><div class="name">Suspension Knee Tuck</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Core</span></div></div>
-  </article><article class="card-face spades" aria-label="Q of spades: Suspension Pike, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♠</span></div>
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="K of spades: Suspension Pike, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M72 72L72 81L72 90M46 66L30 62L16 58"/><path class="near" d="M72 72L46 66M72 72L72 81L72 90M46 66L30 62L16 58"/><circle class="head" cx="80" cy="70" r="6.5"/></g><g class="main"><path class="far" d="M70 72L72 81L72 90M50 40L38 50L26 56"/><path class="near" d="M70 72L50 40M70 72L72 81L72 90M50 40L38 50L26 56"/><circle class="head" cx="76" cy="78" r="6.5"/></g><path class="prop ink" d="M26 56L26 2M22 1L30 1"/></svg></div>
     <div class="plate"><div class="name">Suspension Pike</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Core</span></div></div>
-  </article></div></section><section><h2>Flexibility deck</h2><div class="grid"><article class="card-face hearts" aria-label="4 of hearts: Standing Quad Stretch, 20 sec">
+  </article></div></div></section><section><h2>Flexibility deck</h2><div class="grid"><div class="card-box"><article class="card-face hearts" aria-label="4 of hearts: Standing Quad Stretch, 20 sec">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M50 23L45 38L40 56M50 52L48 72L37 58"/><path class="near" d="M50 23L50 52M50 23L51 38L52 52M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Standing Quad Stretch</div>
       <div class="meta"><span class="amount">20<small>sec</small></span><span class="group">Hips & legs</span></div></div>
-  </article><article class="card-face hearts" aria-label="8 of hearts: Seated Hamstring Stretch, 40 sec">
+  </article></div><div class="card-box"><article class="card-face hearts" aria-label="8 of hearts: Seated Hamstring Stretch, 40 sec">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M58 72L66 82L78 84M30 86L56 86L78 88"/><path class="near" d="M58 72L30 86M58 72L66 82L78 84M30 86L56 86L78 88"/><circle class="head" cx="66" cy="70" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Seated Hamstring Stretch</div>
       <div class="meta"><span class="amount">40<small>sec</small></span><span class="group">Hips & legs</span></div></div>
-  </article><article class="card-face hearts" aria-label="Q of hearts: Kneeling Hip Flexor Stretch, 50 sec">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♥</span></div>
+  </article></div><div class="card-box"><article class="card-face hearts" aria-label="K of hearts: Kneeling Hip Flexor Stretch, 50 sec">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M50 42L50 56L56 68M46 68L42 90L24 90"/><path class="near" d="M50 42L46 68M50 42L50 56L56 68M46 68L64 76L66 90"/><circle class="head" cx="50" cy="32" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Kneeling Hip Flexor Stretch</div>
       <div class="meta"><span class="amount">50<small>sec</small></span><span class="group">Hips & legs</span></div></div>
-  </article><article class="card-face diamonds" aria-label="4 of diamonds: Cross-Body Shoulder Stretch, 20 sec">
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="4 of diamonds: Cross-Body Shoulder Stretch, 20 sec">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M50 23L62 30L44 28M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L62 30L44 28M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Cross-Body Shoulder Stretch</div>
       <div class="meta"><span class="amount">20<small>sec</small></span><span class="group">Shoulders & chest</span></div></div>
-  </article><article class="card-face diamonds" aria-label="8 of diamonds: Overhead Triceps Stretch, 40 sec">
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="8 of diamonds: Overhead Triceps Stretch, 40 sec">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M50 23L56 6L46 20M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L56 6L46 20M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Overhead Triceps Stretch</div>
       <div class="meta"><span class="amount">40<small>sec</small></span><span class="group">Shoulders & chest</span></div></div>
-  </article><article class="card-face diamonds" aria-label="Q of diamonds: Doorway Chest Stretch, 50 sec">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♦</span></div>
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="K of diamonds: Doorway Chest Stretch, 50 sec">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M50 23L42 24L34 14M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L42 24L34 14M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Doorway Chest Stretch</div>
       <div class="meta"><span class="amount">50<small>sec</small></span><span class="group">Shoulders & chest</span></div></div>
-  </article><article class="card-face clubs" aria-label="4 of clubs: Cat-Cow, 4 reps">
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="4 of clubs: Cat-Cow, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M66 58L66 75L66 90M42 58L42 90L22 90"/><path class="near" d="M66 58L42 58M66 58L66 75L66 90M42 58L42 90L22 90"/><circle class="head" cx="70" cy="68" r="6.5"/></g><g class="main"><path class="far" d="M66 60L66 75L66 90M42 60L42 90L22 90"/><path class="near" d="M66 60L42 60M66 60L66 75L66 90M42 60L42 90L22 90"/><circle class="head" cx="74" cy="50" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Cat-Cow</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Spine</span></div></div>
-  </article><article class="card-face clubs" aria-label="8 of clubs: Knee-to-Chest, 40 sec">
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="8 of clubs: Knee-to-Chest, 40 sec">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M25 86L40 78L52 68M51 86L69 84L88 88"/><path class="near" d="M25 86L51 86M25 86L40 78L52 68M51 86L50 64L36 62"/><circle class="head" cx="16" cy="84" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Knee-to-Chest</div>
       <div class="meta"><span class="amount">40<small>sec</small></span><span class="group">Spine</span></div></div>
-  </article><article class="card-face clubs" aria-label="Q of clubs: Supine Twist, 50 sec">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♣</span></div>
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="K of clubs: Supine Twist, 50 sec">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M25 86L26 74L22 62M51 86L62 76L56 90"/><path class="near" d="M25 86L51 86M25 86L26 74L22 62M51 86L62 76L56 90"/><circle class="head" cx="16" cy="84" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Supine Twist</div>
       <div class="meta"><span class="amount">50<small>sec</small></span><span class="group">Spine</span></div></div>
-  </article><article class="card-face spades" aria-label="4 of spades: Wall Calf Stretch, 20 sec">
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="4 of spades: Wall Calf Stretch, 20 sec">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M56 26L66 30L76 24M46 54L38 72L30 90"/><path class="near" d="M56 26L46 54M56 26L66 30L76 24M46 54L56 72L60 90"/><circle class="head" cx="58" cy="16" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Wall Calf Stretch</div>
       <div class="meta"><span class="amount">20<small>sec</small></span><span class="group">Balance & calves</span></div></div>
-  </article><article class="card-face spades" aria-label="8 of spades: Standing Toe Reach, 40 sec">
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="8 of spades: Standing Toe Reach, 40 sec">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M66 63L68 75L67 87M44 50L47 70L46 90"/><path class="near" d="M66 63L44 50M66 63L68 75L67 87M44 50L47 70L46 90"/><circle class="head" cx="72" cy="72" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Standing Toe Reach</div>
       <div class="meta"><span class="amount">40<small>sec</small></span><span class="group">Balance & calves</span></div></div>
-  </article><article class="card-face spades" aria-label="Q of spades: Front Leg Swing, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♠</span></div>
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="K of spades: Front Leg Swing, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L49 38L48 52M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L52 52M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M50 23L44 34L38 30M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L52 38L54 50M50 52L64 66L74 76"/><circle class="head" cx="50" cy="13" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Front Leg Swing</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Balance & calves</span></div></div>
-  </article></div></section><section><h2>Yoga deck</h2><div class="grid"><article class="card-face hearts" aria-label="4 of hearts: Low Lunge, 20 sec">
+  </article></div></div></section><section><h2>Yoga deck</h2><div class="grid"><div class="card-box"><article class="card-face hearts" aria-label="4 of hearts: Low Lunge, 20 sec">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M50 42L50 56L56 68M46 68L42 90L24 90"/><path class="near" d="M50 42L46 68M50 42L50 56L56 68M46 68L64 76L66 90"/><circle class="head" cx="50" cy="32" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Low Lunge</div>
       <div class="meta"><span class="amount">20<small>sec</small></span><span class="group">Hips & legs</span></div></div>
-  </article><article class="card-face hearts" aria-label="8 of hearts: Warrior II, 40 sec">
+  </article></div><div class="card-box"><article class="card-face hearts" aria-label="8 of hearts: Warrior II, 40 sec">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M48 35L34 35L18 35M48 61L40 87L26 89"/><path class="near" d="M48 35L48 61M48 35L62 35L78 35M48 61L65 72L66 90"/><circle class="head" cx="48" cy="25" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Warrior II</div>
       <div class="meta"><span class="amount">40<small>sec</small></span><span class="group">Hips & legs</span></div></div>
-  </article><article class="card-face hearts" aria-label="Q of hearts: Chair Pose, 50 sec">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♥</span></div>
+  </article></div><div class="card-box"><article class="card-face hearts" aria-label="K of hearts: Chair Pose, 50 sec">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M55 43L63 30L70 18M37 64L57 65L50 90"/><path class="near" d="M55 43L37 64M55 43L63 30L70 18M37 64L59 66L53 90"/><circle class="head" cx="57" cy="33" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Chair Pose</div>
       <div class="meta"><span class="amount">50<small>sec</small></span><span class="group">Hips & legs</span></div></div>
-  </article><article class="card-face diamonds" aria-label="4 of diamonds: Upward Salute, 20 sec">
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="4 of diamonds: Upward Salute, 20 sec">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L49 38L48 52M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L52 52M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M50 23L55 13L56 2M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L55 13L56 2M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Upward Salute</div>
       <div class="meta"><span class="amount">20<small>sec</small></span><span class="group">Shoulders & chest</span></div></div>
-  </article><article class="card-face diamonds" aria-label="8 of diamonds: Downward Dog, 40 sec">
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="8 of diamonds: Downward Dog, 40 sec">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M66 68L74 80L80 90M46 40L36 64L26 90"/><path class="near" d="M66 68L46 40M66 68L74 80L80 90M46 40L36 64L26 90"/><circle class="head" cx="70" cy="76" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Downward Dog</div>
       <div class="meta"><span class="amount">40<small>sec</small></span><span class="group">Shoulders & chest</span></div></div>
-  </article><article class="card-face diamonds" aria-label="Q of diamonds: Puppy Pose, 50 sec">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♦</span></div>
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="K of diamonds: Puppy Pose, 50 sec">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M58 82L72 90L86 90M44 64L44 90L24 90"/><path class="near" d="M58 82L44 64M58 82L72 90L86 90M44 64L44 90L24 90"/><circle class="head" cx="66" cy="86" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Puppy Pose</div>
       <div class="meta"><span class="amount">50<small>sec</small></span><span class="group">Shoulders & chest</span></div></div>
-  </article><article class="card-face clubs" aria-label="4 of clubs: Cobra, 20 sec">
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="4 of clubs: Cobra, 20 sec">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M66 86L74 90L84 90M44 88L28 89L13 89"/><path class="near" d="M66 86L44 88M66 86L74 90L84 90M44 88L28 89L13 89"/><circle class="head" cx="75" cy="84" r="6.5"/></g><g class="main"><path class="far" d="M66 68L66 80L68 90M44 88L28 90L13 90"/><path class="near" d="M66 68L44 88M66 68L66 80L68 90M44 88L28 90L13 90"/><circle class="head" cx="72" cy="60" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Cobra</div>
       <div class="meta"><span class="amount">20<small>sec</small></span><span class="group">Spine</span></div></div>
-  </article><article class="card-face clubs" aria-label="8 of clubs: Child's Pose, 40 sec">
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="8 of clubs: Child's Pose, 40 sec">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M58 80L74 90L88 90M34 80L50 90L30 90"/><path class="near" d="M58 80L34 80M58 80L74 90L88 90M34 80L50 90L30 90"/><circle class="head" cx="68" cy="84" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Child's Pose</div>
       <div class="meta"><span class="amount">40<small>sec</small></span><span class="group">Spine</span></div></div>
-  </article><article class="card-face clubs" aria-label="Q of clubs: Bridge Pose, 50 sec">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♣</span></div>
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="K of clubs: Bridge Pose, 50 sec">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M25 86L34 81L44 86M51 86L63 70L73 90"/><path class="near" d="M25 86L51 86M25 86L34 81L44 86M51 86L63 70L73 90"/><circle class="head" cx="16" cy="84" r="6.5"/></g><g class="main"><path class="far" d="M25 86L34 88L44 88M49 70L63 63L72 90"/><path class="near" d="M25 86L49 70M25 86L34 88L44 88M49 70L63 63L72 90"/><circle class="head" cx="16" cy="86" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Bridge Pose</div>
       <div class="meta"><span class="amount">50<small>sec</small></span><span class="group">Spine</span></div></div>
-  </article><article class="card-face spades" aria-label="4 of spades: Mountain Pose, 20 sec">
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="4 of spades: Mountain Pose, 20 sec">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M50 23L49 38L48 52M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L52 52M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Mountain Pose</div>
       <div class="meta"><span class="amount">20<small>sec</small></span><span class="group">Balance & calves</span></div></div>
-  </article><article class="card-face spades" aria-label="8 of spades: Tree Pose, 40 sec">
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="8 of spades: Tree Pose, 40 sec">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M50 23L55 13L52 3M50 52L60 62L50 56"/><path class="near" d="M50 23L50 52M50 23L55 13L52 3M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Tree Pose</div>
       <div class="meta"><span class="amount">40<small>sec</small></span><span class="group">Balance & calves</span></div></div>
-  </article><article class="card-face spades" aria-label="Q of spades: Boat Pose, 50 sec">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♠</span></div>
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="K of spades: Boat Pose, 50 sec">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M52 60L62 64L72 66M40 86L56 70L72 58"/><path class="near" d="M52 60L40 86M52 60L62 64L72 66M40 86L56 70L72 58"/><circle class="head" cx="56" cy="50" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Boat Pose</div>
       <div class="meta"><span class="amount">50<small>sec</small></span><span class="group">Balance & calves</span></div></div>
-  </article></div></section><section><h2>Running deck</h2><div class="grid"><article class="card-face hearts" aria-label="4 of hearts: Butt Kicks, 20 sec">
+  </article></div></div></section><section><h2>Running deck</h2><div class="grid"><div class="card-box"><article class="card-face hearts" aria-label="4 of hearts: Butt Kicks, 20 sec">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L49 38L48 52M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L52 52M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M50 23L42 38L40 46M50 52L46 72L34 58"/><path class="near" d="M50 23L50 52M50 23L58 38L60 30M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Butt Kicks</div>
       <div class="meta"><span class="amount">20<small>sec</small></span><span class="group">Drills</span></div></div>
-  </article><article class="card-face hearts" aria-label="8 of hearts: High Knees, 40 sec">
+  </article></div><div class="card-box"><article class="card-face hearts" aria-label="8 of hearts: High Knees, 40 sec">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L49 38L48 52M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L52 52M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M50 23L44 38L38 30M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L60 38L58 30M50 52L66 52L64 70"/><circle class="head" cx="50" cy="13" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">High Knees</div>
       <div class="meta"><span class="amount">40<small>sec</small></span><span class="group">Drills</span></div></div>
-  </article><article class="card-face hearts" aria-label="Q of hearts: A-Skip, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♥</span></div>
+  </article></div><div class="card-box"><article class="card-face hearts" aria-label="K of hearts: A-Skip, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♥</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L49 38L48 52M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L52 52M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M51 20L60 36L66 28M49 48L50 68L52 86"/><path class="near" d="M51 20L49 48M51 20L44 36L38 28M49 48L66 48L64 66"/><circle class="head" cx="52" cy="10" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">A-Skip</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Drills</span></div></div>
-  </article><article class="card-face diamonds" aria-label="4 of diamonds: Calf Raise, 4 reps">
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="4 of diamonds: Calf Raise, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L49 38L48 52M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L52 52M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M50 19L51 34L52 48M50 48L49 67L49 86"/><path class="near" d="M50 19L50 48M50 19L51 34L52 48M50 48L51 67L53 86"/><circle class="head" cx="50" cy="9" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Calf Raise</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Strength</span></div></div>
-  </article><article class="card-face diamonds" aria-label="8 of diamonds: Single-Leg Bridge, 8 reps">
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="8 of diamonds: Single-Leg Bridge, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M25 86L34 81L44 86M51 86L63 70L73 90"/><path class="near" d="M25 86L51 86M25 86L34 81L44 86M51 86L63 70L73 90"/><circle class="head" cx="16" cy="84" r="6.5"/></g><g class="main"><path class="far" d="M25 86L34 88L44 88M49 70L66 56L82 44"/><path class="near" d="M25 86L49 70M25 86L34 88L44 88M49 70L63 63L72 90"/><circle class="head" cx="16" cy="86" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Single-Leg Bridge</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Strength</span></div></div>
-  </article><article class="card-face diamonds" aria-label="Q of diamonds: Walking Lunge, 10 reps">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♦</span></div>
+  </article></div><div class="card-box"><article class="card-face diamonds" aria-label="K of diamonds: Walking Lunge, 10 reps">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♦</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L49 38L48 52M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L52 52M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M48 35L52 48L50 60M48 61L40 87L26 89"/><path class="near" d="M48 35L48 61M48 35L44 48L50 60M48 61L65 72L66 90"/><circle class="head" cx="48" cy="25" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Walking Lunge</div>
       <div class="meta"><span class="amount">10<small>reps</small></span><span class="group">Strength</span></div></div>
-  </article><article class="card-face clubs" aria-label="4 of clubs: Easy Jog, 20 sec">
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="4 of clubs: Easy Jog, 20 sec">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M53 23L41 40L37 52M48 50L43 70L32 85"/><path class="near" d="M53 23L48 50M53 23L60 38L67 30M48 50L62 62L58 77"/><circle class="head" cx="55" cy="13" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Easy Jog</div>
       <div class="meta"><span class="amount">20<small>sec</small></span><span class="group">Running</span></div></div>
-  </article><article class="card-face clubs" aria-label="8 of clubs: Strides, 40 sec">
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="8 of clubs: Strides, 40 sec">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M53 23L41 40L37 52M48 50L43 70L32 85"/><path class="near" d="M53 23L48 50M53 23L60 38L67 30M48 50L62 62L58 77"/><circle class="head" cx="55" cy="13" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Strides</div>
       <div class="meta"><span class="amount">40<small>sec</small></span><span class="group">Running</span></div></div>
-  </article><article class="card-face clubs" aria-label="Q of clubs: Hill Sprint, 50 sec">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♣</span></div>
+  </article></div><div class="card-box"><article class="card-face clubs" aria-label="K of clubs: Hill Sprint, 50 sec">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♣</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M58 26L44 42L36 54M46 50L40 70L26 80"/><path class="near" d="M58 26L46 50M58 26L66 36L72 26M46 50L62 58L62 74"/><circle class="head" cx="62" cy="16" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Hill Sprint</div>
       <div class="meta"><span class="amount">50<small>sec</small></span><span class="group">Running</span></div></div>
-  </article><article class="card-face spades" aria-label="4 of spades: Leg Swings, 4 reps">
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="4 of spades: Leg Swings, 4 reps">
     <div class="corner" aria-hidden="true"><span class="rank">4</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L49 38L48 52M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L52 52M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M50 23L44 34L38 30M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L52 38L54 50M50 52L64 66L74 76"/><circle class="head" cx="50" cy="13" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Leg Swings</div>
       <div class="meta"><span class="amount">4<small>reps</small></span><span class="group">Mobility</span></div></div>
-  </article><article class="card-face spades" aria-label="8 of spades: Walking Knee Hug, 8 reps">
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="8 of spades: Walking Knee Hug, 8 reps">
     <div class="corner" aria-hidden="true"><span class="rank">8</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="ghost"><path class="far" d="M50 23L49 38L48 52M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L51 38L52 52M50 52L51 71L52 90"/><circle class="head" cx="50" cy="13" r="6.5"/></g><g class="main"><path class="far" d="M50 23L62 42L62 54M50 52L49 71L48 90"/><path class="near" d="M50 23L50 52M50 23L62 42L62 54M50 52L64 52L60 68"/><circle class="head" cx="50" cy="13" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Walking Knee Hug</div>
       <div class="meta"><span class="amount">8<small>reps</small></span><span class="group">Mobility</span></div></div>
-  </article><article class="card-face spades" aria-label="Q of spades: Standing Calf Stretch, 50 sec">
-    <div class="corner" aria-hidden="true"><span class="rank">Q</span><span class="pip">♠</span></div>
+  </article></div><div class="card-box"><article class="card-face spades" aria-label="K of spades: Standing Calf Stretch, 50 sec">
+    <div class="corner" aria-hidden="true"><span class="rank">K</span><span class="pip">♠</span></div>
     <div class="figure"><svg class="ex-figure" viewBox="-4 -8 108 104" role="img"><path class="ground" d="M-2 92.5H102"/><g class="main"><path class="far" d="M56 26L66 30L76 24M46 54L38 72L30 90"/><path class="near" d="M56 26L46 54M56 26L66 30L76 24M46 54L56 72L60 90"/><circle class="head" cx="58" cy="16" r="6.5"/></g></svg></div>
     <div class="plate"><div class="name">Standing Calf Stretch</div>
       <div class="meta"><span class="amount">50<small>sec</small></span><span class="group">Mobility</span></div></div>
-  </article></div></section></main></body></html>
+  </article></div></div></section></main></body></html>

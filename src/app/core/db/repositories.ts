@@ -102,14 +102,13 @@ export class DeckRepository extends ContentRepository<Deck> {
       name: name ?? `${source.name} (copy)`,
       builtIn: false,
       basedOn: source.id,
-      cards: source.cards.map((c, i) => ({ ...c, id: `${copyId}-${i}` })),
       updatedAt: Date.now(),
     });
   }
 
-  /** Decks whose cards use the exercise ("used in decks"). */
+  /** Decks that can deal the exercise ("used in decks"). */
   async usingExercise(exerciseId: string): Promise<Deck[]> {
-    return (await this.list()).filter((d) => d.cards.some((c) => c.exerciseId === exerciseId));
+    return (await this.list()).filter((d) => d.suits.some((s) => s.exerciseIds.includes(exerciseId)));
   }
 }
 

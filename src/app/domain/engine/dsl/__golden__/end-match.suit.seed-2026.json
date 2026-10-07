@@ -14,10 +14,10 @@
   "type": "CardsDealt",
   "zone": "table",
   "cardIds": [
-   "bodyweight-spades-5",
-   "bodyweight-hearts-4",
-   "bodyweight-spades-9",
-   "bodyweight-diamonds-2"
+   "spades-6",
+   "hearts-5",
+   "spades-10",
+   "diamonds-3"
   ],
   "faceUp": true
  },
@@ -25,7 +25,7 @@
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-hearts-4"
+    "hearts-5"
    ],
    "kind": "exercise",
    "exerciseId": "bw-air-squat",
@@ -40,11 +40,11 @@
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-spades-9"
+    "spades-10"
    ],
    "kind": "exercise",
    "exerciseId": "bw-plank",
-   "amount": 45,
+   "amount": 70,
    "measure": "seconds",
    "id": "t2",
    "playerId": "p1",
@@ -56,16 +56,16 @@
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-hearts-4",
-   "bodyweight-spades-9"
+   "hearts-5",
+   "spades-10"
   ]
  },
  {
   "type": "CardsDealt",
   "zone": "table",
   "cardIds": [
-   "bodyweight-diamonds-J",
-   "bodyweight-diamonds-K"
+   "diamonds-Q",
+   "diamonds-A"
   ],
   "faceUp": true
  },
@@ -81,34 +81,20 @@
   "taskId": "t2",
   "playerId": "p1",
   "exerciseKey": "bw-plank",
-  "amount": 45
+  "amount": 70
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-diamonds-2"
+    "diamonds-3",
+    "diamonds-Q"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-push-up",
-   "amount": 2,
+   "exerciseId": "bw-wide-push-up",
+   "amount": 11,
    "measure": "reps",
    "id": "t3",
-   "playerId": "p1",
-   "status": "pending"
-  }
- },
- {
-  "type": "TaskAssigned",
-  "task": {
-   "cardIds": [
-    "bodyweight-diamonds-J"
-   ],
-   "kind": "exercise",
-   "exerciseId": "bw-pike-push-up",
-   "amount": 10,
-   "measure": "reps",
-   "id": "t4",
    "playerId": "p1",
    "status": "pending"
   }
@@ -118,16 +104,16 @@
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-diamonds-2",
-   "bodyweight-diamonds-J"
+   "diamonds-3",
+   "diamonds-Q"
   ]
  },
  {
   "type": "CardsDealt",
   "zone": "table",
   "cardIds": [
-   "bodyweight-diamonds-5",
-   "bodyweight-clubs-10"
+   "diamonds-6",
+   "clubs-J"
   ],
   "faceUp": true
  },
@@ -135,27 +121,20 @@
   "type": "TaskCompleted",
   "taskId": "t3",
   "playerId": "p1",
-  "exerciseKey": "bw-push-up",
-  "amount": 2
- },
- {
-  "type": "TaskCompleted",
-  "taskId": "t4",
-  "playerId": "p1",
-  "exerciseKey": "bw-pike-push-up",
-  "amount": 10
+  "exerciseKey": "bw-wide-push-up",
+  "amount": 11
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-diamonds-K"
+    "diamonds-A"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-pike-push-up",
-   "amount": 10,
+   "exerciseId": "bw-wide-push-up",
+   "amount": 15,
    "measure": "reps",
-   "id": "t5",
+   "id": "t4",
    "playerId": "p1",
    "status": "pending"
   }
@@ -164,11 +143,59 @@
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-diamonds-5"
+    "diamonds-6"
    ],
    "kind": "exercise",
    "exerciseId": "bw-push-up",
-   "amount": 5,
+   "amount": 7,
+   "measure": "reps",
+   "id": "t5",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "discard",
+  "cardIds": [
+   "diamonds-A",
+   "diamonds-6"
+  ]
+ },
+ {
+  "type": "CardsDealt",
+  "zone": "table",
+  "cardIds": [
+   "clubs-A",
+   "diamonds-7"
+  ],
+  "faceUp": true
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t4",
+  "playerId": "p1",
+  "exerciseKey": "bw-wide-push-up",
+  "amount": 15
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t5",
+  "playerId": "p1",
+  "exerciseKey": "bw-push-up",
+  "amount": 7
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "clubs-J",
+    "clubs-A"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-superman",
+   "amount": 22,
    "measure": "reps",
    "id": "t6",
    "playerId": "p1",
@@ -180,42 +207,35 @@
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-diamonds-K",
-   "bodyweight-diamonds-5"
+   "clubs-J",
+   "clubs-A"
   ]
  },
  {
   "type": "CardsDealt",
   "zone": "table",
   "cardIds": [
-   "bodyweight-clubs-K",
-   "bodyweight-diamonds-6"
+   "spades-3",
+   "spades-K"
   ],
   "faceUp": true
  },
  {
   "type": "TaskCompleted",
-  "taskId": "t5",
-  "playerId": "p1",
-  "exerciseKey": "bw-pike-push-up",
-  "amount": 10
- },
- {
-  "type": "TaskCompleted",
   "taskId": "t6",
   "playerId": "p1",
-  "exerciseKey": "bw-push-up",
-  "amount": 5
+  "exerciseKey": "bw-superman",
+  "amount": 22
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-clubs-10",
-    "bodyweight-clubs-K"
+    "spades-6",
+    "spades-K"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-snow-angel",
+   "exerciseId": "bw-mountain-climber",
    "amount": 20,
    "measure": "reps",
    "id": "t7",
@@ -228,16 +248,20 @@
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-clubs-10",
-   "bodyweight-clubs-K"
+   "spades-6",
+   "diamonds-7",
+   "spades-3",
+   "spades-K"
   ]
  },
  {
   "type": "CardsDealt",
   "zone": "table",
   "cardIds": [
-   "bodyweight-spades-2",
-   "bodyweight-spades-Q"
+   "hearts-10",
+   "spades-4",
+   "hearts-7",
+   "hearts-K"
   ],
   "faceUp": true
  },
@@ -245,18 +269,18 @@
   "type": "TaskCompleted",
   "taskId": "t7",
   "playerId": "p1",
-  "exerciseKey": "bw-snow-angel",
+  "exerciseKey": "bw-mountain-climber",
   "amount": 20
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-spades-5"
+    "hearts-10"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-crunch",
-   "amount": 5,
+   "exerciseId": "bw-air-squat",
+   "amount": 11,
    "measure": "reps",
    "id": "t8",
    "playerId": "p1",
@@ -267,11 +291,11 @@
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-spades-Q"
+    "hearts-K"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-mountain-climber",
-   "amount": 10,
+   "exerciseId": "bw-jump-squat",
+   "amount": 9,
    "measure": "reps",
    "id": "t9",
    "playerId": "p1",
@@ -283,20 +307,20 @@
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-spades-5",
-   "bodyweight-diamonds-6",
-   "bodyweight-spades-2",
-   "bodyweight-spades-Q"
+   "hearts-10",
+   "spades-4",
+   "hearts-7",
+   "hearts-K"
   ]
  },
  {
   "type": "CardsDealt",
   "zone": "table",
   "cardIds": [
-   "bodyweight-hearts-9",
-   "bodyweight-spades-3",
-   "bodyweight-hearts-6",
-   "bodyweight-hearts-Q"
+   "spades-8",
+   "diamonds-10",
+   "clubs-Q",
+   "spades-7"
   ],
   "faceUp": true
  },
@@ -304,25 +328,25 @@
   "type": "TaskCompleted",
   "taskId": "t8",
   "playerId": "p1",
-  "exerciseKey": "bw-crunch",
-  "amount": 5
+  "exerciseKey": "bw-air-squat",
+  "amount": 11
  },
  {
   "type": "TaskCompleted",
   "taskId": "t9",
   "playerId": "p1",
-  "exerciseKey": "bw-mountain-climber",
-  "amount": 10
+  "exerciseKey": "bw-jump-squat",
+  "amount": 9
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-hearts-9"
+    "spades-8"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-reverse-lunge",
-   "amount": 9,
+   "exerciseId": "bw-mountain-climber",
+   "amount": 11,
    "measure": "reps",
    "id": "t10",
    "playerId": "p1",
@@ -333,11 +357,11 @@
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-hearts-Q"
+    "spades-7"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-jump-squat",
-   "amount": 10,
+   "exerciseId": "bw-crunch",
+   "amount": 5,
    "measure": "reps",
    "id": "t11",
    "playerId": "p1",
@@ -349,20 +373,20 @@
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-hearts-9",
-   "bodyweight-spades-3",
-   "bodyweight-hearts-6",
-   "bodyweight-hearts-Q"
+   "spades-8",
+   "diamonds-10",
+   "clubs-Q",
+   "spades-7"
   ]
  },
  {
   "type": "CardsDealt",
   "zone": "table",
   "cardIds": [
-   "bodyweight-spades-7",
-   "bodyweight-diamonds-9",
-   "bodyweight-clubs-J",
-   "bodyweight-spades-6"
+   "clubs-6",
+   "clubs-9",
+   "diamonds-8",
+   "spades-9"
   ],
   "faceUp": true
  },
@@ -370,69 +394,39 @@
   "type": "TaskCompleted",
   "taskId": "t10",
   "playerId": "p1",
-  "exerciseKey": "bw-reverse-lunge",
-  "amount": 9
+  "exerciseKey": "bw-mountain-climber",
+  "amount": 11
  },
  {
   "type": "TaskCompleted",
   "taskId": "t11",
   "playerId": "p1",
-  "exerciseKey": "bw-jump-squat",
-  "amount": 10
+  "exerciseKey": "bw-crunch",
+  "amount": 5
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-spades-7",
-    "bodyweight-spades-6"
+    "clubs-9"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-plank",
-   "amount": 65,
-   "measure": "seconds",
+   "exerciseId": "bw-superman",
+   "amount": 13,
+   "measure": "reps",
    "id": "t12",
    "playerId": "p1",
    "status": "pending"
   }
  },
  {
-  "type": "CardsMoved",
-  "from": "table",
-  "to": "discard",
-  "cardIds": [
-   "bodyweight-spades-7",
-   "bodyweight-diamonds-9",
-   "bodyweight-clubs-J",
-   "bodyweight-spades-6"
-  ]
- },
- {
-  "type": "CardsDealt",
-  "zone": "table",
-  "cardIds": [
-   "bodyweight-clubs-5",
-   "bodyweight-clubs-8",
-   "bodyweight-diamonds-7",
-   "bodyweight-spades-8"
-  ],
-  "faceUp": true
- },
- {
-  "type": "TaskCompleted",
-  "taskId": "t12",
-  "playerId": "p1",
-  "exerciseKey": "bw-plank",
-  "amount": 65
- },
- {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-clubs-8"
+    "diamonds-8"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-prone-y",
+   "exerciseId": "bw-wide-push-up",
    "amount": 8,
    "measure": "reps",
    "id": "t13",
@@ -441,14 +435,46 @@
   }
  },
  {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "discard",
+  "cardIds": [
+   "clubs-9",
+   "diamonds-8"
+  ]
+ },
+ {
+  "type": "CardsDealt",
+  "zone": "table",
+  "cardIds": [
+   "spades-5",
+   "spades-J"
+  ],
+  "faceUp": true
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t12",
+  "playerId": "p1",
+  "exerciseKey": "bw-superman",
+  "amount": 13
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t13",
+  "playerId": "p1",
+  "exerciseKey": "bw-wide-push-up",
+  "amount": 8
+ },
+ {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-diamonds-7"
+    "spades-9"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-wide-push-up",
-   "amount": 7,
+   "exerciseId": "bw-crunch",
+   "amount": 12,
    "measure": "reps",
    "id": "t14",
    "playerId": "p1",
@@ -456,46 +482,14 @@
   }
  },
  {
-  "type": "CardsMoved",
-  "from": "table",
-  "to": "discard",
-  "cardIds": [
-   "bodyweight-clubs-8",
-   "bodyweight-diamonds-7"
-  ]
- },
- {
-  "type": "CardsDealt",
-  "zone": "table",
-  "cardIds": [
-   "bodyweight-spades-4",
-   "bodyweight-spades-10"
-  ],
-  "faceUp": true
- },
- {
-  "type": "TaskCompleted",
-  "taskId": "t13",
-  "playerId": "p1",
-  "exerciseKey": "bw-prone-y",
-  "amount": 8
- },
- {
-  "type": "TaskCompleted",
-  "taskId": "t14",
-  "playerId": "p1",
-  "exerciseKey": "bw-wide-push-up",
-  "amount": 7
- },
- {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-spades-8"
+    "spades-5"
    ],
    "kind": "exercise",
    "exerciseId": "bw-plank",
-   "amount": 40,
+   "amount": 30,
    "measure": "seconds",
    "id": "t15",
    "playerId": "p1",
@@ -503,16 +497,63 @@
   }
  },
  {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "discard",
+  "cardIds": [
+   "spades-9",
+   "spades-5"
+  ]
+ },
+ {
+  "type": "CardsDealt",
+  "zone": "table",
+  "cardIds": [
+   "clubs-3",
+   "spades-2"
+  ],
+  "faceUp": true
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t14",
+  "playerId": "p1",
+  "exerciseKey": "bw-crunch",
+  "amount": 12
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t15",
+  "playerId": "p1",
+  "exerciseKey": "bw-plank",
+  "amount": 30
+ },
+ {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-spades-4"
+    "spades-J"
    ],
    "kind": "exercise",
    "exerciseId": "bw-crunch",
-   "amount": 4,
+   "amount": 13,
    "measure": "reps",
    "id": "t16",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "clubs-3"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-prone-y",
+   "amount": 3,
+   "measure": "reps",
+   "id": "t17",
    "playerId": "p1",
    "status": "pending"
   }
@@ -522,57 +563,43 @@
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-spades-8",
-   "bodyweight-spades-4"
+   "spades-J",
+   "clubs-3"
   ]
  },
  {
   "type": "CardsDealt",
   "zone": "table",
   "cardIds": [
-   "bodyweight-clubs-2",
-   "bodyweight-spades-A"
+   "diamonds-J",
+   "clubs-4"
   ],
   "faceUp": true
- },
- {
-  "type": "TaskCompleted",
-  "taskId": "t15",
-  "playerId": "p1",
-  "exerciseKey": "bw-plank",
-  "amount": 40
  },
  {
   "type": "TaskCompleted",
   "taskId": "t16",
   "playerId": "p1",
   "exerciseKey": "bw-crunch",
-  "amount": 4
+  "amount": 13
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t17",
+  "playerId": "p1",
+  "exerciseKey": "bw-prone-y",
+  "amount": 3
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-spades-10"
-   ],
-   "kind": "exercise",
-   "exerciseId": "bw-mountain-climber",
-   "amount": 10,
-   "measure": "reps",
-   "id": "t17",
-   "playerId": "p1",
-   "status": "pending"
-  }
- },
- {
-  "type": "TaskAssigned",
-  "task": {
-   "cardIds": [
-    "bodyweight-clubs-2"
+    "clubs-6",
+    "clubs-4"
    ],
    "kind": "exercise",
    "exerciseId": "bw-superman",
-   "amount": 2,
+   "amount": 12,
    "measure": "reps",
    "id": "t18",
    "playerId": "p1",
@@ -584,45 +611,56 @@
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-spades-10",
-   "bodyweight-clubs-2"
+   "clubs-6",
+   "spades-2",
+   "diamonds-J",
+   "clubs-4"
   ]
  },
  {
   "type": "CardsDealt",
   "zone": "table",
   "cardIds": [
-   "bodyweight-diamonds-10",
-   "bodyweight-clubs-3"
+   "clubs-5",
+   "joker-2",
+   "hearts-J",
+   "hearts-8"
   ],
   "faceUp": true
- },
- {
-  "type": "TaskCompleted",
-  "taskId": "t17",
-  "playerId": "p1",
-  "exerciseKey": "bw-mountain-climber",
-  "amount": 10
  },
  {
   "type": "TaskCompleted",
   "taskId": "t18",
   "playerId": "p1",
   "exerciseKey": "bw-superman",
-  "amount": 2
+  "amount": 12
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-clubs-5",
-    "bodyweight-clubs-3"
+    "joker-2"
+   ],
+   "kind": "rest",
+   "exerciseId": null,
+   "amount": 30,
+   "measure": "seconds",
+   "id": "t19",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "hearts-J"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-superman",
-   "amount": 8,
+   "exerciseId": "bw-air-squat",
+   "amount": 7,
    "measure": "reps",
-   "id": "t19",
+   "id": "t20",
    "playerId": "p1",
    "status": "pending"
   }
@@ -632,20 +670,16 @@
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-clubs-5",
-   "bodyweight-spades-A",
-   "bodyweight-diamonds-10",
-   "bodyweight-clubs-3"
+   "joker-2",
+   "hearts-J"
   ]
  },
  {
   "type": "CardsDealt",
   "zone": "table",
   "cardIds": [
-   "bodyweight-clubs-4",
-   "bodyweight-joker-2",
-   "bodyweight-hearts-10",
-   "bodyweight-hearts-7"
+   "hearts-2",
+   "diamonds-9"
   ],
   "faceUp": true
  },
@@ -653,33 +687,25 @@
   "type": "TaskCompleted",
   "taskId": "t19",
   "playerId": "p1",
-  "exerciseKey": "bw-superman",
-  "amount": 8
+  "exerciseKey": "rest",
+  "amount": 30
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t20",
+  "playerId": "p1",
+  "exerciseKey": "bw-air-squat",
+  "amount": 7
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-joker-2"
-   ],
-   "kind": "rest",
-   "exerciseId": null,
-   "amount": 30,
-   "measure": "seconds",
-   "id": "t20",
-   "playerId": "p1",
-   "status": "pending"
-  }
- },
- {
-  "type": "TaskAssigned",
-  "task": {
-   "cardIds": [
-    "bodyweight-hearts-10"
+    "hearts-8"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-jump-squat",
-   "amount": 10,
+   "exerciseId": "bw-reverse-lunge",
+   "amount": 8,
    "measure": "reps",
    "id": "t21",
    "playerId": "p1",
@@ -687,46 +713,14 @@
   }
  },
  {
-  "type": "CardsMoved",
-  "from": "table",
-  "to": "discard",
-  "cardIds": [
-   "bodyweight-joker-2",
-   "bodyweight-hearts-10"
-  ]
- },
- {
-  "type": "CardsDealt",
-  "zone": "table",
-  "cardIds": [
-   "bodyweight-hearts-A",
-   "bodyweight-diamonds-8"
-  ],
-  "faceUp": true
- },
- {
-  "type": "TaskCompleted",
-  "taskId": "t20",
-  "playerId": "p1",
-  "exerciseKey": "rest",
-  "amount": 30
- },
- {
-  "type": "TaskCompleted",
-  "taskId": "t21",
-  "playerId": "p1",
-  "exerciseKey": "bw-jump-squat",
-  "amount": 10
- },
- {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-hearts-7"
+    "hearts-2"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-reverse-lunge",
-   "amount": 7,
+   "exerciseId": "bw-jump-squat",
+   "amount": 1,
    "measure": "reps",
    "id": "t22",
    "playerId": "p1",
@@ -734,14 +728,46 @@
   }
  },
  {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "discard",
+  "cardIds": [
+   "hearts-8",
+   "hearts-2"
+  ]
+ },
+ {
+  "type": "CardsDealt",
+  "zone": "table",
+  "cardIds": [
+   "spades-A",
+   "diamonds-4"
+  ],
+  "faceUp": true
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t21",
+  "playerId": "p1",
+  "exerciseKey": "bw-reverse-lunge",
+  "amount": 8
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t22",
+  "playerId": "p1",
+  "exerciseKey": "bw-jump-squat",
+  "amount": 1
+ },
+ {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-hearts-A"
+    "diamonds-9"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-jump-squat",
-   "amount": 11,
+   "exerciseId": "bw-pike-push-up",
+   "amount": 13,
    "measure": "reps",
    "id": "t23",
    "playerId": "p1",
@@ -749,46 +775,14 @@
   }
  },
  {
-  "type": "CardsMoved",
-  "from": "table",
-  "to": "discard",
-  "cardIds": [
-   "bodyweight-hearts-7",
-   "bodyweight-hearts-A"
-  ]
- },
- {
-  "type": "CardsDealt",
-  "zone": "table",
-  "cardIds": [
-   "bodyweight-spades-K",
-   "bodyweight-diamonds-3"
-  ],
-  "faceUp": true
- },
- {
-  "type": "TaskCompleted",
-  "taskId": "t22",
-  "playerId": "p1",
-  "exerciseKey": "bw-reverse-lunge",
-  "amount": 7
- },
- {
-  "type": "TaskCompleted",
-  "taskId": "t23",
-  "playerId": "p1",
-  "exerciseKey": "bw-jump-squat",
-  "amount": 11
- },
- {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-diamonds-8"
+    "spades-A"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-wide-push-up",
-   "amount": 8,
+   "exerciseId": "bw-mountain-climber",
+   "amount": 15,
    "measure": "reps",
    "id": "t24",
    "playerId": "p1",
@@ -796,14 +790,46 @@
   }
  },
  {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "discard",
+  "cardIds": [
+   "diamonds-9",
+   "spades-A"
+  ]
+ },
+ {
+  "type": "CardsDealt",
+  "zone": "table",
+  "cardIds": [
+   "hearts-A",
+   "spades-Q"
+  ],
+  "faceUp": true
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t23",
+  "playerId": "p1",
+  "exerciseKey": "bw-pike-push-up",
+  "amount": 13
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t24",
+  "playerId": "p1",
+  "exerciseKey": "bw-mountain-climber",
+  "amount": 15
+ },
+ {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-spades-K"
+    "diamonds-4"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-mountain-climber",
-   "amount": 10,
+   "exerciseId": "bw-pike-push-up",
+   "amount": 3,
    "measure": "reps",
    "id": "t25",
    "playerId": "p1",
@@ -811,46 +837,14 @@
   }
  },
  {
-  "type": "CardsMoved",
-  "from": "table",
-  "to": "discard",
-  "cardIds": [
-   "bodyweight-diamonds-8",
-   "bodyweight-spades-K"
-  ]
- },
- {
-  "type": "CardsDealt",
-  "zone": "table",
-  "cardIds": [
-   "bodyweight-hearts-K",
-   "bodyweight-spades-J"
-  ],
-  "faceUp": true
- },
- {
-  "type": "TaskCompleted",
-  "taskId": "t24",
-  "playerId": "p1",
-  "exerciseKey": "bw-wide-push-up",
-  "amount": 8
- },
- {
-  "type": "TaskCompleted",
-  "taskId": "t25",
-  "playerId": "p1",
-  "exerciseKey": "bw-mountain-climber",
-  "amount": 10
- },
- {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-diamonds-3"
+    "hearts-A"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-push-up",
-   "amount": 3,
+   "exerciseId": "bw-reverse-lunge",
+   "amount": 14,
    "measure": "reps",
    "id": "t26",
    "playerId": "p1",
@@ -858,61 +852,61 @@
   }
  },
  {
-  "type": "TaskAssigned",
-  "task": {
-   "cardIds": [
-    "bodyweight-hearts-K"
-   ],
-   "kind": "exercise",
-   "exerciseId": "bw-jump-squat",
-   "amount": 10,
-   "measure": "reps",
-   "id": "t27",
-   "playerId": "p1",
-   "status": "pending"
-  }
- },
- {
   "type": "CardsMoved",
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-diamonds-3",
-   "bodyweight-hearts-K"
+   "diamonds-4",
+   "hearts-A"
   ]
  },
  {
   "type": "CardsDealt",
   "zone": "table",
   "cardIds": [
-   "bodyweight-hearts-5",
-   "bodyweight-joker-1"
+   "hearts-6",
+   "joker-1"
   ],
   "faceUp": true
  },
  {
   "type": "TaskCompleted",
-  "taskId": "t26",
+  "taskId": "t25",
   "playerId": "p1",
-  "exerciseKey": "bw-push-up",
+  "exerciseKey": "bw-pike-push-up",
   "amount": 3
  },
  {
   "type": "TaskCompleted",
-  "taskId": "t27",
+  "taskId": "t26",
   "playerId": "p1",
-  "exerciseKey": "bw-jump-squat",
-  "amount": 10
+  "exerciseKey": "bw-reverse-lunge",
+  "amount": 14
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-spades-J"
+    "spades-Q"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-mountain-climber",
-   "amount": 10,
+   "exerciseId": "bw-plank",
+   "amount": 35,
+   "measure": "seconds",
+   "id": "t27",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "hearts-6"
+   ],
+   "kind": "exercise",
+   "exerciseId": "bw-jump-squat",
+   "amount": 4,
    "measure": "reps",
    "id": "t28",
    "playerId": "p1",
@@ -920,16 +914,63 @@
   }
  },
  {
+  "type": "CardsMoved",
+  "from": "table",
+  "to": "discard",
+  "cardIds": [
+   "spades-Q",
+   "hearts-6"
+  ]
+ },
+ {
+  "type": "CardsDealt",
+  "zone": "table",
+  "cardIds": [
+   "clubs-2",
+   "hearts-4"
+  ],
+  "faceUp": true
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t27",
+  "playerId": "p1",
+  "exerciseKey": "bw-plank",
+  "amount": 35
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t28",
+  "playerId": "p1",
+  "exerciseKey": "bw-jump-squat",
+  "amount": 4
+ },
+ {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-hearts-5"
+    "joker-1"
+   ],
+   "kind": "rest",
+   "exerciseId": null,
+   "amount": 30,
+   "measure": "seconds",
+   "id": "t29",
+   "playerId": "p1",
+   "status": "pending"
+  }
+ },
+ {
+  "type": "TaskAssigned",
+  "task": {
+   "cardIds": [
+    "clubs-2"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-air-squat",
-   "amount": 5,
+   "exerciseId": "bw-snow-angel",
+   "amount": 2,
    "measure": "reps",
-   "id": "t29",
+   "id": "t30",
    "playerId": "p1",
    "status": "pending"
   }
@@ -939,57 +980,42 @@
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-spades-J",
-   "bodyweight-hearts-5"
+   "joker-1",
+   "clubs-2"
   ]
  },
  {
   "type": "CardsDealt",
   "zone": "table",
   "cardIds": [
-   "bodyweight-clubs-A",
-   "bodyweight-hearts-3"
+   "hearts-3",
+   "diamonds-2"
   ],
   "faceUp": true
  },
  {
   "type": "TaskCompleted",
-  "taskId": "t28",
+  "taskId": "t29",
   "playerId": "p1",
-  "exerciseKey": "bw-mountain-climber",
-  "amount": 10
+  "exerciseKey": "rest",
+  "amount": 30
  },
  {
   "type": "TaskCompleted",
-  "taskId": "t29",
+  "taskId": "t30",
   "playerId": "p1",
-  "exerciseKey": "bw-air-squat",
-  "amount": 5
+  "exerciseKey": "bw-snow-angel",
+  "amount": 2
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-joker-1"
-   ],
-   "kind": "rest",
-   "exerciseId": null,
-   "amount": 30,
-   "measure": "seconds",
-   "id": "t30",
-   "playerId": "p1",
-   "status": "pending"
-  }
- },
- {
-  "type": "TaskAssigned",
-  "task": {
-   "cardIds": [
-    "bodyweight-clubs-A"
+    "hearts-4"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-snow-angel",
-   "amount": 11,
+   "exerciseId": "bw-reverse-lunge",
+   "amount": 4,
    "measure": "reps",
    "id": "t31",
    "playerId": "p1",
@@ -997,47 +1023,14 @@
   }
  },
  {
-  "type": "CardsMoved",
-  "from": "table",
-  "to": "discard",
-  "cardIds": [
-   "bodyweight-joker-1",
-   "bodyweight-clubs-A"
-  ]
- },
- {
-  "type": "CardsDealt",
-  "zone": "table",
-  "cardIds": [
-   "bodyweight-hearts-2",
-   "bodyweight-diamonds-A"
-  ],
-  "faceUp": true
- },
- {
-  "type": "TaskCompleted",
-  "taskId": "t30",
-  "playerId": "p1",
-  "exerciseKey": "rest",
-  "amount": 30
- },
- {
-  "type": "TaskCompleted",
-  "taskId": "t31",
-  "playerId": "p1",
-  "exerciseKey": "bw-snow-angel",
-  "amount": 11
- },
- {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-hearts-3",
-    "bodyweight-hearts-2"
+    "hearts-3"
    ],
    "kind": "exercise",
    "exerciseId": "bw-air-squat",
-   "amount": 5,
+   "amount": 3,
    "measure": "reps",
    "id": "t32",
    "playerId": "p1",
@@ -1049,35 +1042,42 @@
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-hearts-3",
-   "bodyweight-hearts-2"
+   "hearts-4",
+   "hearts-3"
   ]
  },
  {
   "type": "CardsDealt",
   "zone": "table",
   "cardIds": [
-   "bodyweight-clubs-Q",
-   "bodyweight-clubs-7"
+   "clubs-K",
+   "clubs-8"
   ],
   "faceUp": true
+ },
+ {
+  "type": "TaskCompleted",
+  "taskId": "t31",
+  "playerId": "p1",
+  "exerciseKey": "bw-reverse-lunge",
+  "amount": 4
  },
  {
   "type": "TaskCompleted",
   "taskId": "t32",
   "playerId": "p1",
   "exerciseKey": "bw-air-squat",
-  "amount": 5
+  "amount": 3
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-clubs-4"
+    "clubs-5"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-superman",
-   "amount": 4,
+   "exerciseId": "bw-prone-y",
+   "amount": 7,
    "measure": "reps",
    "id": "t33",
    "playerId": "p1",
@@ -1088,11 +1088,11 @@
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-clubs-7"
+    "clubs-8"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-prone-y",
-   "amount": 7,
+   "exerciseId": "bw-snow-angel",
+   "amount": 10,
    "measure": "reps",
    "id": "t34",
    "playerId": "p1",
@@ -1104,20 +1104,20 @@
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-clubs-4",
-   "bodyweight-diamonds-A",
-   "bodyweight-clubs-Q",
-   "bodyweight-clubs-7"
+   "clubs-5",
+   "diamonds-2",
+   "clubs-K",
+   "clubs-8"
   ]
  },
  {
   "type": "CardsDealt",
   "zone": "table",
   "cardIds": [
-   "bodyweight-hearts-J",
-   "bodyweight-hearts-8",
-   "bodyweight-clubs-6",
-   "bodyweight-clubs-9"
+   "hearts-Q",
+   "hearts-9",
+   "clubs-7",
+   "clubs-10"
   ],
   "faceUp": true
  },
@@ -1125,25 +1125,25 @@
   "type": "TaskCompleted",
   "taskId": "t33",
   "playerId": "p1",
-  "exerciseKey": "bw-superman",
-  "amount": 4
+  "exerciseKey": "bw-prone-y",
+  "amount": 7
  },
  {
   "type": "TaskCompleted",
   "taskId": "t34",
   "playerId": "p1",
-  "exerciseKey": "bw-prone-y",
-  "amount": 7
+  "exerciseKey": "bw-snow-angel",
+  "amount": 10
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-hearts-8"
+    "hearts-9"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-reverse-lunge",
-   "amount": 8,
+   "exerciseId": "bw-jump-squat",
+   "amount": 13,
    "measure": "reps",
    "id": "t35",
    "playerId": "p1",
@@ -1154,11 +1154,11 @@
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-clubs-6"
+    "clubs-7"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-prone-y",
-   "amount": 6,
+   "exerciseId": "bw-snow-angel",
+   "amount": 8,
    "measure": "reps",
    "id": "t36",
    "playerId": "p1",
@@ -1170,16 +1170,16 @@
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-hearts-8",
-   "bodyweight-clubs-6"
+   "hearts-9",
+   "clubs-7"
   ]
  },
  {
   "type": "CardsDealt",
   "zone": "table",
   "cardIds": [
-   "bodyweight-diamonds-4",
-   "bodyweight-diamonds-Q"
+   "diamonds-5",
+   "diamonds-K"
   ],
   "faceUp": true
  },
@@ -1187,21 +1187,21 @@
   "type": "TaskCompleted",
   "taskId": "t35",
   "playerId": "p1",
-  "exerciseKey": "bw-reverse-lunge",
-  "amount": 8
+  "exerciseKey": "bw-jump-squat",
+  "amount": 13
  },
  {
   "type": "TaskCompleted",
   "taskId": "t36",
   "playerId": "p1",
-  "exerciseKey": "bw-prone-y",
-  "amount": 6
+  "exerciseKey": "bw-snow-angel",
+  "amount": 8
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-clubs-9"
+    "clubs-10"
    ],
    "kind": "exercise",
    "exerciseId": "bw-prone-y",
@@ -1216,11 +1216,11 @@
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-diamonds-4"
+    "diamonds-5"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-push-up",
-   "amount": 4,
+   "exerciseId": "bw-wide-push-up",
+   "amount": 5,
    "measure": "reps",
    "id": "t38",
    "playerId": "p1",
@@ -1232,8 +1232,8 @@
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-clubs-9",
-   "bodyweight-diamonds-4"
+   "clubs-10",
+   "diamonds-5"
   ]
  },
  {
@@ -1247,18 +1247,18 @@
   "type": "TaskCompleted",
   "taskId": "t38",
   "playerId": "p1",
-  "exerciseKey": "bw-push-up",
-  "amount": 4
+  "exerciseKey": "bw-wide-push-up",
+  "amount": 5
  },
  {
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-hearts-J"
+    "hearts-Q"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-jump-squat",
-   "amount": 10,
+   "exerciseId": "bw-reverse-lunge",
+   "amount": 8,
    "measure": "reps",
    "id": "t39",
    "playerId": "p1",
@@ -1269,11 +1269,11 @@
   "type": "TaskAssigned",
   "task": {
    "cardIds": [
-    "bodyweight-diamonds-Q"
+    "diamonds-K"
    ],
    "kind": "exercise",
-   "exerciseId": "bw-pike-push-up",
-   "amount": 10,
+   "exerciseId": "bw-push-up",
+   "amount": 7,
    "measure": "reps",
    "id": "t40",
    "playerId": "p1",
@@ -1285,29 +1285,29 @@
   "from": "table",
   "to": "discard",
   "cardIds": [
-   "bodyweight-hearts-J",
-   "bodyweight-diamonds-Q"
+   "hearts-Q",
+   "diamonds-K"
   ]
  },
  {
   "type": "TaskCompleted",
   "taskId": "t39",
   "playerId": "p1",
-  "exerciseKey": "bw-jump-squat",
-  "amount": 10
+  "exerciseKey": "bw-reverse-lunge",
+  "amount": 8
  },
  {
   "type": "TaskCompleted",
   "taskId": "t40",
   "playerId": "p1",
-  "exerciseKey": "bw-pike-push-up",
-  "amount": 10
+  "exerciseKey": "bw-push-up",
+  "amount": 7
  },
  {
   "type": "GameOver",
   "reason": "end",
   "scores": {
-   "p1": 302
+   "p1": 344
   }
  }
 ]

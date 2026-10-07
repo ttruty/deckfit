@@ -6,6 +6,7 @@ import {
 } from './repositories';
 import { seedContent } from './seed-content';
 import { loadContent, provideTestDb } from '../../../testing/db';
+import { dealtSnapshot } from '../../../testing/deck';
 
 const settings = { repMultiplier: 1, faceCardValue: 10, aceValue: 11, jokerRule: 'rest' as const, players: { min: 1, max: 1 } };
 const routine = (id: string, favorite = false): Routine => ({ id, name: id, deckId: 'deck-bodyweight', gameId: 'solo-deal', settings, favorite, updatedAt: 0 });
@@ -14,7 +15,7 @@ const session = (id: string, startedAt: number): Session => {
   return {
     id, seed: 1, startedAt,
     game: { id: 'solo-deal', name: 'Solo Deal' },
-    deck: { id: deck.id, name: deck.name, suits: deck.suits, cards: deck.cards },
+    deck: dealtSnapshot(deck, loadContent().exercises.exercises),
     settings, players: [{ id: 'p1', name: 'Me' }],
     log: [{ type: 'GameStarted', players: ['p1'] }], totals: { p1: { 'bw-air-squat': 10 } },
   };
@@ -54,10 +55,9 @@ describe('repositories', () => {
       const copy = await decks.duplicate('deck-bodyweight');
       expect(copy).toMatchObject({ name: 'Bodyweight deck (copy)', builtIn: false, basedOn: 'deck-bodyweight', category: 'bodyweight' });
       expect(copy.id).toMatch(/^deck-/);
-      expect(copy.cards).toHaveLength(54);
-      expect(new Set(copy.cards.map((c) => c.id)).size).toBe(54);
+      // A copy carries the same groups: the cards are dealt from them, so there is nothing else to copy.
       const source = (await decks.get('deck-bodyweight'))!;
-      expect(copy.cards.map(({ id: _, ...c }) => c)).toEqual(source.cards.map(({ id: _, ...c }) => c));
+      expect(copy.suits).toEqual(source.suits);
 
       const edited = await decks.save({ ...copy, name: 'Mine' });
       expect((await decks.get(copy.id))?.name).toBe('Mine');
@@ -69,8 +69,10 @@ describe('repositories', () => {
     it('validates before writing', async () => {
       const decks = TestBed.inject(DeckRepository);
       const copy = await decks.duplicate('deck-bodyweight');
-      await expect(decks.save({ ...copy, cards: [{ ...copy.cards[0], rank: 'JOKER' }] })).rejects.toThrow();
-      expect((await decks.get(copy.id))?.cards).toHaveLength(54);
+      // Jokers have no exercises, and a deck with nothing to deal is not a deck.
+      await expect(decks.save({ ...copy, suits: copy.suits.map((s) => ({ ...s, exerciseIds: s.suit === 'joker' ? ['bw-air-squat'] : s.exerciseIds })) })).rejects.toThrow();
+      await expect(decks.save({ ...copy, suits: copy.suits.map((s) => ({ ...s, exerciseIds: [] })) })).rejects.toThrow();
+      expect((await decks.get(copy.id))?.suits).toEqual(copy.suits);
     });
 
     it('finds decks using an exercise', async () => {
@@ -124,7 +126,7 @@ describe('repositories', () => {
       expect(await meta.get('disclaimerAcceptedAt')).toBeUndefined();
       await meta.set('disclaimerAcceptedAt', 123);
       expect(await meta.get('disclaimerAcceptedAt')).toBe(123);
-      expect(await meta.get('contentVersion')).toBe('e1.d1.g6');
+      expect(await meta.get('contentVersion')).toBe('e1.d2.g6');
     });
   });
 });

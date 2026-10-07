@@ -3,7 +3,7 @@ import { BundleService } from '../../core/db/bundle.service';
 import { DeckRepository, ExerciseRepository, GameRepository } from '../../core/db/repositories';
 import type { RoomRoutine } from '../../core/sync/net-message';
 import { resolveSettings } from '../../domain/engine/dsl/settings';
-import { applyDeckFilters } from '../../domain/models/deck-rules';
+import { deckExerciseIds, deckSize } from '../../domain/models/deck-rules';
 import type { Intensity, Routine } from '../../domain/models/schemas';
 
 /** Unsaved, built-in routines offered for rooms: one per group game, on the bodyweight deck. */
@@ -53,8 +53,7 @@ export class RoomRoutineService {
       ? await this.bundles.exportBundle({ routineIds: [routine.id] })
       : { format: 'deckfit-bundle' as const, version: 1 as const, exportedAt: Date.now(), exercises: [], decks: [], games: [], routines: [routine] };
 
-    const exerciseIds = [...new Set(deck.cards.flatMap((c) => (c.exerciseId ? [c.exerciseId] : [])))];
-    const byId = new Map((await this.exercises.getMany(exerciseIds)).flatMap((e) => (e ? [[e.id, e] as const] : [])));
+    const byId = new Map((await this.exercises.getMany(deckExerciseIds(deck))).flatMap((e) => (e ? [[e.id, e] as const] : [])));
     return {
       routine,
       bundle,
@@ -64,7 +63,7 @@ export class RoomRoutineService {
         gameSummary: game.summary,
         ...(game.howTo?.length ? { gameHowTo: game.howTo } : {}),
         players: game.players,
-        cardCount: applyDeckFilters(deck.cards, byId, routine.deckFilters).length,
+        cardCount: deckSize(deck, byId, routine.deckFilters),
         suits: deck.suits.filter((s) => s.suit !== 'joker').map((s) => ({ suit: s.suit, label: s.label })),
       },
     };

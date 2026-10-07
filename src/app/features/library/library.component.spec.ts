@@ -48,7 +48,7 @@ describe('Library (reads from Dexie)', () => {
     expect(el.querySelector('svg.ex-figure')).not.toBeNull();
     expect([...el.querySelectorAll('.cues li')].map((li) => li.textContent?.trim())).toEqual(['Heels stay down', 'Knees track over toes']);
     expect(el.querySelector('.decks a')?.textContent).toBe('Bodyweight deck');
-    expect(el.querySelector('.decks .where')?.textContent).toContain('Legs — 2 3 4 5');
+    expect(el.querySelector('.decks .where')?.textContent).toContain('Legs');
   });
 
   it('says so when the exercise does not exist', async () => {

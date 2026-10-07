@@ -19,7 +19,7 @@
             <div class="info">
               <h3><a [routerLink]="['/decks', item.deck.id, 'edit']">{{ item.deck.name }}</a></h3>
               <p class="meta">
-                @if (item.category) { {{ item.category }} · }{{ item.cardCount }} cards
+                @if (item.category) { {{ item.category }} · }{{ item.exerciseCount }} exercises · deals {{ item.cardCount }} cards
               </p>
               <ul class="suits">
                 @for (s of item.suits; track s.suit) {

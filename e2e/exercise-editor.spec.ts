@@ -52,23 +52,25 @@ test('create an exercise with poses and a prop, then put it on a deck card', asy
   await expect(tile).toHaveCount(1);
   await expect(tile).toContainText('Yours');
 
-  // And it can be put on a card in the deck editor.
+  // And it can go into a deck's group (§9b: a deck is pools, so it joins one).
   await page.goto('/decks');
   await page.locator('li.deck', { hasText: 'Bodyweight' }).getByRole('button', { name: /Duplicate to edit/ }).click();
   await page.waitForURL(/\/decks\/deck-.*\/edit/);
-  await page.locator('button.card-button').first().click();
-  await page.getByRole('dialog').getByLabel('Search').fill('Doorway');
-  // The picker starts filtered to the deck's category and the suit's muscle groups; it offers the rest.
-  await page.getByRole('button', { name: /show all/ }).click();
-  const option = page.getByRole('option', { name: /Doorway band row/ });
+  const pull = page.locator('section.group', { hasText: 'Pull' });
+  await pull.getByRole('button', { name: 'Add exercises' }).click();
+  const dialog = page.getByRole('dialog');
+  await dialog.getByLabel('Search').fill('Doorway');
+  // The picker starts filtered to the deck's category and the group's muscle groups; it offers the rest.
+  await dialog.getByRole('button', { name: /show all/ }).click();
+  const option = dialog.getByRole('button', { name: /Doorway band row/ });
   await expect(option).toContainText('Yours');
   await option.click();
-  await page.getByRole('button', { name: 'Use this exercise' }).click();
-  await expect(page.locator('button.card-button').first()).toContainText('Doorway band row');
+  await dialog.getByRole('button', { name: 'Done' }).click();
+  await expect(pull.locator('.chip', { hasText: 'Doorway band row' })).toBeVisible();
   await page.getByRole('button', { name: /^Save/ }).click();
   await expect(page.getByText('Deck saved')).toBeVisible();
-  // The card keeps the exercise after a reload: it's in Dexie, not just on screen.
+  // The group keeps it after a reload: it's in Dexie, not just on screen.
   await page.reload();
-  await expect(page.locator('button.card-button').first()).toContainText('Doorway band row');
+  await expect(page.locator('section.group', { hasText: 'Pull' }).locator('.chip', { hasText: 'Doorway band row' })).toBeVisible();
   await page.context().close();
 });

@@ -1,5 +1,5 @@
 import type { GameDefinition } from '../../models/game.schema';
-import type { Deck, Exercise, GameSettings } from '../../models/schemas';
+import type { DealtDeck, Exercise, GameSettings } from '../../models/schemas';
 import type { EngineEvent } from '../events';
 import type { GameState } from '../state';
 import { resolveSettings } from './settings';
@@ -38,7 +38,7 @@ export interface DryRunResult {
  */
 export function dryRun(opts: {
   def: GameDefinition;
-  deck: Pick<Deck, 'cards'>;
+  deck: DealtDeck;
   exercises: readonly Pick<Exercise, 'id' | 'measure'>[];
   seed: number;
   players?: number;

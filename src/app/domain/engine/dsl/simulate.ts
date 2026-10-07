@@ -1,5 +1,5 @@
 import type { GameDefinition } from '../../models/game.schema';
-import type { Deck, Exercise, GameSettings } from '../../models/schemas';
+import type { DealtDeck, Exercise, GameSettings } from '../../models/schemas';
 import type { EngineEvent } from '../events';
 import type { Intent } from '../intents';
 import { createContext, createInitialState, getZone, pendingTasks, reduce, type EngineContext } from '../reducer';
@@ -32,7 +32,7 @@ export interface SimulationResult {
  */
 export function simulate(opts: {
   def: GameDefinition;
-  deck: Pick<Deck, 'cards'>;
+  deck: DealtDeck;
   exercises: readonly Pick<Exercise, 'id' | 'measure'>[];
   settings: GameSettings;
   seed: number;

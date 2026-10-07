@@ -378,29 +378,23 @@ def build():
                 "figure": {"start": e["poseStart"], "end": e["poseEnd"], "prop": e["prop"]},
                 "builtIn": True,
             })
-        cards = []
+        # A deck is four pools of exercises; the cards are dealt from them at play time (§9b).
+        pools = {}
         for suit, exs in by_suit.items():
             assert len(exs) == 3, f"{cat_id}/{suit} needs 3 exercises, has {len(exs)}"
-            exs = sorted(exs, key=lambda x: x["difficulty"])
-            for r in RANKS:
-                e = exs[tier(r)]
-                v = RANK_VALUE[r]
-                cards.append({"id": f"{cat_id}-{suit}-{r}", "suit": suit, "rank": r,
-                              "exerciseId": e["id"],
-                              "baseAmount": v * 5 if e["measure"] == "seconds" else v})
-        for j in (1, 2):
-            cards.append({"id": f"{cat_id}-joker-{j}", "suit": "joker", "rank": "JOKER",
-                          "exerciseId": None, "baseAmount": 0})
+            pools[suit] = [e["id"] for e in sorted(exs, key=lambda x: x["difficulty"])]
         decks.append({
             "id": f"deck-{cat_id}", "name": f"{cat['label']} deck", "category": cat_id,
-            "suits": [{"suit": s, "label": l, "color": SUIT_COLOR[s], "muscleGroups": g}
+            "suits": [{"suit": s, "label": l, "color": SUIT_COLOR[s], "muscleGroups": g,
+                       "exerciseIds": pools[s]}
                       for s, (l, g) in suit_labels.items()]
-                     + [{"suit": "joker", "label": "Wild", "color": "suit-joker", "muscleGroups": ["full-body"]}],
-            "cards": cards, "builtIn": True, "updatedAt": 0,
+                     + [{"suit": "joker", "label": "Wild", "color": "suit-joker",
+                         "muscleGroups": ["full-body"], "exerciseIds": []}],
+            "builtIn": True, "updatedAt": 0,
         })
     (OUT / "poses.json").write_text(json.dumps(POSES, indent=1))
     (OUT / "exercises.json").write_text(json.dumps({"version": 1, "exercises": exercises}, indent=1))
-    (OUT / "decks.json").write_text(json.dumps({"version": 1, "decks": decks}, indent=1))
+    (OUT / "decks.json").write_text(json.dumps({"version": 2, "decks": decks}, indent=1))
     print(f"{len(POSES)} poses, {len(exercises)} exercises, {len(decks)} decks")
 
 

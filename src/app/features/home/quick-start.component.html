@@ -36,7 +36,7 @@
                 (valueChange)="setIntensity($event)" />
   <p class="df-hint">{{ intensityHelp() }}</p>
 
-  <df-deck-length [(value)]="deckLength" [deckSize]="d.deck.cards.length" label="Cards" />
+  <df-deck-length [(value)]="deckLength" [deckSize]="d.size" label="Cards" />
 
   <button type="button" class="df-btn df-btn--primary df-btn--main" [disabled]="starting()" (click)="start()">
     <df-icon name="play" />{{ starting() ? 'Starting…' : 'Start ' + d.game.name }}

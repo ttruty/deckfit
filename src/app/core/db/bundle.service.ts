@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import type { Table } from 'dexie';
 import { BundleSchema, type Bundle } from '../../domain/models/bundle.schema';
 import { DECKFIT_DB } from './deckfit-db';
+import { deckExerciseIds } from '../../domain/models/deck-rules';
 
 export class BundleImportError extends Error {
   constructor(readonly problems: string[]) {
@@ -45,7 +46,7 @@ export class BundleService {
       if (missing.length) throw new Error(`Unknown routine(s): ${missing.join(', ')}`);
       const decks = userDecks.filter((d) => routines.some((r) => r.deckId === d.id));
       const games = userGames.filter((g) => routines.some((r) => r.gameId === g.id));
-      const exerciseIds = new Set(decks.flatMap((d) => d.cards.map((c) => c.exerciseId)));
+      const exerciseIds = new Set(decks.flatMap(deckExerciseIds));
       const exercises = userExercises.filter((e) => exerciseIds.has(e.id));
       return BundleSchema.parse({ format: 'deckfit-bundle', version: 1, exportedAt: Date.now(), exercises, decks, games, routines });
     });
@@ -98,7 +99,7 @@ export class BundleService {
         const found = await table.bulkGet(lookup);
         return lookup.filter((_, i) => !found[i]);
       };
-      const exerciseRefs = bundle.decks.flatMap((d) => d.cards.flatMap((c) => (c.exerciseId ? [c.exerciseId] : [])));
+      const exerciseRefs = bundle.decks.flatMap(deckExerciseIds);
       for (const id of await unresolved(exerciseRefs, bundle.exercises, db.exercises)) problems.push(`exercise ${id} is used by a deck but missing`);
       for (const id of await unresolved(bundle.routines.map((r) => r.deckId), bundle.decks, db.decks)) problems.push(`deck ${id} is used by a routine but missing`);
       for (const id of await unresolved(bundle.routines.map((r) => r.gameId), bundle.games, db.games)) problems.push(`game ${id} is used by a routine but missing`);

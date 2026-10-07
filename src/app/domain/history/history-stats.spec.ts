@@ -3,20 +3,21 @@ import { resolveSettings } from '../../domain/engine/dsl/settings';
 import { simulate } from '../../domain/engine/dsl/simulate';
 import type { Session } from '../models/schemas';
 import { historyStats } from './history-stats';
+import { dealtSnapshot } from '../../../testing/deck';
 
 const content = loadContent();
 const exercisesById = new Map(content.exercises.exercises.map((e) => [e.id, e]));
 
 function playedSession(id: string, deckId: string, gameId: string, startedAt: number, seed: number, ended = true): Session {
   const def = content.games.games.find((g) => g.id === gameId)!;
-  const deck = content.decks.decks.find((d) => d.id === deckId)!;
+  const deck = dealtSnapshot(content.decks.decks.find((d) => d.id === deckId)!, content.exercises.exercises, seed);
   const settings = resolveSettings(def);
   const result = simulate({ def, deck, exercises: content.exercises.exercises, settings, seed, players: ['me'] });
   return {
     id, seed, startedAt,
     ...(ended ? { endedAt: startedAt + 25 * 60000, outcome: 'finished' as const } : {}),
     game: { id: def.id, name: def.name },
-    deck: { id: deck.id, name: deck.name, suits: deck.suits, cards: deck.cards },
+    deck,
     settings, players: [{ id: 'me', name: 'Me' }],
     log: result.events, totals: result.state.totals,
   };

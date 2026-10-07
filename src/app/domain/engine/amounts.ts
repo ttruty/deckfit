@@ -30,24 +30,14 @@ export interface TaskDraft {
 }
 
 /**
- * Pre-multiplier amount of one non-joker card, in its exercise's unit.
- * Number cards use baseAmount (already ×5 for timed exercises, and editable per deck);
- * J/Q/K and A use the faceCardValue / aceValue settings, ×5 when timed.
+ * Pre-multiplier amount of one non-joker card, in its exercise's unit: whatever the deal put on
+ * the card (already ×5 for timed exercises). `faceCardValue` and `aceValue` are spent at deal
+ * time instead — they set the band J/Q/K and A are drawn from (`amountBand`, deck-rules.ts) —
+ * so every card's number, face cards included, is the one printed on it.
  */
-export function cardAmount(card: Card, measure: Measure, settings: AmountSource['settings']): number {
-  const unit = measure === 'seconds' ? SECONDS_PER_POINT : 1;
-  switch (card.rank) {
-    case 'J':
-    case 'Q':
-    case 'K':
-      return settings.faceCardValue * unit;
-    case 'A':
-      return settings.aceValue * unit;
-    case 'JOKER':
-      throw new Error(`cardAmount: ${card.id} is a joker`);
-    default:
-      return card.baseAmount;
-  }
+export function cardAmount(card: Card, _measure: Measure, _settings: AmountSource['settings']): number {
+  if (card.rank === 'JOKER') throw new Error(`cardAmount: ${card.id} is a joker`);
+  return card.baseAmount;
 }
 
 /** What the settings do to a card's amount: intensity × repMultiplier. */

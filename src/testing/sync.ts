@@ -4,6 +4,8 @@ import type { Bundle } from '../app/domain/models/bundle.schema';
 import type { GameStart, NetMessage, RoomRoutine } from '../app/core/sync/net-message';
 import type { PlayerId, PlayerInfo, PlayerPresence, RoomInfo, SyncTransport } from '../app/core/sync/sync-transport';
 import { loadContent } from './db';
+import { deckExerciseIds } from '../app/domain/models/deck-rules';
+import { dealtSnapshot } from './deck';
 
 /** Lets loopback microtasks settle (several hops: request → host → broadcast). */
 export async function flush(times = 6): Promise<void> {
@@ -66,7 +68,7 @@ export function intervalRoomRoutine(): RoomRoutine {
   return {
     routine, bundle,
     preview: {
-      deckName: deck.name, gameName: game.name, gameSummary: game.summary, players: game.players, cardCount: deck.cards.length,
+      deckName: deck.name, gameName: game.name, gameSummary: game.summary, players: game.players, cardCount: 54,
       suits: deck.suits.map((s) => ({ suit: s.suit, label: s.label })),
     },
   };
@@ -78,14 +80,15 @@ export function intervalStart(players: PlayerInfo[], seed = 2026): GameStart {
   const { routine } = intervalRoomRoutine();
   const game = content.games.games.find((g) => g.id === routine.gameId)!;
   const deck = content.decks.decks.find((d) => d.id === routine.deckId)!;
-  const ids = new Set(deck.cards.map((c) => c.exerciseId));
+  const ids = new Set(deckExerciseIds(deck));
+  const exercises = content.exercises.exercises.filter((e) => ids.has(e.id));
   return {
     seed,
     players: players.map((p, seat) => ({ ...p, seat })),
     game,
-    deck: { id: deck.id, name: deck.name, suits: deck.suits, cards: deck.cards },
+    deck: dealtSnapshot(deck, exercises, seed),
     settings: routine.settings,
-    exercises: content.exercises.exercises.filter((e) => ids.has(e.id)),
+    exercises,
   };
 }
 

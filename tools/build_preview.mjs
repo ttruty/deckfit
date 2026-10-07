@@ -4,8 +4,10 @@ import { build } from 'esbuild';
 import * as sass from 'sass';
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
+// fileURLToPath, not url.pathname: a project path with a space in it arrives percent-encoded.
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const content = (f) => JSON.parse(fs.readFileSync(path.join(root, 'src/assets/content', f), 'utf8'));
 
 const bundle = await build({
@@ -33,8 +35,15 @@ const css = sass.compile(path.join(root, 'src/styles/_card-tokens.scss')).css;
 
 const PIP = { hearts: '♥', diamonds: '♦', clubs: '♣', spades: '♠' };
 
+// A deck is pools of exercises now (§9b), so the sheet prints one representative card per
+// exercise: the rank its tier used to sit in, at that rank's own value (a real deal picks a
+// random amount around it).
+const RANK_VALUE = { 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, J: 10, Q: 10, K: 10, A: 11 };
+const TIER_RANK = ['4', '8', 'K'];
+
 const card = (deck, suit, ex, rank) => {
-  const c = deck.cards.find((k) => k.suit === suit && k.rank === rank);
+  const amount = RANK_VALUE[rank] * (ex.measure === 'seconds' ? 5 : 1);
+  const c = { baseAmount: amount };
   const label = deck.suits.find((s) => s.suit === suit).label;
   const unit = ex.measure === 'seconds' ? 'sec' : 'reps';
   // .card-box is the size container the card's type is measured against (see _card-tokens.scss).
@@ -48,13 +57,8 @@ const card = (deck, suit, ex, rank) => {
 
 const sections = decks.map((deck) => {
   const rows = ['hearts', 'diamonds', 'clubs', 'spades'].map((suit) => {
-    const order = ['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
-    const cards = deck.cards.filter((c) => c.suit === suit).sort((a, b) => order.indexOf(a.rank) - order.indexOf(b.rank));
-    const ids = [...new Set(cards.map((c) => c.exerciseId))];
-    return ids.map((id) => {
-      const mine = cards.filter((c) => c.exerciseId === id);
-      return card(deck, suit, exById[id], mine[Math.floor(mine.length / 2)].rank);
-    }).join('');
+    const ids = deck.suits.find((s) => s.suit === suit).exerciseIds;
+    return ids.map((id, i) => card(deck, suit, exById[id], TIER_RANK[Math.min(i, TIER_RANK.length - 1)])).join('');
   }).join('');
   return `<section><h2>${deck.name}</h2><div class="grid">${rows}</div></section>`;
 }).join('');
@@ -70,7 +74,7 @@ p{max-width:65ch}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;font-size:13px}
 </style></head><body><main>
 <h1>DeckFit cards</h1>
-<p>All ${exercises.length} built-in exercises across ${decks.length} decks. Each suit has three exercises that step up in difficulty with the card's rank. The faint figure is the start position; the solid figure is where the movement ends.</p>
+<p>All ${exercises.length} built-in exercises across ${decks.length} decks. Each suit is a pool of three exercises; a workout deals cards from it at random. The faint figure is the start position; the solid figure is where the movement ends.</p>
 ${sections}</main></body></html>`;
 
 fs.mkdirSync(path.join(root, 'tools/out'), { recursive: true });

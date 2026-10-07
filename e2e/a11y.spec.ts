@@ -58,7 +58,7 @@ test.describe('accessibility (axe, WCAG 2.1 AA)', () => {
       await page.goto('/decks');
       await page.locator('li.deck', { hasText: 'Bodyweight' }).getByRole('button', { name: /Duplicate to edit/ }).click();
       await page.waitForURL(/\/decks\/deck-.*\/edit/);
-      await page.locator('button.card-button').first().waitFor();
+      await page.locator('section.group').first().waitFor();
       await setTheme(page, theme);
       const deckEditor = await scan(page);
       if (deckEditor.length) problems['deck editor'] = deckEditor;

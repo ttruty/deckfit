@@ -10,6 +10,7 @@ import type { GameStart } from './net-message';
 import { LEAVE_AFTER_MS, RoomGame } from './room-game';
 import { HOST_MIGRATION_MS, RoomSession } from './room-session';
 import { ManualScheduler } from './scheduler';
+import { dealtSnapshot } from '../../../testing/deck';
 
 const content = loadContent();
 const deck = content.decks.decks.find((d) => d.id === 'deck-bodyweight')!;
@@ -26,7 +27,7 @@ function startFor(
     game,
     settings: resolveSettings(game, settings),
     players: players.map((p, seat) => ({ ...p, seat })),
-    deck: { id: deck.id, name: deck.name, suits: deck.suits, cards: deck.cards },
+    deck: dealtSnapshot(deck, content.exercises.exercises, seed),
     exercises: content.exercises.exercises,
   };
 }

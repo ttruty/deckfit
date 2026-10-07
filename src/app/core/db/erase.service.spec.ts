@@ -9,6 +9,7 @@ import type { DeckfitDb } from './deckfit-db';
 import { DataEraseService } from './erase.service';
 import { DeckRepository, MetaRepository, RoutineRepository, SessionRepository } from './repositories';
 import { seedContent } from './seed-content';
+import { dealtSnapshot } from '../../../testing/deck';
 
 const settings = { repMultiplier: 1, faceCardValue: 10, aceValue: 11, jokerRule: 'rest' as const, players: { min: 1, max: 1 } };
 
@@ -18,7 +19,7 @@ function session(id: string, startedAt: number): Session {
   return {
     id, seed: 1, startedAt, endedAt: startedAt + 1000, outcome: 'finished',
     game: { id: 'solo-deal', name: 'Solo Deal' },
-    deck: { id: deck.id, name: deck.name, suits: deck.suits, cards: deck.cards },
+    deck: dealtSnapshot(deck, content.exercises.exercises),
     settings, players: [{ id: 'device-1', name: 'Ann' }], log: [], totals: { 'device-1': {} },
   };
 }

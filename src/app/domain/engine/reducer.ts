@@ -1,4 +1,4 @@
-import type { Card, Deck, Exercise, GameSettings } from '../models/schemas';
+import type { Card, DealtDeck, Exercise, GameSettings } from '../models/schemas';
 import { planTasks } from './amounts';
 import type { EngineEvent } from './events';
 import type { Intent } from './intents';
@@ -30,7 +30,7 @@ export interface GameRules {
 }
 
 export function createContext(
-  deck: Pick<Deck, 'cards'>,
+  deck: DealtDeck,
   exercises: readonly Pick<Exercise, 'id' | 'measure'>[],
   settings: GameSettings,
   rules: GameRules,
@@ -44,7 +44,7 @@ export function createContext(
 }
 
 /** Fresh state: every deck card in the draw pile, in deck order (games shuffle during setup). */
-export function createInitialState(opts: { players: readonly PlayerId[]; seed: number; deck: Pick<Deck, 'cards'> }): GameState {
+export function createInitialState(opts: { players: readonly PlayerId[]; seed: number; deck: DealtDeck }): GameState {
   const { players, seed, deck } = opts;
   if (players.length === 0) throw new Error('createInitialState: need at least one player');
   if (new Set(players).size !== players.length) throw new Error('createInitialState: duplicate player id');
